@@ -58,9 +58,8 @@ if not api_key:
     st.error("🔑 Missing Gemini API Key! Please configure your secret key in Streamlit settings.")
     st.stop()
 
-# Initialize GenAI Client using legacy module configuration
+# Configure Google Generative AI SDK
 genai.configure(api_key=api_key.strip())
-model = genai.GenerativeModel("gemini-1.5-flash")
 
 SYSTEM_INSTRUCTION = """
 You are Zerti, an expert German language tutor and official Goethe-Institut A1 examiner evaluating a candidate for Goethe-Zertifikat A1 (Start Deutsch 1).
@@ -83,6 +82,12 @@ OFFICIAL GOETHE A1 EXAM FORMAT RULES:
 
 VOCABULARY RULE: Provide exhaustive, highly structured A1 word analyses including full pronoun conjugations (ich, du, er/sie/es, wir, ihr, sie/Sie), Perfekt forms, case rules (Akk/Dat), comparative forms, sample sentences, and common phrases.
 """
+
+# Initialize Model with System Instruction
+model = genai.GenerativeModel(
+    model_name="gemini-1.5-flash",
+    system_instruction=SYSTEM_INSTRUCTION
+)
 
 GOETHE_A1_SAMPLE_WORDS = [
     "einkaufen", "Termin", "Fahrkarte", "anrufen", "gut", "Formular", 
@@ -182,11 +187,7 @@ elif nav_choice == "📚 Master Goethe Word Engine":
             """
             
             try:
-                res = client.models.generate_content(
-                    model=MODEL_NAME,
-                    contents=vocab_prompt,
-                    config=types.GenerateContentConfig(system_instruction=SYSTEM_INSTRUCTION)
-                )
+                res = model.generate_content(vocab_prompt)
                 st.markdown(res.text)
             except Exception as e:
                 st.error(f"Error compiling word details: {str(e)}")
@@ -210,11 +211,7 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
         if st.button("🎲 Generate Lesen Teil 1 Exercise"):
             with st.spinner("Generating Teil 1 passage..."):
                 try:
-                    res = client.models.generate_content(
-                        model=MODEL_NAME,
-                        contents="Generate a Goethe A1 Lesen Teil 1 exercise using Goethe A1 vocabulary: 1 short personal email (~35 words) followed by 2 Richtig/Falsch comprehension questions with answer explanations.",
-                        config=types.GenerateContentConfig(system_instruction=SYSTEM_INSTRUCTION)
-                    )
+                    res = model.generate_content("Generate a Goethe A1 Lesen Teil 1 exercise using Goethe A1 vocabulary: 1 short personal email (~35 words) followed by 2 Richtig/Falsch comprehension questions with answer explanations.")
                     st.write(res.text)
                 except Exception as e: st.error(f"Error: {str(e)}")
 
@@ -223,11 +220,7 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
         if st.button("🎲 Generate Lesen Teil 2 Exercise"):
             with st.spinner("Generating Teil 2 ads..."):
                 try:
-                    res = client.models.generate_content(
-                        model=MODEL_NAME,
-                        contents="Generate a Goethe A1 Lesen Teil 2 exercise using Goethe A1 vocabulary: A user scenario and 2 short website descriptions (Website A vs Website B). State which site is correct and why.",
-                        config=types.GenerateContentConfig(system_instruction=SYSTEM_INSTRUCTION)
-                    )
+                    res = model.generate_content("Generate a Goethe A1 Lesen Teil 2 exercise using Goethe A1 vocabulary: A user scenario and 2 short website descriptions (Website A vs Website B). State which site is correct and why.")
                     st.write(res.text)
                 except Exception as e: st.error(f"Error: {str(e)}")
 
@@ -236,11 +229,7 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
         if st.button("🎲 Generate Lesen Teil 3 Exercise"):
             with st.spinner("Generating Teil 3 sign..."):
                 try:
-                    res = client.models.generate_content(
-                        model=MODEL_NAME,
-                        contents="Generate a Goethe A1 Lesen Teil 3 exercise using Goethe A1 vocabulary: 1 realistic German public sign text and 2 Richtig/Falsch questions.",
-                        config=types.GenerateContentConfig(system_instruction=SYSTEM_INSTRUCTION)
-                    )
+                    res = model.generate_content("Generate a Goethe A1 Lesen Teil 3 exercise using Goethe A1 vocabulary: 1 realistic German public sign text and 2 Richtig/Falsch questions.")
                     st.write(res.text)
                 except Exception as e: st.error(f"Error: {str(e)}")
     st.markdown('</div>', unsafe_allow_html=True)
@@ -264,11 +253,7 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
         if st.button("🎲 Generate Hören Teil 1 Script & Questions"):
             with st.spinner("Generating audio transcript scenario..."):
                 try:
-                    res = client.models.generate_content(
-                        model=MODEL_NAME,
-                        contents="Generate a Goethe A1 Hören Teil 1 dialogue transcript using Goethe A1 vocabulary with 2 multiple-choice questions (a, b, c) and explanations.",
-                        config=types.GenerateContentConfig(system_instruction=SYSTEM_INSTRUCTION)
-                    )
+                    res = model.generate_content("Generate a Goethe A1 Hören Teil 1 dialogue transcript using Goethe A1 vocabulary with 2 multiple-choice questions (a, b, c) and explanations.")
                     st.write(res.text)
                 except Exception as e: st.error(f"Error: {str(e)}")
 
@@ -278,11 +263,7 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
         if st.button("🎲 Generate Hören Teil 2 Announcement"):
             with st.spinner("Generating announcement script..."):
                 try:
-                    res = client.models.generate_content(
-                        model=MODEL_NAME,
-                        contents="Generate a Goethe A1 Hören Teil 2 public announcement script using Goethe A1 vocabulary with 2 Richtig/Falsch questions.",
-                        config=types.GenerateContentConfig(system_instruction=SYSTEM_INSTRUCTION)
-                    )
+                    res = model.generate_content("Generate a Goethe A1 Hören Teil 2 public announcement script using Goethe A1 vocabulary with 2 Richtig/Falsch questions.")
                     st.write(res.text)
                 except Exception as e: st.error(f"Error: {str(e)}")
 
@@ -292,11 +273,7 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
         if st.button("🎲 Generate Hören Teil 3 Voicemail"):
             with st.spinner("Generating voicemail script..."):
                 try:
-                    res = client.models.generate_content(
-                        model=MODEL_NAME,
-                        contents="Generate a Goethe A1 Hören Teil 3 voicemail transcript using Goethe A1 vocabulary with 2 multiple-choice questions (a, b, c).",
-                        config=types.GenerateContentConfig(system_instruction=SYSTEM_INSTRUCTION)
-                    )
+                    res = model.generate_content("Generate a Goethe A1 Hören Teil 3 voicemail transcript using Goethe A1 vocabulary with 2 multiple-choice questions (a, b, c).")
                     st.write(res.text)
                 except Exception as e: st.error(f"Error: {str(e)}")
     st.markdown('</div>', unsafe_allow_html=True)
@@ -318,11 +295,7 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
         if st.button("🎲 Generate Schreiben Teil 1 Scenario & Form"):
             with st.spinner("Generating form exercise..."):
                 try:
-                    res = client.models.generate_content(
-                        model=MODEL_NAME,
-                        contents="Generate a Goethe A1 Schreiben Teil 1 exercise using Goethe A1 vocabulary: A background scenario about booking a trip/hotel, and a form with 5 missing fields (1 to 5) to fill in, along with answer key.",
-                        config=types.GenerateContentConfig(system_instruction=SYSTEM_INSTRUCTION)
-                    )
+                    res = model.generate_content("Generate a Goethe A1 Schreiben Teil 1 exercise using Goethe A1 vocabulary: A background scenario about booking a trip/hotel, and a form with 5 missing fields (1 to 5) to fill in, along with answer key.")
                     st.write(res.text)
                 except Exception as e: st.error(f"Error: {str(e)}")
 
@@ -334,11 +307,7 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
         if st.button("🎲 Generate Schreiben Teil 2 Prompt"):
             with st.spinner("Generating email prompt..."):
                 try:
-                    res = client.models.generate_content(
-                        model=MODEL_NAME,
-                        contents="Generate an official Goethe A1 Schreiben Teil 2 prompt using Goethe A1 vocabulary: A realistic scenario with 3 bullet points.",
-                        config=types.GenerateContentConfig(system_instruction=SYSTEM_INSTRUCTION)
-                    )
+                    res = model.generate_content("Generate an official Goethe A1 Schreiben Teil 2 prompt using Goethe A1 vocabulary: A realistic scenario with 3 bullet points.")
                     st.session_state.writing_prompt = res.text
                 except Exception as e: st.error(f"Error: {str(e)}")
 
@@ -350,11 +319,7 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
                 if user_text.strip():
                     with st.spinner("Evaluating submission against Goethe A1 rubric..."):
                         try:
-                            eval_res = client.models.generate_content(
-                                model=MODEL_NAME,
-                                contents=f"PROMPT:\n{st.session_state.writing_prompt}\n\nSUBMISSION:\n{user_text}\n\nGrade task fulfillment (3 points), V2 verb order, and matching salutations/closings.",
-                                config=types.GenerateContentConfig(system_instruction=SYSTEM_INSTRUCTION)
-                            )
+                            eval_res = model.generate_content(f"PROMPT:\n{st.session_state.writing_prompt}\n\nSUBMISSION:\n{user_text}\n\nGrade task fulfillment (3 points), V2 verb order, and matching salutations/closings.")
                             st.markdown("### Official Examiner Breakdown")
                             st.write(eval_res.text)
                         except Exception as e: st.error(f"Error: {str(e)}")
@@ -382,11 +347,7 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
         if st.button("Evaluate Self-Introduction"):
             if user_intro.strip():
                 try:
-                    res = client.models.generate_content(
-                        model=MODEL_NAME,
-                        contents=f"Evaluate this candidate's Goethe A1 Sprechen Teil 1 self-introduction and verify if all 7 points are covered accurately: {user_intro}",
-                        config=types.GenerateContentConfig(system_instruction=SYSTEM_INSTRUCTION)
-                    )
+                    res = model.generate_content(f"Evaluate this candidate's Goethe A1 Sprechen Teil 1 self-introduction and verify if all 7 points are covered accurately: {user_intro}")
                     st.write(res.text)
                 except Exception as e: st.error(f"Error: {str(e)}")
 
@@ -398,11 +359,7 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
         if st.button("🎲 Draw Teil 2 Card"):
             with st.spinner("Drawing card..."):
                 try:
-                    res = client.models.generate_content(
-                        model=MODEL_NAME,
-                        contents="Generate a Goethe A1 Sprechen Teil 2 topic card drawing from official Goethe A1 Wortliste (e.g. Thema: 'Einkaufen', Wort: 'Brot').",
-                        config=types.GenerateContentConfig(system_instruction=SYSTEM_INSTRUCTION)
-                    )
+                    res = model.generate_content("Generate a Goethe A1 Sprechen Teil 2 topic card drawing from official Goethe A1 Wortliste (e.g. Thema: 'Einkaufen', Wort: 'Brot').")
                     st.session_state.card_prompt_t2 = res.text
                 except Exception as e: st.error(f"Error: {str(e)}")
 
@@ -419,13 +376,9 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
             if st.button("Evaluate Spoken Question"):
                 with st.spinner("Zerti is evaluating your question syntax..."):
                     try:
-                        audio_part = types.Part.from_bytes(data=audio_t2['bytes'], mime_type="audio/wav")
+                        audio_part = {"mime_type": "audio/wav", "data": audio_t2['bytes']}
                         prompt = f"Card: {st.session_state.card_prompt_t2}. Transcribe spoken audio and verify if candidate formed a correct Goethe A1 W-question with verb in Position 2."
-                        eval_res = client.models.generate_content(
-                            model=MODEL_NAME,
-                            contents=[prompt, audio_part],
-                            config=types.GenerateContentConfig(system_instruction=SYSTEM_INSTRUCTION)
-                        )
+                        eval_res = model.generate_content([prompt, audio_part])
                         st.write(eval_res.text)
                     except Exception as e: st.error(f"Error evaluating audio: {str(e)}")
 
@@ -437,11 +390,7 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
         if st.button("🎲 Draw Teil 3 Card"):
             with st.spinner("Drawing card..."):
                 try:
-                    res = client.models.generate_content(
-                        model=MODEL_NAME,
-                        contents="Generate a Goethe A1 Sprechen Teil 3 picture/object request card drawing from Goethe A1 vocabulary.",
-                        config=types.GenerateContentConfig(system_instruction=SYSTEM_INSTRUCTION)
-                    )
+                    res = model.generate_content("Generate a Goethe A1 Sprechen Teil 3 picture/object request card drawing from Goethe A1 vocabulary.")
                     st.session_state.card_prompt_t3 = res.text
                 except Exception as e: st.error(f"Error: {str(e)}")
 
@@ -458,13 +407,9 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
             if st.button("Evaluate Spoken Request"):
                 with st.spinner("Zerti is evaluating your request syntax..."):
                     try:
-                        audio_part = types.Part.from_bytes(data=audio_t3['bytes'], mime_type="audio/wav")
+                        audio_part = {"mime_type": "audio/wav", "data": audio_t3['bytes']}
                         prompt = f"Card: {st.session_state.card_prompt_t3}. Transcribe spoken audio and verify if candidate formed a correct Goethe A1 request/imperative with verb in Position 1."
-                        eval_res = client.models.generate_content(
-                            model=MODEL_NAME,
-                            contents=[prompt, audio_part],
-                            config=types.GenerateContentConfig(system_instruction=SYSTEM_INSTRUCTION)
-                        )
+                        eval_res = model.generate_content([prompt, audio_part])
                         st.write(eval_res.text)
                     except Exception as e: st.error(f"Error evaluating audio: {str(e)}")
     st.markdown('</div>', unsafe_allow_html=True)
@@ -493,11 +438,7 @@ elif nav_choice == "💬 Ask Zerti (AI Tutor)":
         with st.chat_message("assistant"):
             with st.spinner("Zerti is thinking..."):
                 try:
-                    response = client.models.generate_content(
-                        model=MODEL_NAME,
-                        contents=prompt,
-                        config=types.GenerateContentConfig(system_instruction=SYSTEM_INSTRUCTION)
-                    )
+                    response = model.generate_content(prompt)
                     st.markdown(response.text)
                     st.session_state.messages.append({"role": "assistant", "content": response.text})
                 except Exception as e: st.error(f"Error: {str(e)}")
