@@ -7,85 +7,80 @@ from google.genai import types
 from gtts import gTTS
 from streamlit_mic_recorder import mic_recorder
 
-# Streamlit Page Setup
+# Streamlit Page Configuration
 st.set_page_config(
-    page_title="Goethe A1 Prep Studio", 
+    page_title="Goethe A1 Studio", 
     page_icon="🇩🇪", 
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-# Custom Flashcard & Dashboard Styling
+# CSS for Flip Flashcard Styling & Custom Layout
 st.markdown("""
 <style>
     .stApp { background-color: #f8fafc; font-family: system-ui, -apple-system, sans-serif; }
     .main-card { background: #ffffff; border-radius: 16px; padding: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); margin-bottom: 20px; border: 1px solid #e2e8f0; }
     .accent-card { background: #ffffff; border-radius: 16px; padding: 24px; border-left: 6px solid #2563eb; box-shadow: 0 2px 12px rgba(37, 99, 235, 0.06); margin-bottom: 20px; border: 1px solid #e2e8f0; }
     
-    /* Interactive Flashcard UI */
-    .flashcard-front {
-        background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    /* Interactive Flashcard Front UI */
+    .flashcard-front-box {
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
         color: #ffffff;
         border-radius: 20px;
-        padding: 40px 20px;
+        padding: 50px 20px;
         text-align: center;
-        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.25);
+        border: 2px solid #38bdf8;
         margin-bottom: 20px;
     }
-    .flashcard-word {
-        font-size: 3rem;
+    .flashcard-word-title {
+        font-size: 3.5rem;
         font-weight: 800;
         letter-spacing: -0.025em;
         color: #38bdf8;
-        margin-bottom: 10px;
+        margin-bottom: 15px;
     }
-    .flashcard-back {
+    
+    /* Interactive Flashcard Back UI */
+    .flashcard-back-box {
         background: #ffffff;
-        border: 2px solid #3b82f6;
+        border: 2px solid #2563eb;
         border-radius: 20px;
         padding: 30px;
-        box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.1);
+        box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.12);
         margin-bottom: 20px;
+    }
+    .flashcard-back-title {
+        font-size: 2.2rem;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 5px;
+    }
+    .meaning-subtitle {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #2563eb;
+        margin-bottom: 15px;
     }
 </style>
 """, unsafe_allow_html=True)
 
-# Fetch API Key securely
+# Secure API Key Retrieval
 api_key = st.secrets.get("GEMINI_API_KEY", os.getenv("GEMINI_API_KEY"))
 if not api_key:
     st.error("🔑 Missing Gemini API Key! Please configure your secret key in Streamlit settings.")
     st.stop()
 
 client = genai.Client(api_key=api_key.strip())
-MODEL_NAME = "gemini-3.5-flash-lite"
+MODEL_NAME = "gemini-2.5-flash"
 
 SYSTEM_INSTRUCTION = """
-You are Gem, an expert German language tutor and official Goethe-Institut A1 examiner evaluating a candidate for Goethe-Zertifikat A1 (Start Deutsch 1).
+You are Gem, an expert German tutor and official Goethe-Institut examiner evaluating candidates for the Goethe-Zertifikat A1 exam.
 
-OFFICIAL GOETHE-ZERTIFIKAT A1 EXAM RULES:
-- LESEN (25 mins, 15 tasks):
-  * Teil 1: Short personal emails/letters (5 Richtig/Falsch tasks).
-  * Teil 2: Situation matching to classified ads Website A vs B (5 tasks).
-  * Teil 3: Public signs, notices, info boards (5 Richtig/Falsch tasks).
-
-- HÖREN (20 mins, 15 tasks):
-  * Teil 1: 6 everyday dialogues played TWICE (6 multiple-choice A/B/C tasks).
-  * Teil 2: 4 public announcements played ONCE (4 Richtig/Falsch tasks).
-  * Teil 3: 5 phone messages / voicemails played TWICE (5 multiple-choice A/B/C tasks).
-
-- SCHREIBEN (20 mins, 2 tasks):
-  * Teil 1: Formular ausfüllen (5 missing fields based on short scenario).
-  * Teil 2: Short informal email/message (~30 words) hitting 3 explicit bullet points.
-
-- SPRECHEN (15 mins, small group format):
-  * Teil 1: Sich vorstellen (7 standard points) + Spelling a word / stating phone number.
-  * Teil 2: W-Fragen with topic cards (Verb in Position 2 rule).
-  * Teil 3: Imperative requests with picture cards (Verb in Position 1 or 'Können Sie bitte...' rule).
-
-When generating JSON for exercises, output strict JSON with no conversational text or markdown wrappers.
+You follow standard CEFR A1 learning objectives and handbook guidelines.
+When generating structured content, exercise sets, or JSON flashcards, ensure exact correctness, clear explanations, and strict output formats.
 """
 
-# Cached API Helper
 @st.cache_data(show_spinner=False)
 def generate_cached_content(prompt_text: str, is_json: bool = False) -> str:
     config_args = {"system_instruction": SYSTEM_INSTRUCTION}
@@ -99,7 +94,6 @@ def generate_cached_content(prompt_text: str, is_json: bool = False) -> str:
     )
     return res.text
 
-# Load 600+ Word Bank
 @st.cache_data
 def load_goethe_vocab():
     try:
@@ -108,12 +102,12 @@ def load_goethe_vocab():
     except Exception:
         return {
             "🍎 Essen & Trinken": ["einkaufen", "das Brot", "der Apfel", "die Milch", "das Wasser"],
-            "🚗 Reisen & Verkehr": ["die Fahrkarte", "der Bahnhof", "der Flughafen", "abholen"]
+            "🚗 Reisen & Verkehr": ["die Fahrkarte", "der Bahnhof", "der Flughafen", "abholen"],
+            "🏠 Wohnen & Alltag": ["die Wohnung", "der Schlüssel", "das Zimmer", "aufstehen"]
         }
 
 GOETHE_WORD_BANK = load_goethe_vocab()
 
-# Audio Helper
 @st.cache_data(show_spinner=False)
 def generate_german_audio_bytes(text: str) -> bytes:
     tts = gTTS(text=text, lang='de')
@@ -129,8 +123,8 @@ st.sidebar.divider()
 
 nav_choice = st.sidebar.radio("Navigation", [
     "🏠 Study Dashboard", 
-    "📖 A1 Core Grammar Modules",
     "📚 Master Goethe Word Engine",
+    "📖 Core Grammar Practice & Exercises",
     "📖 Goethe A1 Lesen (Reading)",
     "🎧 Goethe A1 Hören (Listening)",
     "✍️ Goethe A1 Schreiben (Writing)", 
@@ -145,7 +139,7 @@ if nav_choice == "🏠 Study Dashboard":
     st.markdown('<div class="accent-card">', unsafe_allow_html=True)
     st.title("Goethe-Zertifikat A1 Prep Studio")
     st.write("📅 **Exam Date:** December 12, 2026")
-    st.write("Replicating exact Goethe-Zertifikat A1 exam structure, audio synthesis, and voice evaluation.")
+    st.write("Complete Goethe A1 curriculum preparation, vocabulary engine, grammar exercises, and exam modules.")
     st.markdown('</div>', unsafe_allow_html=True)
 
     col1, col2 = st.columns(2)
@@ -178,136 +172,16 @@ if nav_choice == "🏠 Study Dashboard":
         st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
-# 2. A1 CORE GRAMMAR MODULES (EXPANDED TO 7 PILLARS)
-# ----------------------------------------------------
-elif nav_choice == "📖 A1 Core Grammar Modules":
-    st.markdown('<div class="main-card">', unsafe_allow_html=True)
-    st.subheader("📖 Goethe A1 Core Concept Mastery (7 Foundational Pillars)")
-    st.write("Master these essential survival grammar modules required for the Goethe A1 exam.")
-
-    m_tab1, m_tab2, m_tab3, m_tab4, m_tab5, m_tab6, m_tab7 = st.tabs([
-        "1. Verbs & Conjugation",
-        "2. Perfekt Past Tense",
-        "3. Satzbau (Word Order)",
-        "4. Nouns & Articles",
-        "5. Cases (Kasus)",
-        "6. Pronouns",
-        "7. Prepositions"
-    ])
-
-    with m_tab1:
-        st.markdown("### 1. Verben und Konjugation")
-        st.markdown("""
-        * **Regular Verb Endings:**
-          - `ich` **-e** (*ich lerne*) | `du` **-st** (*du wohnst*) | `er/sie/es` **-t** (*er macht*)
-          - `wir` **-en** (*wir lernen*) | `ihr` **-t** (*ihr wohnt*) | `sie/Sie` **-en** (*sie machen*)
-        * **Stem-Vowel Changing Verbs:** Vowel changes occur only in `du` and `er/sie/es` forms:
-          - **e -> i / ie:** *sprechen* -> `du sprichst`, `er spricht` | *sehen* -> `du siehst`, `er sieht`
-          - **a -> ä:** *fahren* -> `du fährst`, `er fährt` | *schlafen* -> `du schläfst`, `er schläft`
-        * **Modal Verbs:** Modal in Position 2, Infinitive verb at the very end:
-          - *können* (can/ability), *möchten* (would like), *wollen* (want), *müssen* (must), *dürfen* (may/permission)
-          - *Example:* Ich **kann** heute Deutsch **lernen**.
-        * **Separable Verbs (Trennbare Verben):** Prefix splits off and moves to the very end:
-          - *einkaufen:* Ich **kaufe** im Supermarkt **ein**.
-          - *anrufen:* Sie **ruft** den Arzt **an**.
-        """)
-
-    with m_tab2:
-        st.markdown("### 2. Vergangenheit (Das Perfekt Tense)")
-        st.markdown("""
-        Used for conversational past tense (*talking about what you did yesterday*).
-        
-        **Formula:** `haben` or `sein` (conjugated in Position 2) + `Partizip II` (at the very end).
-        * **Auxiliary Verb Selection:**
-          - **sein:** Used for movement, location change, or state change (*gehen, fahren, kommen, fliegen, aufstehen*).
-            - *Example:* Ich **bin** um 7 Uhr **aufgestanden**.
-          - **haben:** Used for most standard transitive verbs.
-            - *Example:* Ich **habe** eine E-Mail **geschrieben**.
-        * **Partizip II Patterns:**
-          - Regular: **ge-** + Verb stem + **-t** (*gekauft, gemacht, gelernt*)
-          - Irregular: **ge-** + Changed stem + **-en** (*gesprochen, gesehen, gefahren*)
-        """)
-
-    with m_tab3:
-        st.markdown("### 3. Satzbau & Fragen (Sentence Structure)")
-        st.markdown("""
-        * **Main Clause (V2 Rule):** The conjugated verb MUST always sit in **Position 2**.
-          - *Subject First:* **Ich** **gehe** heute ins Büro.
-          - *Adverb First:* **Heute** **gehe** ich ins Büro.
-        * **Questions (Fragesätze):**
-          - **W-Fragen (Open):** Question word first -> Verb in Position 2 (*Wo **wohnen** Sie?*)
-          - **Ja/Nein-Fragen (Closed):** Conjugated verb in **Position 1** (* **Kommen** Sie aus Spanien?*)
-        * **Subordinating Conjunctions (Basic):** *weil* (because), *dass* (that), *wenn* (if/when) send the conjugated verb to the **very end** of the clause:
-          - *Ich lerne Deutsch, **weil** ich in Deutschland **arbeite**.*
-        """)
-
-    with m_tab4:
-        st.markdown("### 4. Nomen und Artikel (Nouns, Articles & Gender)")
-        st.markdown("""
-        All German nouns are capitalized and categorized by 3 genders:
-        
-        | Gender | Definite (The) | Indefinite (A/An) | Negative (No/Not A) |
-        |---|---|---|---|
-        | **Masculine** | **der** Mann | **ein** Mann | **kein** Mann |
-        | **Feminine** | **die** Frau | **eine** Frau | **keine** Frau |
-        | **Neuter** | **das** Kind | **ein** Kind | **kein** Kind |
-        | **Plural** | **die** Kinder | — | **keine** Kinder |
-
-        *Example Negation:* Ich habe **keinen** Hunger. / Das ist **kein** Problem.
-        """)
-
-    with m_tab5:
-        st.markdown("### 5. Cases (Kasus: Nominativ & Akkusativ)")
-        st.markdown("""
-        A1 candidates must master the difference between Subject and Direct Object:
-        * **Nominativ (Subject):** Performs the action (*der Mann, ein Mann*).
-        * **Akkusativ (Direct Object):** Receives the action. **Only masculine articles change!**
-        
-        | Case | Masculine | Feminine | Neuter | Plural |
-        |---|---|---|---|---|
-        | **Nominativ** | der / ein | die / eine | das / ein | die / keine |
-        | **Akkusativ** | **den / einen / keinen** | die / eine | das / ein | die / keine |
-
-        *Example:* **Der** Mann kauft **einen** Apfel. (*Der Mann* = Subject/Nom, *einen Apfel* = Object/Akk).
-        """)
-
-    with m_tab6:
-        st.markdown("### 6. Pronomen (Personal & Possessive Pronouns)")
-        st.markdown("""
-        * **Personal Pronouns:**
-          - Singular: `ich` (I), `du` (you informal), `er` (he), `sie` (she), `es` (it)
-          - Plural: `wir` (we), `ihr` (you all), `sie` (they), `Sie` (You formal)
-        * **Possessive Pronouns (Basic Ownership):**
-          - `ich` -> **mein / meine** (*mein Vater, meine Mutter*)
-          - `du` -> **dein / deine** (*dein Schlüssel, deine Tasche*)
-          - `Sie` (formal) -> **Ihr / Ihre** (*Ihr Name, Ihre Adresse*)
-        """)
-
-    with m_tab7:
-        st.markdown("### 7. Präpositionen (Prepositions for Time & Location)")
-        st.markdown("""
-        * **Location & Direction:**
-          - **ins** (*in das*) + Destination: *Ich gehe **ins** Büro.*
-          - **im** (*in dem*) + Location: *Ich bin **im** Supermarkt.*
-          - **nach** + Cities/Countries: *Ich fahre **nach** Berlin.*
-          - **zu** + Places/People: *Ich gehe **zum** Arzt.*
-        * **Time Expressions:**
-          - **um** + Clock times: * **um** 8 Uhr*
-          - **am** + Days & parts of day: * **am** Montag, **am** Morgen*
-          - **im** + Months & seasons: * **im** Juli, **im** Sommer*
-        """)
-    st.markdown('</div>', unsafe_allow_html=True)
-
-# ----------------------------------------------------
-# 3. MASTER GOETHE WORD ENGINE (FLIP FLASHCARD)
+# 2. MASTER GOETHE WORD ENGINE (UPDATED FLASHCARD)
 # ----------------------------------------------------
 elif nav_choice == "📚 Master Goethe Word Engine":
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
     st.subheader("📚 Master Goethe A1 Interactive Flashcard Engine")
-    
+    st.write("Front features center word and native audio. Flip to reveal complete grammatical breakdowns.")
+
     cat_col, word_col = st.columns(2)
     with cat_col:
-        selected_cat = st.selectbox("Select Topic Category:", list(GOETHE_WORD_BANK.keys()))
+        selected_cat = st.selectbox("Select Category:", list(GOETHE_WORD_BANK.keys()))
     with word_col:
         selected_word = st.selectbox("Select Keyword:", GOETHE_WORD_BANK[selected_cat])
     
@@ -317,33 +191,42 @@ elif nav_choice == "📚 Master Goethe Word Engine":
     if "show_card_back" not in st.session_state:
         st.session_state.show_card_back = False
 
-    col_btn1, col_btn2 = st.columns([1, 1])
-    with col_btn1:
-        if st.button(f"🔍 Load Flashcard for '{active_word}'", type="primary"):
+    col_b1, col_b2 = st.columns(2)
+    with col_b1:
+        if st.button(f"🔍 Load Card for '{active_word}'", type="primary", use_container_width=True):
             st.session_state.show_card_back = False
-    with col_btn2:
-        if st.button("🔄 Flip Flashcard (Front / Back)"):
+    with col_b2:
+        if st.button("🔄 Flip Flashcard (Front / Back)", use_container_width=True):
             st.session_state.show_card_back = not st.session_state.show_card_back
 
     prompt = f"""
-    Generate a comprehensive A1 study card for '{active_word}'.
-    Return strictly JSON with this schema:
+    Generate an exhaustive A1 study card JSON for '{active_word}'.
+    Return strict JSON with this exact schema:
     {{
         "word": "{active_word}",
-        "article_gender": "Verb / der / die / das",
-        "plural": "N/A or Plural form",
+        "part_of_speech": "Noun / Verb / Adjective / Preposition / Conjunction",
         "english_meaning": "English translation",
-        "perfekt_form": "hat/ist + Partizip II",
-        "perfekt_sentence": "Sample Perfekt sentence",
-        "komparativ": "Komparativ form or N/A",
-        "superlativ": "Superlativ form or N/A",
-        "conjugation": {{
-            "ich": "...", "du": "...", "er_sie_es": "...",
-            "wir": "...", "ihr": "...", "sie_Sie": "..."
+        "gender": "der / die / das / N/A",
+        "plural_form": "Plural form or N/A",
+        "conjugations": [
+            {{"pronoun": "ich", "form": "...", "sentence": "German sentence", "sentence_en": "English sentence"}},
+            {{"pronoun": "du", "form": "...", "sentence": "German sentence", "sentence_en": "English sentence"}},
+            {{"pronoun": "er/sie/es", "form": "...", "sentence": "German sentence", "sentence_en": "English sentence"}},
+            {{"pronoun": "wir", "form": "...", "sentence": "German sentence", "sentence_en": "English sentence"}},
+            {{"pronoun": "ihr", "form": "...", "sentence": "German sentence", "sentence_en": "English sentence"}},
+            {{"pronoun": "sie/Sie", "form": "...", "sentence": "German sentence", "sentence_en": "English sentence"}}
+        ],
+        "perfekt_tense": {{
+            "formula": "hat/ist + Partizip II",
+            "sample_sentence_de": "German Perfekt sentence",
+            "sample_sentence_en": "English Perfekt sentence"
         }},
-        "sample_sentences": ["Ich...", "Du...", "Er/Sie/Es...", "Wir...", "Ihr...", "Sie/sie..."],
-        "common_a1_phrases": ["Phrase 1", "Phrase 2"],
-        "grammar_notes": "Key A1 grammar rule or preposition requirement"
+        "comparative_superlative": "Comparative / Superlative or N/A",
+        "common_phrases": [
+            {{"phrase_de": "German phrase", "phrase_en": "English translation"}},
+            {{"phrase_de": "German phrase", "phrase_en": "English translation"}}
+        ],
+        "grammar_notes": "Important A1 grammar note (case triggers, prepositions, forced accusative, separable prefix, etc.)"
     }}
     """
     try:
@@ -353,10 +236,10 @@ elif nav_choice == "📚 Master Goethe Word Engine":
         # FRONT OF FLASHCARD
         if not st.session_state.show_card_back:
             st.markdown(f"""
-            <div class="flashcard-front">
-                <p style="color: #94a3b8; font-weight: 600;">GOETHE A1 FLASHCARD (FRONT)</p>
-                <div class="flashcard-word">{data.get("word", active_word)}</div>
-                <p style="color: #cbd5e1;">Click 'Flip Flashcard 🔄' to view full grammar details</p>
+            <div class="flashcard-front-box">
+                <p style="color: #94a3b8; font-weight: 600; letter-spacing: 0.05em;">GERMAN A1 FLASHCARD (FRONT)</p>
+                <div class="flashcard-word-title">{data.get("word", active_word)}</div>
+                <p style="color: #cbd5e1; font-size: 0.95rem;">Listen to pronunciation below, then click 'Flip Flashcard 🔄' to view full details.</p>
             </div>
             """, unsafe_allow_html=True)
             
@@ -367,41 +250,32 @@ elif nav_choice == "📚 Master Goethe Word Engine":
         # BACK OF FLASHCARD
         else:
             st.markdown(f"""
-            <div class="flashcard-back">
-                <h2 style="color: #1e293b; margin-bottom: 5px;">{data.get("word", active_word)}</h2>
-                <p style="color: #2563eb; font-weight: 700; font-size: 1.1rem;">Meaning: {data.get("english_meaning", "")}</p>
+            <div class="flashcard-back-box">
+                <div class="flashcard-back-title">{data.get("word", active_word)}</div>
+                <div class="meaning-subtitle">Meaning: {data.get("english_meaning", "")}</div>
             </div>
             """, unsafe_allow_html=True)
 
-            m1, m2, m3, m4 = st.columns(4)
-            m1.metric("Article / Gender", data.get("article_gender", "-"))
-            m2.metric("Plural Form", data.get("plural", "-"))
-            m3.metric("Comparative", data.get("komparativ", "N/A"))
-            m4.metric("Superlative", data.get("superlativ", "N/A"))
+            c1, c2, c3, c4 = st.columns(4)
+            c1.metric("Part of Speech", data.get("part_of_speech", "-"))
+            c2.metric("Gender", data.get("gender", "-"))
+            c3.metric("Plural Form", data.get("plural_form", "-"))
+            c4.metric("Comp. / Superlative", data.get("comparative_superlative", "-"))
 
-            st.success(f"⏳ **Perfekt Tense:** `{data.get('perfekt_form', '')}` — *{data.get('perfekt_sentence', '')}*")
-            st.info(f"💡 **Grammar Note:** {data.get('grammar_notes', '')}")
+            perf = data.get("perfekt_tense", {})
+            st.success(f"⏳ **Perfekt Tense:** `{perf.get('formula', 'N/A')}`\n\n• **DE:** {perf.get('sample_sentence_de', '')}\n• **EN:** {perf.get('sample_sentence_en', '')}")
 
-            c1, c2 = st.columns([1, 1.5])
-            with c1:
-                st.markdown("#### 🔄 Full Conjugation")
-                conj = data.get("conjugation", {})
-                st.table([
-                    {"Pronoun": "ich", "Form": conj.get("ich", "-")},
-                    {"Pronoun": "du", "Form": conj.get("du", "-")},
-                    {"Pronoun": "er / sie / es", "Form": conj.get("er_sie_es", "-")},
-                    {"Pronoun": "wir", "Form": conj.get("wir", "-")},
-                    {"Pronoun": "ihr", "Form": conj.get("ihr", "-")},
-                    {"Pronoun": "sie / Sie", "Form": conj.get("sie_Sie", "-")}
-                ])
-            with c2:
-                st.markdown("#### 📝 Pronoun Sample Sentences")
-                for s in data.get("sample_sentences", []):
-                    st.markdown(f"• {s}")
-                
-                st.markdown("#### 💬 Common A1 Phrases")
-                for p in data.get("common_a1_phrases", []):
-                    st.markdown(f"👉 `{p}`")
+            st.info(f"💡 **Grammar Notes & Rules:** {data.get('grammar_notes', '')}")
+
+            st.markdown("#### 🔄 Conjugations & Example Sentences")
+            conjs = data.get("conjugations", [])
+            for c in conjs:
+                st.markdown(f"• **{c.get('pronoun')}:** `{c.get('form')}` — *{c.get('sentence')}*  \n  &nbsp;&nbsp;&nbsp;&nbsp;*(En: {c.get('sentence_en')})*")
+
+            st.markdown("#### 💬 Commonly Used Phrases")
+            phrases = data.get("common_phrases", [])
+            for p in phrases:
+                st.markdown(f"👉 **{p.get('phrase_de')}** — *{p.get('phrase_en')}*")
 
     except Exception as e:
         st.error(f"Error compiling flashcard details: {str(e)}")
@@ -409,7 +283,193 @@ elif nav_choice == "📚 Master Goethe Word Engine":
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
-# 4. GOETHE A1 LESEN (EXACT 15 TASKS)
+# 3. CORE GRAMMAR PRACTICE & EXERCISES (HANDBOOK MATCHED)
+# ----------------------------------------------------
+elif nav_choice == "📖 Core Grammar Practice & Exercises":
+    st.markdown('<div class="main-card">', unsafe_allow_html=True)
+    st.subheader("📖 Core Grammar Modules & Practice Exercises")
+    st.write("Review class handbook modules and complete 20 practice exercises per lesson with instant evaluations and explanations.")
+
+    handbook_lessons = [
+        "Lesson 1: German Alphabet, Pronunciation, and Article Recognition",
+        "Lesson 2: German Noun Gender and Everyday Word Patterns",
+        "Lesson 3: Singular and Plural Forms in Daily German",
+        "Lesson 4: Personal Introductions and Basic Identity Information",
+        "Lesson 5: Simple Sentences for Everyday Communication",
+        "Lesson 6: Present Tense Verb Patterns in Practical German",
+        "Lesson 7: Working with sein and haben in Everyday Situations",
+        "Lesson 8: Numbers, Prices, Dates, and Everyday Quantities",
+        "Lesson 9: Everyday Question Structures and Basic Information Requests",
+        "Lesson 10: Negation and Negative Sentences in Practical German",
+        "Lesson 11: Object Sentences and Basic Accusative Structures",
+        "Lesson 12: Simple Descriptions of People, Places, and Things",
+        "Lesson 13: Possession, Ownership, and Family Relationships",
+        "Lesson 14: Time Expressions, Appointments, and Schedules",
+        "Lesson 15: Daily Routine Patterns and Everyday Activities",
+        "Lesson 16: Commands, Requests, and Basic Instructions",
+        "Lesson 17: Abilities, Obligations, and Everyday Modal Verbs",
+        "Lesson 18: Practical Sentences with Modal Verb Structures",
+        "Lesson 19: Everyday Dative Structures and Indirect Objects",
+        "Lesson 20: Common Dative Expressions in Real-Life Communication",
+        "Lesson 21: Location Expressions and Place Descriptions",
+        "Lesson 22: Movement and Position Patterns in Everyday German",
+        "Lesson 23: Two-Way Prepositions and Directional Meaning",
+        "Lesson 24: Shopping, Money, and Price Communication",
+        "Lesson 25: Connecting Simple Ideas with Basic German Connectors",
+        "Lesson 26: Reasons, Explanations, and Cause Structures",
+        "Lesson 27: Future Expressions and Everyday Planning Language",
+        "Lesson 28: Past Events with haben and Perfekt Structures",
+        "Lesson 29: Movement and Travel Narration with sein",
+        "Lesson 30: Everyday Past Narration and Simple Storytelling",
+        "Lesson 31: Separable Verb Patterns in Daily Communication",
+        "Lesson 32: Comparisons, Preferences, and Basic Opinions",
+        "Lesson 33: Likes, Preferences, and Personal Interests",
+        "Lesson 34: Simple Subordinate Clauses and Verb-Final Patterns",
+        "Lesson 35: Simple Emails, Messages, and Digital Communication",
+        "Lesson 36: Everyday Conversation Patterns and Social Interaction",
+        "Lesson 37: Recognizing and Correcting Common A1 Grammar Mistakes",
+        "Lesson 38: Recognizing A1 Grammar in Authentic German Texts",
+        "Lesson 39: Everyday Public Signs, Instructions, and Survival German",
+        "Lesson 40: CEFR A1 Mock Examination Overview"
+    ]
+
+    selected_lesson = st.selectbox("Select Handbook Lesson to Study:", handbook_lessons)
+
+    if st.button("🎲 Generate Lesson Summary & 20 Targeted Practice Exercises", type="primary"):
+        with st.spinner("Gem is summarizing module and constructing 20 targeted practice exercises..."):
+            prompt = f"""
+            Create a complete study & exercise package for '{selected_lesson}'.
+            Return strict JSON with this exact schema:
+            {{
+                "lesson_title": "{selected_lesson}",
+                "lesson_summary": "Detailed, highly practical explanation of core grammar rules and handbook concepts for this lesson.",
+                "exercises_mc": [
+                    {{"id": "mc1", "question": "Question 1", "options": ["A", "B", "C", "D"], "correct": "A", "explanation": "Why A is correct..."}},
+                    {{"id": "mc2", "question": "Question 2", "options": ["A", "B", "C", "D"], "correct": "B", "explanation": "Why B is correct..."}},
+                    {{"id": "mc3", "question": "Question 3", "options": ["A", "B", "C", "D"], "correct": "C", "explanation": "Why C is correct..."}},
+                    {{"id": "mc4", "question": "Question 4", "options": ["A", "B", "C", "D"], "correct": "D", "explanation": "Why D is correct..."}},
+                    {{"id": "mc5", "question": "Question 5", "options": ["A", "B", "C", "D"], "correct": "A", "explanation": "Why A is correct..."}}
+                ],
+                "exercises_fib": [
+                    {{"id": "fib1", "prompt": "Complete sentence with missing blank (...)", "answer": "correct word", "explanation": "Grammar rule for this word"}},
+                    {{"id": "fib2", "prompt": "Complete sentence with missing blank (...)", "answer": "correct word", "explanation": "Grammar rule for this word"}},
+                    {{"id": "fib3", "prompt": "Complete sentence with missing blank (...)", "answer": "correct word", "explanation": "Grammar rule for this word"}},
+                    {{"id": "fib4", "prompt": "Complete sentence with missing blank (...)", "answer": "correct word", "explanation": "Grammar rule for this word"}},
+                    {{"id": "fib5", "prompt": "Complete sentence with missing blank (...)", "answer": "correct word", "explanation": "Grammar rule for this word"}}
+                ],
+                "exercises_sc": [
+                    {{"id": "sc1", "words": ["words", "to", "arrange"], "answer": "Correct German sentence", "explanation": "Word order rule"}},
+                    {{"id": "sc2", "words": ["words", "to", "arrange"], "answer": "Correct German sentence", "explanation": "Word order rule"}},
+                    {{"id": "sc3", "words": ["words", "to", "arrange"], "answer": "Correct German sentence", "explanation": "Word order rule"}},
+                    {{"id": "sc4", "words": ["words", "to", "arrange"], "answer": "Correct German sentence", "explanation": "Word order rule"}},
+                    {{"id": "sc5", "words": ["words", "to", "arrange"], "answer": "Correct German sentence", "explanation": "Word order rule"}}
+                ],
+                "exercises_st": [
+                    {{"id": "st1", "english": "English sentence to translate", "answer": "German translation", "explanation": "Key vocabulary and grammar rules"}},
+                    {{"id": "st2", "english": "English sentence to translate", "answer": "German translation", "explanation": "Key vocabulary and grammar rules"}},
+                    {{"id": "st3", "english": "English sentence to translate", "answer": "German translation", "explanation": "Key vocabulary and grammar rules"}},
+                    {{"id": "st4", "english": "English sentence to translate", "answer": "German translation", "explanation": "Key vocabulary and grammar rules"}},
+                    {{"id": "st5", "english": "English sentence to translate", "answer": "German translation", "explanation": "Key vocabulary and grammar rules"}}
+                ]
+            }}
+            """
+            try:
+                json_str = generate_cached_content(prompt, is_json=True)
+                st.session_state.active_grammar_module = json.loads(json_str)
+            except Exception as e:
+                st.error(f"Error generating grammar module: {str(e)}")
+
+    if "active_grammar_module" in st.session_state:
+        mod = st.session_state.active_grammar_module
+        st.markdown(f"### 📘 {mod['lesson_title']}")
+        st.info(mod["lesson_summary"])
+
+        st.divider()
+        st.subheader("📝 Practice Exercises (20 Questions)")
+
+        ex_tab1, ex_tab2, ex_tab3, ex_tab4 = st.tabs([
+            "1. Multiple Choice (5)", 
+            "2. Fill in the Blanks (5)", 
+            "3. Sentence Creation (5)", 
+            "4. Sentence Translation (5)"
+        ])
+
+        with ex_tab1:
+            st.markdown("#### Section 1: Multiple Choice Questions")
+            mc_user_answers = {}
+            for idx, q in enumerate(mod["exercises_mc"], start=1):
+                st.markdown(f"**Q{idx}. {q['question']}**")
+                mc_user_answers[q['id']] = st.radio(f"Select answer for Q{idx}:", q['options'], key=f"rad_{q['id']}")
+
+        with ex_tab2:
+            st.markdown("#### Section 2: Fill in the Blanks")
+            fib_user_answers = {}
+            for idx, q in enumerate(mod["exercises_fib"], start=1):
+                st.markdown(f"**Q{idx}. {q['prompt']}**")
+                fib_user_answers[q['id']] = st.text_input(f"Your answer for Q{idx}:", key=f"inp_{q['id']}")
+
+        with ex_tab3:
+            st.markdown("#### Section 3: Sentence Creation (Unscramble / Build)")
+            sc_user_answers = {}
+            for idx, q in enumerate(mod["exercises_sc"], start=1):
+                st.markdown(f"**Q{idx}. Words to use:** `{', '.join(q['words'])}`")
+                sc_user_answers[q['id']] = st.text_input(f"Form complete German sentence for Q{idx}:", key=f"inp_sc_{q['id']}")
+
+        with ex_tab4:
+            st.markdown("#### Section 4: Sentence Translation")
+            st_user_answers = {}
+            for idx, q in enumerate(mod["exercises_st"], start=1):
+                st.markdown(f"**Q{idx}. Translate to German:** *{q['english']}*")
+                st_user_answers[q['id']] = st.text_input(f"German translation for Q{idx}:", key=f"inp_st_{q['id']}")
+
+        st.divider()
+        if st.button("🚀 Submit All Answers & View Immediate Corrections", type="primary"):
+            st.markdown("### 📊 Correct Answers & Immediate Explanations")
+            
+            # Grade Section 1
+            st.markdown("#### 1. Multiple Choice Evaluation")
+            score_mc = 0
+            for idx, q in enumerate(mod["exercises_mc"], start=1):
+                u_ans = mc_user_answers.get(q['id'])
+                if u_ans == q['correct']:
+                    score_mc += 1
+                    st.success(f"**Q{idx}: Correct!** ({q['correct']}) — {q['explanation']}")
+                else:
+                    st.error(f"**Q{idx}: Incorrect.** Your answer: `{u_ans}` | Correct: `{q['correct']}`\n\n💡 **Reason:** {q['explanation']}")
+
+            # Grade Section 2
+            st.markdown("#### 2. Fill in the Blanks Evaluation")
+            score_fib = 0
+            for idx, q in enumerate(mod["exercises_fib"], start=1):
+                u_ans = fib_user_answers.get(q['id'], "").strip().lower()
+                c_ans = q['answer'].strip().lower()
+                if u_ans == c_ans:
+                    score_fib += 1
+                    st.success(f"**Q{idx}: Correct!** (`{q['answer']}`) — {q['explanation']}")
+                else:
+                    st.error(f"**Q{idx}: Incorrect.** Your answer: `{u_ans}` | Correct: `{q['answer']}`\n\n💡 **Reason:** {q['explanation']}")
+
+            # Grade Section 3 & 4 with AI verification
+            st.markdown("#### 3 & 4. Sentence Creation & Translation Evaluation")
+            with st.spinner("Gem is evaluating sentence structures and translations..."):
+                sc_st_prompt = f"""
+                Evaluate the student's submitted answers against target answers.
+                
+                SENTENCE CREATION SUBMISSIONS:
+                {json.dumps([{"q_id": q["id"], "user": sc_user_answers.get(q["id"]), "expected": q["answer"], "rule": q["explanation"]} for q in mod["exercises_sc"]])}
+                
+                TRANSLATION SUBMISSIONS:
+                {json.dumps([{"q_id": q["id"], "user": st_user_answers.get(q["id"]), "expected": q["answer"], "rule": q["explanation"]} for q in mod["exercises_st"]])}
+
+                Output clear feedback for each sentence, stating whether it is accepted, grammatical corrections, and reasoning.
+                """
+                eval_feedback = generate_cached_content(sc_st_prompt)
+                st.write(eval_feedback)
+
+    st.markdown('</div>', unsafe_allow_html=True)
+
+# ----------------------------------------------------
+# 4. GOETHE A1 LESEN
 # ----------------------------------------------------
 elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
@@ -528,7 +588,7 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
-# 5. GOETHE A1 HÖREN (EXACT 15 TASKS WITH NATIVE AUDIO)
+# 5. GOETHE A1 HÖREN
 # ----------------------------------------------------
 elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
@@ -541,7 +601,7 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
     ])
 
     with h_tab1:
-        st.info("ℹ️ Teil 1: 6 dialogues played **TWICE**. Choose A, B, or C.")
+        st.info("ℹ️ Teil 1: 6 dialogues played TWICE. Choose A, B, or C.")
         if st.button("🎲 Generate Hören Teil 1 (6 Tasks + Audio)", type="primary"):
             with st.spinner("Gem is synthesizing 6 audio dialogues..."):
                 prompt = """
@@ -577,7 +637,7 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
                 st.success(f"Teil 1 Score: {score} / 6")
 
     with h_tab2:
-        st.warning("⚠️ Teil 2: 4 public announcements played **ONCE**. Judge Richtig or Falsch.")
+        st.warning("⚠️ Teil 2: 4 public announcements played ONCE. Judge Richtig or Falsch.")
         if st.button("🎲 Generate Hören Teil 2 (4 Tasks + Audio)", type="primary"):
             with st.spinner("Gem is synthesizing 4 public announcements..."):
                 prompt = """
@@ -611,7 +671,7 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
                 st.success(f"Teil 2 Score: {score} / 4")
 
     with h_tab3:
-        st.info("ℹ️ Teil 3: 5 phone voicemails played **TWICE**. Choose A, B, or C.")
+        st.info("ℹ️ Teil 3: 5 phone voicemails played TWICE. Choose A, B, or C.")
         if st.button("🎲 Generate Hören Teil 3 (5 Tasks + Audio)", type="primary"):
             with st.spinner("Gem is synthesizing 5 voicemail messages..."):
                 prompt = """
@@ -648,7 +708,7 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
-# 6. GOETHE A1 SCHREIBEN (EXACT 2 TASKS)
+# 6. GOETHE A1 SCHREIBEN
 # ----------------------------------------------------
 elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
@@ -700,7 +760,7 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
         if st.button("🎲 Generate Schreiben Teil 2 Prompt", type="primary"):
             with st.spinner("Gem is generating email prompt..."):
                 try:
-                    prompt = "Generate an official Goethe A1 Schreiben Teil 2 prompt specifying a scenario and 3 explicit bullet points (e.g. apologizing, suggesting alternative, asking question)."
+                    prompt = "Generate an official Goethe A1 Schreiben Teil 2 prompt specifying a scenario and 3 explicit bullet points."
                     st.session_state.schreiben_t2_prompt = generate_cached_content(prompt)
                 except Exception as e: st.error(f"Error: {str(e)}")
 
@@ -723,7 +783,7 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
-# 7. GOETHE A1 SPRECHEN (GROUP SIMULATION FORMAT)
+# 7. GOETHE A1 SPRECHEN
 # ----------------------------------------------------
 elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
