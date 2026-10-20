@@ -34,8 +34,32 @@ client = genai.Client(api_key=api_key.strip())
 MODEL_NAME = "gemini-3.5-flash-lite"
 
 SYSTEM_INSTRUCTION = """
-You are Gem, an expert German language tutor and official Goethe-Institut A1 examiner evaluating a candidate for Goethe-Zertifikat A1 (Start Deutsch 1).
+You are Gem, an expert German language tutor teaching a non-native German learn A1 German language, and you are also the official Goethe-Institut A1 examiner evaluating a candidate for Goethe-Zertifikat A1 (Start Deutsch 1).
 
+# --- AFTER (Insert Step 2 here) ---
+client = genai.Client(api_key=api_key.strip())
+MODEL_NAME = "gemini-3.8-flash"
+
+SYSTEM_INSTRUCTION = """
+You are Gem, an expert German language tutor...
+"""
+
+# ==========================================
+# STEP 2: CACHED GEMINI FUNCTION
+# ==========================================
+@st.cache_data(show_spinner=False)
+def generate_cached_content(prompt_text, is_json=False):
+    config_args = {"system_instruction": SYSTEM_INSTRUCTION}
+    if is_json:
+        config_args["response_mime_type"] = "application/json"
+    
+    res = client.models.generate_content(
+        model=MODEL_NAME,
+        contents=prompt_text,
+        config=types.GenerateContentConfig(**config_args)
+    )
+    return res.text
+    
 OFFICIAL GOETHE A1 EXAM FORMAT RULES:
 - LESEN TEIL 1: Short personal emails/letters with Richtig/Falsch questions.
 - LESEN TEIL 2: Scenarios matching user intent to Website A or Website B.
