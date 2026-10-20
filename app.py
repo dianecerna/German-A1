@@ -5,7 +5,7 @@ from google import genai
 from google.genai import types
 from streamlit_mic_recorder import mic_recorder
 
-# Configure Streamlit Page
+# Configure Streamlit Page - Force Sidebar Expanded
 st.set_page_config(
     page_title="Goethe A1 Prep Studio", 
     page_icon="🇩🇪", 
@@ -13,14 +13,13 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Clean CSS Theme
+# Custom CSS without hiding the header bar
 st.markdown("""
 <style>
     .stApp {
         background-color: #f8fafc;
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
-    header {visibility: hidden;}
     .main-card {
         background: #ffffff;
         border-radius: 16px;
@@ -116,6 +115,31 @@ if nav_choice == "🏠 Study Dashboard":
     st.write("📅 **Exam Date:** December 12, 2026")
     st.write("Master A1 vocabulary with full pronoun conjugations, Perfekt forms, case rules, and exam drills.")
     st.markdown('</div>', unsafe_allow_html=True)
+
+    col1, col2 = st.columns(2)
+    with col1:
+        st.markdown('<div class="main-card">', unsafe_allow_html=True)
+        st.subheader("📖 Lesen & ✍️ Schreiben")
+        st.markdown("""
+        * **Lesen Teil 1:** Emails/Letters (Richtig/Falsch)
+        * **Lesen Teil 2:** Web Advertisements (Site A or B)
+        * **Lesen Teil 3:** Public Signs (Richtig/Falsch)
+        * **Schreiben Teil 1:** Form filling (5 gaps)
+        * **Schreiben Teil 2:** ~30-word Email (3 points)
+        """)
+        st.markdown('</div>', unsafe_allow_html=True)
+    with col2:
+        st.markdown('<div class="main-card">', unsafe_allow_html=True)
+        st.subheader("🎧 Hören & 🗣️ Sprechen")
+        st.markdown("""
+        * **Hören Teil 1:** Conversations (2x Audio, A/B/C)
+        * **Hören Teil 2:** Announcements (1x Audio, Richtig/Falsch)
+        * **Hören Teil 3:** Voicemails (2x Audio, A/B/C)
+        * **Sprechen Teil 1:** Self-Introduction & Spelling
+        * **Sprechen Teil 2:** W-Questions (V2 rule)
+        * **Sprechen Teil 3:** Requests & Imperatives (V1 rule)
+        """)
+        st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
 # 2. MASTER GOETHE WORD ENGINE
@@ -344,7 +368,7 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
                 st.write(res.text)
 
     with sp_tab2:
-        st.markdown("**Teil 2:** Draw a topic card (Theme + Keyword) to formulate a $W$-question. Verb MUST be in Position 2!")
+        st.markdown("**Teil 2:** Draw a topic card (Theme + Keyword) to formulate a W-question. Verb MUST be in Position 2!")
         if "card_prompt_t2" not in st.session_state:
             st.session_state.card_prompt_t2 = "Thema: Einkaufen | Wort: Brot"
 
@@ -411,36 +435,4 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
                         contents=[prompt, audio_part],
                         config=types.GenerateContentConfig(system_instruction=SYSTEM_INSTRUCTION)
                     )
-                    st.write(eval_res.text)
-    st.markdown('</div>', unsafe_allow_html=True)
-
-# ----------------------------------------------------
-# 7. ASK ZERTI
-# ----------------------------------------------------
-elif nav_choice == "💬 Ask Zerti (AI Tutor)":
-    st.markdown('<div class="accent-card">', unsafe_allow_html=True)
-    st.subheader("🐱 Zerti — Interactive AI Tutor")
-    st.write("Ask Zerti about grammar rules, sentence structures, or vocabulary explanations.")
-    st.markdown('</div>', unsafe_allow_html=True)
-
-    if "messages" not in st.session_state:
-        st.session_state.messages = []
-
-    for message in st.session_state.messages:
-        with st.chat_message(message["role"]):
-            st.markdown(message["content"])
-
-    if prompt := st.chat_input("Ask Zerti a question:"):
-        st.session_state.messages.append({"role": "user", "content": prompt})
-        with st.chat_message("user"):
-            st.markdown(prompt)
-
-        with st.chat_message("assistant"):
-            with st.spinner("Zerti is thinking..."):
-                response = client.models.generate_content(
-                    model="gemini-2.5-flash",
-                    contents=prompt,
-                    config=types.GenerateContentConfig(system_instruction=SYSTEM_INSTRUCTION)
-                )
-                st.markdown(response.text)
-                st.session_state.messages.append({"role": "assistant", "content": response.text})
+                    st.write(eval_
