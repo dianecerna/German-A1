@@ -1,6 +1,7 @@
 import os
-import google.generativeai as genai
 import streamlit as st
+from google import genai
+from google.genai import types
 from streamlit_mic_recorder import mic_recorder
 
 # Configure Streamlit Page
@@ -50,9 +51,9 @@ if not api_key:
     st.error("🔑 Missing Gemini API Key! Please configure your secret key in Streamlit settings.")
     st.stop()
 
-genai.configure(api_key=api_key)
+# Initialize modern GenAI Client
+client = genai.Client(api_key=api_key.strip())
 
-# Global System Instruction for Goethe A1 Exam
 SYSTEM_INSTRUCTION = """
 You are Zerti, an expert German tutor and official Goethe-Institut A1 examiner evaluating a candidate for Goethe-Zertifikat A1 (Start Deutsch 1).
 
@@ -63,12 +64,6 @@ GOETHE A1 RULES TO ENFORCE:
 - Grade writing responses against all required prompt points.
 - Provide clear explanations in English with corrected German sentences.
 """
-
-# Initialize Gemini Model with clean System Instruction
-model = genai.GenerativeModel(
-    model_name="gemini-1.5-flash",
-    system_instruction=SYSTEM_INSTRUCTION
-)
 
 # Navigation
 st.sidebar.title("🐱 Zerti Goethe A1 AI")
@@ -104,8 +99,12 @@ elif nav_choice == "✍️ AI Schreiben Generator":
 
     if st.button("🎲 Generate New Writing Prompt", type="secondary"):
         with st.spinner("Zerti is creating a new exam scenario..."):
-            res = model.generate_content("Generate a realistic Goethe A1 Schreiben Teil 2 exam prompt with an everyday scenario and 3 bullet points.")
-            st.session_state.schreiben_prompt = res.text
+            response = client.models.generate_content(
+                model="gemini-2.5-flash",
+                contents="Generate a realistic Goethe A1 Schreiben Teil 2 exam prompt with an everyday scenario and 3 bullet points.",
+                config=types.GenerateContentConfig(system_instruction=SYSTEM_INSTRUCTION)
+            )
+            st.session_state.schreiben_prompt = response.text
 
     if st.session_state.schreiben_prompt:
         st.info(st.session_state.schreiben_prompt)
@@ -116,7 +115,11 @@ elif nav_choice == "✍️ AI Schreiben Generator":
             if user_email.strip():
                 with st.spinner("Zerti is grading your response..."):
                     eval_query = f"EXAM PROMPT:\n{st.session_state.schreiben_prompt}\n\nSTUDENT SUBMISSION:\n{user_email}\n\nGrade this against Goethe A1 criteria."
-                    eval_res = model.generate_content(eval_query)
+                    eval_res = client.models.generate_content(
+                        model="gemini-2.5-flash",
+                        contents=eval_query,
+                        config=types.GenerateContentConfig(system_instruction=SYSTEM_INSTRUCTION)
+                    )
                     st.markdown("### Examiner Breakdown")
                     st.write(eval_res.text)
     st.markdown('</div>', unsafe_allow_html=True)
@@ -134,8 +137,12 @@ elif nav_choice == "📖 AI Lesen Generator":
 
     if st.button("🎲 Generate New Reading Passage", type="secondary"):
         with st.spinner("Creating reading passage..."):
-            res = model.generate_content("Generate a short Goethe A1 level German email or notice (~40 words) with 2 Richtig/Falsch comprehension questions and explanations.")
-            st.session_state.lesen_exercise = res.text
+            response = client.models.generate_content(
+                model="gemini-2.5-flash",
+                contents="Generate a short Goethe A1 level German email or notice (~40 words) with 2 Richtig/Falsch comprehension questions and explanations.",
+                config=types.GenerateContentConfig(system_instruction=SYSTEM_INSTRUCTION)
+            )
+            st.session_state.lesen_exercise = response.text
 
     if st.session_state.lesen_exercise:
         st.write(st.session_state.lesen_exercise)
@@ -154,7 +161,11 @@ elif nav_choice == "🗣️ AI Sprechen & Voice Trainer":
 
     if st.button("🎲 Draw New Theme Card"):
         with st.spinner("Drawing card..."):
-            card_res = model.generate_content("Generate a random Goethe A1 Sprechen Teil 2 topic card (e.g., Theme: 'Freizeit', Keyword: 'Sport').")
+            card_res = client.models.generate_content(
+                model="gemini-2.5-flash",
+                contents="Generate a random Goethe A1 Sprechen Teil 2 topic card (e.g., Theme: 'Freizeit', Keyword: 'Sport').",
+                config=types.GenerateContentConfig(system_instruction=SYSTEM_INSTRUCTION)
+            )
             st.session_state.card_theme = card_res.text
 
     st.success(f"🎴 **Your Card:**\n{st.session_state.card_theme}")
@@ -170,9 +181,18 @@ elif nav_choice == "🗣️ AI Sprechen & Voice Trainer":
         st.audio(audio['bytes'], format='audio/wav')
         if st.button("Evaluate Voice Recording"):
             with st.spinner("Zerti is analyzing your speech and grammar..."):
-                audio_part = {"mime_type": "audio/wav", "data": audio['bytes']}
                 prompt = f"The student drew this card: {st.session_state.card_theme}. Transcribe their spoken German audio and check if their sentence structure and verb placement (V1 or V2 rule) are correct."
-                eval_res = model.generate_content([prompt, audio_part])
+                
+                audio_part = types.Part.from_bytes(
+                    data=audio['bytes'],
+                    mime_type="audio/wav"
+                )
+                
+                eval_res = client.models.generate_content(
+                    model="gemini-2.5-flash",
+                    contents=[prompt, audio_part],
+                    config=types.GenerateContentConfig(system_instruction=SYSTEM_INSTRUCTION)
+                )
                 st.markdown("### Audio Syntax & Grammar Evaluation")
                 st.write(eval_res.text)
     st.markdown('</div>', unsafe_allow_html=True)
@@ -200,6 +220,10 @@ elif nav_choice == "💬 Ask Zerti (Grammar & Sentence AI)":
 
         with st.chat_message("assistant"):
             with st.spinner("Zerti is thinking..."):
-                response = model.generate_content(prompt)
+                response = client.models.generate_content(
+                    model="gemini-2.5-flash",
+                    contents=prompt,
+                    config=types.GenerateContentConfig(system_instruction=SYSTEM_INSTRUCTION)
+                )
                 st.markdown(response.text)
                 st.session_state.messages.append({"role": "assistant", "content": response.text})
