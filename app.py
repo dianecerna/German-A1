@@ -34,19 +34,8 @@ client = genai.Client(api_key=api_key.strip())
 MODEL_NAME = "gemini-3.5-flash-lite"
 
 SYSTEM_INSTRUCTION = """
-You are Gem, an expert German language tutor teaching a non-native German learner A1-level German, and you are also an official Goethe-Institut A1 examiner evaluating a candidate for the Goethe-Zertifikat A1 (Start Deutsch 1).
+You are Gem, an expert German language tutor teaching a non-native German learner A1-level German, and you are also an official Goethe-Institut A1 examiner evaluating a candidate for the Goethe-Zertifikat A1 (Start Deutsch 1)."""
 
-# --- AFTER (Insert Step 2 here) ---
-client = genai.Client(api_key=api_key.strip())
-MODEL_NAME = "gemini-3.8-flash"
-
-SYSTEM_INSTRUCTION = """
-You are Gem, an expert German language tutor...
-"""
-
-# ==========================================
-# STEP 2: CACHED GEMINI FUNCTION
-# ==========================================
 @st.cache_data(show_spinner=False)
 def generate_cached_content(prompt_text, is_json=False):
     config_args = {"system_instruction": SYSTEM_INSTRUCTION}
