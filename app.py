@@ -5,7 +5,12 @@ from google.genai import types
 from streamlit_mic_recorder import mic_recorder
 
 # Configure Streamlit Page
-st.set_page_config(page_title="Goethe A1 AI Studio", page_icon="🇩🇪", layout="wide")
+st.set_page_config(
+    page_title="Goethe A1 AI Studio", 
+    page_icon="🇩🇪", 
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
 
 # Custom Zertifly CSS Theme
 st.markdown("""
