@@ -322,4 +322,236 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
                     st.session_state.hoeren_t2_audio = generate_german_audio_bytes(st.session_state.hoeren_t2["audio_script"])
                 except Exception as e: st.error(f"Error: {str(e)}")
 
-        if "hoeren_t2" in st.session_state
+        if "hoeren_t2" in st.session_state:
+            d = st.session_state.hoeren_t2
+            st.markdown("### 🔊 Listen to Public Announcement")
+            st.audio(st.session_state.hoeren_t2_audio, format="audio/mp3")
+            with st.expander("👁️ View Announcement Transcript"): st.write(d["audio_script"])
+            ans = {}
+            for q in d["questions"]:
+                st.markdown(f"**{q['statement']}**")
+                ans[q["id"]] = st.radio("Select choice:", q["options"], key=f"rad_{q['id']}")
+            if st.button("Submit Hören Teil 2"):
+                score = sum(1 for q in d["questions"] if ans.get(q["id"]) == q["answer"])
+                st.success(f"Teil 2 Score: {score} / {len(d['questions'])}")
+
+    with h_tab3:
+        st.info("ℹ️ In the official exam, Teil 3 telephone voicemail messages are played **twice**.")
+        if st.button("🎲 Generate Hören Teil 3 Clip & Questions", type="primary"):
+            with st.spinner("Gem is synthesizing voicemail message..."):
+                prompt = """
+                Generate 1 Goethe A1 Hören Teil 3 exercise (voicemail/answering machine message).
+                Return strict JSON format:
+                {
+                    "audio_script": "German voicemail message transcript...",
+                    "questions": [
+                        {"id": "ht3_1", "statement": "Question 1 in German", "options": ["a) Option 1", "b) Option 2", "c) Option 3"], "answer": "b) Option 2", "explanation": "Why correct"}
+                    ]
+                }
+                """
+                try:
+                    json_str = generate_cached_content(prompt, is_json=True)
+                    st.session_state.hoeren_t3 = json.loads(json_str)
+                    st.session_state.hoeren_t3_audio = generate_german_audio_bytes(st.session_state.hoeren_t3["audio_script"])
+                except Exception as e: st.error(f"Error: {str(e)}")
+
+        if "hoeren_t3" in st.session_state:
+            d = st.session_state.hoeren_t3
+            st.markdown("### 🔊 Listen to Voicemail")
+            st.audio(st.session_state.hoeren_t3_audio, format="audio/mp3")
+            with st.expander("👁️ View Voicemail Transcript"): st.write(d["audio_script"])
+            ans = {}
+            for q in d["questions"]:
+                st.markdown(f"**{q['statement']}**")
+                ans[q["id"]] = st.radio("Select choice:", q["options"], key=f"rad_{q['id']}")
+            if st.button("Submit Hören Teil 3"):
+                score = sum(1 for q in d["questions"] if ans.get(q["id"]) == q["answer"])
+                st.success(f"Teil 3 Score: {score} / {len(d['questions'])}")
+
+    st.markdown('</div>', unsafe_allow_html=True)
+
+# ----------------------------------------------------
+# 5. GOETHE A1 SCHREIBEN (TEIL 1 & 2)
+# ----------------------------------------------------
+elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
+    st.markdown('<div class="main-card">', unsafe_allow_html=True)
+    st.subheader("✍️ Goethe A1 Schreiben Practice (20 Mins, 15 Points)")
+
+    s_tab1, s_tab2 = st.tabs([
+        "Teil 1: Formular ausfüllen (5 Lücken)", 
+        "Teil 2: E-Mail / Brief (~30 Wörter)"
+    ])
+
+    with s_tab1:
+        st.markdown("**Teil 1:** Read a travel or booking scenario and fill in the 5 missing fields on the form.")
+        if st.button("🎲 Generate Schreiben Teil 1 Form Scenario", type="primary"):
+            with st.spinner("Gem is creating form exercise..."):
+                prompt = """
+                Generate 1 Goethe A1 Schreiben Teil 1 form exercise.
+                Return strict JSON format:
+                {
+                    "scenario": "Background text describing a customer/tourist...",
+                    "form_title": "Anmeldung / Hotel Registration Form",
+                    "fields": [
+                        {"id": "f1", "label": "1. Reiseziel (Destination)", "answer": "Berlin"},
+                        {"id": "f2", "label": "2. Anzahl der Personen (Number of people)", "answer": "3"},
+                        {"id": "f3", "label": "3. Anreisetag (Arrival date)", "answer": "Freitag"},
+                        {"id": "f4", "label": "4. Zahlungsart (Payment method)", "answer": "Kreditkarte"},
+                        {"id": "f5", "label": "5. Telefonnummer (Phone)", "answer": "0176123456"}
+                    ]
+                }
+                """
+                try:
+                    json_str = generate_cached_content(prompt, is_json=True)
+                    st.session_state.schreiben_t1 = json.loads(json_str)
+                except Exception as e: st.error(f"Error: {str(e)}")
+
+        if "schreiben_t1" in st.session_state:
+            d = st.session_state.schreiben_t1
+            st.info(f"**Scenario:** {d['scenario']}")
+            st.markdown(f"### 📋 {d['form_title']}")
+            user_inputs = {}
+            for field in d["fields"]:
+                user_inputs[field["id"]] = st.text_input(field["label"], key=f"inp_{field['id']}")
+            
+            if st.button("Check Form Gaps"):
+                score = 0
+                for field in d["fields"]:
+                    val = user_inputs[field["id"]].strip().lower()
+                    ans = field["answer"].strip().lower()
+                    if val == ans:
+                        score += 1
+                        st.success(f"✅ {field['label']}: Correct!")
+                    else:
+                        st.error(f"❌ {field['label']}: Expected '{field['answer']}', you wrote '{user_inputs[field['id']]}'.")
+                st.metric("Form Score", f"{score} / 5")
+
+    with s_tab2:
+        st.markdown("**Teil 2:** Write a short email (~30 words) covering all 3 required points.")
+        if st.button("🎲 Generate Schreiben Teil 2 Prompt", type="primary"):
+            with st.spinner("Gem is creating writing prompt..."):
+                try:
+                    prompt = "Generate an official Goethe A1 Schreiben Teil 2 prompt with 3 explicit bullet points."
+                    st.session_state.schreiben_t2_prompt = generate_cached_content(prompt)
+                except Exception as e: st.error(f"Error: {str(e)}")
+
+        if "schreiben_t2_prompt" in st.session_state:
+            st.info(st.session_state.schreiben_t2_prompt)
+            u_email = st.text_area("Write your German email response (~30 words):", height=140)
+            if st.button("Evaluate Email with Gem"):
+                if u_email.strip():
+                    with st.spinner("Gem is evaluating your email..."):
+                        try:
+                            eval_prompt = f"PROMPT:\n{st.session_state.schreiben_t2_prompt}\n\nSUBMISSION:\n{u_email}\n\nGrade task fulfillment (3/3 points), V2 verb order, and matching salutations/closings."
+                            eval_res = client.models.generate_content(
+                                model=MODEL_NAME,
+                                contents=eval_prompt,
+                                config=types.GenerateContentConfig(system_instruction=SYSTEM_INSTRUCTION)
+                            )
+                            st.markdown("### Official Examiner Breakdown")
+                            st.write(eval_res.text)
+                        except Exception as e: st.error(f"Error: {str(e)}")
+
+    st.markdown('</div>', unsafe_allow_html=True)
+
+# ----------------------------------------------------
+# 6. GOETHE A1 SPRECHEN (TEIL 1, 2, 3 WITH MIC INPUT)
+# ----------------------------------------------------
+elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
+    st.markdown('<div class="main-card">', unsafe_allow_html=True)
+    st.subheader("🗣️ Goethe A1 Sprechen Practice (15 Mins, 15 Points)")
+
+    sp_tab1, sp_tab2, sp_tab3 = st.tabs([
+        "Teil 1: Sich vorstellen & Buchstabieren", 
+        "Teil 2: W-Fragen (Themenkarten)", 
+        "Teil 3: Bitten & Reaktionen (Bildkarten)"
+    ])
+
+    with sp_tab1:
+        st.markdown("""
+        **Teil 1:** Practice introducing yourself using the 7 standard Goethe criteria:
+        *1. Name | 2. Alter | 3. Land | 4. Wohnort | 5. Sprachen | 6. Beruf | 7. Hobby*
+        """)
+        rec_t1 = mic_recorder(start_prompt="Record Self-Introduction 🎙️", stop_prompt="Stop Recording 🛑", key="rec_sp_t1")
+        if rec_t1:
+            st.audio(rec_t1['bytes'], format='audio/wav')
+            if st.button("Evaluate Introduction"):
+                with st.spinner("Gem is analyzing your pronunciation and self-introduction..."):
+                    try:
+                        audio_part = types.Part.from_bytes(data=rec_t1['bytes'], mime_type="audio/wav")
+                        eval_res = client.models.generate_content(
+                            model=MODEL_NAME,
+                            contents=["Transcribe spoken audio and evaluate whether candidate correctly covers standard Goethe A1 self-introduction points.", audio_part],
+                            config=types.GenerateContentConfig(system_instruction=SYSTEM_INSTRUCTION)
+                        )
+                        st.write(eval_res.text)
+                    except Exception as e: st.error(f"Error: {str(e)}")
+
+    with sp_tab2:
+        st.markdown("**Teil 2:** Draw a topic card (Theme + Keyword) and ask a W-question. Verb MUST be in Position 2!")
+        if st.button("🎲 Draw Teil 2 Topic Card", type="primary"):
+            with st.spinner("Gem is drawing card..."):
+                try:
+                    prompt = "Generate a Goethe A1 Sprechen topic card (e.g. Thema: 'Einkaufen', Wort: 'Brot')."
+                    st.session_state.card_t2 = generate_cached_content(prompt)
+                except Exception as e: st.error(f"Error: {str(e)}")
+
+        if "card_t2" in st.session_state:
+            st.success(f"🎴 **Your Card:** {st.session_state.card_t2}")
+            rec_t2 = mic_recorder(start_prompt="Record W-Question 🎙️", stop_prompt="Stop Recording 🛑", key="rec_sp_t2")
+            if rec_t2:
+                st.audio(rec_t2['bytes'], format='audio/wav')
+                if st.button("Evaluate Question Syntax"):
+                    with st.spinner("Gem is evaluating verb placement..."):
+                        try:
+                            audio_part = types.Part.from_bytes(data=rec_t2['bytes'], mime_type="audio/wav")
+                            eval_res = client.models.generate_content(
+                                model=MODEL_NAME,
+                                contents=[f"Card: {st.session_state.card_t2}. Transcribe audio and verify if candidate formed a correct W-question with conjugated verb in Position 2.", audio_part],
+                                config=types.GenerateContentConfig(system_instruction=SYSTEM_INSTRUCTION)
+                            )
+                            st.write(eval_res.text)
+                        except Exception as e: st.error(f"Error: {str(e)}")
+
+    with sp_tab3:
+        st.markdown("**Teil 3:** Draw an object/request card and make an imperative request. Verb MUST be in Position 1!")
+        if st.button("🎲 Draw Teil 3 Request Card", type="primary"):
+            with st.spinner("Gem is drawing card..."):
+                try:
+                    prompt = "Generate a Goethe A1 Sprechen request card (e.g. Gegenstand: Bleistift)."
+                    st.session_state.card_t3 = generate_cached_content(prompt)
+                except Exception as e: st.error(f"Error: {str(e)}")
+
+        if "card_t3" in st.session_state:
+            st.success(f"🎴 **Your Card:** {st.session_state.card_t3}")
+            rec_t3 = mic_recorder(start_prompt="Record Request 🎙️", stop_prompt="Stop Recording 🛑", key="rec_sp_t3")
+            if rec_t3:
+                st.audio(rec_t3['bytes'], format='audio/wav')
+                if st.button("Evaluate Request Syntax"):
+                    with st.spinner("Gem is evaluating request syntax..."):
+                        try:
+                            audio_part = types.Part.from_bytes(data=rec_t3['bytes'], mime_type="audio/wav")
+                            eval_res = client.models.generate_content(
+                                model=MODEL_NAME,
+                                contents=[f"Card: {st.session_state.card_t3}. Transcribe audio and verify if candidate formed a correct imperative request with verb in Position 1.", audio_part],
+                                config=types.GenerateContentConfig(system_instruction=SYSTEM_INSTRUCTION)
+                            )
+                            st.write(eval_res.text)
+                        except Exception as e: st.error(f"Error: {str(e)}")
+
+    st.markdown('</div>', unsafe_allow_html=True)
+
+# ----------------------------------------------------
+# 7. ASK GEM
+# ----------------------------------------------------
+elif nav_choice == "💬 Ask Gem (AI Tutor)":
+    st.markdown('<div class="accent-card">', unsafe_allow_html=True)
+    st.subheader("💬 Ask Gem — Interactive AI Tutor")
+    if prompt := st.chat_input("Ask Gem a question:"):
+        res = client.models.generate_content(
+            model=MODEL_NAME, 
+            contents=prompt,
+            config=types.GenerateContentConfig(system_instruction=SYSTEM_INSTRUCTION)
+        )
+        st.write(res.text)
+    st.markdown('</div>', unsafe_allow_html=True)
