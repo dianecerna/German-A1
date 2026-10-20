@@ -85,7 +85,7 @@ VOCABULARY RULE: Provide exhaustive, highly structured A1 word analyses includin
 
 # Initialize Model with System Instruction
 model = genai.GenerativeModel(
-    model_name="gemini-1.5-flash-latest",
+    model_name="models/gemini-1.5-flash",
     system_instruction=SYSTEM_INSTRUCTION
 )
 
