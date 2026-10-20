@@ -1,8 +1,7 @@
 import os
 import random
 import streamlit as st
-from google import genai
-from google.genai import types
+import google.generativeai as genai
 from streamlit_mic_recorder import mic_recorder
 
 # Configure Streamlit Page - Force Sidebar Expanded
@@ -59,9 +58,9 @@ if not api_key:
     st.error("🔑 Missing Gemini API Key! Please configure your secret key in Streamlit settings.")
     st.stop()
 
-# Initialize GenAI Client
-client = genai.Client(api_key=api_key.strip())
-MODEL_NAME = "gemini-flash-latest"
+# Initialize GenAI Client using legacy module configuration
+genai.configure(api_key=api_key.strip())
+model = genai.GenerativeModel("gemini-1.5-flash")
 
 SYSTEM_INSTRUCTION = """
 You are Zerti, an expert German language tutor and official Goethe-Institut A1 examiner evaluating a candidate for Goethe-Zertifikat A1 (Start Deutsch 1).
