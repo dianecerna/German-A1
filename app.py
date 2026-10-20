@@ -435,4 +435,36 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
                         contents=[prompt, audio_part],
                         config=types.GenerateContentConfig(system_instruction=SYSTEM_INSTRUCTION)
                     )
-                    st.write(eval_
+                    st.write(eval_res.text)
+    st.markdown('</div>', unsafe_allow_html=True)
+
+# ----------------------------------------------------
+# 7. ASK ZERTI
+# ----------------------------------------------------
+elif nav_choice == "💬 Ask Zerti (AI Tutor)":
+    st.markdown('<div class="accent-card">', unsafe_allow_html=True)
+    st.subheader("🐱 Zerti — Interactive AI Tutor")
+    st.write("Ask Zerti about grammar rules, sentence structures, or vocabulary explanations.")
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    if "messages" not in st.session_state:
+        st.session_state.messages = []
+
+    for message in st.session_state.messages:
+        with st.chat_message(message["role"]):
+            st.markdown(message["content"])
+
+    if prompt := st.chat_input("Ask Zerti a question:"):
+        st.session_state.messages.append({"role": "user", "content": prompt})
+        with st.chat_message("user"):
+            st.markdown(prompt)
+
+        with st.chat_message("assistant"):
+            with st.spinner("Zerti is thinking..."):
+                response = client.models.generate_content(
+                    model="gemini-2.5-flash",
+                    contents=prompt,
+                    config=types.GenerateContentConfig(system_instruction=SYSTEM_INSTRUCTION)
+                )
+                st.markdown(response.text)
+                st.session_state.messages.append({"role": "assistant", "content": response.text})
