@@ -52,11 +52,23 @@ if not api_key:
 
 genai.configure(api_key=api_key)
 
-# Initialize Generative Model using updated model identifier
-try:
-    model = genai.GenerativeModel("gemini-2.0-flash")
-except Exception:
-    model = genai.GenerativeModel("gemini-1.5-flash")
+# Global System Instruction for Goethe A1 Exam
+SYSTEM_INSTRUCTION = """
+You are Zerti, an expert German tutor and official Goethe-Institut A1 examiner evaluating a candidate for Goethe-Zertifikat A1 (Start Deutsch 1).
+
+GOETHE A1 RULES TO ENFORCE:
+- Verb Position 2 in main clauses.
+- Verb Position 1 for Ja/Nein questions and imperatives.
+- Modal verb in Position 2 -> Infinitive at the very END.
+- Grade writing responses against all required prompt points.
+- Provide clear explanations in English with corrected German sentences.
+"""
+
+# Initialize Gemini Model with clean System Instruction
+model = genai.GenerativeModel(
+    model_name="gemini-1.5-flash",
+    system_instruction=SYSTEM_INSTRUCTION
+)
 
 # Navigation
 st.sidebar.title("🐱 Zerti Goethe A1 AI")
@@ -67,18 +79,6 @@ nav_choice = st.sidebar.radio("Navigation", [
     "🗣️ AI Sprechen & Voice Trainer",
     "💬 Ask Zerti (Grammar & Sentence AI)"
 ])
-
-# System Context Prompt Header
-SYSTEM_CONTEXT = """
-You are Zerti, an expert German language tutor and official Goethe-Institut A1 examiner evaluating a candidate preparing for Goethe-Zertifikat A1 (Start Deutsch 1).
-
-GOETHE A1 RULES TO ENFORCE:
-- Verb Position 2 in main clauses.
-- Verb Position 1 for Ja/Nein questions and imperatives.
-- Modal verb in Position 2 -> Infinitive at the very END.
-- Grade writing responses against all required prompt points.
-- Provide clear explanations in English with corrected German sentences.
-"""
 
 # ----------------------------------------------------
 # 1. AI DASHBOARD
@@ -104,8 +104,7 @@ elif nav_choice == "✍️ AI Schreiben Generator":
 
     if st.button("🎲 Generate New Writing Prompt", type="secondary"):
         with st.spinner("Zerti is creating a new exam scenario..."):
-            gen_query = f"{SYSTEM_CONTEXT}\n\nTask: Generate a realistic Goethe A1 Schreiben Teil 2 exam prompt. Include an everyday scenario and 3 explicit bullet points that the student must write about in ~30 words."
-            res = model.generate_content(gen_query)
+            res = model.generate_content("Generate a realistic Goethe A1 Schreiben Teil 2 exam prompt with an everyday scenario and 3 bullet points.")
             st.session_state.schreiben_prompt = res.text
 
     if st.session_state.schreiben_prompt:
@@ -116,7 +115,7 @@ elif nav_choice == "✍️ AI Schreiben Generator":
         if st.button("Evaluate Response with AI", type="primary"):
             if user_email.strip():
                 with st.spinner("Zerti is grading your response..."):
-                    eval_query = f"{SYSTEM_CONTEXT}\n\nEXAM PROMPT:\n{st.session_state.schreiben_prompt}\n\nSTUDENT SUBMISSION:\n{user_email}\n\nGrade this against Goethe A1 criteria (Task completion 3/3 points, V2 verb rule, salutation match)."
+                    eval_query = f"EXAM PROMPT:\n{st.session_state.schreiben_prompt}\n\nSTUDENT SUBMISSION:\n{user_email}\n\nGrade this against Goethe A1 criteria."
                     eval_res = model.generate_content(eval_query)
                     st.markdown("### Examiner Breakdown")
                     st.write(eval_res.text)
@@ -135,8 +134,7 @@ elif nav_choice == "📖 AI Lesen Generator":
 
     if st.button("🎲 Generate New Reading Passage", type="secondary"):
         with st.spinner("Creating reading passage..."):
-            read_gen_query = f"{SYSTEM_CONTEXT}\n\nTask: Generate a short Goethe A1 level German email or notice (approx 40 words). Then provide 2 statements about the text marked as either (Richtig) or (Falsch), along with explanations."
-            res = model.generate_content(read_gen_query)
+            res = model.generate_content("Generate a short Goethe A1 level German email or notice (~40 words) with 2 Richtig/Falsch comprehension questions and explanations.")
             st.session_state.lesen_exercise = res.text
 
     if st.session_state.lesen_exercise:
@@ -156,7 +154,7 @@ elif nav_choice == "🗣️ AI Sprechen & Voice Trainer":
 
     if st.button("🎲 Draw New Theme Card"):
         with st.spinner("Drawing card..."):
-            card_res = model.generate_content(f"{SYSTEM_CONTEXT}\n\nTask: Generate a random Goethe A1 Sprechen Teil 2 topic card (e.g., Theme: 'Freizeit', Keyword: 'Sport').")
+            card_res = model.generate_content("Generate a random Goethe A1 Sprechen Teil 2 topic card (e.g., Theme: 'Freizeit', Keyword: 'Sport').")
             st.session_state.card_theme = card_res.text
 
     st.success(f"🎴 **Your Card:**\n{st.session_state.card_theme}")
@@ -173,7 +171,7 @@ elif nav_choice == "🗣️ AI Sprechen & Voice Trainer":
         if st.button("Evaluate Voice Recording"):
             with st.spinner("Zerti is analyzing your speech and grammar..."):
                 audio_part = {"mime_type": "audio/wav", "data": audio['bytes']}
-                prompt = f"{SYSTEM_CONTEXT}\n\nThe student drew this card: {st.session_state.card_theme}. Transcribe their spoken German audio and check if their sentence structure and verb placement (V1 or V2 rule) are correct."
+                prompt = f"The student drew this card: {st.session_state.card_theme}. Transcribe their spoken German audio and check if their sentence structure and verb placement (V1 or V2 rule) are correct."
                 eval_res = model.generate_content([prompt, audio_part])
                 st.markdown("### Audio Syntax & Grammar Evaluation")
                 st.write(eval_res.text)
@@ -202,6 +200,6 @@ elif nav_choice == "💬 Ask Zerti (Grammar & Sentence AI)":
 
         with st.chat_message("assistant"):
             with st.spinner("Zerti is thinking..."):
-                response = model.generate_content(f"{SYSTEM_CONTEXT}\n\nUser Question: {prompt}")
+                response = model.generate_content(prompt)
                 st.markdown(response.text)
                 st.session_state.messages.append({"role": "assistant", "content": response.text})
