@@ -13,7 +13,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS without hiding the header bar
+# Custom CSS
 st.markdown("""
 <style>
     .stApp {
@@ -182,7 +182,7 @@ elif nav_choice == "📚 Master Goethe Word Engine":
             """
             
             res = client.models.generate_content(
-                model="gemini-2.5-flash",
+                model="gemini-2.0-flash",
                 contents=vocab_prompt,
                 config=types.GenerateContentConfig(system_instruction=SYSTEM_INSTRUCTION)
             )
@@ -207,7 +207,7 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
         if st.button("🎲 Generate Lesen Teil 1 Exercise"):
             with st.spinner("Generating Teil 1 passage..."):
                 res = client.models.generate_content(
-                    model="gemini-2.5-flash",
+                    model="gemini-2.0-flash",
                     contents="Generate a Goethe A1 Lesen Teil 1 exercise using Goethe A1 vocabulary: 1 short personal email (~35 words) followed by 2 Richtig/Falsch comprehension questions with answer explanations.",
                     config=types.GenerateContentConfig(system_instruction=SYSTEM_INSTRUCTION)
                 )
@@ -218,7 +218,7 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
         if st.button("🎲 Generate Lesen Teil 2 Exercise"):
             with st.spinner("Generating Teil 2 ads..."):
                 res = client.models.generate_content(
-                    model="gemini-2.5-flash",
+                    model="gemini-2.0-flash",
                     contents="Generate a Goethe A1 Lesen Teil 2 exercise using Goethe A1 vocabulary: A user scenario and 2 short website descriptions (Website A vs Website B). State which site is correct and why.",
                     config=types.GenerateContentConfig(system_instruction=SYSTEM_INSTRUCTION)
                 )
@@ -229,7 +229,7 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
         if st.button("🎲 Generate Lesen Teil 3 Exercise"):
             with st.spinner("Generating Teil 3 sign..."):
                 res = client.models.generate_content(
-                    model="gemini-2.5-flash",
+                    model="gemini-2.0-flash",
                     contents="Generate a Goethe A1 Lesen Teil 3 exercise using Goethe A1 vocabulary: 1 realistic German public sign text and 2 Richtig/Falsch questions.",
                     config=types.GenerateContentConfig(system_instruction=SYSTEM_INSTRUCTION)
                 )
@@ -255,7 +255,7 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
         if st.button("🎲 Generate Hören Teil 1 Script & Questions"):
             with st.spinner("Generating audio transcript scenario..."):
                 res = client.models.generate_content(
-                    model="gemini-2.5-flash",
+                    model="gemini-2.0-flash",
                     contents="Generate a Goethe A1 Hören Teil 1 dialogue transcript using Goethe A1 vocabulary with 2 multiple-choice questions (a, b, c) and explanations.",
                     config=types.GenerateContentConfig(system_instruction=SYSTEM_INSTRUCTION)
                 )
@@ -267,7 +267,7 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
         if st.button("🎲 Generate Hören Teil 2 Announcement"):
             with st.spinner("Generating announcement script..."):
                 res = client.models.generate_content(
-                    model="gemini-2.5-flash",
+                    model="gemini-2.0-flash",
                     contents="Generate a Goethe A1 Hören Teil 2 public announcement script using Goethe A1 vocabulary with 2 Richtig/Falsch questions.",
                     config=types.GenerateContentConfig(system_instruction=SYSTEM_INSTRUCTION)
                 )
@@ -279,7 +279,7 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
         if st.button("🎲 Generate Hören Teil 3 Voicemail"):
             with st.spinner("Generating voicemail script..."):
                 res = client.models.generate_content(
-                    model="gemini-2.5-flash",
+                    model="gemini-2.0-flash",
                     contents="Generate a Goethe A1 Hören Teil 3 voicemail transcript using Goethe A1 vocabulary with 2 multiple-choice questions (a, b, c).",
                     config=types.GenerateContentConfig(system_instruction=SYSTEM_INSTRUCTION)
                 )
@@ -303,7 +303,7 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
         if st.button("🎲 Generate Schreiben Teil 1 Scenario & Form"):
             with st.spinner("Generating form exercise..."):
                 res = client.models.generate_content(
-                    model="gemini-2.5-flash",
+                    model="gemini-2.0-flash",
                     contents="Generate a Goethe A1 Schreiben Teil 1 exercise using Goethe A1 vocabulary: A background scenario about booking a trip/hotel, and a form with 5 missing fields (1 to 5) to fill in, along with answer key.",
                     config=types.GenerateContentConfig(system_instruction=SYSTEM_INSTRUCTION)
                 )
@@ -317,7 +317,7 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
         if st.button("🎲 Generate Schreiben Teil 2 Prompt"):
             with st.spinner("Generating email prompt..."):
                 res = client.models.generate_content(
-                    model="gemini-2.5-flash",
+                    model="gemini-2.0-flash",
                     contents="Generate an official Goethe A1 Schreiben Teil 2 prompt using Goethe A1 vocabulary: A realistic scenario with 3 bullet points.",
                     config=types.GenerateContentConfig(system_instruction=SYSTEM_INSTRUCTION)
                 )
@@ -331,7 +331,7 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
                 if user_text.strip():
                     with st.spinner("Evaluating submission against Goethe A1 rubric..."):
                         eval_res = client.models.generate_content(
-                            model="gemini-2.5-flash",
+                            model="gemini-2.0-flash",
                             contents=f"PROMPT:\n{st.session_state.writing_prompt}\n\nSUBMISSION:\n{user_text}\n\nGrade task fulfillment (3 points), V2 verb order, and matching salutations/closings.",
                             config=types.GenerateContentConfig(system_instruction=SYSTEM_INSTRUCTION)
                         )
@@ -361,7 +361,7 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
         if st.button("Evaluate Self-Introduction"):
             if user_intro.strip():
                 res = client.models.generate_content(
-                    model="gemini-2.5-flash",
+                    model="gemini-2.0-flash",
                     contents=f"Evaluate this candidate's Goethe A1 Sprechen Teil 1 self-introduction and verify if all 7 points are covered accurately: {user_intro}",
                     config=types.GenerateContentConfig(system_instruction=SYSTEM_INSTRUCTION)
                 )
@@ -375,7 +375,7 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
         if st.button("🎲 Draw Teil 2 Card"):
             with st.spinner("Drawing card..."):
                 res = client.models.generate_content(
-                    model="gemini-2.5-flash",
+                    model="gemini-2.0-flash",
                     contents="Generate a Goethe A1 Sprechen Teil 2 topic card drawing from official Goethe A1 Wortliste (e.g. Thema: 'Einkaufen', Wort: 'Brot').",
                     config=types.GenerateContentConfig(system_instruction=SYSTEM_INSTRUCTION)
                 )
@@ -396,7 +396,7 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
                     audio_part = types.Part.from_bytes(data=audio_t2['bytes'], mime_type="audio/wav")
                     prompt = f"Card: {st.session_state.card_prompt_t2}. Transcribe spoken audio and verify if candidate formed a correct Goethe A1 W-question with verb in Position 2."
                     eval_res = client.models.generate_content(
-                        model="gemini-2.5-flash",
+                        model="gemini-2.0-flash",
                         contents=[prompt, audio_part],
                         config=types.GenerateContentConfig(system_instruction=SYSTEM_INSTRUCTION)
                     )
@@ -410,7 +410,7 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
         if st.button("🎲 Draw Teil 3 Card"):
             with st.spinner("Drawing card..."):
                 res = client.models.generate_content(
-                    model="gemini-2.5-flash",
+                    model="gemini-2.0-flash",
                     contents="Generate a Goethe A1 Sprechen Teil 3 picture/object request card drawing from Goethe A1 vocabulary.",
                     config=types.GenerateContentConfig(system_instruction=SYSTEM_INSTRUCTION)
                 )
@@ -431,7 +431,7 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
                     audio_part = types.Part.from_bytes(data=audio_t3['bytes'], mime_type="audio/wav")
                     prompt = f"Card: {st.session_state.card_prompt_t3}. Transcribe spoken audio and verify if candidate formed a correct Goethe A1 request/imperative with verb in Position 1."
                     eval_res = client.models.generate_content(
-                        model="gemini-2.5-flash",
+                        model="gemini-2.0-flash",
                         contents=[prompt, audio_part],
                         config=types.GenerateContentConfig(system_instruction=SYSTEM_INSTRUCTION)
                     )
@@ -462,7 +462,7 @@ elif nav_choice == "💬 Ask Zerti (AI Tutor)":
         with st.chat_message("assistant"):
             with st.spinner("Zerti is thinking..."):
                 response = client.models.generate_content(
-                    model="gemini-2.5-flash",
+                    model="gemini-2.0-flash",
                     contents=prompt,
                     config=types.GenerateContentConfig(system_instruction=SYSTEM_INSTRUCTION)
                 )
