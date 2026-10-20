@@ -61,7 +61,7 @@ if not api_key:
 
 # Initialize Modern GenAI Client
 client = genai.Client(api_key=api_key.strip())
-MODEL_NAME = "gemini-2.5-flash"
+MODEL_NAME = "gemini-3.8-flash"
 
 SYSTEM_INSTRUCTION = """
 You are Zerti, an expert German language tutor and official Goethe-Institut A1 examiner evaluating a candidate for Goethe-Zertifikat A1 (Start Deutsch 1).
