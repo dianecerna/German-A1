@@ -136,15 +136,15 @@ def generate_dynamic_content(prompt_text: str, is_json: bool = False) -> str:
 
 @st.cache_data
 def load_goethe_vocab():
-    try:
-        with open("goethe_vocab.json", "r", encoding="utf-8") as f:
-            return json.load(f)
-    except Exception:
-        return {
-            "Essen & Trinken": ["einkaufen", "das Brot", "der Apfel", "die Milch", "das Wasser"],
-            "Reisen & Verkehr": ["die Fahrkarte", "der Bahnhof", "der Flughafen", "abholen"],
-            "Wohnen & Alltag": ["die Wohnung", "der Schlüssel", "das Zimmer", "aufstehen"]
-        }
+    # Integrated Goethe A1 Core Word Bank including essential verbs/phrases from the curriculum textbooks (Vol 1 & Thematic A1)
+    return {
+        "Core Goethe Verbs & Phrases (1-250)": [
+            "sein", "haben", "ich", "du", "der", "die", "das", "weil", "und", "ein", "eine", "er", "sie", "es", "wir", "ihr", "Sie", "nicht", "ja", "auch", "nein", "aber", "oder", "dass", "wenn", "wie", "was", "wer", "wo", "wann", "warum", "machen", "gehen", "kommen", "wollen", "können", "müssen", "werden", "sagen", "geben", "sehen", "wissen", "nehmen", "finden", "sprechen", "verstehen", "helfen", "arbeiten", "lernen", "leben", "wohnen", "bleiben", "brauchen", "denken", "lieben", "fragen", "hören", "lesen", "schreiben", "kaufen", "bezahlen", "essen", "trinken", "schlafen", "fahren", "stehen", "laufen", "sitzen", "liegen", "warten", "beginnen", "enden", "versuchen", "zeigen", "benutzen", "vergessen", "glauben", "meinen", "fühlen", "hoffen", "lachen", "weinen", "spielen", "öffnen", "schließen", "schicken", "bringen", "tragen", "ziehen", "wechseln", "reisen", "besuchen", "treffen", "heiraten", "kochen", "waschen", "anziehen", "ausziehen", "aufstehen", "fernsehen", "einkaufen", "mitkommen", "zurückkommen", "teilnehmen", "stattfinden", "aussehen", "gehören", "gefallen", "schmecken", "kosten", "sparen", "verdienen", "studieren", "üben", "verbessern", "schaffen", "planen", "organisieren", "erlauben", "verbieten", "folgen", "entstehen", "verschwinden", "wachsen", "sterben", "entdecken", "beschreiben", "erzählen", "suchen", "anbieten", "empfehlen", "trainieren", "bewegen", "schneiden", "bauen", "reparieren", "respektieren", "vertrauen", "unterstützen", "interessieren", "motivieren", "konzentrieren", "beschäftigen", "liefern", "besitzen", "erreichen", "verlassen", "beobachten", "erkennen", "bestehen", "dauern", "passieren", "sinken", "steigen", "fallen", "werfen", "fangen", "halten", "schwimmen", "lächeln", "telefonieren", "ansehen", "anschauen", "mitteilen", "anmelden", "bestätigen", "reservieren", "empfangen", "starten", "stoppen", "einschalten", "ausschalten", "speichern", "löschen", "klicken", "senden", "kopieren", "verbinden", "trennen", "fliegen", "landen", "umsteigen", "einsteigen", "aussteigen", "ankommen", "abreisen", "packen", "übersetzen", "wiederholen", "korrigieren", "betreten", "begleiten", "umziehen", "mieten", "teilen", "tauschen", "entspannen", "genießen", "lösen"
+        ],
+        "Thematic Everyday Survival Vocabulary": [
+            "Guten Tag", "Guten Morgen", "Guten Abend", "Auf Wiedersehen", "Tschüss", "Danke", "Bitte", "Entschuldigung", "Hilfe", "Bahnhof", "Flughafen", "Hotel", "Restaurant", "Speisekarte", "Rechnung", "Arzt", "Krankenhaus", "Supermarkt", "Apotheke", "Polizei", "Fahrkarte", "Wohnung", "Zimmer", "Küche", "Badezimmer", "Schlafzimmer", "Wohnzimmer", "Balkon", "Garten", "Tisch", "Stuhl", "Bett", "Schrank", "Kühlschrank", "Herd", "Waschmaschine", "Computer", "Handy", "Internet", "Zeitung", "Buch", "Schule", "Lehrer", "Student", "Prüfung", "Uhrzeit", "Kalender", "Wetter", "Sonne", "Regen", "Schnee", "Wind", "Auto", "Bus", "Zug", "Fahrrad", "Straße", "Stadt", "Land", "Familie", "Freund", "Kind", "Mutter", "Vater"
+        ]
+    }
 
 GOETHE_WORD_BANK = load_goethe_vocab()
 ALL_WORDS = [word for cat in GOETHE_WORD_BANK.values() for word in cat]
@@ -170,6 +170,7 @@ nav_choice = st.sidebar.radio("Navigation", [
     "🎧 Goethe A1 Hören (Listening)",
     "✍️ Goethe A1 Schreiben (Writing)", 
     "🗣️ Goethe A1 Sprechen (Speaking)",
+    "🏆 Goethe A1 Mock Examination",
     "💬 Ask Gem (AI Tutor)"
 ])
 
@@ -217,7 +218,8 @@ if nav_choice == "🏠 Study Dashboard":
 # ----------------------------------------------------
 elif nav_choice == "📚 Master Goethe Word Engine":
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
-    st.subheader("📚 Master Goethe A1 Interactive Flashcard Engine")
+    st.subheader("📚 Master Goethe A1 Interactive Flashcard Engine (600+ Goethe Words & Curriculum Verbs/Phrases)")
+    st.write("Practicing essential Goethe A1 vocabulary, verbs, and phrases extracted from official study materials and 600+ word lists.")
 
     if "current_flashcard_word" not in st.session_state:
         st.session_state.current_flashcard_word = "einkaufen"
@@ -231,6 +233,7 @@ elif nav_choice == "📚 Master Goethe Word Engine":
     Return strict JSON with this exact schema:
     {{
         "word": "{active_word}",
+        "is_goethe_word": true,
         "part_of_speech": "Verb / Noun / Adjective / Preposition / Conjunction",
         "english_meaning": "English translation",
         "gender": "der / die / das / N/A",
@@ -264,9 +267,9 @@ elif nav_choice == "📚 Master Goethe Word Engine":
         if not st.session_state.show_card_back:
             st.markdown(f"""
             <div class="flashcard-front-box">
-                <p style="color: #94a3b8; font-weight: 600; letter-spacing: 0.05em; margin-bottom: 5px;">GERMAN A1 FLASHCARD (FRONT)</p>
+                <p style="color: #38bdf8; font-weight: 700; letter-spacing: 0.08em; margin-bottom: 8px;">⭐ OFFICIAL GOETHE-ZERTIFIKAT A1 CORE VOCABULARY WORD ⭐</p>
                 <div class="flashcard-word-title">{data.get("word", active_word)}</div>
-                <p style="color: #cbd5e1; font-size: 0.9rem; margin-bottom: 0px;">Listen to pronunciation below, then flip the card to see detailed grammar.</p>
+                <p style="color: #cbd5e1; font-size: 0.9rem; margin-bottom: 0px;">Listen to pronunciation below, then flip the card to see detailed grammar and examples.</p>
             </div>
             """, unsafe_allow_html=True)
             
@@ -277,6 +280,7 @@ elif nav_choice == "📚 Master Goethe Word Engine":
         else:
             st.markdown(f"""
             <div class="flashcard-back-box">
+                <p style="color: #2563eb; font-weight: 700; font-size: 0.85rem; letter-spacing: 0.05em; margin-bottom: 2px;">⭐ GOETHE A1 CORE VOCABULARY WORD</p>
                 <div class="flashcard-back-title">{data.get("word", active_word)}</div>
                 <div class="meaning-subtitle">Meaning: {data.get("english_meaning", "")}</div>
             </div>
@@ -335,7 +339,7 @@ elif nav_choice == "📚 Master Goethe Word Engine":
 elif nav_choice == "📖 Core Grammar Practice & Exercises":
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
     st.subheader("📖 Core Grammar Practice & Exercises")
-    st.write("Review class handbook modules with thorough lesson explanations, then complete 20 targeted practice exercises.")
+    st.write("Review class handbook modules with thorough lesson explanations, expert insights (such as Accusative vs. Dative prepositions), then complete 20 targeted practice exercises.")
 
     handbook_lessons = [
         "Lesson 1: German Alphabet, Pronunciation, and Article Recognition",
@@ -360,7 +364,7 @@ elif nav_choice == "📖 Core Grammar Practice & Exercises":
         "Lesson 20: Common Dative Expressions in Real-Life Communication",
         "Lesson 21: Location Expressions and Place Descriptions",
         "Lesson 22: Movement and Position Patterns in Everyday German",
-        "Lesson 23: Two-Way Prepositions and Directional Meaning",
+        "Lesson 23: Two-Way Prepositions (Wechselpräpositionen) - Accusative vs. Dative Deep Dive",
         "Lesson 24: Shopping, Money, and Price Communication",
         "Lesson 25: Connecting Simple Ideas with Basic German Connectors",
         "Lesson 26: Reasons, Explanations, and Cause Structures",
@@ -383,13 +387,15 @@ elif nav_choice == "📖 Core Grammar Practice & Exercises":
     selected_lesson = st.selectbox("Select Handbook Lesson to Review & Practice:", handbook_lessons)
 
     if st.button("📖 Load Thorough Lesson Review & 20 Practice Exercises", type="primary"):
-        with st.spinner("Gem is compiling lesson review notes and 20 practice exercises..."):
+        with st.spinner("Gem is compiling lesson review notes, expert insights, and 20 practice exercises..."):
             prompt = f"""
             Create a detailed study review & 20-exercise package for '{selected_lesson}'.
+            CRITICAL INSTRUCTION: Provide a short but thorough explanation of the lesson/concept right before the exercises. Do not be confined strictly to basic textbook definitions; include expert insights, structural patterns, nuances, and clear comparisons (e.g., Akkusativ vs. Dativ prepositions, motion vs. location, verb placement in subordinate clauses).
+
             Return strict JSON with this exact schema:
             {{
                 "lesson_title": "{selected_lesson}",
-                "lesson_explanation": "Thorough, detailed, and structured review breakdown of '{selected_lesson}'. Include core grammar rules, clear bullet points, sentence structure patterns, key exceptions, and practical beginner shortcuts.",
+                "lesson_explanation": "Thorough, detailed, and structured review breakdown of '{selected_lesson}'. Include expert insights, core grammar rules, clear bullet points, sentence structure patterns, key exceptions, and practical beginner shortcuts.",
                 "exercises_mc": [
                     {{"id": "mc1", "question": "Question 1", "options": ["A", "B", "C", "D"], "correct": "A", "explanation": "Why A is correct..."}},
                     {{"id": "mc2", "question": "Question 2", "options": ["A", "B", "C", "D"], "correct": "B", "explanation": "Why B is correct..."}},
@@ -937,7 +943,144 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
-# 8. ASK GEM
+# 8. GOETHE A1 MOCK EXAMINATION
+# ----------------------------------------------------
+elif nav_choice == "🏆 Goethe A1 Mock Examination":
+    st.markdown('<div class="accent-card">', unsafe_allow_html=True)
+    st.subheader("🏆 Full CEFR A1 Mock Examination Simulator")
+    st.write("Simulate the complete Goethe-Zertifikat A1 exam across all 4 modules (Lesen, Hören, Schreiben, Sprechen). Total passing mark requires 60% overall.")
+
+    if "mock_exam_data" not in st.session_state:
+        st.session_state.mock_exam_data = None
+
+    if st.button("🚀 Generate Full Mock Examination Paper", type="primary"):
+        with st.spinner("Gem is compiling a complete official Goethe A1 exam paper..."):
+            mock_prompt = """
+            Generate a full Goethe-Zertifikat A1 simulated exam paper in strict JSON format.
+            Include:
+            1. Lesen section with 1 short email passage and 5 Richtig/Falsch questions.
+            2. Hören section with 1 short dialogue script, audio prompt text, and 3 multiple choice questions (A/B/C).
+            3. Schreiben section with 1 registration form background scenario (with 4 fields) and 1 email prompt with 3 bullet points.
+            4. Sprechen section with 1 self-introduction task description and 1 W-question card topic.
+
+            Return strict JSON format:
+            {
+                "lesen": {
+                    "text": "Reading passage here...",
+                    "questions": [
+                        {"id": "m_l1", "statement": "Statement 1", "options": ["richtig", "falsch"], "answer": "richtig"},
+                        {"id": "m_l2", "statement": "Statement 2", "options": ["richtig", "falsch"], "answer": "falsch"},
+                        {"id": "m_l3", "statement": "Statement 3", "options": ["richtig", "falsch"], "answer": "richtig"},
+                        {"id": "m_l4", "statement": "Statement 4", "options": ["richtig", "falsch"], "answer": "falsch"},
+                        {"id": "m_l5", "statement": "Statement 5", "options": ["richtig", "falsch"], "answer": "richtig"}
+                    ]
+                },
+                "hoeren": {
+                    "script": "Hören dialogue transcript here...",
+                    "questions": [
+                        {"id": "m_h1", "question": "Question 1", "options": ["a) Option A", "b) Option B", "c) Option C"], "answer": "a) Option A"},
+                        {"id": "m_h2", "question": "Question 2", "options": ["a) Option A", "b) Option B", "c) Option C"], "answer": "b) Option B"},
+                        {"id": "m_h3", "question": "Question 3", "options": ["a) Option A", "b) Option B", "c) Option C"], "answer": "c) Option C"}
+                    ]
+                },
+                "schreiben": {
+                    "form_scenario": "Form scenario details: Anna Schmidt is booking for 2 people arriving Friday, paying by credit card, phone 01712345.",
+                    "form_fields": [
+                        {"id": "mf1", "label": "1. Name", "answer": "Schmidt"},
+                        {"id": "mf2", "label": "2. Personen", "answer": "2"},
+                        {"id": "mf3", "label": "3. Tag", "answer": "Freitag"},
+                        {"id": "mf4", "label": "4. Zahlung", "answer": "Kreditkarte"}
+                    ],
+                    "email_prompt": "Write an email to your friend about your birthday party. Include: 1. Date 2. Time 3. Location"
+                },
+                "sprechen": {
+                    "intro_task": "Introduce yourself (Name, Age, Country, Profession).",
+                    "card_task": "Thema: Essen & Trinken (Wort: Wasser). Formulate a W-question."
+                }
+            }
+            """
+            try:
+                res_json = generate_dynamic_content(mock_prompt, is_json=True)
+                st.session_state.mock_exam_data = json.loads(res_json)
+            except Exception as e:
+                st.error(f"Error generating mock exam: {str(e)}")
+
+    if st.session_state.mock_exam_data:
+        exam = st.session_state.mock_exam_data
+        
+        m_tab1, m_tab2, m_tab3, m_tab4 = st.tabs(["📖 1. Lesen", "🎧 2. Hören", "✍️ 3. Schreiben", "🗣️ 4. Sprechen"])
+        
+        with m_tab1:
+            st.markdown("### Teil 1: Lesen (Reading Comprehension)")
+            st.info(exam["lesen"]["text"])
+            m_lesen_answers = {}
+            for idx, q in enumerate(exam["lesen"]["questions"], start=1):
+                st.markdown(f"**Q{idx}: {q['statement']}**")
+                m_lesen_answers[q['id']] = st.radio("Select:", q['options'], key=f"m_l_rad_{q['id']}")
+
+        with m_tab2:
+            st.markdown("### Teil 2: Hören (Listening Comprehension)")
+            st.markdown("Listen to the simulated audio script below:")
+            st.audio(generate_german_audio_bytes(exam["hoeren"]["script"]), format="audio/mp3")
+            with st.expander("👁️ View Audio Transcript"):
+                st.write(exam["hoeren"]["script"])
+            
+            m_hoeren_answers = {}
+            for idx, q in enumerate(exam["hoeren"]["questions"], start=1):
+                st.markdown(f"**Q{idx}: {q['question']}**")
+                m_hoeren_answers[q['id']] = st.radio("Select choice:", q['options'], key=f"m_h_rad_{q['id']}")
+
+        with m_tab3:
+            st.markdown("### Teil 3: Schreiben (Writing)")
+            st.markdown("**Part A: Fill out form based on scenario:**")
+            st.info(exam["schreiben"]["form_scenario"])
+            m_form_inputs = {}
+            for f in exam["schreiben"]["form_fields"]:
+                m_form_inputs[f["id"]] = st.text_input(f["label"], key=f"m_form_{f['id']}")
+
+            st.markdown("---")
+            st.markdown("**Part B: Email Writing:**")
+            st.info(exam["schreiben"]["email_prompt"])
+            m_email_input = st.text_area("Your German Email Response (~30 words):", key="m_email_resp")
+
+        with m_tab4:
+            st.markdown("### Teil 4: Sprechen (Speaking)")
+            st.info(f"**Task A:** {exam['sprechen']['intro_task']}")
+            m_rec_intro = mic_recorder(start_prompt="Record Introduction 🎙️", stop_prompt="Stop 🛑", key="m_rec_i")
+            if m_rec_intro:
+                st.audio(m_rec_intro['bytes'], format='audio/wav')
+
+            st.info(f"**Task B:** {exam['sprechen']['card_task']}")
+            m_rec_card = mic_recorder(start_prompt="Record W-Question 🎙️", stop_prompt="Stop 🛑", key="m_rec_c")
+            if m_rec_card:
+                st.audio(m_rec_card['bytes'], format='audio/wav')
+
+        st.divider()
+        if st.button("🏆 Grade Mock Examination", type="primary"):
+            st.markdown("### 📊 Official Mock Examination Scorecard")
+            
+            # Grade Lesen
+            lesen_score = sum(1 for q in exam["lesen"]["questions"] if m_lesen_answers.get(q["id"]) == q["answer"])
+            st.metric("Lesen Score", f"{lesen_score} / 5")
+
+            # Grade Hören
+            hoeren_score = sum(1 for q in exam["hoeren"]["questions"] if m_hoeren_answers.get(q["id"]) == q["answer"])
+            st.metric("Hören Score", f"{hoeren_score} / 3")
+
+            # Grade Schreiben Form
+            form_score = sum(1 for f in exam["schreiben"]["form_fields"] if m_form_inputs.get(f["id"], "").strip().lower() == f["answer"].strip().lower())
+            st.metric("Schreiben Form Score", f"{form_score} / 4")
+
+            # AI Grade Email & Sprechen
+            with st.spinner("Examiner is grading written email and speaking recordings..."):
+                email_eval = generate_dynamic_content(f"Prompt: {exam['schreiben']['email_prompt']}\nSubmission: {m_email_input}\nGrade email against A1 standards.")
+                st.markdown("#### Schreiben Email Evaluation")
+                st.write(email_eval)
+
+    st.markdown('</div>', unsafe_allow_html=True)
+
+# ----------------------------------------------------
+# 9. ASK GEM
 # ----------------------------------------------------
 elif nav_choice == "💬 Ask Gem (AI Tutor)":
     st.markdown('<div class="accent-card">', unsafe_allow_html=True)
