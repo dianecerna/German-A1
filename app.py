@@ -449,7 +449,7 @@ LESEN_TEIL1_SCENARIOS = [
     }
 ]
 
-# Lesen Teil 2 Official Scenarios Bank (All 9 exact scenarios matching screenshots 59-63)
+# Lesen Teil 2 Official Scenarios Bank (All 9 exact scenarios)
 LESEN_TEIL2_SCENARIOS = [
     {
         "title": "Fahrrad, Schwimmbad & Pizza",
@@ -957,11 +957,11 @@ LESEN_TEIL2_SCENARIOS = [
     }
 ]
 
-# Lesen Teil 3 Official Scenarios Bank (Matching exact app layout & screenshot 53)
+# Lesen Teil 3 Official Scenarios Bank (All 9 exact scenarios matching screenshots 64-68)
 LESEN_TEIL3_SCENARIOS = [
     {
         "title": "Bäckerei, Markt & Parkhaus",
-        "desc": "Signs and notices about a bakery, language school, library and car park – 5 tasks, Richtig/Falsch.",
+        "desc": "Signs and notices about a bakery, market, museum, library and car park — 5 tasks, Richtig/Falsch.",
         "example": {
             "statement": "Zum Deutsch Lernen gehen Sie in die Beethovenstraße 23.",
             "sign_title": "AN DER TÜR DER SPRACHSCHULE",
@@ -1018,66 +1018,472 @@ LESEN_TEIL3_SCENARIOS = [
         ]
     },
     {
-        "title": "Haltestelle, Schule & Freibad",
-        "desc": "Signs and notices about public transport, schools, and pools – 5 tasks, Richtig/Falsch.",
+        "title": "Apotheke, Kino & Arztpraxis",
+        "desc": "Signs and notices about an emergency pharmacy, cinema, park, shoes and a medical practice — 5 tasks, Richtig/Falsch.",
         "example": {
-            "statement": "Die Buslinie 14 fährt zum Bahnhof.",
-            "sign_title": "AN DER BUSHALTESTELLE",
-            "sign_text": "Buslinie 14 Richtung Hauptbahnhof fährt alle 10 Minuten.",
+            "statement": "Die Apotheke hat nachts Notdienst.",
+            "sign_title": "APOTHEKE NOTDIENST",
+            "sign_text": "Heute Nacht hat die Central-Apotheke für Notfälle geöffnet.",
             "answer": "richtig",
-            "explanation": "Die Haltestelle zeigt die Linie 14 zum Hauptbahnhof."
+            "explanation": "Das Schild zeigt, welche Apotheke Nachtdienst hat."
         },
         "tasks": [
             {
-                "id": "lt3_21",
-                "statement": "Kinder unter 6 Jahren zahlen keinen Eintritt ins Schwimmbad.",
+                "id": "lt3_a1",
+                "statement": "Im Kino läuft der Film erst ab 18 Jahren.",
+                "sign_title": "KINO KASSE",
+                "sign_text": "Heute Abend: 'Abenteuer in Berlin' (FSK ab 12 Jahren).",
+                "options": ["richtig", "falsch"],
+                "answer": "falsch",
+                "explanation": "Der Film ist ab 12 Jahren freigegeben, nicht ab 18."
+            },
+            {
+                "id": "lt3_a2",
+                "statement": "Im Park darf man mit Fahrrädern fahren.",
+                "sign_title": "PARKEINGANG",
+                "sign_text": "Achtung! Das Radfahren im Stadtpark ist strengstens verboten.",
+                "options": ["richtig", "falsch"],
+                "answer": "falsch",
+                "explanation": "Radfahren ist im Park verboten."
+            },
+            {
+                "id": "lt3_a3",
+                "statement": "Schuhe kann man im Schuhgeschäft umtauschen.",
+                "sign_title": "SCHUH-CENTER",
+                "sign_text": "Umtausch von ungetragenen Schuhen innerhalb von 14 Tagen gegen Kassenbon.",
+                "options": ["richtig", "falsch"],
+                "answer": "richtig",
+                "explanation": "Umtausch ist innerhalb von 14 Tagen mit Kassenbon möglich."
+            },
+            {
+                "id": "lt3_a4",
+                "statement": "Die Arztpraxis ist am Mittwochnachmittag geschlossen.",
+                "sign_title": "ARZTPRAXIS DR. BRAUN",
+                "sign_text": "Sprechzeiten:\nMo-Fr: 8-12 Uhr\nMo, Di, Do: 15-18 Uhr\nMittwochnachmittag geschlossen.",
+                "options": ["richtig", "falsch"],
+                "answer": "richtig",
+                "explanation": "Mittwochnachmittag ist die Praxis geschlossen."
+            },
+            {
+                "id": "lt3_a5",
+                "statement": "Man darf im Krankenhaus laut telefonieren.",
+                "sign_title": "FLUR IM KRANKENHAUS",
+                "sign_text": "Bitte schalten Sie Ihre Handys aus oder stellen Sie diese auf lautlos.",
+                "options": ["richtig", "falsch"],
+                "answer": "falsch",
+                "explanation": "Handys sollen lautlos gestellt oder ausgeschaltet werden."
+            }
+        ]
+    },
+    {
+        "title": "Bäckerei, Sporthalle & Computerkurs",
+        "desc": "Signs and notices about a bakery, restaurant, special offers, sports hall and computer course — 5 tasks, Richtig/Falsch.",
+        "example": {
+            "statement": "Die Sporthalle ist am Wochenende geöffnet.",
+            "sign_title": "SPORTHALLE",
+            "sign_text": "Sporthalle geöffnet Samstag und Sonntag von 9 bis 20 Uhr.",
+            "answer": "richtig",
+            "explanation": "Die Sporthalle hat am Wochenende geöffnet."
+        },
+        "tasks": [
+            {
+                "id": "lt3_b1",
+                "statement": "In der Bäckerei gibt es frische Brötchen ab 6 Uhr.",
+                "sign_title": "BÄCKEREI MÜLLER",
+                "sign_text": "Täglich ab 6:00 Uhr frische Brötchen und Kaffee.",
+                "options": ["richtig", "falsch"],
+                "answer": "richtig",
+                "explanation": "Frische Brötchen gibt es ab 6:00 Uhr."
+            },
+            {
+                "id": "lt3_b2",
+                "statement": "Das Restaurant bietet sonntags ein warmes Buffet an.",
+                "sign_title": "RESTAURANT ZUR POST",
+                "sign_text": "Jeden Sonntag von 11 bis 14 Uhr großes warmes Mittagsbuffet.",
+                "options": ["richtig", "falsch"],
+                "answer": "richtig",
+                "explanation": "Das Restaurant bietet sonntags von 11 bis 14 Uhr ein Mittagsbuffet an."
+            },
+            {
+                "id": "lt3_b3",
+                "statement": "Der Computerkurs kostet extra.",
+                "sign_title": "VOLSKHOCHSCHULE",
+                "sign_text": "Computerkurs für Anfänger: Kostenlos für alle Vereinsmitglieder.",
+                "options": ["richtig", "falsch"],
+                "answer": "falsch",
+                "explanation": "Für Vereinsmitglieder ist der Kurs kostenlos."
+            },
+            {
+                "id": "lt3_b4",
+                "statement": "Im Hallenbad muss man eine Badehaube tragen.",
+                "sign_title": "HALLENBAD",
+                "sign_text": "Im gesamten Badbereich herrscht Badekleiderpflicht. Badehauben sind freiwillig.",
+                "options": ["richtig", "falsch"],
+                "answer": "falsch",
+                "explanation": "Badehauben sind freiwillig."
+            },
+            {
+                "id": "lt3_b5",
+                "statement": "Der Bus fährt am Feiertag nach dem Sonntagsfahrplan.",
+                "sign_title": "HALTESTELLE BUS",
+                "sign_text": "An Feiertagen gilt der Sonntagsfahrplan.",
+                "options": ["richtig", "falsch"],
+                "answer": "richtig",
+                "explanation": "An Feiertagen gilt der Sonntagsfahrplan."
+            }
+        ]
+    },
+    {
+        "title": "Hausordnung, Aufzug & Mülltonnen",
+        "desc": "Signs and notices about house rules, lifts, dog leashes, waste sorting and quiet hours — 5 tasks, Richtig/Falsch.",
+        "example": {
+            "statement": "Ab 22 Uhr muss man in der Wohnung leise sein.",
+            "sign_title": "HAUSORDNUNG",
+            "sign_text": "Nachtruhe gilt von 22:00 bis 6:00 Uhr morgens.",
+            "answer": "richtig",
+            "explanation": "Die Nachtruhe beginnt um 22 Uhr."
+        },
+        "tasks": [
+            {
+                "id": "lt3_c1",
+                "statement": "Im Aufzug dürfen maximal 4 Personen fahren.",
+                "sign_title": "AUFZUG",
+                "sign_text": "Personenaufzug max. 6 Personen oder 480 kg.",
+                "options": ["richtig", "falsch"],
+                "answer": "falsch",
+                "explanation": "Maximal 6 Personen sind erlaubt."
+            },
+            {
+                "id": "lt3_c2",
+                "statement": "Hunde müssen im Treppenhaus an der Leine geführt werden.",
+                "sign_title": "HAUSEINGANG",
+                "sign_text": "Bitte führen Sie Hunde im Haus und Flur immer an der Leine.",
+                "options": ["richtig", "falsch"],
+                "answer": "richtig",
+                "explanation": "Hunde müssen an der Leine geführt werden."
+            },
+            {
+                "id": "lt3_c3",
+                "statement": "Glasflaschen gehören in den Restmüll.",
+                "sign_title": "MÜLLTONNEN",
+                "sign_text": "Glasflaschen bitte in die Glascontainer auf dem Hof werfen, nicht in den Hausmüll.",
+                "options": ["richtig", "falsch"],
+                "answer": "falsch",
+                "explanation": "Glas gehört in die Glascontainer, nicht in den Restmüll."
+            },
+            {
+                "id": "lt3_c4",
+                "statement": "Am Sonntag darf man keinen Rasen mähen.",
+                "sign_title": "GARTEN",
+                "sign_text": "Rasenmähen ist sonn- und feiertags verboten.",
+                "options": ["richtig", "falsch"],
+                "answer": "richtig",
+                "explanation": "An Sonn- und Feiertagen ist Rasenmähen verboten."
+            },
+            {
+                "id": "lt3_c5",
+                "statement": "Fahrräder stellt man in den Hausflur.",
+                "sign_title": "FLUR",
+                "sign_text": "Fahrräder und Kinderwagen dürfen nicht im Flur stehen, bitte nutzen Sie den Fahrradkeller.",
+                "options": ["richtig", "falsch"],
+                "answer": "falsch",
+                "explanation": "Fahrräder gehören in den Fahrradkeller, nicht in den Flur."
+            }
+        ]
+    },
+    {
+        "title": "Mittagsmenü, Schwimmbad & Bibliothek",
+        "desc": "Signs and notices about a lunch menu, swimming pool, bus route, job vacancy and library — 5 tasks, Richtig/Falsch.",
+        "example": {
+            "statement": "In der Mensa gibt es mittags zwei Menüs zur Auswahl.",
+            "sign_title": "MENSA SPEISEPLAN",
+            "sign_text": "Mittagsmenü: Täglich zwei warme Gerichte zur Auswahl (auch vegetarisch).",
+            "answer": "richtig",
+            "explanation": "Es gibt zwei warme Gerichte zur Auswahl."
+        },
+        "tasks": [
+            {
+                "id": "lt3_d1",
+                "statement": "Die Stadtbibliothek verleiht auch Filme auf DVD.",
+                "sign_title": "STADTBIBLIOTHEK",
+                "sign_text": "Neu in der Bibliothek: Große Auswahl an Büchern, CDs und DVDs zum Ausleihen.",
+                "options": ["richtig", "falsch"],
+                "answer": "richtig",
+                "explanation": "DVDs können ausgeliehen werden."
+            },
+            {
+                "id": "lt3_d2",
+                "statement": "Der Bus fährt am Wochenende seltener.",
+                "sign_title": "FAHRPLAN",
+                "sign_text": "Samstags und sonntags stündlicher Fahrverkehr.",
+                "options": ["richtig", "falsch"],
+                "answer": "richtig",
+                "explanation": "Am Wochenende fährt der Bus stündlich."
+            },
+            {
+                "id": "lt3_d3",
+                "statement": "Für die Ausleihe in der Bibliothek braucht man einen Ausweis.",
+                "sign_title": "BIBLIOTHEK ANMELDUNG",
+                "sign_text": "Die Ausleihe ist nur mit gültigem Leseausweis möglich.",
+                "options": ["richtig", "falsch"],
+                "answer": "richtig",
+                "explanation": "Ein gültiger Leseausweis ist erforderlich."
+            },
+            {
+                "id": "lt3_d4",
+                "statement": "Das Schwimmbad schließt im Winter komplett.",
+                "sign_title": "SCHWIMMBAD",
+                "sign_text": "Hallenbad ganzjährig geöffnet. Freibad nur im Sommer.",
+                "options": ["richtig", "falsch"],
+                "answer": "falsch",
+                "explanation": "Das Hallenbad ist ganzjährig geöffnet."
+            },
+            {
+                "id": "lt3_d5",
+                "statement": "Im Supermarkt kann man Flaschen zurückgeben.",
+                "sign_title": "LEERGUTAUTOMAT",
+                "sign_text": "Rücknahme von Mehrwegflaschen und Dosen am Automaten im Eingangsbereich.",
+                "options": ["richtig", "falsch"],
+                "answer": "richtig",
+                "explanation": "Leergutrückgabe ist am Automaten möglich."
+            }
+        ]
+    },
+    {
+        "title": "Haltestelle, Schule & Freibad",
+        "desc": "Signs and notices about a ticket machine, bus stop, school, lift and outdoor pool — 5 tasks, Richtig/Falsch.",
+        "example": {
+            "statement": "Am Ticketautomat kann man mit Karte bezahlen.",
+            "sign_title": "FAHRKARTENAUTOMAT",
+            "sign_text": "Bezahlung mit Bargeld und EC-Karte möglich.",
+            "answer": "richtig",
+            "explanation": "Der Automat akzeptiert Bargeld und EC-Karte."
+        },
+        "tasks": [
+            {
+                "id": "lt3_e1",
+                "statement": "Die Schule beginnt um 8:00 Uhr.",
+                "sign_title": "SCHULE",
+                "sign_text": "Unterrichtsbeginn ist um 8:00 Uhr. Einlass ab 7:45 Uhr.",
+                "options": ["richtig", "falsch"],
+                "answer": "richtig",
+                "explanation": "Der Unterricht beginnt um 8:00 Uhr."
+            },
+            {
+                "id": "lt3_e2",
+                "statement": "Das Freibad öffnet bei schlechtem Wetter später.",
+                "sign_title": "FREIBAD",
+                "sign_text": "Bei Dauerregen oder Gewitter bleibt das Freibad geschlossen.",
+                "options": ["richtig", "falsch"],
+                "answer": "falsch",
+                "explanation": "Es bleibt ganz geschlossen bei Dauerregen oder Gewitter."
+            },
+            {
+                "id": "lt3_e3",
+                "statement": "Der Aufzug im Bahnhof ist defekt.",
+                "sign_title": "BAHNHOF",
+                "sign_text": "Aufzug zu Gleis 3 funktioniert wieder einwandfrei.",
+                "options": ["richtig", "falsch"],
+                "answer": "falsch",
+                "explanation": "Der Aufzug funktioniert wieder."
+            },
+            {
+                "id": "lt3_e4",
+                "statement": "Kinder unter 4 Jahren zahlen keinen Eintritt ins Freibad.",
                 "sign_title": "FREIBAD KASSE",
-                "sign_text": "Eintrittspreise:\nErwachsene 4,00 €\nKinder unter 6 Jahren frei!",
+                "sign_text": "Eintritt frei für Kinder unter 4 Jahren.",
                 "options": ["richtig", "falsch"],
                 "answer": "richtig",
-                "explanation": "Auf dem Schild steht klar 'Kinder unter 6 Jahren frei!'."
+                "explanation": "Kinder unter 4 Jahren haben freien Eintritt."
             },
             {
-                "id": "lt3_22",
-                "statement": "Der Aufzug im Bahnhof funktioniert.",
-                "sign_title": "AM AUFZUG",
-                "sign_text": "Achtung! Aufzug außer Betrieb wegen Reparatur.",
+                "id": "lt3_e5",
+                "statement": "An der Haltestelle gibt es einen Fahrkartenverkauf.",
+                "sign_title": "HALTESTELLE",
+                "sign_text": "Fahrkarten bitte beim Busfahrer kaufen, kein Automat an dieser Haltestelle.",
                 "options": ["richtig", "falsch"],
                 "answer": "falsch",
-                "explanation": "Der Aufzug ist wegen Reparatur außer Betrieb."
-            },
+                "explanation": "Man muss beim Busfahrer kaufen, es gibt keinen Automaten."
+            }
+        ]
+    },
+    {
+        "title": "Vorstellung, Museum & Kinderfest",
+        "desc": "Signs and notices about a performance, admission times, clothing, a museum, children's festival and concert — 5 tasks, Richtig/Falsch.",
+        "example": {
+            "statement": "Das Museum hat montags geschlossen.",
+            "sign_title": "MUSEUM",
+            "sign_text": "Öffnungszeiten: Dienstag bis Sonntag von 10 bis 18 Uhr. Montag Ruhetag.",
+            "answer": "richtig",
+            "explanation": "Montag ist Ruhetag."
+        },
+        "tasks": [
             {
-                "id": "lt3_23",
-                "statement": "Im Supermarkt gibt es frischen Fisch.",
-                "sign_title": "FISCHTHEKE",
-                "sign_text": "Heute frischer Lachs und Forelle direkt vom Markt.",
+                "id": "lt3_f1",
+                "statement": "Das Theaterstück beginnt um 20 Uhr.",
+                "sign_title": "THEATER",
+                "sign_text": "Beginn der Abendvorstellung: 20:00 Uhr. Einlass ab 19:15 Uhr.",
                 "options": ["richtig", "falsch"],
                 "answer": "richtig",
-                "explanation": "Es gibt frischen Lachs und Forelle."
+                "explanation": "Die Vorstellung beginnt um 20:00 Uhr."
             },
             {
-                "id": "lt3_24",
-                "statement": "Hunde sind im Lebensmittelgeschäft erlaubt.",
-                "sign_title": "EINGANG SUPERMARKT",
-                "sign_text": "Aus hygienischen Gründen sind Hunde im Geschäft leider nicht erlaubt.",
+                "id": "lt3_f2",
+                "statement": "Das Kinderfest kostet Eintritt.",
+                "sign_title": "STADTPARK KINDERFEST",
+                "sign_text": "Spiel und Spaß für die ganze Familie! Eintritt frei.",
                 "options": ["richtig", "falsch"],
                 "answer": "falsch",
-                "explanation": "Hunde sind laut Schild nicht erlaubt."
+                "explanation": "Der Eintritt ist frei."
             },
             {
-                "id": "lt3_25",
-                "statement": "Die Postfiliale schließt samstags um 13 Uhr.",
+                "id": "lt3_f3",
+                "statement": "Im Museum darf man mit Blitzlicht fotografieren.",
+                "sign_title": "MUSEUM",
+                "sign_text": "Fotografieren ohne Blitz ist erlaubt.",
+                "options": ["richtig", "falsch"],
+                "answer": "falsch",
+                "explanation": "Nur ohne Blitz ist erlaubt."
+            },
+            {
+                "id": "lt3_f4",
+                "statement": "Das Konzert findet bei jedem Wetter draußen statt.",
+                "sign_title": "OPEN AIR KONZERT",
+                "sign_text": "Bei Regen findet das Konzert in der Stadthalle statt.",
+                "options": ["richtig", "falsch"],
+                "answer": "falsch",
+                "explanation": "Bei Regen zieht man in die Stadthalle um."
+            },
+            {
+                "id": "lt3_f5",
+                "statement": "Kinder unter 12 Jahren dürfen nur in Begleitung ins Konzert.",
+                "sign_title": "KONZERTHAUS",
+                "sign_text": "Kinder unter 12 Jahren nur in Begleitung Erwachsener.",
+                "options": ["richtig", "falsch"],
+                "answer": "richtig",
+                "explanation": "Begleitung Erwachsener ist erforderlich."
+            }
+        ]
+    },
+    {
+        "title": "Frühstück, Geldautomat & Tankstelle",
+        "desc": "Signs and notices about breakfast, the cash machine, parking, the workshop, the petrol station and the post office — 5 tasks, Richtig/Falsch.",
+        "example": {
+            "statement": "Die Tankstelle ist rund um die Uhr geöffnet.",
+            "sign_title": " TANKSTELLE",
+            "sign_text": "24 Stunden geöffnet – Tag und Nacht für Sie da.",
+            "answer": "richtig",
+            "explanation": "Die Tankstelle hat 24 Stunden geöffnet."
+        },
+        "tasks": [
+            {
+                "id": "lt3_g1",
+                "statement": "Das Frühstücksbuffet gibt es bis 11 Uhr.",
+                "sign_title": "HOTEL CAFÉ",
+                "sign_text": "Reichhaltiges Frühstücksbuffet von 6:30 bis 10:30 Uhr.",
+                "options": ["richtig", "falsch"],
+                "answer": "falsch",
+                "explanation": "Es geht nur bis 10:30 Uhr."
+            },
+            {
+                "id": "lt3_g2",
+                "statement": "Am Geldautomaten kann man rund um die Uhr Geld abheben.",
+                "sign_title": "BANK",
+                "sign_text": "Geldautomat im Foyer täglich von 6:00 bis 23:00 Uhr zugänglich.",
+                "options": ["richtig", "falsch"],
+                "answer": "falsch",
+                "explanation": "Zugang ist nur von 6:00 bis 23:00 Uhr möglich, nicht 24h."
+            },
+            {
+                "id": "lt3_g3",
+                "statement": "Die Postfiliale hat samstags geschlossen.",
                 "sign_title": "POSTFILIALE",
-                "sign_text": "Öffnungszeiten Samstag: 9:00 bis 13:00 Uhr.",
+                "sign_text": "Öffnungszeiten: Mo-Fr 9-18 Uhr, Sa 9-13 Uhr.",
+                "options": ["richtig", "falsch"],
+                "answer": "falsch",
+                "explanation": "Samstags hat sie von 9 bis 13 Uhr geöffnet."
+            },
+            {
+                "id": "lt3_g4",
+                "statement": "Auf dem Kundenparkplatz darf man maximal 2 Stunden parken.",
+                "sign_title": "PARKPLATZ SUPERMARKT",
+                "sign_text": "Kundenparkplatz: Parken nur während des Einkaufs (max. 2 Stunden mit Parkscheibe).",
                 "options": ["richtig", "falsch"],
                 "answer": "richtig",
-                "explanation": "Samstags schließt sie um 13:00 Uhr."
+                "explanation": "Maximal 2 Stunden mit Parkscheibe."
+            },
+            {
+                "id": "lt3_g5",
+                "statement": "In der Kfz-Werkstatt kann man heute Reifen wechseln lassen.",
+                "sign_title": "AUTOWERKSTATT",
+                "sign_text": "Heuete ohne Termin: Schnellservice für Ölwechsel und Reifenwechsel.",
+                "options": ["richtig", "falsch"],
+                "answer": "richtig",
+                "explanation": "Schnellservice ohne Termin für Reifenwechsel ist verfügbar."
+            }
+        ]
+    },
+    {
+        "title": "Notdienst, Bibliothek & Park",
+        "desc": "Signs and notices about emergency services, a medical practice, the library and the park — 5 tasks, Richtig/Falsch.",
+        "example": {
+            "statement": "Der ärztliche Notdienst ist am Wochenende erreichbar.",
+            "sign_title": "ÄRZTLICHER NOTDIENST",
+            "sign_text": "Am Wochenende und Feiertagen erreichen Sie den ärztlichen Notdienst unter Telefon 116 117.",
+            "answer": "richtig",
+            "explanation": "Er ist am Wochenende erreichbar."
+        },
+        "tasks": [
+            {
+                "id": "lt3_h1",
+                "statement": "In der Bibliothek muss man leise sein.",
+                "sign_title": "BIBLIOTHEK",
+                "sign_text": "Bitte verhalten Sie sich leise und respektieren Sie andere Leser.",
+                "options": ["richtig", "falsch"],
+                "answer": "richtig",
+                "explanation": "Man muss sich leise verhalten."
+            },
+            {
+                "id": "lt3_h2",
+                "statement": "Im Park darf man Blumen pflücken.",
+                "sign_title": "STADTPARK",
+                "sign_text": "Das Pflücken von Blumen und Betreten der Beete ist streng verboten.",
+                "options": ["richtig", "falsch"],
+                "answer": "falsch",
+                "explanation": "Pflücken ist verboten."
+            },
+            {
+                "id": "lt3_h3",
+                "statement": "Die Apotheke hat am Sonntag komplett geschlossen.",
+                "sign_title": "APOTHEKE",
+                "sign_text": "Sonntags geschlossen. Beachten Sie unseren Aushang für den Notdienst.",
+                "options": ["richtig", "falsch"],
+                "answer": "falsch",
+                "explanation": "Es gibt einen Notdienst."
+            },
+            {
+                "id": "lt3_h4",
+                "statement": "Im Park gibt es einen Spielplatz für Kinder.",
+                "sign_title": "PARKPLAN",
+                "sign_text": "Im nördlichen Teil des Parks finden Sie einen großen Kinderspielplatz.",
+                "options": ["richtig", "falsch"],
+                "answer": "richtig",
+                "explanation": "Ein Kinderspielplatz ist vorhanden."
+            },
+            {
+                "id": "lt3_h5",
+                "statement": "Man kann Bücher in der Bibliothek online verlängern.",
+                "sign_title": "BIBLIOTHEK ONLINE",
+                "sign_text": "Verlängerung der Leihfristen telefonisch oder über unsere Website rund um die Uhr möglich.",
+                "options": ["richtig", "falsch"],
+                "answer": "richtig",
+                "explanation": "Online-Verlängerung ist möglich."
             }
         ]
     }
 ]
 
-# Schreiben Teil 1 Official Scenarios Bank (All 9 exact scenarios)
+# Schreiben Teil 1 Official Scenarios Bank
 SCHREIBEN_TEIL1_SCENARIOS = [
     {
         "title": "Bodensee-Rundfahrt — Anmeldung",
@@ -1358,7 +1764,7 @@ if nav_choice == "🏠 Study Dashboard":
         * **Lesen (25 Mins - 15 Tasks across 3 Parts):**
           - Teil 1: Short Emails (Richtig/Falsch) - *All 9 official exam scenarios fully integrated!*
           - Teil 2: Classified Ads (Option A or B) - *All 9 official exam scenarios fully integrated!*
-          - Teil 3: Public Signs (Richtig/Falsch) - *Fully integrated with notice boxes & example items!*
+          - Teil 3: Public Signs (Richtig/Falsch) - *All 9 official exam scenarios fully integrated!*
         * **Schreiben (20 Mins - 2 Parts):**
           - Teil 1: Fill 5 Missing Gaps on Form with Scenario (All 9 official exam scenarios fully integrated!)
           - Teil 2: Write ~30-Word Message hitting 3 required points (All 9 official exam scenarios fully integrated!)
@@ -1845,15 +2251,34 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
     with l_tab1:
         st.markdown("**Teil 1 (Kurze Mitteilungen):** Select from all 9 official Goethe A1 practice scenarios. Read two short messages/emails and determine if the 5 statements are Richtig or Falsch.")
         
-        selected_lesen_t1_title = st.selectbox("📂 Select Lesen Teil 1 Scenario Set:", [s["title"] for s in LESEN_TEIL1_SCENARIOS], key="lesen_t1_sel")
-        selected_lesen_t1_obj = next(s for s in LESEN_TEIL1_SCENARIOS if s["title"] == selected_lesen_t1_title)
+        if "dyn_lesen_t1" not in st.session_state:
+            st.session_state.dyn_lesen_t1 = list(LESEN_TEIL1_SCENARIOS)
+
+        col_lt1_sel, col_lt1_ref = st.columns([4, 1])
+        with col_lt1_sel:
+            selected_lesen_t1_title = st.selectbox("📂 Select Lesen Teil 1 Scenario Set:", [s["title"] for s in st.session_state.dyn_lesen_t1], key="lesen_t1_sel")
+        with col_lt1_ref:
+            st.markdown("<div style='height: 28px;'></div>", unsafe_allow_html=True)
+            if st.button("🔄 Refresh Scenarios", key="ref_lesen_t1", use_container_width=True):
+                with st.spinner("Generating fresh scenarios via AI..."):
+                    try:
+                        prompt = "Generate 3 brand new alternative Goethe A1 Lesen Teil 1 scenario sets (two short texts/messages each with 5 Richtig/Falsch statements and explanations) in strict JSON list format matching LESEN_TEIL1_SCENARIOS schema."
+                        res = generate_dynamic_content(prompt, is_json=True)
+                        new_scenarios = json.loads(res)
+                        if isinstance(new_scenarios, list) and len(new_scenarios) > 0:
+                            st.session_state.dyn_lesen_t1 = new_scenarios
+                            st.rerun()
+                    except Exception as e:
+                        st.error(f"Failed to refresh: {str(e)}")
+
+        selected_lesen_t1_obj = next(s for s in st.session_state.dyn_lesen_t1 if s["title"] == selected_lesen_t1_title)
         
         st.info(f"📌 **Description:** {selected_lesen_t1_obj['desc']}")
 
         st.markdown(f"""
         <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.02);">
             <div style="display: flex; align-items: center; margin-bottom: 12px;">
-                <span style="font-size: 1.1rem; font-weight: 700; color: #1e293b;">✉️ {selected_lesen_t1_obj['text1_label']}</span>
+                <span style="font-size: 1.1rem; font-weight: 700; color: #1e293b;">✉️ {selected_lesen_t1_obj.get('text1_label', 'E-Mail')}</span>
             </div>
             <p style="white-space: pre-line; color: #334155; font-size: 0.95rem; line-height: 1.5; margin-bottom: 0px;">{selected_lesen_t1_obj['text1']}</p>
         </div>
@@ -1862,7 +2287,7 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
         st.markdown(f"""
         <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.02);">
             <div style="display: flex; align-items: center; margin-bottom: 12px;">
-                <span style="font-size: 1.1rem; font-weight: 700; color: #1e293b;">📄 {selected_lesen_t1_obj['text2_label']}</span>
+                <span style="font-size: 1.1rem; font-weight: 700; color: #1e293b;">📄 {selected_lesen_t1_obj.get('text2_label', 'Brief')}</span>
             </div>
             <p style="white-space: pre-line; color: #334155; font-size: 0.95rem; line-height: 1.5; margin-bottom: 0px;">{selected_lesen_t1_obj['text2']}</p>
         </div>
@@ -1888,8 +2313,27 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
     with l_tab2:
         st.markdown("**Teil 2 (Zuordnung / Classified Ads):** Select from all 9 official Goethe A1 practice scenarios. Match 5 user situations to website options A or B.")
         
-        selected_lesen_t2_title = st.selectbox("📂 Select Lesen Teil 2 Scenario Set:", [s["title"] for s in LESEN_TEIL2_SCENARIOS], key="lesen_t2_sel")
-        selected_lesen_t2_obj = next(s for s in LESEN_TEIL2_SCENARIOS if s["title"] == selected_lesen_t2_title)
+        if "dyn_lesen_t2" not in st.session_state:
+            st.session_state.dyn_lesen_t2 = list(LESEN_TEIL2_SCENARIOS)
+
+        col_lt2_sel, col_lt2_ref = st.columns([4, 1])
+        with col_lt2_sel:
+            selected_lesen_t2_title = st.selectbox("📂 Select Lesen Teil 2 Scenario Set:", [s["title"] for s in st.session_state.dyn_lesen_t2], key="lesen_t2_sel")
+        with col_lt2_ref:
+            st.markdown("<div style='height: 28px;'></div>", unsafe_allow_html=True)
+            if st.button("🔄 Refresh Scenarios", key="ref_lesen_t2", use_container_width=True):
+                with st.spinner("Generating fresh scenarios via AI..."):
+                    try:
+                        prompt = "Generate 3 brand new alternative Goethe A1 Lesen Teil 2 scenario sets (user situations matched against Website A and Website B options) in strict JSON list format matching LESEN_TEIL2_SCENARIOS schema."
+                        res = generate_dynamic_content(prompt, is_json=True)
+                        new_scenarios = json.loads(res)
+                        if isinstance(new_scenarios, list) and len(new_scenarios) > 0:
+                            st.session_state.dyn_lesen_t2 = new_scenarios
+                            st.rerun()
+                    except Exception as e:
+                        st.error(f"Failed to refresh: {str(e)}")
+
+        selected_lesen_t2_obj = next(s for s in st.session_state.dyn_lesen_t2 if s["title"] == selected_lesen_t2_title)
         
         st.info(f"📌 **Description:** {selected_lesen_t2_obj['desc']}")
 
@@ -1931,10 +2375,29 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
             st.metric("Lesen Teil 2 Score", f"{score} / 5")
 
     with l_tab3:
-        st.markdown("**Teil 3 (Öffentliche Hinweise / Public Signs):** Read public signs and notices and determine if statements are Richtig or Falsch.")
+        st.markdown("**Teil 3 (Öffentliche Hinweise / Public Signs):** Select from all 9 official Goethe A1 practice scenarios. Read public signs and notices and determine if statements are Richtig or Falsch.")
         
-        selected_lesen_t3_title = st.selectbox("📂 Select Lesen Teil 3 Scenario Set:", [s["title"] for s in LESEN_TEIL3_SCENARIOS], key="lesen_t3_sel")
-        selected_lesen_t3_obj = next(s for s in LESEN_TEIL3_SCENARIOS if s["title"] == selected_lesen_t3_title)
+        if "dyn_lesen_t3" not in st.session_state:
+            st.session_state.dyn_lesen_t3 = list(LESEN_TEIL3_SCENARIOS)
+
+        col_lt3_sel, col_lt3_ref = st.columns([4, 1])
+        with col_lt3_sel:
+            selected_lesen_t3_title = st.selectbox("📂 Select Lesen Teil 3 Scenario Set:", [s["title"] for s in st.session_state.dyn_lesen_t3], key="lesen_t3_sel")
+        with col_lt3_ref:
+            st.markdown("<div style='height: 28px;'></div>", unsafe_allow_html=True)
+            if st.button("🔄 Refresh Scenarios", key="ref_lesen_t3", use_container_width=True):
+                with st.spinner("Generating fresh scenarios via AI..."):
+                    try:
+                        prompt = "Generate 3 brand new alternative Goethe A1 Lesen Teil 3 scenario sets (public signs, notices, and corresponding Richtig/Falsch statements) in strict JSON list format matching LESEN_TEIL3_SCENARIOS schema."
+                        res = generate_dynamic_content(prompt, is_json=True)
+                        new_scenarios = json.loads(res)
+                        if isinstance(new_scenarios, list) and len(new_scenarios) > 0:
+                            st.session_state.dyn_lesen_t3 = new_scenarios
+                            st.rerun()
+                    except Exception as e:
+                        st.error(f"Failed to refresh: {str(e)}")
+
+        selected_lesen_t3_obj = next(s for s in st.session_state.dyn_lesen_t3 if s["title"] == selected_lesen_t3_title)
         
         st.info(f"📌 **Description:** {selected_lesen_t3_obj['desc']}")
 
@@ -2138,8 +2601,27 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
     with s_tab1:
         st.markdown("**Teil 1 (Formular):** Select from all 9 official Goethe A1 practice scenarios. Fill in the 5 missing information gaps exactly like the official Goethe-Zertifikat A1 exam interface.")
         
-        selected_schreiben_t1_title = st.selectbox("📂 Select Schreiben Teil 1 Scenario Set:", [s["title"] for s in SCHREIBEN_TEIL1_SCENARIOS])
-        selected_schreiben_t1_obj = next(s for s in SCHREIBEN_TEIL1_SCENARIOS if s["title"] == selected_schreiben_t1_title)
+        if "dyn_schreiben_t1" not in st.session_state:
+            st.session_state.dyn_schreiben_t1 = list(SCHREIBEN_TEIL1_SCENARIOS)
+
+        col_st1_sel, col_st1_ref = st.columns([4, 1])
+        with col_st1_sel:
+            selected_schreiben_t1_title = st.selectbox("📂 Select Schreiben Teil 1 Scenario Set:", [s["title"] for s in st.session_state.dyn_schreiben_t1])
+        with col_st1_ref:
+            st.markdown("<div style='height: 28px;'></div>", unsafe_allow_html=True)
+            if st.button("🔄 Refresh Scenarios", key="ref_schreiben_t1", use_container_width=True):
+                with st.spinner("Generating fresh scenarios via AI..."):
+                    try:
+                        prompt = "Generate 3 brand new alternative Goethe A1 Schreiben Teil 1 scenario sets (form filling with 5 missing gaps and scenario description) in strict JSON list format matching SCHREIBEN_TEIL1_SCENARIOS schema."
+                        res = generate_dynamic_content(prompt, is_json=True)
+                        new_scenarios = json.loads(res)
+                        if isinstance(new_scenarios, list) and len(new_scenarios) > 0:
+                            st.session_state.dyn_schreiben_t1 = new_scenarios
+                            st.rerun()
+                    except Exception as e:
+                        st.error(f"Failed to refresh: {str(e)}")
+
+        selected_schreiben_t1_obj = next(s for s in st.session_state.dyn_schreiben_t1 if s["title"] == selected_schreiben_t1_title)
         
         st.markdown(f"""
         <div style="background: #f1f5f9; border-left: 5px solid #8b5cf6; padding: 16px; border-radius: 8px; margin-bottom: 20px;">
@@ -2191,8 +2673,27 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
     with s_tab2:
         st.markdown("**Teil 2 (Mitteilung):** Select from all 9 official Goethe A1 practice scenarios. Write an email (~30 words) hitting all 3 required points.")
         
-        selected_schreiben_t2_title = st.selectbox("📂 Select Schreiben Teil 2 Scenario Set:", [s["title"] for s in SCHREIBEN_TEIL2_SCENARIOS], key="schreiben_t2_select")
-        selected_schreiben_t2_obj = next(s for s in SCHREIBEN_TEIL2_SCENARIOS if s["title"] == selected_schreiben_t2_title)
+        if "dyn_schreiben_t2" not in st.session_state:
+            st.session_state.dyn_schreiben_t2 = list(SCHREIBEN_TEIL2_SCENARIOS)
+
+        col_st2_sel, col_st2_ref = st.columns([4, 1])
+        with col_st2_sel:
+            selected_schreiben_t2_title = st.selectbox("📂 Select Schreiben Teil 2 Scenario Set:", [s["title"] for s in st.session_state.dyn_schreiben_t2], key="schreiben_t2_select")
+        with col_st2_ref:
+            st.markdown("<div style='height: 28px;'></div>", unsafe_allow_html=True)
+            if st.button("🔄 Refresh Scenarios", key="ref_schreiben_t2", use_container_width=True):
+                with st.spinner("Generating fresh scenarios via AI..."):
+                    try:
+                        prompt = "Generate 3 brand new alternative Goethe A1 Schreiben Teil 2 scenario sets (message writing task with 3 required points and sample answer) in strict JSON list format matching SCHREIBEN_TEIL2_SCENARIOS schema."
+                        res = generate_dynamic_content(prompt, is_json=True)
+                        new_scenarios = json.loads(res)
+                        if isinstance(new_scenarios, list) and len(new_scenarios) > 0:
+                            st.session_state.dyn_schreiben_t2 = new_scenarios
+                            st.rerun()
+                    except Exception as e:
+                        st.error(f"Failed to refresh: {str(e)}")
+
+        selected_schreiben_t2_obj = next(s for s in st.session_state.dyn_schreiben_t2 if s["title"] == selected_schreiben_t2_title)
         
         st.markdown(f"""
         <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.02);">
