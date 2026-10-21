@@ -1450,7 +1450,6 @@ elif nav_choice == "📖 A1 & A2 Short Stories":
         story_choice_de = st.selectbox("Select A2 Story (20 available):", list(a2_20_stories.keys()))
         story_choice_en = a2_20_stories[story_choice_de]
 
-    # Number of parts slider up to 30 parts
     num_parts = st.slider("Select Number of Story Parts (Chapters/Scenes):", min_value=5, max_value=30, value=15, step=5)
 
     if st.button("📖 Open Enchanted Storybook", type="primary"):
@@ -1479,8 +1478,6 @@ elif nav_choice == "📖 A1 & A2 Short Stories":
             }}
             """
             try:
-                # Generate up to num_parts paragraphs dynamically via prompt constraint
-                story_prompt_adjusted = story_prompt.replace("paragraphs": [", f"paragraphs": [ (ensure exactly {num_parts} items in JSON array)
                 story_json = generate_cached_content(story_prompt, is_json=True)
                 st.session_state.active_story = json.loads(story_json)
             except Exception as e:
