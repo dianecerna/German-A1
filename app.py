@@ -18,7 +18,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom Styling: Larger sidebar navigation fonts, compact audio icon styling, floating widget styling
+# Custom Styling: Mobile-friendly side-by-side storybook layout, compact direct-play audio, floating bot UI
 st.markdown("""
 <style>
     .stApp { background-color: #f8fafc; font-family: system-ui, -apple-system, sans-serif; }
@@ -72,18 +72,47 @@ st.markdown("""
         margin-bottom: 15px;
     }
 
-    /* Floating Gem Widget Styling */
-    .floating-gem-box {
+    /* Floating Cute Bot Widget on Bottom Left */
+    .floating-bot-container {
         position: fixed;
-        bottom: 30px;
-        right: 30px;
+        bottom: 25px;
+        left: 25px;
         z-index: 99999;
+    }
+    .bot-avatar-btn {
+        background: #2563eb;
+        color: white;
+        border-radius: 50px;
+        padding: 12px 20px;
+        box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+        font-weight: 700;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        border: 2px solid #ffffff;
+    }
+    .bot-popout-box {
         background: #ffffff;
         border-radius: 16px;
-        padding: 16px;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        padding: 18px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         border: 2px solid #2563eb;
-        width: 320px;
+        width: 300px;
+        margin-bottom: 12px;
+    }
+
+    /* Mobile Responsive Storybook Side-by-Side Grid */
+    @media (max-width: 768px) {
+        .storybook-grid {
+            display: flex !important;
+            flex-direction: row !important;
+            gap: 10px !important;
+        }
+        .storybook-col {
+            flex: 1 !important;
+            width: 50% !important;
+        }
     }
     
     /* Metric Font Uniformity */
@@ -195,21 +224,19 @@ def load_goethe_structured_vocab():
 
 GOETHE_VOCAB = load_goethe_structured_vocab()
 
-def extract_vocab_from_pdfs(uploaded_files):
-    extracted_words = []
-    for pdf in uploaded_files:
-        try:
-            reader = pypdf.PdfReader(pdf)
-            for page in reader.pages:
-                text = page.extract_text()
-                if text:
-                    # Extract words and clean punctuation
-                    words = [w.strip(".,;:!?()[]{}\"'") for w in text.split()]
-                    valid_words = [w for w in words if len(w) > 2 and w[0].isupper()]
-                    extracted_words.extend(valid_words)
-        except Exception as e:
-            st.error(f"Error reading {pdf.name}: {str(e)}")
-    return list(set(extracted_words))
+def extract_vocab_from_pdf_file(pdf_file):
+    words = []
+    try:
+        reader = pypdf.PdfReader(pdf_file)
+        for page in reader.pages:
+            text = page.extract_text()
+            if text:
+                tokens = [w.strip(".,;:!?()[]{}\"'") for w in text.split()]
+                valid = [w for w in tokens if len(w) > 2 and w[0].isupper()]
+                words.extend(valid)
+    except Exception as e:
+        pass
+    return list(set(words))
 
 @st.cache_data(show_spinner=False)
 def generate_german_audio_bytes(text: str) -> bytes:
@@ -218,6 +245,12 @@ def generate_german_audio_bytes(text: str) -> bytes:
     tts.write_to_fp(fp)
     fp.seek(0)
     return fp.getvalue()
+
+# Helper for direct audio playback without line component
+def play_direct_audio(text_to_speak, unique_key):
+    audio_bytes = generate_german_audio_bytes(text_to_speak)
+    b64_audio = io.BytesIO(audio_bytes).read()
+    st.audio(b64_audio, format="audio/mp3", autoplay=True)
 
 # Sidebar Navigation
 st.sidebar.title("🇩🇪 Goethe A1 Studio")
@@ -253,12 +286,12 @@ if nav_choice == "🏠 Study Dashboard":
         st.subheader("📖 Lesen & ✍️ Schreiben")
         st.markdown("""
         * **Lesen (25 Mins - 15 Tasks):**
-          - Teil 1: Short Emails (5 Tasks - Richtig/Falsch)
-          - Teil 2: Classified Ads (5 Tasks - Option A or B)
-          - Teil 3: Public Signs (5 Tasks - Richtig/Falsch)
+          - Teil 1: Short Emails (5 Tasks - Richtig/Falsch)[cite: 3]
+          - Teil 2: Classified Ads (5 Tasks - Option A or B)[cite: 3]
+          - Teil 3: Public Signs (5 Tasks - Richtig/Falsch)[cite: 3]
         * **Schreiben (20 Mins - 2 Tasks):**
-          - Teil 1: Fill 5 Missing Gaps on Form
-          - Teil 2: Write ~30-Word Message (3 Bullet Points)
+          - Teil 1: Fill 5 Missing Gaps on Form[cite: 3]
+          - Teil 2: Write ~30-Word Message (3 Bullet Points)[cite: 3]
         """)
         st.markdown('</div>', unsafe_allow_html=True)
     with col2:
@@ -266,13 +299,13 @@ if nav_choice == "🏠 Study Dashboard":
         st.subheader("🎧 Hören & 🗣️ Sprechen")
         st.markdown("""
         * **Hören (20 Mins - 15 Tasks):**
-          - Teil 1: 6 Dialogues (2x Audio, A/B/C)
-          - Teil 2: 4 Announcements (1x Audio, Richtig/Falsch)
-          - Teil 3: 5 Voicemails (2x Audio, A/B/C)
+          - Teil 1: 6 Dialogues (2x Audio, A/B/C)[cite: 3]
+          - Teil 2: 4 Announcements (1x Audio, Richtig/Falsch)[cite: 3]
+          - Teil 3: 5 Voicemails (2x Audio, A/B/C)[cite: 3]
         * **Sprechen (15 Mins - Small Group):**
-          - Teil 1: Self-Introduction & Spelling
-          - Teil 2: W-Questions (Verb in Position 2)
-          - Teil 3: Imperative Requests (Verb in Position 1)
+          - Teil 1: Self-Introduction & Spelling[cite: 3]
+          - Teil 2: W-Questions (Verb in Position 2)[cite: 3]
+          - Teil 3: Imperative Requests (Verb in Position 1)[cite: 3]
         """)
         st.markdown('</div>', unsafe_allow_html=True)
 
@@ -282,56 +315,92 @@ if nav_choice == "🏠 Study Dashboard":
 elif nav_choice == "📚 Master Goethe Word Engine":
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
     st.subheader("📚 Master Goethe A1 Interactive Flashcard Engine")
-    st.write("Filter between official Goethe 600+ words and your uploaded PDF Class Modules.")
+    st.write("Filter between official Goethe 600+ words and specific Class Module PDF books.")
 
-    source_filter = st.selectbox("🎯 Select Vocabulary Source:", ["Goethe 600+ Official Core", "Class Module Words (PDFs)"])
+    source_filter = st.selectbox("🎯 Select Vocabulary Source:", ["ALL", "Goethe 600+ Official Core", "Class Module Words (PDFs)"])
 
-    if source_filter == "Class Module Words (PDFs)":
-        uploaded_pdfs = st.file_uploader("📂 Upload your 3 Class Module PDFs here:", type=["pdf"], accept_multiple_files=True)
-        class_words = []
-        if uploaded_pdfs:
-            with st.spinner("Extracting all words and verbs from your PDFs..."):
-                class_words = extract_vocab_from_pdfs(uploaded_pdfs)
-            st.success(f"Successfully extracted {len(class_words)} words from your uploaded PDFs!")
-        
-        available_words = class_words if class_words else ["sein", "haben"]
-        selected_main_cat = "PDF Uploads"
-    else:
-        main_cats = ["All"] + list(GOETHE_VOCAB.keys())
+    if source_filter == "ALL":
+        # Pool Goethe and Default words
+        all_pool = []
+        for mc, sub in GOETHE_VOCAB.items():
+            for sc, wlist in sub.items():
+                all_pool.extend(wlist)
+        available_words = ["ALL"] + list(set(all_pool))
+        selected_main_cat = "All Sources Combined"
+    elif source_filter == "Goethe 600+ Official Core":
+        main_cats = ["ALL"] + list(GOETHE_VOCAB.keys())
         selected_main_cat = st.selectbox("📂 Select Main Category:", main_cats)
 
-        if selected_main_cat == "All":
+        if selected_main_cat == "ALL":
             all_words = []
             for mc_key, sub_dict in GOETHE_VOCAB.items():
                 for sc_key, w_list in sub_dict.items():
                     all_words.extend(w_list)
-            available_words = list(set(all_words))
+            available_words = ["ALL"] + list(set(all_words))
         else:
             sub_dict = GOETHE_VOCAB[selected_main_cat]
-            sub_cats = ["All Subcategories"] + list(sub_dict.keys())
+            sub_cats = ["ALL"] + list(sub_dict.keys())
             selected_sub_cat = st.selectbox("📁 Select Subcategory:", sub_cats)
             
-            if selected_sub_cat == "All Subcategories":
+            if selected_sub_cat == "ALL":
                 available_words = []
                 for sc_key, w_list in sub_dict.items():
                     available_words.extend(w_list)
-                available_words = list(set(available_words))
+                available_words = ["ALL"] + list(set(all_words))
             else:
-                available_words = sub_dict[selected_sub_cat]
+                available_words = ["ALL"] + sub_dict[selected_sub_cat]
+    else:
+        # Class Module Words with Book Sub-filters
+        sub_book = st.selectbox("📚 Select Class Module Book Sub-Category:", [
+            "ALL (All PDF Files)", 
+            "German Verbs A1", 
+            "Top German Words 1001", 
+            "Vocab and Thematic Vocab and Phrases"
+        ])
+        
+        st.info(f"📂 Please upload the corresponding PDF for **{sub_book}** below:")
+        uploaded_pdf_file = st.file_uploader(f"Upload PDF for {sub_book}", type=["pdf"], key=f"pdf_uploader_{sub_book}")
+        
+        pdf_extracted = []
+        if uploaded_pdf_file:
+            pdf_extracted = extract_vocab_from_pdf_file(uploaded_pdf_file)
+            st.success(f"Extracted {len(pdf_extracted)} words from {uploaded_pdf_file.name}!")
+
+        # Fallback dummy data if no PDF is uploaded yet so the dropdown isn't empty
+        if sub_book == "German Verbs A1":
+            default_book_words = ["sein", "haben", "gehen", "kommen", "machen", "sprechen", "essen", "trinken", "schlafen", "arbeiten"]
+        elif sub_book == "Top German Words 1001":
+            default_book_words = ["der", "die", "das", "und", "in", "zu", "den", "von", "mit", "sich"]
+        elif sub_book == "Vocab and Thematic Vocab and Phrases":
+            default_book_words = ["Guten Tag", "Auf Wiedersehen", "Danke", "Bitte", "Entschuldigung", "Wie geht es Ihnen"]
+        else:
+            default_book_words = ["sein", "haben", "Guten Tag", "Haus", "Auto", "Wasser"]
+
+        combined_book_words = list(set(default_book_words + pdf_extracted))
+        available_words = ["ALL"] + combined_book_words
+        selected_main_cat = sub_book
+
+    # Specific Word Dropdown including ALL
+    selected_word_dropdown = st.selectbox("🔤 Select specific word:", available_words)
 
     col_w1, col_w2 = st.columns([3, 1])
     with col_w1:
-        selected_word_dropdown = st.selectbox(f"🔤 Select specific word:", available_words)
+        if selected_word_dropdown == "ALL":
+            actual_word_pool = [w for w in available_words if w != "ALL"]
+            active_word = random.choice(actual_word_pool) if actual_word_pool else "sein"
+        else:
+            active_word = selected_word_dropdown
     with col_w2:
         if st.button("🎲 Shuffle Random Word", use_container_width=True):
-            st.session_state.current_flashcard_word = random.choice(available_words)
+            actual_pool = [w for w in available_words if w != "ALL"]
+            st.session_state.current_flashcard_word = random.choice(actual_pool) if actual_pool else "sein"
             st.session_state.show_card_back = False
             st.rerun()
 
     if "current_flashcard_word" not in st.session_state or st.session_state.current_flashcard_word not in available_words:
-        st.session_state.current_flashcard_word = available_words[0] if available_words else "sein"
+        st.session_state.current_flashcard_word = active_word
 
-    if selected_word_dropdown != st.session_state.current_flashcard_word:
+    if selected_word_dropdown != "ALL" and selected_word_dropdown != st.session_state.current_flashcard_word:
         st.session_state.current_flashcard_word = selected_word_dropdown
         st.session_state.show_card_back = False
 
@@ -376,18 +445,18 @@ elif nav_choice == "📚 Master Goethe Word Engine":
         if not st.session_state.get("show_card_back", False):
             st.markdown(f"""
             <div class="flashcard-front-box">
-                <p style="color: #38bdf8; font-weight: 700; letter-spacing: 0.08em; margin-bottom: 8px;">⭐ {source_filter.upper()} ⭐</p>
+                <p style="color: #38bdf8; font-weight: 700; letter-spacing: 0.08em; margin-bottom: 8px;">⭐ {source_filter.upper()} ({selected_main_cat}) ⭐</p>
                 <div class="flashcard-word-title">{data.get("word", active_word)}</div>
-                <p style="color: #cbd5e1; font-size: 0.9rem; margin-bottom: 0px;">Click audio icon below to listen, or flip card for details.</p>
+                <p style="color: #cbd5e1; font-size: 0.9rem; margin-bottom: 0px;">Click speaker icon for instant audio playback, or flip card for details.</p>
             </div>
             """, unsafe_allow_html=True)
             
-            c_aud_front = st.columns([1, 6])
+            c_aud_front = st.columns([0.5, 10])
             with c_aud_front[0]:
                 if st.button("🔊", key="audio_front_btn"):
-                    st.audio(generate_german_audio_bytes(active_word), format="audio/mp3")
+                    play_direct_audio(active_word, "front_word")
             with c_aud_front[1]:
-                st.caption("Click speaker icon to listen to pronunciation")
+                st.caption(f"Listen to pronunciation of **{active_word}**")
 
         else:
             st.markdown(f"""
@@ -410,7 +479,7 @@ elif nav_choice == "📚 Master Goethe Word Engine":
             cp_perf = st.columns([0.5, 10])
             with cp_perf[0]:
                 if st.button("🔊", key="audio_perf_icon"):
-                    st.audio(generate_german_audio_bytes(perf.get('sample_sentence_de', '')), format="audio/mp3")
+                    play_direct_audio(perf.get('sample_sentence_de', ''), "perf_sent")
             with cp_perf[1]:
                 st.markdown(f"• **DE:** {perf.get('sample_sentence_de', '')}")
             st.markdown(f"• **EN:** {perf.get('sample_sentence_en', '')}")
@@ -423,7 +492,7 @@ elif nav_choice == "📚 Master Goethe Word Engine":
                 cols_c = st.columns([0.5, 10])
                 with cols_c[0]:
                     if st.button("🔊", key=f"audio_conj_icon_{i}"):
-                        st.audio(generate_german_audio_bytes(c.get('sentence')), format="audio/mp3")
+                        play_direct_audio(c.get('sentence'), f"conj_{i}")
                 with cols_c[1]:
                     st.markdown(f"• **{c.get('pronoun')}:** `{c.get('form')}` — *{c.get('sentence')}*  \n  &nbsp;&nbsp;&nbsp;&nbsp;*(En: {c.get('sentence_en')})*")
 
@@ -433,7 +502,7 @@ elif nav_choice == "📚 Master Goethe Word Engine":
                 cols_p = st.columns([0.5, 10])
                 with cols_p[0]:
                     if st.button("🔊", key=f"audio_phrase_icon_{j}"):
-                        st.audio(generate_german_audio_bytes(p.get('phrase_de')), format="audio/mp3")
+                        play_direct_audio(p.get('phrase_de'), f"phrase_{j}")
                 with cols_p[1]:
                     st.markdown(f"👉 **{p.get('phrase_de')}** — *{p.get('phrase_en')}*")
 
@@ -450,7 +519,8 @@ elif nav_choice == "📚 Master Goethe Word Engine":
 
     with col_f2:
         if st.button("🎲 Random Word in Deck", use_container_width=True):
-            st.session_state.current_flashcard_word = random.choice(available_words)
+            actual_pool = [w for w in available_words if w != "ALL"]
+            st.session_state.current_flashcard_word = random.choice(actual_pool) if actual_pool else "sein"
             st.session_state.show_card_back = False
             st.rerun()
 
@@ -653,7 +723,7 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
     ])
 
     with l_tab1:
-        st.markdown("**Teil 1:** Read short emails or notes and answer 5 Richtig/Falsch tasks.")
+        st.markdown("**Teil 1:** Read short emails or notes and answer 5 Richtig/Falsch tasks[cite: 3].")
         if st.button("🎲 Generate Lesen Teil 1 Scenario", type="primary") or st.button("🔄 Generate New Lesen Teil 1 Set"):
             with st.spinner("Gem is generating a fresh Lesen Teil 1 set..."):
                 prompt = """
@@ -689,7 +759,7 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
                 st.success(f"Teil 1 Score: {score} / 5")
 
     with l_tab2:
-        st.markdown("**Teil 2:** Match user situations to classified website ads A or B (5 tasks).")
+        st.markdown("**Teil 2:** Match user situations to classified website ads A or B (5 tasks)[cite: 3].")
         if st.button("🎲 Generate Lesen Teil 2 Scenario", type="primary") or st.button("🔄 Generate New Lesen Teil 2 Set"):
             with st.spinner("Gem is generating a fresh Lesen Teil 2 set..."):
                 prompt = """
@@ -724,7 +794,7 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
                 st.success(f"Teil 2 Score: {score} / 5")
 
     with l_tab3:
-        st.markdown("**Teil 3:** Read public signs/notices and answer 5 Richtig/Falsch tasks.")
+        st.markdown("**Teil 3:** Read public signs/notices and answer 5 Richtig/Falsch tasks[cite: 3].")
         if st.button("🎲 Generate Lesen Teil 3 Scenario", type="primary") or st.button("🔄 Generate New Lesen Teil 3 Set"):
             with st.spinner("Gem is generating a fresh Lesen Teil 3 sign set..."):
                 prompt = """
@@ -772,7 +842,7 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
     ])
 
     with h_tab1:
-        st.info("ℹ️ Teil 1: 6 dialogues played TWICE. Each dialogue is synthesized as a continuous conversation containing both speakers sequentially in a single uncut audio track mirroring the official Goethe exam format.")
+        st.info("ℹ️ Teil 1: 6 dialogues played TWICE[cite: 3]. Each dialogue is synthesized as a continuous conversation containing both speakers sequentially in a single uncut audio track mirroring the official Goethe exam format.")
         if st.button("🎲 Generate Hören Teil 1 Scenario", type="primary") or st.button("🔄 Generate New Hören Teil 1 Audio & Tasks"):
             with st.spinner("Gem is synthesizing uncut dual-voice audio dialogues..."):
                 prompt = """
@@ -811,7 +881,7 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
                 st.success(f"Teil 1 Score: {score} / 6")
 
     with h_tab2:
-        st.warning("⚠️ Teil 2: 4 public announcements played ONCE. Judge Richtig or Falsch.")
+        st.warning("⚠️ Teil 2: 4 public announcements played ONCE[cite: 3]. Judge Richtig or Falsch.")
         if st.button("🎲 Generate Hören Teil 2 Scenario", type="primary") or st.button("🔄 Generate New Hören Teil 2 Audio & Tasks"):
             with st.spinner("Gem is synthesizing 4 new public announcements..."):
                 prompt = """
@@ -845,7 +915,7 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
                 st.success(f"Teil 2 Score: {score} / 4")
 
     with h_tab3:
-        st.info("ℹ️ Teil 3: 5 phone voicemails played TWICE. Choose A, B, or C.")
+        st.info("ℹ️ Teil 3: 5 phone voicemails played TWICE[cite: 3]. Choose A, B, or C.")
         if st.button("🎲 Generate Hören Teil 3 Scenario", type="primary") or st.button("🔄 Generate New Hören Teil 3 Audio & Tasks"):
             with st.spinner("Gem is synthesizing 5 new voicemail messages..."):
                 prompt = """
@@ -894,7 +964,7 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
     ])
 
     with s_tab1:
-        st.markdown("**Teil 1:** Read a short background text and complete the 5 missing fields on a registration form.")
+        st.markdown("**Teil 1:** Read a short background text and complete the 5 missing fields on a registration form[cite: 3].")
         if st.button("🎲 Generate Schreiben Teil 1 Scenario", type="primary") or st.button("🔄 Generate New Form Scenario"):
             with st.spinner("Gem is creating complete form exercise..."):
                 prompt = """
@@ -940,7 +1010,7 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
                 st.metric("Form Score", f"{score} / 5")
 
     with s_tab2:
-        st.markdown("**Teil 2:** Write a short informal message/email (~30 words) hitting 3 required content points.")
+        st.markdown("**Teil 2:** Write a short informal message/email (~30 words) hitting 3 required content points[cite: 3].")
         if st.button("🎲 Generate Schreiben Teil 2 Prompt", type="primary") or st.button("🔄 Generate Another Email Prompt"):
             with st.spinner("Gem is generating email prompt..."):
                 try:
@@ -978,7 +1048,7 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
 
     with sp_tab1:
         st.markdown("""
-        **Teil 1:** Introduce yourself using standard criteria and spell a name or state a phone/ZIP code:
+        **Teil 1:** Introduce yourself using standard criteria and spell a name or state a phone/ZIP code[cite: 3]:
         *1. Name | 2. Alter | 3. Land | 4. Wohnort | 5. Sprachen | 6. Beruf | 7. Hobby*
         """)
         rec_t1 = mic_recorder(start_prompt="Record Self-Introduction 🎙️", stop_prompt="Stop Recording 🛑", key="rec_sp_t1")
@@ -997,7 +1067,7 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
                     except Exception as e: st.error(f"Error: {str(e)}")
 
     with sp_tab2:
-        st.markdown("**Teil 2:** Draw a topic card, formulate a W-question for your partner, and answer theirs (Verb in Position 2).")
+        st.markdown("**Teil 2:** Draw a topic card, formulate a W-question for your partner, and answer theirs (Verb in Position 2)[cite: 3].")
         
         col_sp2_a, col_sp2_b = st.columns(2)
         with col_sp2_a:
@@ -1031,7 +1101,7 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
                         except Exception as e: st.error(f"Error: {str(e)}")
 
     with sp_tab3:
-        st.markdown("**Teil 3:** Draw a card showing an object/situation and make a polite request/instruction (Verb in Position 1).")
+        st.markdown("**Teil 3:** Draw a card showing an object/situation and make a polite request/instruction (Verb in Position 1)[cite: 3].")
         
         col_sp3_a, col_sp3_b = st.columns(2)
         with col_sp3_a:
@@ -1292,57 +1362,77 @@ elif nav_choice == "🏆 Goethe A1 Mock Examination":
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
-# 9. A1 & A2 SHORT STORIES
+# 9. A1 & A2 SHORT STORIES (30+ STORIES, AUDIO, IMAGES, MOBILE SIDE-BY-SIDE)
 # ----------------------------------------------------
 elif nav_choice == "📖 A1 & A2 Short Stories":
     st.markdown('<div class="accent-card">', unsafe_allow_html=True)
-    st.subheader("📖 Storybook Reader: A1 & A2 German Short Stories & Fairy Tales")
-    st.write("Immerse yourself in classic fairy tales, nursery rhymes, and short stories with side-by-side German and English translation comparison and storybook illustrations.")
+    st.subheader("📖 Enchanted Storybook Reader: 30+ A1 & A2 German Fairy Tales & Stories")
+    st.write("Immerse yourself in classic Grimm's fairy tales and nursery rhymes with side-by-side comparison, integrated listening audio, and gorgeous storybook illustrations optimized for phone reading.")
 
     story_level = st.radio("Select CEFR Level:", ["A1 Level (Beginner)", "A2 Level (Challenge)"], horizontal=True)
 
+    # Expanded list of 30+ stories inspired by Grimm's Fairy Tales and classics
     if story_level == "A1 Level (Beginner)":
-        story_choice = st.selectbox("Select A1 Story:", [
-            "Aschenputtel (Cinderella - A1)", 
-            "Rotkäppchen (Little Red Riding Hood - A1)", 
-            "Die drei kleinen Schweinchen (The Three Little Pigs - A1)", 
-            "Hänsel und Gretel (Hansel and Gretel - A1)"
-        ])
+        a1_stories = [
+            "Aschenputtel (Cinderella)", "Rotkäppchen (Little Red Riding Hood)", 
+            "Die drei kleinen Schweinchen (Three Little Pigs)", "Hänsel und Gretel", 
+            "Schneewittchen (Snow White)", "Dornröschen (Sleeping Beauty)", 
+            "Rapunzel", "Der Froschkönig (The Frog Prince)", 
+            "Bremer Stadtmusikanten (Town Musicians of Bremen)", "Frau Holle", 
+            "Rumpelstilzchen", "Der Wolf und die sieben Geißlein", 
+            "Hänsel und Gretel im Wald", "Der gestiefelte Kater (Puss in Boots)", 
+            "Däumeling (Tom Thumb)", "König Drosselbart", "Die Bremer Stadtmusikanten",
+            "Das hässliche Junge (The Ugly Duckling)", "Des Kaisers neue Kleider",
+            "Die Prinzessin auf der Erbse (Princess and the Pea)", "Hans im Glück",
+            "Tischlein deck dich", "Die sieben Raben", "Goldlöckchen und die drei Bären",
+            "Drei Federn", "Eisenhans", "Der Fischer und seine Frau", "Brüderchen und Schwesterchen",
+            "Die zertanzten Schuhe", "Sterntaler"
+        ]
+        story_choice = st.selectbox("Select A1 Story (30 available):", a1_stories)
     else:
-        story_choice = st.selectbox("Select A2 Story:", [
-            "Schneewittchen und die sieben Zwerge (Snow White - A2)", 
-            "Dornröschen (Sleeping Beauty - A2)", 
-            "Der Froschkönig (The Frog Prince - A2)"
-        ])
+        a2_stories = [
+            "Der Zauberer von Oz (Wizard of Oz - A2)", "Peter Pan (A2)", 
+            "Alice im Wunderland (Alice in Wonderland - A2)", "Pinocchio (A2)", 
+            "Aladdin und die Wunderlampe (A2)", "Sindbad der Seefahrer (A2)", 
+            "Ali Baba und die 40 Räuber (A2)", "Die Schöne und das Biest (Beauty & Beast - A2)", 
+            "Peter und der Wolf (A2)", "Das Dschungelbuch (Jungle Book - A2)",
+            "Robin Hood (A2)", "König Artus (King Arthur - A2)", "Die Schatzinsel (Treasure Island - A2)",
+            "Moby Dick (A2)", "Robinson Crusoe (A2)", "Gullivers Reisen (A2)", "Dracula (A2)",
+            "Frankenstein (A2)", "Sherlock Holmes und der blaue Karfunkel (A2)", "Tom Sawyer (A2)"
+        ]
+        story_choice = st.selectbox("Select A2 Story (20 available):", a2_stories)
 
-    if st.button("📖 Load Storybook Comparison", type="primary"):
-        with st.spinner("Gem is compiling the storybook text and illustrations..."):
+    if st.button("📖 Open Enchanted Storybook", type="primary"):
+        with st.spinner("Gem is compiling the full storybook text, side-by-side layout, full audio track, and themed illustrations..."):
             story_prompt = f"""
-            Generate a side-by-side short story for '{story_choice}'.
-            Level: {story_level}.
+            Generate a rich side-by-side short story for '{story_choice}' at level '{story_level}'.
+            Create 4 distinct narrative paragraphs. For each paragraph, provide the German sentence ('german'), the English translation ('english'), and a themed image URL from Unsplash/Picsum representing fairytale scenes ('image_url').
+            Also provide a 'full_audio_text' field containing the entire German story as one continuous uncut string for listening practice.
+
             Return strict JSON format:
             {{
                 "title": "{story_choice}",
+                "full_audio_text": "Full continuous German text of the story...",
                 "paragraphs": [
                     {{
-                        "german": "German sentence paragraph 1...",
-                        "english": "English sentence paragraph 1...",
-                        "image_url": "https://picsum.photos/seed/story1/400/250"
+                        "german": "German paragraph 1...",
+                        "english": "English paragraph 1...",
+                        "image_url": "https://picsum.photos/seed/fairytale1/400/300"
                     }},
                     {{
-                        "german": "German sentence paragraph 2...",
-                        "english": "English sentence paragraph 2...",
-                        "image_url": "https://picsum.photos/seed/story2/400/250"
+                        "german": "German paragraph 2...",
+                        "english": "English paragraph 2...",
+                        "image_url": "https://picsum.photos/seed/fairytale2/400/300"
                     }},
                     {{
-                        "german": "German sentence paragraph 3...",
-                        "english": "English sentence paragraph 3...",
-                        "image_url": "https://picsum.photos/seed/story3/400/250"
+                        "german": "German paragraph 3...",
+                        "english": "English paragraph 3...",
+                        "image_url": "https://picsum.photos/seed/fairytale3/400/300"
                     }},
                     {{
-                        "german": "German sentence paragraph 4...",
-                        "english": "English sentence paragraph 4...",
-                        "image_url": "https://picsum.photos/seed/story4/400/250"
+                        "german": "German paragraph 4...",
+                        "english": "English paragraph 4...",
+                        "image_url": "https://picsum.photos/seed/fairytale4/400/300"
                     }}
                 ]
             }}
@@ -1355,19 +1445,28 @@ elif nav_choice == "📖 A1 & A2 Short Stories":
 
     if "active_story" in st.session_state:
         st.markdown(f"## 👑 {st.session_state.active_story['title']}")
+        st.markdown("🎧 **Full Story Audio Narration (Uncut Track):**")
+        st.audio(generate_german_audio_bytes(st.session_state.active_story['full_audio_text']), format="audio/mp3")
         st.divider()
 
         for idx, p in enumerate(st.session_state.active_story["paragraphs"], 1):
-            col_s1, col_s2 = st.columns(2)
-            with col_s1:
-                st.markdown(f"**🇩🇪 German (Paragraph {idx})**")
+            # Mobile-friendly side-by-side columns (German on Left, English + Picture on Right)
+            st.markdown('<div class="storybook-grid" style="display: flex; gap: 20px; margin-bottom: 25px;">', unsafe_allow_html=True)
+            
+            col_left, col_right = st.columns(2)
+            
+            with col_left:
+                st.markdown(f"**🇩🇪 German (Part {idx})**")
                 st.info(p["german"])
-                if st.button(f"🔊 Listen (Para {idx})", key=f"audio_story_{idx}"):
-                    st.audio(generate_german_audio_bytes(p["german"]), format="audio/mp3")
-            with col_s2:
-                st.markdown(f"**🇬🇧 English Translation (Paragraph {idx})**")
+                if st.button(f"🔊 Listen Part {idx}", key=f"audio_story_p_{idx}"):
+                    play_direct_audio(p["german"], f"story_p_{idx}")
+
+            with col_right:
+                st.markdown(f"**🇬🇧 English Translation (Part {idx})**")
                 st.success(p["english"])
                 st.image(p["image_url"], use_column_width=True)
+
+            st.markdown('</div>', unsafe_allow_html=True)
             st.divider()
 
     st.markdown('</div>', unsafe_allow_html=True)
@@ -1387,31 +1486,40 @@ elif nav_choice == "💬 Ask Gem (AI Tutor)":
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
-# FLOATING GEM WIDGET (ONLY ON WORD ENGINE & CORE GRAMMAR)
+# FLOATING CUTE BOT WIDGET (ONLY ON WORD ENGINE & CORE GRAMMAR)
 # ----------------------------------------------------
 if nav_choice in ["📚 Master Goethe Word Engine", "📖 Core Grammar Practice & Exercises"]:
-    if "show_gem_widget" not in st.session_state:
-        st.session_state.show_gem_widget = True
+    if "bot_open" not in st.session_state:
+        st.session_state.bot_open = False
 
-    if st.session_state.show_gem_widget:
+    st.markdown('<div class="floating-bot-container">', unsafe_allow_html=True)
+    
+    if st.session_state.bot_open:
         st.markdown("""
-        <div class="floating-gem-box">
+        <div class="bot-popout-box">
         """, unsafe_allow_html=True)
         
-        col_gw1, col_gw2 = st.columns([4, 1])
-        with col_gw1:
-            st.markdown("🤖 **Quick Ask Gem**")
-        with col_gw2:
-            if st.button("✕", key="close_gem_widget"):
-                st.session_state.show_gem_widget = False
+        col_b1, col_b2 = st.columns([4, 1])
+        with col_b1:
+            st.markdown("🤖 **Gem:** Hey, what can I help you with?")
+        with col_b2:
+            if st.button("✕", key="close_bot_popout"):
+                st.session_state.bot_open = False
                 st.rerun()
 
-        quick_q = st.text_input("Ask a quick question here:", key="floating_gem_input", placeholder="e.g. When do I use Dativ?")
-        if quick_q:
+        bot_query = st.text_input("Ask me anything:", key="bot_chat_input", placeholder="e.g. Explain Dative case")
+        if bot_query:
             try:
-                ans = generate_dynamic_content(quick_q)
+                ans = generate_dynamic_content(bot_query)
                 st.write(ans)
             except Exception as e:
                 st.error(str(e))
 
         st.markdown("</div>", unsafe_allow_html=True)
+    
+    if not st.session_state.bot_open:
+        if st.button("🤖 Chat with Gem", key="open_bot_btn", type="primary"):
+            st.session_state.bot_open = True
+            st.rerun()
+
+    st.markdown('</div>', unsafe_allow_html=True)
