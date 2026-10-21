@@ -186,7 +186,7 @@ def play_direct_audio(text_to_speak, unique_key):
     b64_audio = io.BytesIO(audio_bytes).read()
     st.audio(b64_audio, format="audio/mp3", autoplay=True)
 
-# Official Goethe A1 Inventar Categories & Subcategories matching the exact structure requested
+# Official Goethe A1 Inventar Categories & Subcategories
 GOETHE_CATEGORIES_MAP = {
     "Person": [
         "Name", "Adresse", "Telefon", "Geburtsdatum", "Geburtsort", "Alter", 
@@ -225,26 +225,19 @@ GOETHE_CATEGORIES_MAP = {
 
 @st.cache_data
 def extract_and_categorize_words_from_pdf(uploaded_file):
-    """
-    Parses pages 9 to 27 (Alphabetische Wortliste) from the provided Goethe A1 PDF 
-    and dynamically categorizes them into the official categories and subcategories.
-    """
     raw_words = []
     try:
         reader = pypdf.PdfReader(uploaded_file)
-        # Pages 9 to 27 correspond to index 8 to 27 in 0-based indexing
         for i in range(8, min(len(reader.pages), 28)):
             text = reader.pages[i].extract_text()
             if text:
                 lines = text.split('\n')
                 for line in lines:
                     line_str = line.strip()
-                    # Extract vocabulary entries (usually starting with articles or lowercase/uppercase words)
                     if line_str and not line_str.startswith("INVENTARE") and not line_str.startswith("C") and not line_str.isdigit():
                         tokens = line_str.split()
                         if tokens:
                             first_token = tokens[0]
-                            # Clean punctuation
                             cleaned = first_token.strip(".,;:!?()[]{}\"'")
                             if cleaned and len(cleaned) > 1:
                                 raw_words.append(cleaned)
@@ -255,14 +248,12 @@ def extract_and_categorize_words_from_pdf(uploaded_file):
     if not raw_words:
         raw_words = ["sein", "haben", "kommen", "wohnen", "sprechen", "essen", "trinken", "Guten Tag", "Auf Wiedersehen"]
 
-    # Build category dict matching official layout
     categorized_dict = {}
     for cat, subcats in GOETHE_CATEGORIES_MAP.items():
         categorized_dict[cat] = {}
         for sub in subcats:
             categorized_dict[cat][sub] = []
 
-    # Distribute extracted words across categories using round-robin / hashing or defaults
     subcat_flat_list = []
     for cat, subcats in GOETHE_CATEGORIES_MAP.items():
         for sub in subcats:
@@ -332,7 +323,7 @@ if nav_choice == "🏠 Study Dashboard":
         st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
-# 2. MASTER GOETHE WORD ENGINE (OFFICIAL CATEGORIES & PAGES 9-27)
+# 2. MASTER GOETHE WORD ENGINE
 # ----------------------------------------------------
 elif nav_choice == "📚 Master Goethe Word Engine":
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
@@ -342,7 +333,6 @@ elif nav_choice == "📚 Master Goethe Word Engine":
     uploaded_vocab_pdf = st.file_uploader("📂 Upload official Goethe A1 PDF:", type=["pdf"])
 
     if "goethe_categorized_vocab" not in st.session_state:
-        # Default fallback categorization based on official map
         st.session_state.goethe_categorized_vocab = {
             cat: {sub: ["sein", "haben", "kommen", "wohnen"] for sub in subs}
             for cat, subs in GOETHE_CATEGORIES_MAP.items()
@@ -355,7 +345,6 @@ elif nav_choice == "📚 Master Goethe Word Engine":
 
     vocab_tree = st.session_state.goethe_categorized_vocab
 
-    # Category and Subcategory selection
     main_cats = ["ALL"] + list(vocab_tree.keys())
     selected_main_cat = st.selectbox("📂 Select Main Category:", main_cats)
 
@@ -1401,32 +1390,42 @@ elif nav_choice == "🏆 Goethe A1 Mock Examination":
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
-# 9. A1 & A2 SHORT STORIES (8-10 PARTS, MOVIE IMAGES, ENGLISH TITLES)
+# 9. A1 & A2 SHORT STORIES (20 STORIES EACH, UP TO 30 PARTS, PERSONALIZED CARTOON IMAGES)
 # ----------------------------------------------------
 elif nav_choice == "📖 A1 & A2 Short Stories":
     st.markdown('<div class="accent-card">', unsafe_allow_html=True)
-    st.subheader("📖 Enchanted Storybook Reader: Fairy Tales & Disney Classics")
-    st.write("Immerse yourself in fairy tales, Disney classics, and fiction with side-by-side comparison, integrated listening audio, and authentic movie-themed imagery.")
+    st.subheader("📖 Enchanted Storybook Reader: 20 Fairy Tales & 20 Classics (Up to 30 Parts)")
+    st.write("Immerse yourself in 20 A1 fairy tales and 20 A2 classic fictions with side-by-side comparison, integrated listening audio, and personalized cartoon or animated storybook illustrations.")
 
-    story_level = st.radio("Select CEFR Level:", ["A1 Level (Beginner - Fairy Tales & Disney)", "A2 Level (Challenge - Fiction & Classics)"], horizontal=True)
+    story_level = st.radio("Select CEFR Level:", ["A1 Level (20 Fairy Tales & Disney Stories)", "A2 Level (20 Fiction Classics & Novels)"], horizontal=True)
 
-    if story_level == "A1 Level (Beginner - Fairy Tales & Disney)":
-        a1_stories_map = {
+    if story_level == "A1 Level (20 Fairy Tales & Disney Stories)":
+        a1_20_stories = {
             "Aschenputtel (Cinderella)": "Cinderella",
             "Rotkäppchen (Little Red Riding Hood)": "Little Red Riding Hood",
             "Die kleine Meerjungfrau (The Little Mermaid)": "The Little Mermaid",
-            "Schneewittchen und die sieben Zwerge (Snow White)": "Snow White",
+            "Schneewittchen (Snow White)": "Snow White",
             "Die Schöne und das Biest (Beauty and the Beast)": "Beauty and the Beast",
             "Aladdin und die Wunderlampe (Aladdin)": "Aladdin",
             "Dornröschen (Sleeping Beauty)": "Sleeping Beauty",
-            "Rapunkel (Rapunzel / Tangled)": "Tangled",
+            "Rapunzel (Tangled)": "Rapunzel",
             "Der König der Löwen (The Lion King)": "The Lion King",
-            "Die Eiskönigin (Frozen)": "Frozen"
+            "Die Eiskönigin (Frozen)": "Frozen",
+            "Hänsel und Gretel": "Hansel and Gretel",
+            "Der Froschkönig (The Frog Prince)": "The Frog Prince",
+            "Peter Pan": "Peter Pan",
+            "Pinocchio": "Pinocchio",
+            "Dumbo": "Dumbo",
+            "Bambi": "Bambi",
+            "Das Dschungelbuch (The Jungle Book)": "The Jungle Book",
+            "Alice im Wunderland (Alice in Wonderland)": "Alice in Wonderland",
+            "Herkules (Hercules)": "Hercules",
+            "Mulan": "Mulan"
         }
-        story_choice_de = st.selectbox("Select A1 Story:", list(a1_stories_map.keys()))
-        story_choice_en = a1_stories_map[story_choice_de]
+        story_choice_de = st.selectbox("Select A1 Story (20 available):", list(a1_20_stories.keys()))
+        story_choice_en = a1_20_stories[story_choice_de]
     else:
-        a2_stories_map = {
+        a2_20_stories = {
             "Moby Dick": "Moby Dick",
             "Die Schatzinsel (Treasure Island)": "Treasure Island",
             "Robinson Crusoe": "Robinson Crusoe",
@@ -1436,69 +1435,52 @@ elif nav_choice == "📖 A1 & A2 Short Stories":
             "Dracula": "Dracula",
             "Frankenstein": "Frankenstein",
             "In 80 Tagen um die Welt (Around the World in 80 Days)": "Around the World in 80 Days",
-            "Der alte Mann und das Meer (The Old Man and the Sea)": "The Old Man and the Sea"
+            "Der alte Mann und das Meer (The Old Man and the Sea)": "The Old Man and the Sea",
+            "Die Zeitmaschine (The Time Machine)": "The Time Machine",
+            "Krieg der Welten (The War of the Worlds)": "The War of the Worlds",
+            "Der letzte Mohikaner (The Last of the Mohicans)": "The Last of the Mohicans",
+            "Jane Eyre": "Jane Eyre",
+            "Stolz und Vorurteil (Pride and Prejudice)": "Pride and Prejudice",
+            "Oliver Twist": "Oliver Twist",
+            "Eine Weihnachtsgeschichte (A Christmas Carol)": "A Christmas Carol",
+            "Die drei Musketiere (The Three Musketeers)": "The Three Musketeers",
+            "Tom Sawyers Abenteuer (The Adventures of Tom Sawyer)": "The Adventures of Tom Sawyer",
+            "Don Quijote (Don Quixote)": "Don Quixote"
         }
-        story_choice_de = st.selectbox("Select A2 Story:", list(a2_stories_map.keys()))
-        story_choice_en = a2_stories_map[story_choice_de]
+        story_choice_de = st.selectbox("Select A2 Story (20 available):", list(a2_20_stories.keys()))
+        story_choice_en = a2_20_stories[story_choice_de]
+
+    # Number of parts slider up to 30 parts
+    num_parts = st.slider("Select Number of Story Parts (Chapters/Scenes):", min_value=5, max_value=30, value=15, step=5)
 
     if st.button("📖 Open Enchanted Storybook", type="primary"):
-        with st.spinner("Gem is compiling the 8-10 part narrative, movie-themed imagery, and uncut audio..."):
+        with st.spinner(f"Gem is compiling the {num_parts}-part animated storybook with personalized cartoon imagery and full audio..."):
             story_prompt = f"""
             Generate a rich side-by-side short story for '{story_choice_de} ({story_choice_en})' at level '{story_level}'.
-            CRITICAL REQUIREMENT: Create exactly 8 to 10 narrative paragraphs so the storybook is long and engaging.
-            For each paragraph, provide the German sentence ('german'), the English translation ('english'), and a themed image URL reflecting the movie/tale (e.g., Cinderella, Little Mermaid, Moby Dick).
+            CRITICAL REQUIREMENT: Create exactly {num_parts} distinct narrative parts/chapters.
+            For each part, provide:
+            1. 'german': German paragraph.
+            2. 'english': English translation.
+            3. 'image_url': A personalized cartoon or animated style image URL (e.g. using Pollinations or Unsplash styled for animated cartoons like Disney/Pixar or classic cartoon illustrations).
             Also provide a 'full_audio_text' field containing the entire German story as one continuous uncut string for listening practice.
 
             Return strict JSON format:
             {{
                 "title_de": "{story_choice_de}",
                 "title_en": "{story_choice_en}",
-                "full_audio_text": "Full continuous German text of the 8-10 paragraphs...",
+                "full_audio_text": "Full continuous German text of all parts...",
                 "paragraphs": [
                     {{
                         "german": "German paragraph 1...",
                         "english": "English paragraph 1...",
-                        "image_url": "https://picsum.photos/seed/movie1/400/300"
-                    }},
-                    {{
-                        "german": "German paragraph 2...",
-                        "english": "English paragraph 2...",
-                        "image_url": "https://picsum.photos/seed/movie2/400/300"
-                    }},
-                    {{
-                        "german": "German paragraph 3...",
-                        "english": "English paragraph 3...",
-                        "image_url": "https://picsum.photos/seed/movie3/400/300"
-                    }},
-                    {{
-                        "german": "German paragraph 4...",
-                        "english": "English paragraph 4...",
-                        "image_url": "https://picsum.photos/seed/movie4/400/300"
-                    }},
-                    {{
-                        "german": "German paragraph 5...",
-                        "english": "English paragraph 5...",
-                        "image_url": "https://picsum.photos/seed/movie5/400/300"
-                    }},
-                    {{
-                        "german": "German paragraph 6...",
-                        "english": "English paragraph 6...",
-                        "image_url": "https://picsum.photos/seed/movie6/400/300"
-                    }},
-                    {{
-                        "german": "German paragraph 7...",
-                        "english": "English paragraph 7...",
-                        "image_url": "https://picsum.photos/seed/movie7/400/300"
-                    }},
-                    {{
-                        "german": "German paragraph 8...",
-                        "english": "English paragraph 8...",
-                        "image_url": "https://picsum.photos/seed/movie8/400/300"
+                        "image_url": "https://picsum.photos/seed/{story_choice_en.replace(' ', '')}1/400/300"
                     }}
                 ]
             }}
             """
             try:
+                # Generate up to num_parts paragraphs dynamically via prompt constraint
+                story_prompt_adjusted = story_prompt.replace("paragraphs": [", f"paragraphs": [ (ensure exactly {num_parts} items in JSON array)
                 story_json = generate_cached_content(story_prompt, is_json=True)
                 st.session_state.active_story = json.loads(story_json)
             except Exception as e:
