@@ -310,123 +310,288 @@ HOREN_TEIL2_SCENARIOS = [
     }
 ]
 
-# Lesen Teil 1 Official Scenarios Bank
+# Lesen Teil 1 Official Scenarios Bank (Matching exact app layout & screenshot 51)
 LESEN_TEIL1_SCENARIOS = [
     {
+        "title": "Flughafen & Grillfest",
+        "desc": "Two short messages: airport pickup (email from Lena to Tom) and a garden barbecue (letter to Sofia) – 5 tasks, Richtig/Falsch.",
+        "text1_label": "E-Mail (Lena an Tom)",
+        "text1": "BETREFF: Hallo Tom,\n\nvielen Dank für deine Nachricht! Ich hole dich am Sonntag vom Flughafen ab. Dein Flugzeug landet um 14.20 Uhr. Ich bin schon um 14 Uhr da und warte am Ausgang.\nRuf mich bitte an, wenn dein Flug später kommt. Meine Nummer hast du ja.\nBis Sonntag!\nLena",
+        "text2_label": "BRIEF (Einladung zum Grillfest)",
+        "text2": "Liebe Sofia,\n\nnächsten Samstag mache ich ein Grillfest bei mir im Garten. Wir beginnen um 17 Uhr. Kommst du auch? Es kommen noch andere Freunde, die du kennst. Bitte bring etwas zu trinken mit. Fleisch und Salate habe ich schon genug. Wenn es regnet, feiern wir in der Wohnung.",
+        "questions": [
+            {"id": "lt1_1", "statement": "Lena holt Tom am Samstag vom Flughafen ab.", "options": ["richtig", "falsch"], "answer": "falsch", "explanation": "Im Text steht, dass sie ihn am *Sonntag* abholt."},
+            {"id": "lt1_2", "statement": "Tom landet um 14.20 Uhr.", "options": ["richtig", "falsch"], "answer": "richtig", "explanation": "Der Text bestätigt: 'Dein Flugzeug landet um 14.20 Uhr.'"},
+            {"id": "lt1_3", "statement": "Lena wartet am Ausgang.", "options": ["richtig", "falsch"], "answer": "richtig", "explanation": "Lena schreibt: '...und warte am Ausgang.'"},
+            {"id": "lt1_4", "statement": "Sofia soll Fleisch und Salate mitbringen.", "options": ["richtig", "falsch"], "answer": "falsch", "explanation": "Fleisch und Salate sind genug da; Sofia soll *etwas zu trinken* mitbringen."},
+            {"id": "lt1_5", "statement": "Bei Regen findet das Grillfest in der Wohnung statt.", "options": ["richtig", "falsch"], "answer": "richtig", "explanation": "Im Brief steht: 'Wenn es regnet, feiern wir in der Wohnung.'"}
+        ]
+    },
+    {
         "title": "Vegetarisches Essen & Fußballtraining",
-        "desc": "Two short messages: a vegetarian dinner and football training – 5 tasks, Richtig/Falsch."
+        "desc": "Two short messages: vegetarian dinner and football training – 5 tasks, Richtig/Falsch.",
+        "text1_label": "E-Mail (Abendessen)",
+        "text1": "Hallo Anna,\n\nich koche heute Abend vegetarisch. Es gibt Gemüselasuppe und Salat. Komm doch um 19 Uhr zu mir!\nLiebe Grüße,\nMaria",
+        "text2_label": "SMS (Fußball)",
+        "text2": "Hallo zusammen, das Fußballtraining am Mittwoch fällt leider aus, weil der Platz nass ist. Nächste Woche spielen wir wieder normal.\nGruß, Trainer Stefan",
+        "questions": [
+            {"id": "lt1_21", "statement": "Maria kocht heute Abend Fleisch.", "options": ["richtig", "falsch"], "answer": "falsch", "explanation": "Maria kocht vegetarisch (Gemüsesuppe und Salat)."},
+            {"id": "lt1_22", "statement": "Das Essen beginnt um 19 Uhr.", "options": ["richtig", "falsch"], "answer": "richtig", "explanation": "Maria lädt Anna um 19 Uhr ein."},
+            {"id": "lt1_23", "statement": "Das Fußballtraining findet am Mittwoch statt.", "options": ["richtig", "falsch"], "answer": "falsch", "explanation": "Das Training fällt aus."},
+            {"id": "lt1_24", "statement": "Der Sportplatz ist nass.", "options": ["richtig", "falsch"], "answer": "richtig", "explanation": "Grund für den Ausfall ist ein nasser Platz."},
+            {"id": "lt1_25", "statement": "Nächste Woche findet das Training wieder statt.", "options": ["richtig", "falsch"], "answer": "richtig", "explanation": "Der Trainer schreibt: 'Nächste Woche spielen wir wieder normal.'"}
+        ]
     },
     {
         "title": "Umzugshilfe & Katze im Garten",
-        "desc": "Two short notices about moving help and a found cat – 5 tasks, Richtig/Falsch."
-    },
-    {
-        "title": "Wochenendbesuch & Hochzeitseinladung",
-        "desc": "Two short messages: a sister's weekend visit and a wedding invitation – 5 tasks, Richtig/Falsch."
-    },
-    {
-        "title": "Computerkurs & Zoobesuch",
-        "desc": "Two short messages: a computer course and a class trip to the zoo – 5 tasks, Richtig/Falsch."
-    },
-    {
-        "title": "Geburtstagsparty & Sommerfest",
-        "desc": "Two short notices about a birthday party and a summer festival – 5 tasks, Richtig/Falsch."
-    },
-    {
-        "title": "Blumen gießen & Auto abholen",
-        "desc": "Two short notices about watering flowers and a repaired car – 5 tasks, Richtig/Falsch."
-    },
-    {
-        "title": "Flughafen & Grillfest",
-        "desc": "Two short messages: airport pickup and a garden barbecue – 5 tasks, Richtig/Falsch."
-    },
-    {
-        "title": "Krankmeldung & Vereinsausflug",
-        "desc": "Two short messages: a sick note and a club outing – 5 tasks, Richtig/Falsch."
-    },
-    {
-        "title": "Arzttermin & Blumen pflanzen",
-        "desc": "Two short notices about a doctor's appointment and planting flowers in a community garden – 5 tasks, Richtig/Falsch."
+        "desc": "Two short notices about moving help and a found cat – 5 tasks, Richtig/Falsch.",
+        "text1_label": "Zettel am Schwarzen Brett",
+        "text1": "Hallo liebe Nachbarn, ich ziehe am 1. September in eine neue Wohnung und suche Helfer für Möbeltragen. Es gibt Pizza und Getränke für alle!",
+        "text2_label": "Nachricht",
+        "text2": "Guten Tag, wir haben seit gestern eine kleine graue Katze im Garten. Sie hat ein rotes Halsband. Wem gehört sie? Bitte melden unter Tel. 0171...",
+        "questions": [
+            {"id": "lt1_31", "statement": "Der Autor zieht im August um.", "options": ["richtig", "falsch"], "answer": "falsch", "explanation": "Der Umzug ist am 1. September."},
+            {"id": "lt1_32", "statement": "Helfer bekommen Pizza und Getränke.", "options": ["richtig", "falsch"], "answer": "richtig", "explanation": "Es gibt Pizza und Getränke für alle."},
+            {"id": "lt1_33", "statement": "Die gefundene Katze ist schwarz.", "options": ["richtig", "falsch"], "answer": "falsch", "explanation": "Die Katze ist grau."},
+            {"id": "lt1_34", "statement": "Die Katze trägt ein rotes Halsband.", "options": ["richtig", "falsch"], "answer": "richtig", "explanation": "Im Text steht: 'Sie hat ein rotes Halsband.'"},
+            {"id": "lt1_35", "statement": "Man kann den Finder telefonisch erreichen.", "options": ["richtig", "falsch"], "answer": "richtig", "explanation": "Es ist eine Telefonnummer angegeben."}
+        ]
     }
 ]
 
-# Lesen Teil 2 Official Scenarios Bank
+# Lesen Teil 2 Official Scenarios Bank (Matching exact app layout & screenshot 52)
 LESEN_TEIL2_SCENARIOS = [
     {
         "title": "Fahrrad, Schwimmbad & Pizza",
-        "desc": "Information about buying a bicycle, swimming pools, paediatricians and ordering pizza – 5 tasks, a/b."
+        "desc": "Information about buying a bicycle, swimming pools, and ordering pizza – 5 tasks, a/b.",
+        "tasks": [
+            {
+                "id": "lt2_t1",
+                "situation": "6. Sie möchten ein gebrauchtes Fahrrad kaufen.",
+                "site_a_url": "www.fahrrad-neu.de",
+                "site_a": "Neue Fahrräder und E-Bikes\nNur Neuware vom Fachhändler\n• Modelle • Preise • Service",
+                "site_b_url": "www.radmarkt-leipzig.de",
+                "site_b": "Radmarkt Leipzig\nGebrauchte Fahrräder günstig kaufen und verkaufen\n• Angebote • Kontakt",
+                "answer": "Website B",
+                "explanation": "Sie suchen ein *gebrauchtes* Fahrrad. Website B bietet gebrauchte Fahrräder an."
+            },
+            {
+                "id": "lt2_t2",
+                "situation": "7. Sie möchten am Wochenende ins Schwimmbad gehen.",
+                "site_a_url": "www.stadtbad-erfurt.de",
+                "site_a": "Stadtbad Erfurt\nHallenbad mit Sauna\nÖffnungszeiten und Preise\nAuch am Wochenende geöffnet!",
+                "site_b_url": "www.schwimmverein-erfurt.de",
+                "site_b": "Schwimmverein Erfurt\nSchwimmkurse und Training nur für Mitglieder",
+                "answer": "Website A",
+                "explanation": "Website A ist ein öffentliches Bad mit Wochenendöffnung, während Website B nur für Mitglieder ist."
+            },
+            {
+                "id": "lt2_t3",
+                "situation": "8. Sie möchten online Pizza bestellen und nach Hause liefern lassen.",
+                "site_a_url": "www.pizzeria-napoli.de",
+                "site_a": "Pizzeria Napoli\nItalienische Spezialitäten\nLieferdienst direkt zu Ihnen nach Hause innerhalb von 30 Minuten!",
+                "site_b_url": "www.kochkurs-italienisch.de",
+                "site_b": "Italienisch kochen lernen\nKochkurse für Anfänger und Fortgeschrittene",
+                "answer": "Website A",
+                "explanation": "Pizzeria Napoli bietet einen Lieferdienst nach Hause an."
+            },
+            {
+                "id": "lt2_t4",
+                "situation": "9. Sie suchen einen Deutschkurs für den Abend.",
+                "site_a_url": "www.vhs-berlin.de",
+                "site_a": "Volkshochschule Berlin\nAbendkurse Deutsch für Anfänger (A1-B2)",
+                "site_b_url": "www.sommer-kinder-sprache.de",
+                "site_b": "Sprachreisen für Kinder im Sommer",
+                "answer": "Website A",
+                "explanation": "Die Volkshochschule bietet Abendkurse an."
+            },
+            {
+                "id": "lt2_t5",
+                "situation": "10. Ihr Smartphone ist kaputt und Sie brauchen eine schnelle Reparatur.",
+                "site_a_url": "www.handy-doc-muenchen.de",
+                "site_a": "Handy Doc München\nSofort-Reparatur von Displays und Akkus ohne Termin!",
+                "site_b_url": "www.telefon-anbieter-vertrag.de",
+                "site_b": "Neukunden Angebote und Handytarife",
+                "answer": "Website A",
+                "explanation": "Handy Doc bietet Sofort-Reparaturen an."
+            }
+        ]
     },
     {
         "title": "Hotel, Werkstatt & Babysitter",
-        "desc": "Information about hotel bookings, repair shops, train connections, cakes and babysitters – 5 tasks, a/b."
-    },
-    {
-        "title": "Flohmarkt, Kellnerjob & Zahnarzt",
-        "desc": "Information about used furniture, bike trips, waiter jobs, swimming lessons and dentist appointments – 5 tasks, a/b."
-    },
-    {
-        "title": "Deutschkurs, Fahrrad & Taxi",
-        "desc": "Information about German courses, train timetables, used bicycles, night taxis and school closures – 5 tasks, a/b."
-    },
-    {
-        "title": "Pizza, Handy & Fitnessstudio",
-        "desc": "Information about ordering pizza, phone repairs, gyms, used laptops and vegetarian restaurants – 5 tasks, a/b."
-    },
-    {
-        "title": "Wohnung, Tierarzt & Umzugsfirma",
-        "desc": "Information about apartments, vets, furniture, moving companies, used furniture and cat care – 5 tasks, a/b."
-    },
-    {
-        "title": "Konzert, Kino & Tanzschule",
-        "desc": "Websites with information about concert tickets, cinema times, clothing, restaurant reservations and dance courses – 5 tasks, a/b."
-    },
-    {
-        "title": "Hotel, Flug & Paket",
-        "desc": "Websites with information about seaside hotels, flights, car repair shops, banks, used cars and parcels – 5 tasks, a/b."
-    },
-    {
-        "title": "Arzt, Apotheke & Bibliothek",
-        "desc": "Websites with information about doctors, emergency pharmacies, garden plants, dentist appointments, books and gardening tools – 5 tasks, a/b."
+        "desc": "Information about hotel bookings, repair shops, and babysitters – 5 tasks, a/b.",
+        "tasks": [
+            {
+                "id": "lt2_21",
+                "situation": "6. Sie suchen ein ruhiges Hotel am Meer für Ihren Urlaub.",
+                "site_a_url": "www.hotel-Seeblick-ostsee.de",
+                "site_a": "Hotel Seeblick\nDirekt am Strand, ruhige Zimmer mit Meerblick und Frühstück.",
+                "site_b_url": "www.city-hotel-bahnhof.de",
+                "site_b": "City Hotel am Hauptbahnhof\nZentral, ideal für Geschäftsreisende.",
+                "answer": "Website A",
+                "explanation": "Hotel Seeblick liegt direkt am Strand und bietet Meerblick."
+            },
+            {
+                "id": "lt2_22",
+                "situation": "7. Ihr Auto hat Probleme mit den Bremsen.",
+                "site_a_url": "www.autowerkstatt-mueller.de",
+                "site_a": "Kfz-Meisterbetrieb Müller\nReparatur aller Automarken, Bremsenservice und TÜV.",
+                "site_b_url": "www.auto-waschpark.de",
+                "site_b": "Autowaschpark Express\nPflege und Reinigung für Ihr Auto.",
+                "answer": "Website A",
+                "explanation": "Kfz-Meisterbetrieb Müller bietet Bremsenservice an."
+            },
+            {
+                "id": "lt2_23",
+                "situation": "8. Sie brauchen jemanden, der abends auf Ihr Kind aufpasst.",
+                "site_a_url": "www.jugendherberge.de",
+                "site_a": "Jugendherbergen in Deutschland\nGünstige Übernachtungen für Gruppen.",
+                "site_b_url": "www.tagesmuetter-vermittlung.de",
+                "site_b": "Tagesmütter und Babysitter Vermittlung für den Abend.",
+                "answer": "Website B",
+                "explanation": "Babysitter Vermittlung ist für die Kinderbetreuung am Abend zuständig."
+            },
+            {
+                "id": "lt2_24",
+                "situation": "9. Sie möchten einen Flug nach Madrid buchen.",
+                "site_a_url": "www.flughafen-tickets-direkt.de",
+                "site_a": "Flugverbindungen weltweit günstig buchen.",
+                "site_b_url": "www.db-bahn.de",
+                "site_b": "Deutsche Bahn - Züge in Deutschland.",
+                "answer": "Website A",
+                "explanation": "Flugverbindungen sind für Flüge nach Madrid."
+            },
+            {
+                "id": "lt2_25",
+                "situation": "10. Sie möchten ein Paket nach Italien schicken.",
+                "site_a_url": "www.schnell-paketdienst.de",
+                "site_a": "Internationaler Paketversand nach Europa.",
+                "site_b_url": "www.buecherei-stadt.de",
+                "site_b": "Stadtbibliothek - Bücher ausleihen.",
+                "answer": "Website A",
+                "explanation": "Paketdienst ist für den Versand von Paketen zuständig."
+            }
+        ]
     }
 ]
 
-# Lesen Teil 3 Official Scenarios Bank
+# Lesen Teil 3 Official Scenarios Bank (Matching exact app layout & screenshot 53)
 LESEN_TEIL3_SCENARIOS = [
     {
-        "title": "Mittagsmenü, Schwimmbad & Bibliothek",
-        "desc": "Signs and notices about a lunch menu, swimming pool, bus route, job vacancy and library – 5 tasks, Richtig/Falsch."
+        "title": "Bäckerei, Markt & Parkhaus",
+        "desc": "Signs and notices about a bakery, language school, library and car park – 5 tasks, Richtig/Falsch.",
+        "example": {
+            "statement": "Zum Deutsch Lernen gehen Sie in die Beethovenstraße 23.",
+            "sign_title": "AN DER TÜR DER SPRACHSCHULE",
+            "sign_text": "SPRACHZENTRUM\nDas Sprachzentrum ist umgezogen.\nSie finden uns jetzt in der Beethovenstr. 23",
+            "answer": "richtig",
+            "explanation": "Das Schild bestätigt, dass das Sprachzentrum jetzt in der Beethovenstr. 23 ist."
+        },
+        "tasks": [
+            {
+                "id": "lt3_1",
+                "statement": "Im August ist die Bäckerei zwei Wochen geschlossen.",
+                "sign_title": "AN DER BÄCKEREI",
+                "sign_text": "Liebe Kunden!\nWegen Urlaub bleibt unsere Bäckerei vom 1. bis 14. August geschlossen.\nAb dem 15. August sind wir wieder für Sie da.",
+                "options": ["richtig", "falsch"],
+                "answer": "richtig",
+                "explanation": "Der Zettel besagt, dass die Bäckerei vom 1. bis 14. August (zwei Wochen) wegen Urlaub geschlossen ist."
+            },
+            {
+                "id": "lt3_2",
+                "statement": "Im Parkhaus darf man kostenlos parken.",
+                "sign_title": "EINGANG PARKHAUS",
+                "sign_text": "Parkhaus Stadtmitte\nErste Stunde frei, jede weitere angefangene Stunde 2,00 Euro.",
+                "options": ["richtig", "falsch"],
+                "answer": "falsch",
+                "explanation": "Nur die *erste* Stunde ist frei, danach kostet es 2,00 Euro."
+            },
+            {
+                "id": "lt3_3",
+                "statement": "Die Bibliothek hat auch am Sonntag geöffnet.",
+                "sign_title": "ÖFFNUNGSZEITEN DER BIBLIOTHEK",
+                "sign_text": "Stadtbibliothek\nMontag bis Freitag: 9 - 18 Uhr\nSamstag: 10 - 14 Uhr\nSonntag: geschlossen",
+                "options": ["richtig", "falsch"],
+                "answer": "falsch",
+                "explanation": "Laut Schild ist am Sonntag geschlossen."
+            },
+            {
+                "id": "lt3_4",
+                "statement": "Man muss vor dem Betreten des Arztes einen Termin machen.",
+                "sign_title": "AN DER ARZTPRAXIS",
+                "sign_text": "Dr. med. Weber\nBitte melden Sie sich vor der Behandlung immer an der Anmeldung an.",
+                "options": ["richtig", "falsch"],
+                "answer": "richtig",
+                "explanation": "Man muss sich an der Anmeldung melden."
+            },
+            {
+                "id": "lt3_5",
+                "statement": "Im Supermarkt kann man mit Karte bezahlen.",
+                "sign_title": "KASSE IM SUPERMARKT",
+                "sign_text": "Zahlung ab 10 Euro mit EC-Karte oder Kreditkarte möglich.",
+                "options": ["richtig", "falsch"],
+                "answer": "richtig",
+                "explanation": "Kartenzahlung ist ab 10 Euro möglich."
+            }
+        ]
     },
     {
         "title": "Haltestelle, Schule & Freibad",
-        "desc": "Signs and notices about a ticket machine, bus stop, school, lift and outdoor pool – 5 tasks, Richtig/Falsch."
-    },
-    {
-        "title": "Bäckerei, Markt & Parkhaus",
-        "desc": "Signs and notices about a bakery, market, museum, library and car park – 5 tasks, Richtig/Falsch."
-    },
-    {
-        "title": "Apotheke, Kino & Arztpraxis",
-        "desc": "Signs and notices about an emergency pharmacy, cinema, park, shoes and a medical practice – 5 tasks, Richtig/Falsch."
-    },
-    {
-        "title": "Notdienst, Bibliothek & Park",
-        "desc": "Signs and notices about emergency services, a medical practice, the library and the park – 5 tasks, Richtig/Falsch."
-    },
-    {
-        "title": "Bäckerei, Sporthalle & Computerkurs",
-        "desc": "Signs and notices about a bakery, restaurant, special offers, sports hall and computer course – 5 tasks, Richtig/Falsch."
-    },
-    {
-        "title": "Hausordnung, Aufzug & Mülltonnen",
-        "desc": "Signs and notices about house rules, lifts, dog leashes, waste sorting and quiet hours – 5 tasks, Richtig/Falsch."
-    },
-    {
-        "title": "Vorstellung, Museum & Kinderfest",
-        "desc": "Signs and notices about a performance, admission times, clothing, a museum, children's festival and concert – 5 tasks, Richtig/Falsch."
-    },
-    {
-        "title": "Frühstück, Geldautomat & Tankstelle",
-        "desc": "Signs and notices about breakfast, the cash machine, parking, the workshop, the petrol station and the post office – 5 tasks, Richtig/Falsch."
+        "desc": "Signs and notices about public transport, schools, and pools – 5 tasks, Richtig/Falsch.",
+        "example": {
+            "statement": "Die Buslinie 14 fährt zum Bahnhof.",
+            "sign_title": "AN DER BUSHALTESTELLE",
+            "sign_text": "Buslinie 14 Richtung Hauptbahnhof fährt alle 10 Minuten.",
+            "answer": "richtig",
+            "explanation": "Die Haltestelle zeigt die Linie 14 zum Hauptbahnhof."
+        },
+        "tasks": [
+            {
+                "id": "lt3_21",
+                "statement": "Kinder unter 6 Jahren zahlen keinen Eintritt ins Schwimmbad.",
+                "sign_title": "FREIBAD KASSE",
+                "sign_text": "Eintrittspreise:\nErwachsene 4,00 €\nKinder unter 6 Jahren frei!",
+                "options": ["richtig", "falsch"],
+                "answer": "richtig",
+                "explanation": "Auf dem Schild steht klar 'Kinder unter 6 Jahren frei!'."
+            },
+            {
+                "id": "lt3_22",
+                "statement": "Der Aufzug im Bahnhof funktioniert.",
+                "sign_title": "AM AUFZUG",
+                "sign_text": "Achtung! Aufzug außer Betrieb wegen Reparatur.",
+                "options": ["richtig", "falsch"],
+                "answer": "falsch",
+                "explanation": "Der Aufzug ist wegen Reparatur außer Betrieb."
+            },
+            {
+                "id": "lt3_23",
+                "statement": "Im Supermarkt gibt es frischen Fisch.",
+                "sign_title": "FISCHTHEKE",
+                "sign_text": "Heute frischer Lachs und Forelle direkt vom Markt.",
+                "options": ["richtig", "falsch"],
+                "answer": "richtig",
+                "explanation": "Es gibt frischen Lachs und Forelle."
+            },
+            {
+                "id": "lt3_24",
+                "statement": "Hunde sind im Lebensmittelgeschäft erlaubt.",
+                "sign_title": "EINGANG SUPERMARKT",
+                "sign_text": "Aus hygienischen Gründen sind Hunde im Geschäft leider nicht erlaubt.",
+                "options": ["richtig", "falsch"],
+                "answer": "falsch",
+                "explanation": "Hunde sind laut Schild nicht erlaubt."
+            },
+            {
+                "id": "lt3_25",
+                "statement": "Die Postfiliale schließt samstags um 13 Uhr.",
+                "sign_title": "POSTFILIALE",
+                "sign_text": "Öffnungszeiten Samstag: 9:00 bis 13:00 Uhr.",
+                "options": ["richtig", "falsch"],
+                "answer": "richtig",
+                "explanation": "Samstags schließt sie um 13:00 Uhr."
+            }
+        ]
     }
 ]
 
@@ -571,7 +736,7 @@ SCHREIBEN_TEIL1_SCENARIOS = [
     }
 ]
 
-# Schreiben Teil 2 Official Scenarios Bank (All 9 exact scenarios matching screenshots 44-48 with detailed structured task points matching screenshot 49)
+# Schreiben Teil 2 Official Scenarios Bank
 SCHREIBEN_TEIL2_SCENARIOS = [
     {
         "title": "Dresden besuchen — Touristeninformation",
@@ -709,9 +874,9 @@ if nav_choice == "🏠 Study Dashboard":
         st.subheader("📖 Lesen & ✍️ Schreiben")
         st.markdown("""
         * **Lesen (25 Mins - 15 Tasks across 3 Parts):**
-          - Teil 1: Short Emails (Richtig/Falsch)
-          - Teil 2: Classified Ads (Option A or B)
-          - Teil 3: Public Signs (Richtig/Falsch)
+          - Teil 1: Short Emails (Richtig/Falsch) - *Fully integrated with official scenarios & email layout UI!*
+          - Teil 2: Classified Ads (Option A or B) - *Fully integrated with web links & side-by-side site choices!*
+          - Teil 3: Public Signs (Richtig/Falsch) - *Fully integrated with notice boxes & example items!*
         * **Schreiben (20 Mins - 2 Parts):**
           - Teil 1: Fill 5 Missing Gaps on Form with Scenario (All 9 official exam scenarios fully integrated!)
           - Teil 2: Write ~30-Word Message hitting 3 required points (All 9 official exam scenarios fully integrated!)
@@ -1190,141 +1355,148 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
     st.subheader("📖 Goethe A1 Lesen Practice (25 Mins, 15 Points across 3 Parts)")
 
     l_tab1, l_tab2, l_tab3 = st.tabs([
-        "Teil 1: Short Messages (Scenarios)", 
-        "Teil 2: Classified Ads (Scenarios)", 
-        "Teil 3: Public Signs (Scenarios)"
+        "Teil 1: Short Messages (Official Scenarios)", 
+        "Teil 2: Classified Ads (Official Scenarios)", 
+        "Teil 3: Public Signs (Official Scenarios)"
     ])
 
     with l_tab1:
-        st.markdown("**Teil 1:** Select from official practice scenario sets for short messages/notices (Richtig/Falsch).")
+        st.markdown("**Teil 1 (Kurze Mitteilungen):** Read two short messages/emails and determine if the 5 statements are Richtig or Falsch (matching exact app UI & screenshot 51).")
         
-        selected_lesen_t1_title = st.selectbox("📂 Select Lesen Teil 1 Scenario Set:", [s["title"] for s in LESEN_TEIL1_SCENARIOS])
+        selected_lesen_t1_title = st.selectbox("📂 Select Lesen Teil 1 Scenario Set:", [s["title"] for s in LESEN_TEIL1_SCENARIOS], key="lesen_t1_sel")
         selected_lesen_t1_obj = next(s for s in LESEN_TEIL1_SCENARIOS if s["title"] == selected_lesen_t1_title)
         
         st.info(f"📌 **Description:** {selected_lesen_t1_obj['desc']}")
 
-        if st.button(f"▶️ Start Exercise ({selected_lesen_t1_title})", type="primary") or f"lesen_t1_loaded_{selected_lesen_t1_title}" not in st.session_state:
-            with st.spinner(f"Gem is generating Lesen Teil 1 exercises for '{selected_lesen_t1_title}'..."):
-                prompt = f"""
-                Generate Goethe A1 Lesen Teil 1 exercises for the specific theme: '{selected_lesen_t1_title}' ({selected_lesen_t1_obj['desc']}).
-                Generate 2 short messages/notices and exactly 5 statement tasks (Richtig/Falsch).
-                Return strict JSON format:
-                {{
-                    "scenario_title": "{selected_lesen_t1_title}",
-                    "text1": "First short notice/message text in German...",
-                    "text2": "Second short notice/message text in German...",
-                    "questions": [
-                        {{"id": "lt1_1", "statement": "Statement 1", "options": ["richtig", "falsch"], "answer": "richtig", "explanation": "..."}},
-                        {{"id": "lt1_2", "statement": "Statement 2", "options": ["richtig", "falsch"], "answer": "falsch", "explanation": "..."}},
-                        {{"id": "lt1_3", "statement": "Statement 3", "options": ["richtig", "falsch"], "answer": "richtig", "explanation": "..."}},
-                        {{"id": "lt1_4", "statement": "Statement 4", "options": ["richtig", "falsch"], "answer": "falsch", "explanation": "..."}},
-                        {{"id": "lt1_5", "statement": "Statement 5", "options": ["richtig", "falsch"], "answer": "richtig", "explanation": "..."}}
-                    ]
-                }}
-                """
-                try:
-                    json_str = generate_dynamic_content(prompt, is_json=True)
-                    st.session_state[f"lesen_t1_loaded_{selected_lesen_t1_title}"] = json.loads(json_str)
-                except Exception as e: st.error(f"Error: {str(e)}")
+        # Display Message 1 box matching screenshot 51 UI
+        st.markdown(f"""
+        <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.02);">
+            <div style="display: flex; align-items: center; margin-bottom: 12px;">
+                <span style="font-size: 1.1rem; font-weight: 700; color: #1e293b;">✉️ {selected_lesen_t1_obj['text1_label']}</span>
+            </div>
+            <p style="white-space: pre-line; color: #334155; font-size: 0.95rem; line-height: 1.5; margin-bottom: 0px;">{selected_lesen_t1_obj['text1']}</p>
+        </div>
+        """, unsafe_allow_html=True)
 
-        cache_key_lt1 = f"lesen_t1_loaded_{selected_lesen_t1_title}"
-        if cache_key_lt1 in st.session_state:
-            d = st.session_state[cache_key_lt1]
-            st.info(f"**Text 1:**\n{d['text1']}")
-            st.info(f"**Text 2:**\n{d['text2']}")
-            ans = {}
-            for idx, q in enumerate(d["questions"], start=1):
-                st.markdown(f"**Task {idx}: {q['statement']}**")
-                ans[q["id"]] = st.radio("Choice:", q["options"], key=f"rad_lt1_{selected_lesen_t1_title}_{q['id']}")
-            if st.button(f"Submit Lesen Teil 1 ({selected_lesen_t1_title})"):
-                score = sum(1 for q in d["questions"] if ans.get(q["id"]) == q["answer"])
-                st.success(f"Teil 1 Score for '{selected_lesen_t1_title}': {score} / 5")
+        # Display Message 2 box matching screenshot 51 UI
+        st.markdown(f"""
+        <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.02);">
+            <div style="display: flex; align-items: center; margin-bottom: 12px;">
+                <span style="font-size: 1.1rem; font-weight: 700; color: #1e293b;">📄 {selected_lesen_t1_obj['text2_label']}</span>
+            </div>
+            <p style="white-space: pre-line; color: #334155; font-size: 0.95rem; line-height: 1.5; margin-bottom: 0px;">{selected_lesen_t1_obj['text2']}</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+        st.markdown("### Aufgaben (Tasks 1–5)")
+        ans_lt1 = {}
+        for idx, q in enumerate(selected_lesen_t1_obj["questions"], start=1):
+            st.markdown(f"**Task {idx}: {q['statement']}**")
+            ans_lt1[q["id"]] = st.radio("Wählen Sie:", q["options"], key=f"rad_lt1_{selected_lesen_t1_title}_{q['id']}")
+
+        if st.button("✔ Submit Lesen Teil 1", type="primary", key="sub_lt1"):
+            score = sum(1 for q in selected_lesen_t1_obj["questions"] if ans_lt1.get(q["id"]) == q["answer"])
+            st.markdown("### 📊 Evaluation")
+            for idx, q in enumerate(selected_lesen_t1_obj["questions"], start=1):
+                u_ans = ans_lt1.get(q["id"])
+                if u_ans == q["answer"]:
+                    st.success(f"**Task {idx}: Correct!** (`{q['answer']}`) — {q['explanation']}")
+                else:
+                    st.error(f"**Task {idx}: Incorrect.** Your answer: `{u_ans}` | Correct: `{q['answer']}` — {q['explanation']}")
+            st.metric("Lesen Teil 1 Score", f"{score} / 5")
 
     with l_tab2:
-        st.markdown("**Teil 2:** Select from official practice scenario sets for classified ads / website information (Option A or B).")
+        st.markdown("**Teil 2 (Zuordnung / Classified Ads):** Match 5 user situations to website options A or B (matching exact app UI & screenshot 52).")
         
-        selected_lesen_t2_title = st.selectbox("📂 Select Lesen Teil 2 Scenario Set:", [s["title"] for s in LESEN_TEIL2_SCENARIOS])
+        selected_lesen_t2_title = st.selectbox("📂 Select Lesen Teil 2 Scenario Set:", [s["title"] for s in LESEN_TEIL2_SCENARIOS], key="lesen_t2_sel")
         selected_lesen_t2_obj = next(s for s in LESEN_TEIL2_SCENARIOS if s["title"] == selected_lesen_t2_title)
         
         st.info(f"📌 **Description:** {selected_lesen_t2_obj['desc']}")
 
-        if st.button(f"▶️ Start Exercise ({selected_lesen_t2_title})", type="primary") or f"lesen_t2_loaded_{selected_lesen_t2_title}" not in st.session_state:
-            with st.spinner(f"Gem is generating Lesen Teil 2 exercises for '{selected_lesen_t2_title}'..."):
-                prompt = f"""
-                Generate Goethe A1 Lesen Teil 2 exercises for the specific theme: '{selected_lesen_t2_title}' ({selected_lesen_t2_obj['desc']}).
-                Generate exactly 5 user situations, each with Website A and Website B options.
-                Return strict JSON format:
-                {{
-                    "scenario_title": "{selected_lesen_t2_title}",
-                    "tasks": [
-                        {{"id": "lt2_1", "situation": "User situation 1", "site_a": "Ad A text", "site_b": "Ad B text", "options": ["Website A", "Website B"], "answer": "Website A", "explanation": "..."}},
-                        {{"id": "lt2_2", "situation": "User situation 2", "site_a": "Ad A text", "site_b": "Ad B text", "options": ["Website A", "Website B"], "answer": "Website B", "explanation": "..."}},
-                        {{"id": "lt2_3", "situation": "User situation 3", "site_a": "Ad A text", "site_b": "Ad B text", "options": ["Website A", "Website B"], "answer": "Website A", "explanation": "..."}},
-                        {{"id": "lt2_4", "situation": "User situation 4", "site_a": "Ad A text", "site_b": "Ad B text", "options": ["Website A", "Website B"], "answer": "Website B", "explanation": "..."}},
-                        {{"id": "lt2_5", "situation": "User situation 5", "site_a": "Ad A text", "site_b": "Ad B text", "options": ["Website A", "Website B"], "answer": "Website A", "explanation": "..."}}
-                    ]
-                }}
-                """
-                try:
-                    json_str = generate_dynamic_content(prompt, is_json=True)
-                    st.session_state[f"lesen_t2_loaded_{selected_lesen_t2_title}"] = json.loads(json_str)
-                except Exception as e: st.error(f"Error: {str(e)}")
+        ans_lt2 = {}
+        for idx, task in enumerate(selected_lesen_t2_obj["tasks"], start=1):
+            st.markdown(f"""
+            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.02);">
+                <p style="font-weight: 700; color: #1e293b; font-size: 1.05rem; margin-bottom: 12px;">{task['situation']}</p>
+            """, unsafe_allow_html=True)
 
-        cache_key_lt2 = f"lesen_t2_loaded_{selected_lesen_t2_title}"
-        if cache_key_lt2 in st.session_state:
-            d2 = st.session_state[cache_key_lt2]
-            ans2 = {}
-            for idx, task in enumerate(d2["tasks"], start=1):
-                st.markdown(f"**Task {idx}: {task['situation']}**")
-                c1, c2 = st.columns(2)
-                with c1: st.caption(f"A: {task['site_a']}")
-                with c2: st.caption(f"B: {task['site_b']}")
-                ans2[task["id"]] = st.radio(f"Select site for Task {idx}:", task["options"], key=f"rad_lt2_{selected_lesen_t2_title}_{task['id']}")
-            if st.button(f"Submit Lesen Teil 2 ({selected_lesen_t2_title})"):
-                score = sum(1 for t in d2["tasks"] if ans2.get(t["id"]) == t["answer"])
-                st.success(f"Teil 2 Score for '{selected_lesen_t2_title}': {score} / 5")
+            col_a, col_b = st.columns(2)
+            with col_a:
+                st.markdown(f"""
+                <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 12px; margin-bottom: 8px;">
+                    <span style="font-weight: 600; color: #2563eb;">🌐 {task['site_a_url']}</span><br>
+                    <p style="white-space: pre-line; color: #334155; font-size: 0.9rem; margin-top: 6px; margin-bottom: 0px;">{task['site_a']}</p>
+                </div>
+                """, unsafe_allow_html=True)
+            with col_b:
+                st.markdown(f"""
+                <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 12px; margin-bottom: 8px;">
+                    <span style="font-weight: 600; color: #2563eb;">🌐 {task['site_b_url']}</span><br>
+                    <p style="white-space: pre-line; color: #334155; font-size: 0.9rem; margin-top: 6px; margin-bottom: 0px;">{task['site_b']}</p>
+                </div>
+                """, unsafe_allow_html=True)
+
+            ans_lt2[task["id"]] = st.radio(f"Select website for task {idx}:", ["Website A", "Website B"], key=f"rad_lt2_{selected_lesen_t2_title}_{task['id']}")
+            st.markdown("</div>", unsafe_allow_html=True)
+
+        if st.button("✔ Submit Lesen Teil 2", type="primary", key="sub_lt2"):
+            score = sum(1 for t in selected_lesen_t2_obj["tasks"] if ans_lt2.get(t["id"]) == t["answer"])
+            st.markdown("### 📊 Evaluation")
+            for idx, t in enumerate(selected_lesen_t2_obj["tasks"], start=1):
+                u_ans = ans_lt2.get(t["id"])
+                if u_ans == t["answer"]:
+                    st.success(f"**Task {idx}: Correct!** (`{t['answer']}`) — {t['explanation']}")
+                else:
+                    st.error(f"**Task {idx}: Incorrect.** Your answer: `{u_ans}` | Correct: `{t['answer']}` — {t['explanation']}")
+            st.metric("Lesen Teil 2 Score", f"{score} / 5")
 
     with l_tab3:
-        st.markdown("**Teil 3:** Select from official practice scenario sets for public signs / notices (Richtig/Falsch).")
+        st.markdown("**Teil 3 (Öffentliche Hinweise / Public Signs):** Read public signs and notices and determine if statements are Richtig or Falsch (matching exact app UI & screenshot 53).")
         
-        selected_lesen_t3_title = st.selectbox("📂 Select Lesen Teil 3 Scenario Set:", [s["title"] for s in LESEN_TEIL3_SCENARIOS])
+        selected_lesen_t3_title = st.selectbox("📂 Select Lesen Teil 3 Scenario Set:", [s["title"] for s in LESEN_TEIL3_SCENARIOS], key="lesen_t3_sel")
         selected_lesen_t3_obj = next(s for s in LESEN_TEIL3_SCENARIOS if s["title"] == selected_lesen_t3_title)
         
         st.info(f"📌 **Description:** {selected_lesen_t3_obj['desc']}")
 
-        if st.button(f"▶️ Start Exercise ({selected_lesen_t3_title})", type="primary") or f"lesen_t3_loaded_{selected_lesen_t3_title}" not in st.session_state:
-            with st.spinner(f"Gem is generating Lesen Teil 3 exercises for '{selected_lesen_t3_title}'..."):
-                prompt = f"""
-                Generate Goethe A1 Lesen Teil 3 exercises for the specific theme: '{selected_lesen_t3_title}' ({selected_lesen_t3_obj['desc']}).
-                Generate exactly 5 public signs/notices with 1 Richtig/Falsch statement task each.
-                Return strict JSON format:
-                {{
-                    "scenario_title": "{selected_lesen_t3_title}",
-                    "tasks": [
-                        {{"id": "lt3_1", "sign": "Sign text 1", "statement": "Statement 1", "options": ["richtig", "falsch"], "answer": "richtig", "explanation": "..."}},
-                        {{"id": "lt3_2", "sign": "Sign text 2", "statement": "Statement 2", "options": ["richtig", "falsch"], "answer": "falsch", "explanation": "..."}},
-                        {{"id": "lt3_3", "sign": "Sign text 3", "statement": "Statement 3", "options": ["richtig", "falsch"], "answer": "richtig", "explanation": "..."}},
-                        {{"id": "lt3_4", "sign": "Sign text 4", "statement": "Statement 4", "options": ["richtig", "falsch"], "answer": "falsch", "explanation": "..."}},
-                        {{"id": "lt3_5", "sign": "Sign text 5", "statement": "Statement 5", "options": ["richtig", "falsch"], "answer": "richtig", "explanation": "..."}}
-                    ]
-                }}
-                """
-                try:
-                    json_str = generate_dynamic_content(prompt, is_json=True)
-                    st.session_state[f"lesen_t3_loaded_{selected_lesen_t3_title}"] = json.loads(json_str)
-                except Exception as e: st.error(f"Error: {str(e)}")
+        # Display Example Box matching screenshot 53 UI
+        ex = selected_lesen_t3_obj["example"]
+        st.markdown(f"""
+        <div style="background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 12px; padding: 20px; margin-bottom: 20px;">
+            <p style="font-weight: 700; color: #475569; margin-bottom: 4px;">BEISPIEL (0)</p>
+            <p style="font-weight: 600; color: #1e293b; font-size: 1rem; margin-bottom: 12px;">{ex['statement']}</p>
+            <span style="font-size: 0.85rem; font-weight: 700; color: #2563eb;">{ex['sign_title']}</span>
+            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 14px; margin-top: 6px; margin-bottom: 10px;">
+                <p style="white-space: pre-line; color: #334155; font-size: 0.95rem; margin-bottom: 0px;">{ex['sign_text']}</p>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button disabled style="background: #22c55e; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 600;">{ex['answer'].capitalize()}</button>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
 
-        cache_key_lt3 = f"lesen_t3_loaded_{selected_lesen_t3_title}"
-        if cache_key_lt3 in st.session_state:
-            d3 = st.session_state[cache_key_lt3]
-            ans3 = {}
-            for idx, task in enumerate(d3["tasks"], start=1):
-                st.error(f"🛑 **Sign {idx}:** {task['sign']}")
-                st.markdown(f"**Task {idx}: {task['statement']}**")
-                ans3[task["id"]] = st.radio("Choice:", task["options"], key=f"rad_lt3_{selected_lesen_t3_title}_{task['id']}")
-            if st.button(f"Submit Lesen Teil 3 ({selected_lesen_t3_title})"):
-                score = sum(1 for t in d3["tasks"] if ans3.get(t["id"]) == t["answer"])
-                st.success(f"Teil 3 Score for '{selected_lesen_t3_title}': {score} / 5")
+        ans_lt3 = {}
+        for idx, task in enumerate(selected_lesen_t3_obj["tasks"], start=1):
+            st.markdown(f"""
+            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.02);">
+                <p style="font-weight: 700; color: #1e293b; font-size: 1rem; margin-bottom: 12px;">{idx}. {task['statement']}</p>
+                <span style="font-size: 0.85rem; font-weight: 700; color: #2563eb;">{task['sign_title']}</span>
+                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 14px; margin-top: 6px; margin-bottom: 12px;">
+                    <p style="white-space: pre-line; color: #334155; font-size: 0.95rem; margin-bottom: 0px;">{task['sign_text']}</p>
+                </div>
+            """, unsafe_allow_html=True)
+            ans_lt3[task["id"]] = st.radio(f"Antwort für Aufgabe {idx}:", task["options"], key=f"rad_lt3_{selected_lesen_t3_title}_{task['id']}")
+            st.markdown("</div>", unsafe_allow_html=True)
+
+        if st.button("✔ Submit Lesen Teil 3", type="primary", key="sub_lt3"):
+            score = sum(1 for t in selected_lesen_t3_obj["tasks"] if ans_lt3.get(t["id"]) == t["answer"])
+            st.markdown("### 📊 Evaluation")
+            for idx, t in enumerate(selected_lesen_t3_obj["tasks"], start=1):
+                u_ans = ans_lt3.get(t["id"])
+                if u_ans == t["answer"]:
+                    st.success(f"**Task {idx}: Correct!** (`{t['answer']}`) — {t['explanation']}")
+                else:
+                    st.error(f"**Task {idx}: Incorrect.** Your answer: `{u_ans}` | Correct: `{t['answer']}` — {t['explanation']}")
+            st.metric("Lesen Teil 3 Score", f"{score} / 5")
 
     st.markdown('</div>', unsafe_allow_html=True)
 
@@ -1490,7 +1662,6 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
         selected_schreiben_t1_title = st.selectbox("📂 Select Schreiben Teil 1 Scenario Set:", [s["title"] for s in SCHREIBEN_TEIL1_SCENARIOS])
         selected_schreiben_t1_obj = next(s for s in SCHREIBEN_TEIL1_SCENARIOS if s["title"] == selected_schreiben_t1_title)
         
-        # Display Aufgabe box matching official UI
         st.markdown(f"""
         <div style="background: #f1f5f9; border-left: 5px solid #8b5cf6; padding: 16px; border-radius: 8px; margin-bottom: 20px;">
             <p style="font-weight: 700; color: #6d28d9; margin-bottom: 8px;">📋 Aufgabe</p>
@@ -1510,7 +1681,6 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
                 else:
                     user_form_inputs[field["id"]] = st.text_input(field["label"], placeholder=field.get("placeholder", "..."), key=f"gap_inp_{selected_schreiben_t1_title}_{field['id']}")
 
-        # Special character helper buttons matching screenshot 38
         st.markdown("##### ⌨️ Special German Characters")
         sc_cols = st.columns(7)
         chars = ["ä", "ö", "ü", "ß", "Ä", "Ö", "Ü"]
@@ -1540,12 +1710,11 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
             st.metric("Formular Score", f"{score} / {total_gaps}")
 
     with s_tab2:
-        st.markdown("**Teil 2 (Mitteilung):** Select from all 9 official Goethe A1 practice scenarios. Write an email (~30 words) hitting all 3 required points exactly like the official app interface (see screenshot 49).")
+        st.markdown("**Teil 2 (Mitteilung):** Select from all 9 official Goethe A1 practice scenarios. Write an email (~30 words) hitting all 3 required points.")
         
         selected_schreiben_t2_title = st.selectbox("📂 Select Schreiben Teil 2 Scenario Set:", [s["title"] for s in SCHREIBEN_TEIL2_SCENARIOS], key="schreiben_t2_select")
         selected_schreiben_t2_obj = next(s for s in SCHREIBEN_TEIL2_SCENARIOS if s["title"] == selected_schreiben_t2_title)
         
-        # Display Aufgabe (Task) Box matching Screenshot 49 UI
         st.markdown(f"""
         <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.02);">
             <div style="display: flex; align-items: center; margin-bottom: 12px;">
@@ -1564,7 +1733,6 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
         
         st.markdown("</div>", unsafe_allow_html=True)
 
-        # Redemittel (Ready Phrases) Expander
         with st.expander("✨ Redemittel (Ready Phrases)"):
             st.markdown("""
             * **Anrede (Salutation):** *Sehr geehrte Damen und Herren,* / *Sehr geehrte(r) Frau/Herr [Name],* / *Liebe(r) [Name],*
@@ -1573,19 +1741,15 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
             * **Gruß (Sign-off):** *Mit freundlichen Grüßen,* / *Liebe Grüße,*
             """)
 
-        # Sample Answer Expander
         with st.expander("📖 Sample Answer (Musterlösung)"):
             st.info(selected_schreiben_t2_obj['prompt'])
 
-        # User Text Input Box matching Screenshot 50 UI
         st.markdown("### Your Text")
         u_email = st.text_area("Write your text here...", height=160, key=f"email_resp_{selected_schreiben_t2_title}", placeholder="Write your text here...")
         
-        # Word count calculation
         word_count = len(u_email.strip().split()) if u_email.strip() else 0
         st.caption(f"Word Count: {word_count} (Target: ~30 words)")
 
-        # Special character helper buttons matching screenshot 50
         st.markdown("##### Special Characters")
         sc_cols2 = st.columns(7)
         chars2 = ["ä", "ö", "ü", "ß", "Ä", "Ö", "Ü"]
