@@ -430,7 +430,7 @@ LESEN_TEIL3_SCENARIOS = [
     }
 ]
 
-# Schreiben Teil 1 Official Scenarios Bank (All 7 exact scenarios requested from images 39-43)
+# Schreiben Teil 1 Official Scenarios Bank (All 9 exact scenarios)
 SCHREIBEN_TEIL1_SCENARIOS = [
     {
         "title": "Bodensee-Rundfahrt — Anmeldung",
@@ -571,52 +571,106 @@ SCHREIBEN_TEIL1_SCENARIOS = [
     }
 ]
 
-# Schreiben Teil 2 Official Scenarios Bank (from screenshots 28, 30, 31, 32, 33)
+# Schreiben Teil 2 Official Scenarios Bank (All 9 exact scenarios matching screenshots 44-48 with detailed structured task points matching screenshot 49)
 SCHREIBEN_TEIL2_SCENARIOS = [
-    {
-        "title": "Heizung kaputt — Nachricht an den Vermieter",
-        "desc": "Message to Mr Berg about the broken heating – E-mail, approx. 30 words, 20 min.",
-        "prompt": "Sehr geehrter Herr Berg,\n\nin meiner Wohnung (Apartment 4B) ist die Heizung seit gestern kaputt. Es ist sehr kalt. Könnten Sie bitte schnell einen Handwerker schicken?\n\nMit freundlichen Grüßen,\n[Dein Name]"
-    },
-    {
-        "title": "Danke für das Geschenk — Nachricht an einen Freund",
-        "desc": "Thank-you message to Lukas for a birthday present – E-mail, approx. 30 words, 20 min.",
-        "prompt": "Lieber Lukas,\n\nvielen herzlichen Dank für das tolle Geburtstagsgeschenk! Ich habe mich riesig gefreut. Wollen wir uns nächste Woche auf einen Kaffee treffen?\n\nLiebe Grüße,\n[Dein Name]"
-    },
-    {
-        "title": "Termin in der Autowerkstatt",
-        "desc": "Email to the auto repair shop about car noises and an appointment – E-mail, approx. 30 words, 20 min.",
-        "prompt": "Sehr geehrte Damen und Herren,\n\nmein Auto macht seit gestern komische Geräusche beim Bremsen. Ich brauche dringend einen Termin in Ihrer Werkstatt. Geht es am Donnerstag um 10 Uhr?\n\nMit freundlichen Grüßen,\n[Dein Name]"
-    },
-    {
-        "title": "Freier Tag — Nachricht an die Chefin",
-        "desc": "Message to Ms Schäfer about a doctor's appointment and taking a day off – E-mail, approx. 30 words, 20 min.",
-        "prompt": "Sehr geehrte Frau Schäfer,\n\nich habe am kommenden Dienstag einen wichtigen Arzttermin am Vormittag. Könnte ich an diesem Tag bitte erst ab 13:00 Uhr ins Büro kommen?\n\nMit freundlichen Grüßen,\n[Dein Name]"
-    },
-    {
-        "title": "Treffen am Wochenende — Nachricht an eine Freundin",
-        "desc": "Message to Mia about plans together at the weekend – E-mail, approx. 30 words, 20 min.",
-        "prompt": "Liebe Mia,\n\nhast du am Samstag Zeit und Lust, zusammen in den Park zu gehen und ein Eis zu essen? Melde dich doch kurz!\n\nLiebe Grüße,\n[Dein Name]"
-    },
-    {
-        "title": "Neue Wohnung — Einladung an eine Freundin",
-        "desc": "Invitation to Sophie for a party at the new apartment – E-mail, approx. 30 words, 20 min.",
-        "prompt": "Liebe Sophie,\n\nich bin endlich in meine neue Wohnung umgezogen! Am Freitag mache ich eine kleine Einweihungsparty. Kommst du auch um 19 Uhr?\n\nLiebe Grüße,\n[Dein Name]"
-    },
-    {
-        "title": "Umzug — einen Freund um Hilfe bitten",
-        "desc": "Message to Daniel asking for help with moving – E-mail, approx. 30 words, 20 min.",
-        "prompt": "Lieber Daniel,\n\nich ziehe am nächsten Wochenende um und brauche dringend Hilfe beim Einpacken und Tragen. Hättest du am Samstag Zeit, mir zu helfen? Ich gebe auch Pizza aus!\n\nLiebe Grüße,\n[Dein Name]"
-    },
     {
         "title": "Dresden besuchen — Touristeninformation",
         "desc": "Message to the tourist information office about visiting Dresden – E-mail, approx. 30 words, 20 min.",
-        "prompt": "Sehr geehrte Damen und Herren,\n\nich plane nächstes Wochenende eine Reise nach Dresden und möchte gerne wissen, welche Sehenswürdigkeiten sonntags geöffnet sind und ob es Stadtführungen auf Deutsch gibt.\n\nMit freundlichen Grüßen,\n[Dein Name]"
+        "aufgabe_text": "Sie möchten im August Dresden besuchen. Schreiben Sie an die Touristeninformation.\n\nSchreiben Sie zu jedem Punkt ein bis zwei Sätze (circa 30 Wörter).\n\nSchreiben Sie auch eine Anrede und einen Gruß.",
+        "points": [
+            "1. Warum schreiben Sie?",
+            "2. Bitten Sie: Informationen über Filme, Museen usw. (Kulturprogramm).",
+            "3. Fragen Sie: Hoteladressen?"
+        ],
+        "prompt": "Sehr geehrte Damen und Herren,\n\nich möchte im August Dresden besuchen und plane eine Reise. Könnten Sie mir bitte Informationen über das Kulturprogramm (Museen, Filme usw.) schicken? Haben Sie auch Empfehlungen für Hoteladressen?\n\nMit freundlichen Grüßen,\n[Dein Name]"
     },
     {
         "title": "Krank — Nachricht an den Deutschkurs",
         "desc": "Email to Frau Wolf about being ill and missing German class – E-mail, approx. 30 words, 20 min.",
-        "prompt": "Liebe Frau Wolf,\n\nich liege leider mit starkem Fieber im Bett und kann heute nicht in den Deutschkurs kommen. Ich wünsche Ihnen einen schönen Unterricht.\n\nLiebe Grüße,\n[Dein Name]"
+        "aufgabe_text": "Sie sind krank und können heute nicht in den Deutschkurs kommen. Schreiben Sie an Ihre Lehrerin, Frau Wolf.\n\nSchreiben Sie zu jedem Punkt ein bis zwei Sätze (circa 30 Wörter).\n\nSchreiben Sie auch eine Anrede und einen Gruß.",
+        "points": [
+            "1. Grund für das Schreiben (krank).",
+            "2. Wie lange bleiben Sie zu Hause?",
+            "3. Fragen nach den Hausaufgaben."
+        ],
+        "prompt": "Liebe Frau Wolf,\n\nich liege leider mit starkem Fieber im Bett und kann heute nicht in den Deutschkurs kommen. Ich muss zwei Tage zu Hause bleiben. Könnten Sie mir bitte per E-Mail die Hausaufgaben schicken?\n\nLiebe Grüße,\n[Dein Name]"
+    },
+    {
+        "title": "Heizung kaputt — Nachricht an den Vermieter",
+        "desc": "Message to Mr Berg about the broken heating – E-mail, approx. 30 words, 20 min.",
+        "aufgabe_text": "In Ihrer Wohnung ist die Heizung kaputt. Schreiben Sie an Ihren Vermieter, Herrn Berg.\n\nSchreiben Sie zu jedem Punkt ein bis zwei Sätze (circa 30 Wörter).\n\nSchreiben Sie auch eine Anrede und einen Gruß.",
+        "points": [
+            "1. Problem erklären (Heizung kaputt).",
+            "2. Es ist sehr kalt in der Wohnung.",
+            "3. Bitte um schnelle Reparatur."
+        ],
+        "prompt": "Sehr geehrter Herr Berg,\n\nin meiner Wohnung ist seit gestern die Heizung kaputt. Es ist leider sehr kalt in den Zimmern. Könnten Sie bitte schnell einen Handwerker schicken?\n\nMit freundlichen Grüßen,\n[Dein Name]"
+    },
+    {
+        "title": "Danke für das Geschenk — Nachricht an einen Freund",
+        "desc": "Thank-you message to Lukas for a birthday present – E-mail, approx. 30 words, 20 min.",
+        "aufgabe_text": "Ihr Freund Lukas hat Ihnen ein schönes Geburtstagsgeschenk geschickt. Schreiben Sie an Lukas.\n\nSchreiben Sie zu jedem Punkt ein bis zwei Sätze (circa 30 Wörter).\n\nSchreiben Sie auch eine Anrede und einen Gruß.",
+        "points": [
+            "1. Danke für das Geschenk sagen.",
+            "2. Wie finden Sie das Geschenk?",
+            "3. Einladung auf einen Kaffee."
+        ],
+        "prompt": "Lieber Lukas,\n\nvielen herzlichen Dank für das tolle Geburtstagsgeschenk! Ich habe mich riesig darüber gefreut. Wollen wir uns nächste Woche auf einen Kaffee treffen?\n\nLiebe Grüße,\n[Dein Name]"
+    },
+    {
+        "title": "Neue Wohnung — Einladung an eine Freundin",
+        "desc": "Invitation to Sophie for a party at the new apartment – E-mail, approx. 30 words, 20 min.",
+        "aufgabe_text": "Sie sind in eine neue Wohnung umzogen. Schreiben Sie an Ihre Freundin Sophie und laden Sie sie ein.\n\nSchreiben Sie zu jedem Punkt ein bis zwei Sätze (circa 30 Wörter).\n\nSchreiben Sie auch eine Anrede und einen Gruß.",
+        "points": [
+            "1. Neue Wohnung ankündigen.",
+            "2. Einladung zur Einweihungsparty am Freitag.",
+            "3. Frage nach Zusage."
+        ],
+        "prompt": "Liebe Sophie,\n\nich bin endlich in meine neue Wohnung umgezogen! Am Freitag mache ich um 19 Uhr eine kleine Einweihungsparty. Hast du Zeit und kommst auch?\n\nLiebe Grüße,\n[Dein Name]"
+    },
+    {
+        "title": "Umzug — einen Freund um Hilfe bitten",
+        "desc": "Message to Daniel asking for help with moving – E-mail, approx. 30 words, 20 min.",
+        "aufgabe_text": "Sie ziehen am Wochenende um und brauchen Hilfe. Schreiben Sie an Ihren Freund Daniel.\n\nSchreiben Sie zu jedem Punkt ein bis zwei Sätze (circa 30 Wörter).\n\nSchreiben Sie auch eine Anrede und einen Gruß.",
+        "points": [
+            "1. Ankündigung des Umzugs.",
+            "2. Bitte um Hilfe beim Tragen am Samstag.",
+            "3. Angebot von Pizza und Getränken."
+        ],
+        "prompt": "Lieber Daniel,\n\nich ziehe am nächsten Wochenende um und brauche dringend Hilfe beim Tragen. Hättest du am Samstag Zeit, mir zu helfen? Als Dankeschön gebe ich Pizza aus!\n\nLiebe Grüße,\n[Dein Name]"
+    },
+    {
+        "title": "Freier Tag — Nachricht an die Chefin",
+        "desc": "Message to Ms Schäfer about a doctor's appointment and taking a day off – E-mail, approx. 30 words, 20 min.",
+        "aufgabe_text": "Sie haben am Dienstag einen wichtigen Termin. Schreiben Sie an Ihre Chefin, Frau Schäfer.\n\nSchreiben Sie zu jedem Punkt ein bis zwei Sätze (circa 30 Wörter).\n\nSchreiben Sie auch eine Anrede und einen Gruß.",
+        "points": [
+            "1. Grund für die Nachricht (Arzttermin am Vormittag).",
+            "2. Frage nach Arbeitsbeginn ab 13 Uhr.",
+            "3. Arbeit am Abend nachholen."
+        ],
+        "prompt": "Sehr geehrte Frau Schäfer,\n\nich habe am kommenden Dienstag einen wichtigen Arzttermin am Vormittag. Könnte ich an diesem Tag bitte erst ab 13 Uhr ins Büro kommen? Ich hole die Arbeit natürlich am Abend nach.\n\nMit freundlichen Grüßen,\n[Dein Name]"
+    },
+    {
+        "title": "Treffen am Wochenende — Nachricht an eine Freundin",
+        "desc": "Message to Mia about plans together at the weekend – E-mail, approx. 30 words, 20 min.",
+        "aufgabe_text": "Sie möchten am Wochenende etwas unternehmen. Schreiben Sie an Ihre Freundin Mia.\n\nSchreiben Sie zu jedem Punkt ein bis zwei Sätze (circa 30 Wörter).\n\nSchreiben Sie auch eine Anrede und einen Gruß.",
+        "points": [
+            "1. Vorschlag für den Park am Samstag.",
+            "2. Gemeinsam Eis essen.",
+            "3. Bitte um kurze Rückmeldung."
+        ],
+        "prompt": "Liebe Mia,\n\nhast du am Samstag Zeit und Lust, zusammen in den Park zu gehen? Wir können dort lecker Eis essen. Melde dich doch kurz, ob es klappt!\n\nLiebe Grüße,\n[Dein Name]"
+    },
+    {
+        "title": "Termin in der Autowerkstatt",
+        "desc": "Email to the auto repair shop about car noises and an appointment – E-mail, approx. 30 words, 20 min.",
+        "aufgabe_text": "Ihr Auto macht komische Geräusche. Schreiben Sie an die Autowerkstatt.\n\nSchreiben Sie zu jedem Punkt ein bis zwei Sätze (circa 30 Wörter).\n\nSchreiben Sie auch eine Anrede und einen Gruß.",
+        "points": [
+            "1. Problem erklären (Geräusche beim Bremsen).",
+            "2. Bitte um Termin.",
+            "3. Frage nach Termin am Donnerstag um 10 Uhr."
+        ],
+        "prompt": "Sehr geehrte Damen und Herren,\n\nmein Auto macht seit gestern komische Geräusche beim Bremsen. Ich brauche dringend einen Termin in Ihrer Werkstatt. Passt es Ihnen am Donnerstag um 10 Uhr?\n\nMit freundlichen Grüßen,\n[Dein Name]"
     }
 ]
 
@@ -660,7 +714,7 @@ if nav_choice == "🏠 Study Dashboard":
           - Teil 3: Public Signs (Richtig/Falsch)
         * **Schreiben (20 Mins - 2 Parts):**
           - Teil 1: Fill 5 Missing Gaps on Form with Scenario (All 9 official exam scenarios fully integrated!)
-          - Teil 2: Write ~30-Word Message hitting 3 required points
+          - Teil 2: Write ~30-Word Message hitting 3 required points (All 9 official exam scenarios fully integrated!)
         """)
         st.markdown('</div>', unsafe_allow_html=True)
     with col2:
@@ -1427,7 +1481,7 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
 
     s_tab1, s_tab2 = st.tabs([
         "Teil 1: Formular (Official 9 Scenarios)", 
-        "Teil 2: Write ~30-Word Email (3 Content Points)"
+        "Teil 2: Mitteilung (Official 9 Scenarios)"
     ])
 
     with s_tab1:
@@ -1465,10 +1519,10 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
 
         col_b_clear, col_b_check = st.columns(2)
         with col_b_clear:
-            if st.button("✖️ Clear", use_container_width=True):
+            if st.button("✖️ Clear Form", use_container_width=True):
                 st.rerun()
         with col_b_check:
-            submit_form_btn = st.button("✔ Check", type="primary", use_container_width=True)
+            submit_form_btn = st.button("✔ Check Form", type="primary", use_container_width=True)
 
         if submit_form_btn:
             score = 0
@@ -1486,25 +1540,91 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
             st.metric("Formular Score", f"{score} / {total_gaps}")
 
     with s_tab2:
-        st.markdown("**Teil 2:** Select from official practice scenario sets for writing short messages / emails (~30 words, 3 points).")
+        st.markdown("**Teil 2 (Mitteilung):** Select from all 9 official Goethe A1 practice scenarios. Write an email (~30 words) hitting all 3 required points exactly like the official app interface (see screenshot 49).")
         
-        selected_schreiben_t2_title = st.selectbox("📂 Select Schreiben Teil 2 Scenario Set:", [s["title"] for s in SCHREIBEN_TEIL2_SCENARIOS])
+        selected_schreiben_t2_title = st.selectbox("📂 Select Schreiben Teil 2 Scenario Set:", [s["title"] for s in SCHREIBEN_TEIL2_SCENARIOS], key="schreiben_t2_select")
         selected_schreiben_t2_obj = next(s for s in SCHREIBEN_TEIL2_SCENARIOS if s["title"] == selected_schreiben_t2_title)
         
-        st.info(f"📌 **Description:** {selected_schreiben_t2_obj['desc']}")
-        st.info(f"**Situation Prompt:**\n{selected_schreiben_t2_obj['prompt']}")
+        # Display Aufgabe (Task) Box matching Screenshot 49 UI
+        st.markdown(f"""
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.02);">
+            <div style="display: flex; align-items: center; margin-bottom: 12px;">
+                <span style="font-size: 1.2rem; margin-right: 8px;">📄</span>
+                <span style="font-weight: 700; font-size: 1.1rem; color: #1e293b;">Aufgabe (Task)</span>
+            </div>
+            <p style="white-space: pre-line; color: #334155; font-size: 0.95rem; line-height: 1.5; margin-bottom: 16px;">{selected_schreiben_t2_obj['aufgabe_text']}</p>
+        """, unsafe_allow_html=True)
 
-        u_email = st.text_area(f"Your German Response for '{selected_schreiben_t2_title}' (~30 words):", height=140, key=f"email_resp_{selected_schreiben_t2_title}")
+        for pt in selected_schreiben_t2_obj["points"]:
+            st.markdown(f"""
+            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px 16px; margin-bottom: 10px; font-weight: 500; color: #1e293b;">
+                {pt}
+            </div>
+            """, unsafe_allow_html=True)
         
-        if st.button(f"Evaluate Email with Gem ({selected_schreiben_t2_title})", type="primary"):
+        st.markdown("</div>", unsafe_allow_html=True)
+
+        # Redemittel (Ready Phrases) Expander
+        with st.expander("✨ Redemittel (Ready Phrases)"):
+            st.markdown("""
+            * **Anrede (Salutation):** *Sehr geehrte Damen und Herren,* / *Sehr geehrte(r) Frau/Herr [Name],* / *Liebe(r) [Name],*
+            * **Grund (Reason):** *ich schreibe Ihnen, weil...* / *ich möchte...* / *ich habe eine Frage...*
+            * **Bitten / Fragen (Requests / Questions):** *Könnten Sie mir bitte...* / *Hätten Sie am... Zeit?* / *Wann kann ich...*
+            * **Gruß (Sign-off):** *Mit freundlichen Grüßen,* / *Liebe Grüße,*
+            """)
+
+        # Sample Answer Expander
+        with st.expander("📖 Sample Answer (Musterlösung)"):
+            st.info(selected_schreiben_t2_obj['prompt'])
+
+        # User Text Input Box matching Screenshot 50 UI
+        st.markdown("### Your Text")
+        u_email = st.text_area("Write your text here...", height=160, key=f"email_resp_{selected_schreiben_t2_title}", placeholder="Write your text here...")
+        
+        # Word count calculation
+        word_count = len(u_email.strip().split()) if u_email.strip() else 0
+        st.caption(f"Word Count: {word_count} (Target: ~30 words)")
+
+        # Special character helper buttons matching screenshot 50
+        st.markdown("##### Special Characters")
+        sc_cols2 = st.columns(7)
+        chars2 = ["ä", "ö", "ü", "ß", "Ä", "Ö", "Ü"]
+        for idx, ch in enumerate(chars2):
+            sc_cols2[idx].code(ch)
+
+        col_t2_clear, col_t2_analyze = st.columns(2)
+        with col_t2_clear:
+            if st.button("✖️ Clear text", use_container_width=True, key="clear_t2_btn"):
+                st.rerun()
+        with col_t2_analyze:
+            analyze_btn = st.button("✔ Analyze text", type="primary", use_container_width=True, key="analyze_t2_btn")
+
+        if analyze_btn:
             if u_email.strip():
-                with st.spinner("Gem is evaluating task fulfillment across all 3 points..."):
+                with st.spinner("Gem is analyzing task fulfillment across all 3 points, word count, and grammar..."):
                     try:
-                        eval_prompt = f"PROMPT SCENARIO:\n{selected_schreiben_t2_obj['prompt']}\n\nSTUDENT SUBMISSION:\n{u_email}\n\nGrade task fulfillment across all 3 required points, V2 verb order, and appropriate German salutations/closings against Goethe A1 standards."
+                        eval_prompt = f"""
+                        TASK SCENARIO:
+                        {selected_schreiben_t2_obj['aufgabe_text']}
+                        REQUIRED POINTS:
+                        {json.dumps(selected_schreiben_t2_obj['points'])}
+
+                        STUDENT SUBMISSION:
+                        {u_email}
+
+                        Evaluate the student's text against official Goethe A1 Schreiben Teil 2 standards:
+                        1. Did the student cover all 3 required points?
+                        2. Is the word count appropriate (~30 words)?
+                        3. Are salutation and sign-off included?
+                        4. Grammatical accuracy (V2 word order, verb conjugation, spelling).
+                        Provide constructive feedback and a score.
+                        """
                         eval_res = generate_dynamic_content(eval_prompt)
-                        st.markdown("### Official Examiner Breakdown")
+                        st.markdown("### 📊 Official Examiner Evaluation")
                         st.write(eval_res)
                     except Exception as e: st.error(f"Error: {str(e)}")
+            else:
+                st.warning("Please write your text before analyzing.")
 
     st.markdown('</div>', unsafe_allow_html=True)
 
@@ -1977,7 +2097,7 @@ elif nav_choice == "📖 A1 & A2 Short Stories":
                 st.markdown(f"**Part {idx}**")
                 col_aud, col_text = st.columns([0.5, 10])
                 with col_aud:
-                    if st.button("🔊", key=f"audio_story_p_{idx}"):
+                    if st.button("🔊", key=f"audio_story_p_{idx}   "):
                         play_direct_audio(p["german"], f"story_p_{idx}")
                 with col_text:
                     st.info(f"**🇩🇪 German:** {p['german']}")
@@ -2053,7 +2173,7 @@ if st.session_state.bot_open:
         st.write(st.session_state.bot_last_response)
         st.markdown("---")
         st.markdown("✍️ **Answer Knowledge Check Here:**")
-        user_kc_answer = st.text_input("Your answer to Gem's question:", key="bot_kc_input")
+        user_kc_answer = st.text_input("Answer to Gem's question:", key="bot_kc_input")
         if st.button("Submit Answer to Gem"):
             with st.spinner("Gem is grading your answer..."):
                 eval_prompt = f"The user was asked a knowledge check question based on: '{st.session_state.bot_last_response}'. The user answered: '{user_kc_answer}'. Grade this answer, explain why it is correct or incorrect, and provide encouragement."
