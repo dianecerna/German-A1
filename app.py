@@ -77,7 +77,9 @@ if not api_key:
     st.stop()
 
 client = genai.Client(api_key=api_key.strip())
-MODEL_NAME = "gemini-2.5-flash"
+
+# Ordered Model Fallback Strategy
+FALLBACK_MODELS = ["gemini-3.8-flash", "gemini-3.5-flash", "gemini-3.1-flash-lite"]
 
 SYSTEM_INSTRUCTION = """
 You are Gem, an expert German tutor and official Goethe-Institut examiner evaluating candidates for the Goethe-Zertifikat A1 exam.
@@ -91,25 +93,44 @@ def generate_cached_content(prompt_text: str, is_json: bool = False) -> str:
     if is_json:
         config_args["response_mime_type"] = "application/json"
     
-    res = client.models.generate_content(
-        model=MODEL_NAME,
-        contents=prompt_text,
-        config=types.GenerateContentConfig(**config_args)
-    )
-    return res.text
+    last_error = None
+    for model_name in FALLBACK_MODELS:
+        try:
+            res = client.models.generate_content(
+                model=model_name,
+                contents=prompt_text,
+                config=types.GenerateContentConfig(**config_args)
+            )
+            return res.text
+        except Exception as e:
+            last_error = e
+            if "429" in str(e) or "RESOURCE_EXHAUSTED" in str(e) or "quota" in str(e).lower():
+                continue
+            raise e
+            
+    raise Exception(f"All free model quotas are currently exhausted. Details: {str(last_error)}")
 
 def generate_dynamic_content(prompt_text: str, is_json: bool = False) -> str:
-    """Uncached generation for fresh dynamic exam practice items."""
     config_args = {"system_instruction": SYSTEM_INSTRUCTION}
     if is_json:
         config_args["response_mime_type"] = "application/json"
     
-    res = client.models.generate_content(
-        model=MODEL_NAME,
-        contents=prompt_text,
-        config=types.GenerateContentConfig(**config_args)
-    )
-    return res.text
+    last_error = None
+    for model_name in FALLBACK_MODELS:
+        try:
+            res = client.models.generate_content(
+                model=model_name,
+                contents=prompt_text,
+                config=types.GenerateContentConfig(**config_args)
+            )
+            return res.text
+        except Exception as e:
+            last_error = e
+            if "429" in str(e) or "RESOURCE_EXHAUSTED" in str(e) or "quota" in str(e).lower():
+                continue
+            raise e
+            
+    raise Exception(f"All free model quotas are currently exhausted. Details: {str(last_error)}")
 
 @st.cache_data
 def load_goethe_vocab():
@@ -490,7 +511,7 @@ elif nav_choice == "📖 Core Grammar Practice & Exercises":
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
-# 4. GOETHE A1 LESEN (NEW SCENARIO GENERATORS ADDED)
+# 4. GOETHE A1 LESEN
 # ----------------------------------------------------
 elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
@@ -609,7 +630,7 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
-# 5. GOETHE A1 HÖREN (NEW AUDIO GENERATORS ADDED)
+# 5. GOETHE A1 HÖREN
 # ----------------------------------------------------
 elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
@@ -729,7 +750,7 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
-# 6. GOETHE A1 SCHREIBEN (SCENARIO FIX APPLIED HERE)
+# 6. GOETHE A1 SCHREIBEN
 # ----------------------------------------------------
 elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
@@ -803,18 +824,15 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
                     with st.spinner("Gem is evaluating task fulfillment..."):
                         try:
                             eval_prompt = f"PROMPT:\n{st.session_state.schreiben_t2_prompt}\n\nSUBMISSION:\n{u_email}\n\nGrade task fulfillment across all 3 bullet points, V2 verb order, and appropriate salutations/closings."
-                            eval_res = client.models.generate_content(
-                                model=MODEL_NAME, contents=eval_prompt,
-                                config=types.GenerateContentConfig(system_instruction=SYSTEM_INSTRUCTION)
-                            )
+                            eval_res = generate_dynamic_content(eval_prompt)
                             st.markdown("### Official Examiner Breakdown")
-                            st.write(eval_res.text)
+                            st.write(eval_res)
                         except Exception as e: st.error(f"Error: {str(e)}")
 
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
-# 7. GOETHE A1 SPRECHEN (MULTI-CARD DRAWING ENABLED HERE)
+# 7. GOETHE A1 SPRECHEN
 # ----------------------------------------------------
 elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
@@ -839,7 +857,7 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
                     try:
                         audio_part = types.Part.from_bytes(data=rec_t1['bytes'], mime_type="audio/wav")
                         eval_res = client.models.generate_content(
-                            model=MODEL_NAME,
+                            model=FALLBACK_MODELS[0],
                             contents=["Transcribe audio and evaluate candidate self-introduction and spelling against Goethe A1 criteria.", audio_part],
                             config=types.GenerateContentConfig(system_instruction=SYSTEM_INSTRUCTION)
                         )
@@ -873,7 +891,7 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
                         try:
                             audio_part = types.Part.from_bytes(data=rec_t2['bytes'], mime_type="audio/wav")
                             eval_res = client.models.generate_content(
-                                model=MODEL_NAME,
+                                model=FALLBACK_MODELS[0],
                                 contents=[f"Card: {st.session_state.card_t2}. Transcribe audio and verify if candidate formed a correct W-question with verb in Position 2.", audio_part],
                                 config=types.GenerateContentConfig(system_instruction=SYSTEM_INSTRUCTION)
                             )
@@ -907,7 +925,7 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
                         try:
                             audio_part = types.Part.from_bytes(data=rec_t3['bytes'], mime_type="audio/wav")
                             eval_res = client.models.generate_content(
-                                model=MODEL_NAME,
+                                model=FALLBACK_MODELS[0],
                                 contents=[f"Card: {st.session_state.card_t3}. Transcribe audio and verify if candidate formed a correct imperative request with verb in Position 1.", audio_part],
                                 config=types.GenerateContentConfig(system_instruction=SYSTEM_INSTRUCTION)
                             )
@@ -923,10 +941,9 @@ elif nav_choice == "💬 Ask Gem (AI Tutor)":
     st.markdown('<div class="accent-card">', unsafe_allow_html=True)
     st.subheader("💬 Ask Gem — Interactive AI Tutor")
     if prompt := st.chat_input("Ask Gem a question:"):
-        res = client.models.generate_content(
-            model=MODEL_NAME, 
-            contents=prompt,
-            config=types.GenerateContentConfig(system_instruction=SYSTEM_INSTRUCTION)
-        )
-        st.write(res.text)
+        try:
+            res = generate_dynamic_content(prompt)
+            st.write(res)
+        except Exception as e:
+            st.error(f"Error processing question: {str(e)}")
     st.markdown('</div>', unsafe_allow_html=True)
