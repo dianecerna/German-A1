@@ -98,6 +98,19 @@ def generate_cached_content(prompt_text: str, is_json: bool = False) -> str:
     )
     return res.text
 
+def generate_dynamic_content(prompt_text: str, is_json: bool = False) -> str:
+    """Uncached generation for fresh dynamic exam practice items."""
+    config_args = {"system_instruction": SYSTEM_INSTRUCTION}
+    if is_json:
+        config_args["response_mime_type"] = "application/json"
+    
+    res = client.models.generate_content(
+        model=MODEL_NAME,
+        contents=prompt_text,
+        config=types.GenerateContentConfig(**config_args)
+    )
+    return res.text
+
 @st.cache_data
 def load_goethe_vocab():
     try:
@@ -177,7 +190,7 @@ if nav_choice == "🏠 Study Dashboard":
         st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
-# 2. MASTER GOETHE WORD ENGINE (FLASHCARD DIRECT SHOW)
+# 2. MASTER GOETHE WORD ENGINE
 # ----------------------------------------------------
 elif nav_choice == "📚 Master Goethe Word Engine":
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
@@ -195,10 +208,10 @@ elif nav_choice == "📚 Master Goethe Word Engine":
     Return strict JSON with this exact schema:
     {{
         "word": "{active_word}",
-        "part_of_speech": "Verb",
+        "part_of_speech": "Verb / Noun / Adjective / Preposition / Conjunction",
         "english_meaning": "English translation",
-        "gender": "N/A",
-        "plural_form": "N/A",
+        "gender": "der / die / das / N/A",
+        "plural_form": "Plural form or N/A",
         "conjugations": [
             {{"pronoun": "ich", "form": "...", "sentence": "German sentence", "sentence_en": "English sentence"}},
             {{"pronoun": "du", "form": "...", "sentence": "German sentence", "sentence_en": "English sentence"}},
@@ -225,7 +238,6 @@ elif nav_choice == "📚 Master Goethe Word Engine":
         raw_json = generate_cached_content(prompt, is_json=True)
         data = json.loads(raw_json)
 
-        # FRONT OF FLASHCARD
         if not st.session_state.show_card_back:
             st.markdown(f"""
             <div class="flashcard-front-box">
@@ -239,7 +251,6 @@ elif nav_choice == "📚 Master Goethe Word Engine":
             audio_bytes = generate_german_audio_bytes(active_word)
             st.audio(audio_bytes, format="audio/mp3")
 
-        # BACK OF FLASHCARD
         else:
             st.markdown(f"""
             <div class="flashcard-back-box">
@@ -274,7 +285,6 @@ elif nav_choice == "📚 Master Goethe Word Engine":
 
     st.divider()
 
-    # CONTROLS
     col_f1, col_f2 = st.columns([1, 1])
     with col_f1:
         if st.button("🔄 Flip Flashcard (Front / Back)", use_container_width=True, type="primary"):
@@ -297,7 +307,7 @@ elif nav_choice == "📚 Master Goethe Word Engine":
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
-# 3. CORE GRAMMAR PRACTICE & EXERCISES (THOROUGH REVIEW BEFORE EXERCISES)
+# 3. CORE GRAMMAR PRACTICE & EXERCISES
 # ----------------------------------------------------
 elif nav_choice == "📖 Core Grammar Practice & Exercises":
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
@@ -395,8 +405,6 @@ elif nav_choice == "📖 Core Grammar Practice & Exercises":
 
     if "active_grammar_module" in st.session_state:
         mod = st.session_state.active_grammar_module
-        
-        # Comprehensive Lesson Review & Explanation Box
         st.markdown(f"### 📘 Comprehensive Lesson Review: {mod['lesson_title']}")
         st.info(mod["lesson_explanation"])
 
@@ -442,7 +450,6 @@ elif nav_choice == "📖 Core Grammar Practice & Exercises":
         if st.button("🚀 Submit All Answers & View Immediate Corrections", type="primary"):
             st.markdown("### 📊 Correct Answers & Immediate Explanations")
             
-            # Grade Section 1
             st.markdown("#### 1. Multiple Choice Evaluation")
             score_mc = 0
             for idx, q in enumerate(mod["exercises_mc"], start=1):
@@ -453,7 +460,6 @@ elif nav_choice == "📖 Core Grammar Practice & Exercises":
                 else:
                     st.error(f"**Q{idx}: Incorrect.** Your answer: `{u_ans}` | Correct: `{q['correct']}`\n\n💡 **Reason:** {q['explanation']}")
 
-            # Grade Section 2
             st.markdown("#### 2. Fill in the Blanks Evaluation")
             score_fib = 0
             for idx, q in enumerate(mod["exercises_fib"], start=1):
@@ -465,7 +471,6 @@ elif nav_choice == "📖 Core Grammar Practice & Exercises":
                 else:
                     st.error(f"**Q{idx}: Incorrect.** Your answer: `{u_ans}` | Correct: `{q['answer']}`\n\n💡 **Reason:** {q['explanation']}")
 
-            # Grade Section 3 & 4
             st.markdown("#### 3 & 4. Sentence Creation & Translation Evaluation")
             with st.spinner("Gem is evaluating sentence structures and translations..."):
                 sc_st_prompt = f"""
@@ -485,7 +490,7 @@ elif nav_choice == "📖 Core Grammar Practice & Exercises":
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
-# 4. GOETHE A1 LESEN
+# 4. GOETHE A1 LESEN (NEW SCENARIO GENERATORS ADDED)
 # ----------------------------------------------------
 elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
@@ -499,8 +504,8 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
 
     with l_tab1:
         st.markdown("**Teil 1:** Read short emails or notes and answer 5 Richtig/Falsch tasks.")
-        if st.button("🎲 Generate Lesen Teil 1 (5 Tasks)", type="primary"):
-            with st.spinner("Gem is generating 5 Teil 1 tasks..."):
+        if st.button("🎲 Generate Lesen Teil 1 Scenario", type="primary") or st.button("🔄 Generate New Lesen Teil 1 Set"):
+            with st.spinner("Gem is generating a fresh Lesen Teil 1 set..."):
                 prompt = """
                 Generate Goethe A1 Lesen Teil 1 exercise: 2 short emails with 5 total statement tasks (Richtig/Falsch).
                 Return strict JSON format:
@@ -517,7 +522,7 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
                 }
                 """
                 try:
-                    json_str = generate_cached_content(prompt, is_json=True)
+                    json_str = generate_dynamic_content(prompt, is_json=True)
                     st.session_state.lesen_t1 = json.loads(json_str)
                 except Exception as e: st.error(f"Error: {str(e)}")
 
@@ -535,8 +540,8 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
 
     with l_tab2:
         st.markdown("**Teil 2:** Match user situations to classified website ads A or B (5 tasks).")
-        if st.button("🎲 Generate Lesen Teil 2 (5 Tasks)", type="primary"):
-            with st.spinner("Gem is generating 5 Teil 2 tasks..."):
+        if st.button("🎲 Generate Lesen Teil 2 Scenario", type="primary") or st.button("🔄 Generate New Lesen Teil 2 Set"):
+            with st.spinner("Gem is generating a fresh Lesen Teil 2 set..."):
                 prompt = """
                 Generate Goethe A1 Lesen Teil 2 exercise: 5 user situations, each with Website A and Website B options.
                 Return strict JSON format:
@@ -551,7 +556,7 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
                 }
                 """
                 try:
-                    json_str = generate_cached_content(prompt, is_json=True)
+                    json_str = generate_dynamic_content(prompt, is_json=True)
                     st.session_state.lesen_t2 = json.loads(json_str)
                 except Exception as e: st.error(f"Error: {str(e)}")
 
@@ -570,8 +575,8 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
 
     with l_tab3:
         st.markdown("**Teil 3:** Read public signs/notices and answer 5 Richtig/Falsch tasks.")
-        if st.button("🎲 Generate Lesen Teil 3 (5 Tasks)", type="primary"):
-            with st.spinner("Gem is generating 5 Teil 3 sign tasks..."):
+        if st.button("🎲 Generate Lesen Teil 3 Scenario", type="primary") or st.button("🔄 Generate New Lesen Teil 3 Set"):
+            with st.spinner("Gem is generating a fresh Lesen Teil 3 sign set..."):
                 prompt = """
                 Generate Goethe A1 Lesen Teil 3 exercise: 5 public signs with 1 statement task per sign (Richtig/Falsch).
                 Return strict JSON format:
@@ -586,7 +591,7 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
                 }
                 """
                 try:
-                    json_str = generate_cached_content(prompt, is_json=True)
+                    json_str = generate_dynamic_content(prompt, is_json=True)
                     st.session_state.lesen_t3 = json.loads(json_str)
                 except Exception as e: st.error(f"Error: {str(e)}")
 
@@ -604,7 +609,7 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
-# 5. GOETHE A1 HÖREN
+# 5. GOETHE A1 HÖREN (NEW AUDIO GENERATORS ADDED)
 # ----------------------------------------------------
 elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
@@ -618,8 +623,8 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
 
     with h_tab1:
         st.info("ℹ️ Teil 1: 6 dialogues played TWICE. Choose A, B, or C.")
-        if st.button("🎲 Generate Hören Teil 1 (6 Tasks + Audio)", type="primary"):
-            with st.spinner("Gem is synthesizing 6 audio dialogues..."):
+        if st.button("🎲 Generate Hören Teil 1 Scenario", type="primary") or st.button("🔄 Generate New Hören Teil 1 Audio & Tasks"):
+            with st.spinner("Gem is synthesizing 6 new audio dialogues..."):
                 prompt = """
                 Generate Goethe A1 Hören Teil 1: 6 short dialogues with 1 multiple-choice task per dialogue (A/B/C).
                 Return strict JSON format:
@@ -635,7 +640,7 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
                 }
                 """
                 try:
-                    json_str = generate_cached_content(prompt, is_json=True)
+                    json_str = generate_dynamic_content(prompt, is_json=True)
                     st.session_state.hoeren_t1 = json.loads(json_str)
                 except Exception as e: st.error(f"Error: {str(e)}")
 
@@ -654,8 +659,8 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
 
     with h_tab2:
         st.warning("⚠️ Teil 2: 4 public announcements played ONCE. Judge Richtig or Falsch.")
-        if st.button("🎲 Generate Hören Teil 2 (4 Tasks + Audio)", type="primary"):
-            with st.spinner("Gem is synthesizing 4 public announcements..."):
+        if st.button("🎲 Generate Hören Teil 2 Scenario", type="primary") or st.button("🔄 Generate New Hören Teil 2 Audio & Tasks"):
+            with st.spinner("Gem is synthesizing 4 new public announcements..."):
                 prompt = """
                 Generate Goethe A1 Hören Teil 2: 4 announcements with 1 Richtig/Falsch task each.
                 Return strict JSON format:
@@ -669,7 +674,7 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
                 }
                 """
                 try:
-                    json_str = generate_cached_content(prompt, is_json=True)
+                    json_str = generate_dynamic_content(prompt, is_json=True)
                     st.session_state.hoeren_t2 = json.loads(json_str)
                 except Exception as e: st.error(f"Error: {str(e)}")
 
@@ -688,8 +693,8 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
 
     with h_tab3:
         st.info("ℹ️ Teil 3: 5 phone voicemails played TWICE. Choose A, B, or C.")
-        if st.button("🎲 Generate Hören Teil 3 (5 Tasks + Audio)", type="primary"):
-            with st.spinner("Gem is synthesizing 5 voicemail messages..."):
+        if st.button("🎲 Generate Hören Teil 3 Scenario", type="primary") or st.button("🔄 Generate New Hören Teil 3 Audio & Tasks"):
+            with st.spinner("Gem is synthesizing 5 new voicemail messages..."):
                 prompt = """
                 Generate Goethe A1 Hören Teil 3: 5 voicemails with 1 multiple-choice task each (A/B/C).
                 Return strict JSON format:
@@ -704,7 +709,7 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
                 }
                 """
                 try:
-                    json_str = generate_cached_content(prompt, is_json=True)
+                    json_str = generate_dynamic_content(prompt, is_json=True)
                     st.session_state.hoeren_t3 = json.loads(json_str)
                 except Exception as e: st.error(f"Error: {str(e)}")
 
@@ -724,7 +729,7 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
-# 6. GOETHE A1 SCHREIBEN
+# 6. GOETHE A1 SCHREIBEN (SCENARIO FIX APPLIED HERE)
 # ----------------------------------------------------
 elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
@@ -737,13 +742,15 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
 
     with s_tab1:
         st.markdown("**Teil 1:** Read a short background text and complete the 5 missing fields on a registration form.")
-        if st.button("🎲 Generate Schreiben Teil 1 Scenario", type="primary"):
-            with st.spinner("Gem is creating form exercise..."):
+        if st.button("🎲 Generate Schreiben Teil 1 Scenario", type="primary") or st.button("🔄 Generate New Form Scenario"):
+            with st.spinner("Gem is creating complete form exercise..."):
                 prompt = """
-                Generate Goethe A1 Schreiben Teil 1 form exercise.
+                Generate a complete Goethe A1 Schreiben Teil 1 form exercise.
+                CRITICAL INSTRUCTION: The 'scenario' text MUST explicitly state all 5 details required to answer every single form field!
+
                 Return strict JSON format:
                 {
-                    "scenario": "Short travel/booking scenario text...",
+                    "scenario": "Your friend / tourist [Full Name] is booking a hotel room for [X] people arriving on [Day]. They want to pay by [Payment Method] and their phone number is [Phone Number]. Write out a full detailed 3-4 sentence background scenario containing ALL of these 5 facts clearly.",
                     "form_title": "Anmeldeformular",
                     "fields": [
                         {"id": "f1", "label": "1. Familienname", "answer": "Müller"},
@@ -755,29 +762,37 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
                 }
                 """
                 try:
-                    json_str = generate_cached_content(prompt, is_json=True)
+                    json_str = generate_dynamic_content(prompt, is_json=True)
                     st.session_state.schreiben_t1 = json.loads(json_str)
                 except Exception as e: st.error(f"Error: {str(e)}")
 
         if "schreiben_t1" in st.session_state:
             d = st.session_state.schreiben_t1
-            st.info(f"**Scenario:** {d['scenario']}")
+            st.info(f"**Background Scenario:**\n{d['scenario']}")
             st.markdown(f"### 📋 {d['form_title']}")
             user_inputs = {}
             for f in d["fields"]:
                 user_inputs[f["id"]] = st.text_input(f["label"], key=f"inp_{f['id']}")
             
             if st.button("Check Form Gaps"):
-                score = sum(1 for f in d["fields"] if user_inputs[f["id"]].strip().lower() == f["answer"].strip().lower())
+                score = 0
+                for f in d["fields"]:
+                    u_val = user_inputs[f["id"]].strip().lower()
+                    c_val = f["answer"].strip().lower()
+                    if u_val == c_val:
+                        score += 1
+                        st.success(f"**{f['label']}: Correct!** (`{f['answer']}`)")
+                    else:
+                        st.error(f"**{f['label']}: Incorrect.** Your answer: `{u_val}` | Correct: `{f['answer']}`")
                 st.metric("Form Score", f"{score} / 5")
 
     with s_tab2:
         st.markdown("**Teil 2:** Write a short informal message/email (~30 words) hitting 3 required content points.")
-        if st.button("🎲 Generate Schreiben Teil 2 Prompt", type="primary"):
+        if st.button("🎲 Generate Schreiben Teil 2 Prompt", type="primary") or st.button("🔄 Generate Another Email Prompt"):
             with st.spinner("Gem is generating email prompt..."):
                 try:
-                    prompt = "Generate an official Goethe A1 Schreiben Teil 2 prompt specifying a scenario and 3 explicit bullet points."
-                    st.session_state.schreiben_t2_prompt = generate_cached_content(prompt)
+                    prompt = "Generate an official Goethe A1 Schreiben Teil 2 prompt specifying a clear scenario and 3 explicit bullet points."
+                    st.session_state.schreiben_t2_prompt = generate_dynamic_content(prompt)
                 except Exception as e: st.error(f"Error: {str(e)}")
 
         if "schreiben_t2_prompt" in st.session_state:
@@ -799,7 +814,7 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
-# 7. GOETHE A1 SPRECHEN
+# 7. GOETHE A1 SPRECHEN (MULTI-CARD DRAWING ENABLED HERE)
 # ----------------------------------------------------
 elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
@@ -833,11 +848,20 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
 
     with sp_tab2:
         st.markdown("**Teil 2:** Draw a topic card, formulate a W-question for your partner, and answer theirs (Verb in Position 2).")
-        if st.button("🎲 Draw Topic Card", type="primary"):
-            with st.spinner("Gem is drawing card..."):
-                try:
-                    st.session_state.card_t2 = generate_cached_content("Generate Goethe A1 Sprechen topic card (e.g. Thema: 'Einkaufen', Wort: 'Brot').")
-                except Exception as e: st.error(f"Error: {str(e)}")
+        
+        col_sp2_a, col_sp2_b = st.columns(2)
+        with col_sp2_a:
+            if st.button("🎲 Draw Topic Card", type="primary"):
+                with st.spinner("Gem is drawing card..."):
+                    try:
+                        st.session_state.card_t2 = generate_dynamic_content("Generate Goethe A1 Sprechen topic card (e.g. Thema: 'Einkaufen', Wort: 'Brot').")
+                    except Exception as e: st.error(f"Error: {str(e)}")
+        with col_sp2_b:
+            if st.button("🔄 Draw Another Topic Card"):
+                with st.spinner("Gem is drawing a new card..."):
+                    try:
+                        st.session_state.card_t2 = generate_dynamic_content("Generate Goethe A1 Sprechen topic card with a completely different theme (e.g. Thema: 'Freizeit', 'Wohnen', 'Familie').")
+                    except Exception as e: st.error(f"Error: {str(e)}")
 
         if "card_t2" in st.session_state:
             st.success(f"🎴 **Your Topic Card:** {st.session_state.card_t2}")
@@ -858,11 +882,20 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
 
     with sp_tab3:
         st.markdown("**Teil 3:** Draw a card showing an object/situation and make a polite request/instruction (Verb in Position 1).")
-        if st.button("🎲 Draw Picture Request Card", type="primary"):
-            with st.spinner("Gem is drawing card..."):
-                try:
-                    st.session_state.card_t3 = generate_cached_content("Generate Goethe A1 Sprechen picture request card (e.g. Gegenstand: Bleistift).")
-                except Exception as e: st.error(f"Error: {str(e)}")
+        
+        col_sp3_a, col_sp3_b = st.columns(2)
+        with col_sp3_a:
+            if st.button("🎲 Draw Picture Request Card", type="primary"):
+                with st.spinner("Gem is drawing card..."):
+                    try:
+                        st.session_state.card_t3 = generate_dynamic_content("Generate Goethe A1 Sprechen picture request card (e.g. Gegenstand: Bleistift).")
+                    except Exception as e: st.error(f"Error: {str(e)}")
+        with col_sp3_b:
+            if st.button("🔄 Draw Another Picture Card"):
+                with st.spinner("Gem is drawing a new picture card..."):
+                    try:
+                        st.session_state.card_t3 = generate_dynamic_content("Generate a brand new Goethe A1 Sprechen picture card (e.g. Gegenstand: Apfel, Uhr, Buch, Handy).")
+                    except Exception as e: st.error(f"Error: {str(e)}")
 
         if "card_t3" in st.session_state:
             st.success(f"🎴 **Your Picture Card:** {st.session_state.card_t3}")
