@@ -173,47 +173,56 @@ def play_direct_audio(text_to_speak, unique_key):
     b64_audio = io.BytesIO(audio_bytes).read()
     st.audio(b64_audio, format="audio/mp3", autoplay=True)
 
-# Master Vocabulary Categories & Subcategories based on instructions
-TOP_1000_VOCAB_CATEGORIES = {
-    "1. Person & Alltag (Personal & Daily Life)": {
-        "Angaben zur Person (Personal Info)": ["der Name", "das Alter", "die Herkunft", "die Sprache", "ledig", "verheiratet", "kommen", "wohnen", "heißen", "sprechen"],
-        "Wohnen & Haushalt (Housing & Home)": ["die Wohnung", "das Zimmer", "die Miete", "die Adresse", "der Tisch", "der Stuhl", "die Küche", "das Bett", "kosten", "umziehen"],
-        "Familie & Freunde (Family & Friends)": ["die Eltern", "die Mutter", "der Vater", "der Bruder", "die Schwester", "das Kind", "der Freund", "die Familie", "groß", "klein"]
-    },
-    "2. Essen & Trinken (Food & Drink)": {
-        "Lebensmittel (Groceries)": ["der Apfel", "das Wasser", "das Brot", "die Milch", "das Fleisch", "das Obst", "das Gemüse", "der Käse", "das Ei", "der Fisch"],
-        "Im Restaurant & Café (Dining Out)": ["die Speisekarte", "zahlen", "lecker", "das Restaurant", "das Café", "der Kellner", "bestellen", "das Trinkgeld", "hungrig", "durstig"]
-    },
-    "3. Freizeit & Alltag (Leisure & Routine)": {
-        "Tagesablauf (Daily Routine)": ["aufstehen", "frühstücken", "arbeiten", "schlafen", "spät", "früh", "der Morgen", "der Abend", "die Uhr", "beginnen"],
-        "Hobbys & Sport (Hobbies & Sports)": ["lesen", "Fußball spielen", "fernsehen", "das Buch", "das Kino", "die Musik", "schwimmen", "reisen", "das Hobby", "fotografieren"],
-        "Wetter & Jahreszeiten (Weather & Seasons)": ["das Wetter", "kalt", "warm", "der Sommer", "der Winter", "die Sonne", "der Regen", "schneien", "der Frühling", "der Herbst"]
-    },
-    "4. Einkaufen & Geld (Shopping & Money)": {
-        "Geschäfte & Kleidung (Stores & Clothing)": ["das Geschäft", "die Hose", "das Hemd", "teuer", "billig", "die Farbe", "kaufen", "die Größe", "der Schuh", "die Jacke"],
-        "Bezahlen & Zahlen (Paying & Numbers)": ["das Geld", "der Euro", "die Kreditkarte", "null", "eins", "hundert", "tausend", "bezahlen", "kostbar", "billig"]
-    },
-    "5. Arbeit & Beruf (Work & Profession)": {
-        "Berufe & Arbeitsplatz (Jobs & Workplace)": ["der Arzt", "die Ärztin", "das Büro", "arbeiten", "der Kollege", "die Chefin", "der Beruf", "die Firma", "der Computer", "die Arbeit"],
-        "Termine & Bürokommunikation (Appointments & Comm)": ["der Termin", "anrufen", "morgen", "gestern", "die E-Mail", "das Telefon", "die Nachricht", "verschieben", "pünktlich", "absagen"]
-    },
-    "6. Stadt & Verkehr (City & Transportation)": {
-        "Unterwegs sein (Getting Around)": ["der Bus", "der Zug", "der Bahnhof", "links", "rechts", "das Ticket", "fahren", "fliegen", "das Auto", "die Haltestelle"],
-        "In der Stadt (In the City)": ["das Krankenhaus", "die Post", "die Bank", "die Apotheke", "die Straße", "die Brücke", "der Markt", "das Museum", "die Stadt", "der Park"]
-    },
-    "7. Gesundheit & Körper (Health & Body)": {
-        "Der Körper (The Body)": ["der Kopf", "der Arm", "das Bein", "das Auge", "der Mund", "das Haar", "der Rücken", "die Hand", "der Fuß", "wehtun"],
-        "Beim Arzt (At the Doctor)": ["krank", "der Arzt", "die Apotheke", "das Medikament", "das Rezept", "schmerzen", "helfen", "gesund", "das Fieber", "die Praxis"]
-    },
-    "8. Allgemein (General & Core Grammar)": {
-        "Grundverben & Pronomen (Core Verbs & Pronouns)": ["sein", "haben", "werden", "können", "müssen", "ich", "du", "er", "sie", "es", "wir", "ihr", "sie", "Sie"],
-        "Präpositionen & Konnektoren (Prepositions & Connectors)": ["und", "aber", "oder", "denn", "in", "auf", "mit", "für", "von", "zu"]
-    }
+# Toddler Space Visual Data Bank
+TODDLER_VISUAL_TOPICS = {
+    "Körperteile (Body Parts)": [
+        {"term": "der Kopf", "en": "Head", "icon": "🧠", "desc": "Used for thinking and wearing hats."},
+        {"term": "das Auge", "en": "Eye", "icon": "👁️", "desc": "Used for seeing colors and reading."},
+        {"term": "die Nase", "en": "Nose", "icon": "👃", "desc": "Used for smelling flowers and food."},
+        {"term": "der Mund", "en": "Mouth", "icon": "👄", "desc": "Used for speaking German and eating."},
+        {"term": "das Ohr", "en": "Ear", "icon": "👂", "desc": "Used for listening to German audio."},
+        {"term": "die Hand", "en": "Hand", "icon": "✋", "desc": "Used for writing and waving."},
+        {"term": "das Bein", "en": "Leg", "icon": "🦵", "desc": "Used for walking and running."}
+    ],
+    "Verkehrsmittel (Transportation)": [
+        {"term": "das Auto", "en": "Car", "icon": "🚗", "desc": "Four-wheeled motor vehicle for roads."},
+        {"term": "der Bus", "en": "Bus", "icon": "🚌", "desc": "Large public transport vehicle."},
+        {"term": "der Zug", "en": "Train", "icon": "🚆", "desc": "Rail transport connecting cities."},
+        {"term": "das Flugzeug", "en": "Airplane", "icon": "✈️", "desc": "Aircraft for flying across countries."},
+        {"term": "das Fahrrad", "en": "Bicycle", "icon": "🚲", "desc": "Two-wheeled pedal vehicle."},
+        {"term": "das Schiff", "en": "Ship", "icon": "🚢", "desc": "Large watercraft for seas."}
+    ],
+    "Farben (Colors)": [
+        {"term": "rot", "en": "Red", "icon": "🔴", "desc": "Color of apples and stop signs."},
+        {"term": "blau", "en": "Blue", "icon": "🔵", "desc": "Color of the sky and ocean."},
+        {"term": "gelb", "en": "Yellow", "icon": "🟡", "desc": "Color of the sun and lemons."},
+        {"term": "grün", "en": "Green", "icon": "🟢", "desc": "Color of grass and trees."},
+        {"term": "schwarz", "en": "Black", "icon": "⬛", "desc": "Darkest color."},
+        {"term": "weiß", "en": "White", "icon": "⬜", "desc": "Color of snow and clouds."}
+    ],
+    "Haus & Möbel (House & Furniture)": [
+        {"term": "das Zimmer", "en": "Room", "icon": "🚪", "desc": "An enclosed space inside a house."},
+        {"term": "die Küche", "en": "Kitchen", "icon": "🍳", "desc": "Where food is prepared and cooked."},
+        {"term": "das Bad", "en": "Bathroom", "icon": "🚿", "desc": "Where you wash and shower."},
+        {"term": "der Tisch", "en": "Table", "icon": "🪵", "desc": "Furniture with a flat top for dining or work."},
+        {"term": "der Stuhl", "en": "Chair", "icon": "🪑", "desc": "Seat for one person."},
+        {"term": "das Bett", "en": "Bed", "icon": "🛏️", "desc": "Piece of furniture for sleeping."}
+    ],
+    "Schulsachen (School Supplies)": [
+        {"term": "das Buch", "en": "Book", "icon": "📖", "desc": "Bound pages for reading and learning."},
+        {"term": "der Stift", "en": "Pen / Pencil", "icon": "✏️", "desc": "Writing instrument."},
+        {"term": "das Heft", "en": "Notebook", "icon": "📓", "desc": "Book for taking notes in class."},
+        {"term": "die Schultasche", "en": "School Bag", "icon": "🎒", "desc": "Bag used by students to carry supplies."},
+        {"term": "der Tisch", "en": "School Desk", "icon": "🪞", "desc": "Desk used in classrooms."}
+    ],
+    "Uhrzeit & Zeit (Telling Time)": [
+        {"term": "die Uhr", "en": "Clock / Watch", "icon": "⏰", "desc": "Device for measuring time."},
+        {"term": "die Stunde", "en": "Hour", "icon": "⌛", "desc": "Sixty minutes of time."},
+        {"term": "die Minute", "en": "Minute", "icon": "⏱️", "desc": "Sixty seconds of time."},
+        {"term": "der Morgen", "en": "Morning", "icon": "🌅", "desc": "Early part of the day."},
+        {"term": "der Abend", "en": "Evening", "icon": "🌆", "desc": "End of the day before night."}
+    ]
 }
-
-@st.cache_data
-def extract_and_categorize_words_from_pdf(uploaded_file):
-    return TOP_1000_VOCAB_CATEGORIES
 
 # Sidebar Navigation
 st.sidebar.title("🇩🇪 Goethe A1 Studio")
@@ -222,6 +231,7 @@ st.sidebar.divider()
 
 nav_choice = st.sidebar.radio("Navigation", [
     "🏠 Study Dashboard", 
+    "🧸 Toddler Visual Space (Interactive Vocab)",
     "📚 Master Goethe Word Engine",
     "📖 Core Grammar Practice & Exercises",
     "📖 Goethe A1 Lesen (Reading)",
@@ -240,7 +250,7 @@ if nav_choice == "🏠 Study Dashboard":
     st.markdown('<div class="accent-card">', unsafe_allow_html=True)
     st.title("Goethe-Zertifikat A1 Prep Studio")
     st.write("📅 **Exam Date:** December 12, 2026")
-    st.write("Complete Goethe A1 curriculum preparation, official top 1000 vocabulary flashcards with 'ALL' shuffle, interactive grammar knowledge checks, timed exam simulations with mid-exam resets and scoring wipes, and refined storybooks with full story reading sections.")
+    st.write("Complete Goethe A1 curriculum preparation featuring the Toddler Visual Space, official 1000-word flashcards, grammar exercises, fully structured 3-part Goethe exam simulators with live countdowns, and enchanted storybooks.")
     st.markdown('</div>', unsafe_allow_html=True)
 
     col1, col2 = st.columns(2)
@@ -248,37 +258,125 @@ if nav_choice == "🏠 Study Dashboard":
         st.markdown('<div class="main-card">', unsafe_allow_html=True)
         st.subheader("📖 Lesen & ✍️ Schreiben")
         st.markdown("""
-        * **Lesen (25 Mins - 15 Tasks):**
-          - Teil 1: Short Emails (5 Tasks - Richtig/Falsch)[cite: 3]
-          - Teil 2: Classified Ads (5 Tasks - Option A or B)[cite: 3]
-          - Teil 3: Public Signs (5 Tasks - Richtig/Falsch)[cite: 3]
-        * **Schreiben (20 Mins - 2 Tasks):**
-          - Teil 1: Fill 5 Missing Gaps on Form[cite: 3]
-          - Teil 2: Write ~30-Word Message (3 Bullet Points)[cite: 3]
+        * **Lesen (25 Mins - 15 Tasks across 3 Parts):**
+          - Teil 1: Short Emails (Richtig/Falsch)[cite: 3]
+          - Teil 2: Classified Ads (Option A or B)[cite: 3]
+          - Teil 3: Public Signs (Richtig/Falsch)[cite: 3]
+        * **Schreiben (20 Mins - 2 Parts):**
+          - Teil 1: Fill 5 Missing Gaps on Form with Scenario[cite: 3]
+          - Teil 2: Write ~30-Word Message hitting 3 required points[cite: 3]
         """)
         st.markdown('</div>', unsafe_allow_html=True)
     with col2:
         st.markdown('<div class="main-card">', unsafe_allow_html=True)
         st.subheader("🎧 Hören & 🗣️ Sprechen")
         st.markdown("""
-        * **Hören (20 Mins - 15 Tasks):**
-          - Teil 1: 6 Dialogues (2x Audio, A/B/C)[cite: 3]
-          - Teil 2: 4 Announcements (1x Audio, Richtig/Falsch)[cite: 3]
-          - Teil 3: 5 Voicemails (2x Audio, A/B/C)[cite: 3]
-        * **Sprechen (15 Mins - Small Group):**
-          - Teil 1: Self-Introduction & Spelling[cite: 3]
-          - Teil 2: W-Questions (Verb in Position 2)[cite: 3]
-          - Teil 3: Imperative Requests (Verb in Position 1)[cite: 3]
+        * **Hören (20 Mins - 15 Tasks across 3 Parts):**
+          - Teil 1: 6 Dialogues (A/B/C)[cite: 3]
+          - Teil 2: 4 Announcements (Richtig/Falsch)[cite: 3]
+          - Teil 3: 5 Voicemails (A/B/C)[cite: 3]
+        * **Sprechen (15 Mins - 3 Parts):**
+          - Teil 1: Self-Introduction & Spelling/Numbers[cite: 3]
+          - Teil 2: W-Questions with Topic Card[cite: 3]
+          - Teil 3: Imperative Requests with Object Card[cite: 3]
         """)
         st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
-# 2. MASTER GOETHE WORD ENGINE
+# 2. TODDLER VISUAL SPACE (INTERACTIVE VOCAB)
+# ----------------------------------------------------
+elif nav_choice == "🧸 Toddler Visual Space (Interactive Vocab)":
+    st.markdown('<div class="main-card">', unsafe_allow_html=True)
+    st.subheader("🧸 Toddler Visual Space: Essential A1 Terms & Visual Matching")
+    st.write("Explore fundamental everyday German terms with visual icons, descriptions, audio pronunciation, and interactive drag-and-drop style matching challenges.")
+
+    selected_toddler_cat = st.selectbox("📂 Select Visual Category:", list(TODDLER_VISUAL_TOPICS.keys()))
+    items = TODDLER_VISUAL_TOPICS[selected_toddler_cat]
+
+    st.markdown("### 🖼️ Visual Flashcards & Audio Playback")
+    cols = st.columns(3)
+    for idx, item in enumerate(items):
+        with cols[idx % 3]:
+            st.markdown(f"""
+            <div style="background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 14px; padding: 20px; text-align: center; margin-bottom: 15px;">
+                <div style="font-size: 3rem; margin-bottom: 8px;">{item['icon']}</div>
+                <h3 style="color: #2563eb; margin: 0px 0px 4px 0px;">{item['term']}</h3>
+                <p style="color: #64748b; font-weight: 600; margin: 0px 0px 8px 0px;">{item['en']}</p>
+                <p style="color: #334155; font-size: 0.85rem; margin: 0px;">{item['desc']}</p>
+            </div>
+            """, unsafe_allow_html=True)
+            if st.button(f"🔊 Listen ({item['term']})", key=f"toddler_audio_{selected_toddler_cat}_{idx}", use_container_width=True):
+                play_direct_audio(item['term'], f"toddler_{idx}")
+
+    st.divider()
+    st.markdown("### 🧩 Interactive Matching Challenge")
+    st.write("Test your memory! Match the English meaning to the correct German term.")
+
+    if f"match_target_{selected_toddler_cat}" not in st.session_state:
+        st.session_state[f"match_target_{selected_toddler_cat}"] = random.choice(items)
+
+    target = st.session_state[f"match_target_{selected_toddler_cat}"]
+    st.markdown(f"**Target English Meaning:** <span style='font-size: 1.4rem; color: #2563eb; font-weight: 700;'>{target['en']} {target['icon']}</span>", unsafe_allow_html=True)
+
+    options = [i['term'] for i in items]
+    random.shuffle(options)
+    user_match = st.radio("Select the correct German term:", options, key=f"match_rad_{selected_toddler_cat}")
+
+    if st.button("Check Match", key=f"check_match_{selected_toddler_cat}", type="primary"):
+        if user_match == target['term']:
+            st.success(f"🎉 Richtig! `{target['term']}` means {target['en']}.")
+            play_direct_audio(target['term'], "correct_match")
+            st.session_state[f"match_target_{selected_toddler_cat}"] = random.choice(items)
+            st.rerun()
+        else:
+            st.error(f"❌ Falsch. Try again! Listen to pronunciation of options using the cards above.")
+
+    st.markdown('</div>', unsafe_allow_html=True)
+
+# ----------------------------------------------------
+# 3. MASTER GOETHE WORD ENGINE
 # ----------------------------------------------------
 elif nav_choice == "📚 Master Goethe Word Engine":
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
     st.subheader("📚 Master Goethe A1 Interactive Flashcard Engine (Top 1000 Vocabulary)")
     st.write("Browse through official Goethe A1 and CEFR essential vocabulary categorized by official themes. Select 'ALL' to shuffle randomly across the entire deck.")
+
+    TOP_1000_VOCAB_CATEGORIES = {
+        "1. Person & Alltag (Personal & Daily Life)": {
+            "Angaben zur Person (Personal Info)": ["der Name", "das Alter", "die Herkunft", "die Sprache", "ledig", "verheiratet", "kommen", "wohnen", "heißen", "sprechen"],
+            "Wohnen & Haushalt (Housing & Home)": ["die Wohnung", "das Zimmer", "die Miete", "die Adresse", "der Tisch", "der Stuhl", "die Küche", "das Bett", "kosten", "umziehen"],
+            "Familie & Freunde (Family & Friends)": ["die Eltern", "die Mutter", "der Vater", "der Bruder", "die Schwester", "das Kind", "der Freund", "die Familie", "groß", "klein"]
+        },
+        "2. Essen & Trinken (Food & Drink)": {
+            "Lebensmittel (Groceries)": ["der Apfel", "das Wasser", "das Brot", "die Milch", "das Fleisch", "das Obst", "das Gemüse", "der Käse", "das Ei", "der Fisch"],
+            "Im Restaurant & Café (Dining Out)": ["die Speisekarte", "zahlen", "lecker", "das Restaurant", "das Café", "der Kellner", "bestellen", "das Trinkgeld", "hungrig", "durstig"]
+        },
+        "3. Freizeit & Alltag (Leisure & Routine)": {
+            "Tagesablauf (Daily Routine)": ["aufstehen", "frühstücken", "arbeiten", "schlafen", "spät", "früh", "der Morgen", "der Abend", "die Uhr", "beginnen"],
+            "Hobbys & Sport (Hobbies & Sports)": ["lesen", "Fußball spielen", "fernsehen", "das Buch", "das Kino", "die Musik", "schwimmen", "reisen", "das Hobby", "fotografieren"],
+            "Wetter & Jahreszeiten (Weather & Seasons)": ["das Wetter", "kalt", "warm", "der Sommer", "der Winter", "die Sonne", "der Regen", "schneien", "der Frühling", "der Herbst"]
+        },
+        "4. Einkaufen & Geld (Shopping & Money)": {
+            "Geschäfte & Kleidung (Stores & Clothing)": ["das Geschäft", "die Hose", "das Hemd", "teuer", "billig", "die Farbe", "kaufen", "die Größe", "der Schuh", "die Jacke"],
+            "Bezahlen & Zahlen (Paying & Numbers)": ["das Geld", "der Euro", "die Kreditkarte", "null", "eins", "hundert", "tausend", "bezahlen", "kostbar", "billig"]
+        },
+        "5. Arbeit & Beruf (Work & Profession)": {
+            "Berufe & Arbeitsplatz (Jobs & Workplace)": ["der Arzt", "die Ärztin", "das Büro", "arbeiten", "der Kollege", "die Chefin", "der Beruf", "die Firma", "der Computer", "die Arbeit"],
+            "Termine & Bürokommunikation (Appointments & Comm)": ["der Termin", "anrufen", "morgen", "gestern", "die E-Mail", "das Telefon", "die Nachricht", "verschieben", "pünktlich", "absagen"]
+        },
+        "6. Stadt & Verkehr (City & Transportation)": {
+            "Unterwegs sein (Getting Around)": ["der Bus", "der Zug", "der Bahnhof", "links", "rechts", "das Ticket", "fahren", "fliegen", "das Auto", "die Haltestelle"],
+            "In der Stadt (In the City)": ["das Krankenhaus", "die Post", "die Bank", "die Apotheke", "die Straße", "die Brücke", "der Markt", "das Museum", "die Stadt", "der Park"]
+        },
+        "7. Gesundheit & Körper (Health & Body)": {
+            "Der Körper (The Body)": ["der Kopf", "der Arm", "das Bein", "das Auge", "der Mund", "das Haar", "der Rücken", "die Hand", "der Fuß", "wehtun"],
+            "Beim Arzt (At the Doctor)": ["krank", "der Arzt", "die Apotheke", "das Medikament", "das Rezept", "schmerzen", "helfen", "gesund", "das Fieber", "die Praxis"]
+        },
+        "8. Allgemein (General & Core Grammar)": {
+            "Grundverben & Pronomen (Core Verbs & Pronouns)": ["sein", "haben", "werden", "können", "müssen", "ich", "du", "er", "sie", "es", "wir", "ihr", "sie", "Sie"],
+            "Präpositionen & Konnektoren (Prepositions & Connectors)": ["und", "aber", "oder", "denn", "in", "auf", "mit", "für", "von", "zu"]
+        }
+    }
 
     vocab_tree = TOP_1000_VOCAB_CATEGORIES
 
@@ -452,7 +550,7 @@ elif nav_choice == "📚 Master Goethe Word Engine":
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
-# 3. CORE GRAMMAR PRACTICE & EXERCISES
+# 4. CORE GRAMMAR PRACTICE & EXERCISES
 # ----------------------------------------------------
 elif nav_choice == "📖 Core Grammar Practice & Exercises":
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
@@ -635,11 +733,11 @@ elif nav_choice == "📖 Core Grammar Practice & Exercises":
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
-# 4. GOETHE A1 LESEN
+# 5. GOETHE A1 LESEN
 # ----------------------------------------------------
 elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
-    st.subheader("📖 Goethe A1 Lesen Practice (25 Mins, 15 Points)")
+    st.subheader("📖 Goethe A1 Lesen Practice (25 Mins, 15 Points across 3 Parts)")
 
     l_tab1, l_tab2, l_tab3 = st.tabs([
         "Teil 1: Short Messages (5 Tasks)", 
@@ -754,11 +852,11 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
-# 5. GOETHE A1 HÖREN
+# 6. GOETHE A1 HÖREN
 # ----------------------------------------------------
 elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
-    st.subheader("🎧 Goethe A1 Hören Practice (20 Mins, 15 Points)")
+    st.subheader("🎧 Goethe A1 Hören Practice (20 Mins, 15 Points across 3 Parts)")
 
     h_tab1, h_tab2, h_tab3 = st.tabs([
         "Teil 1: 6 Dialogues (Played 2x - Uncut Dual-Voice Audio)", 
@@ -877,19 +975,19 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
-# 6. GOETHE A1 SCHREIBEN
+# 7. GOETHE A1 SCHREIBEN
 # ----------------------------------------------------
 elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
-    st.subheader("✍️ Goethe A1 Schreiben Practice (20 Mins, 15 Points)")
+    st.subheader("✍️ Goethe A1 Schreiben Practice (20 Mins, 2 Parts)")
 
     s_tab1, s_tab2 = st.tabs([
         "Teil 1: Fill 5 Missing Gaps on Form", 
-        "Teil 2: Write ~30-Word Email (3 Points)"
+        "Teil 2: Write ~30-Word Email (3 Content Points)"
     ])
 
     with s_tab1:
-        st.markdown("**Teil 1:** Read a short background text and complete the 5 missing fields on a registration form[cite: 3].")
+        st.markdown("**Teil 1:** Read the background scenario and complete the 5 missing fields on a registration form[cite: 3].")
         if st.button("🎲 Generate Schreiben Teil 1 Scenario", type="primary") or st.button("🔄 Generate New Form Scenario"):
             with st.spinner("Gem is creating complete form exercise..."):
                 prompt = """
@@ -935,20 +1033,20 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
                 st.metric("Form Score", f"{score} / 5")
 
     with s_tab2:
-        st.markdown("**Teil 2:** Write a short informal message/email (~30 words) hitting 3 required content points[cite: 3].")
+        st.markdown("**Teil 2:** Write a short informal message, email, or note (~30 words) responding to a given situation, making sure to hit 3 required content points (e.g., apologizing, making an alternative suggestion, and asking a question)[cite: 3].")
         if st.button("🎲 Generate Schreiben Teil 2 Prompt", type="primary") or st.button("🔄 Generate Another Email Prompt"):
             with st.spinner("Gem is generating email prompt..."):
                 try:
-                    prompt = "Generate an official Goethe A1 Schreiben Teil 2 prompt specifying a clear scenario and 3 explicit bullet points."
+                    prompt = "Generate an official Goethe A1 Schreiben Teil 2 prompt specifying a clear scenario and 3 explicit bullet points (e.g., apologize, suggest alternative, ask question)."
                     st.session_state.schreiben_t2_prompt = generate_dynamic_content(prompt)
                 except Exception as e: st.error(f"Error: {str(e)}")
 
         if "schreiben_t2_prompt" in st.session_state:
             st.info(st.session_state.schreiben_t2_prompt)
-            u_email = st.text_area("Your German Response (~30 words):", height=140)
+            u_email = st.text_area("Your German Response (~30 words hitting all 3 points):", height=140)
             if st.button("Evaluate Email with Gem"):
                 if u_email.strip():
-                    with st.spinner("Gem is evaluating task fulfillment..."):
+                    with st.spinner("Gem is evaluating task fulfillment across all 3 points..."):
                         try:
                             eval_prompt = f"PROMPT:\n{st.session_state.schreiben_t2_prompt}\n\nSUBMISSION:\n{u_email}\n\nGrade task fulfillment across all 3 bullet points, V2 verb order, and appropriate salutations/closings."
                             eval_res = generate_dynamic_content(eval_prompt)
@@ -959,11 +1057,11 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
-# 7. GOETHE A1 SPRECHEN
+# 8. GOETHE A1 SPRECHEN
 # ----------------------------------------------------
 elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
-    st.subheader("🗣️ Goethe A1 Sprechen Practice (15 Mins, Small Group Format)")
+    st.subheader("🗣️ Goethe A1 Sprechen Practice (15 Mins, 3 Parts)")
 
     sp_tab1, sp_tab2, sp_tab3 = st.tabs([
         "Teil 1: Sich vorstellen & Buchstabieren", 
@@ -973,8 +1071,7 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
 
     with sp_tab1:
         st.markdown("""
-        **Teil 1:** Introduce yourself briefly to the examiners and spell a word or state your phone number/ZIP code[cite: 3]:
-        *1. Name | 2. Alter | 3. Land | 4. Wohnort | 5. Sprachen | 6. Beruf | 7. Hobby*
+        **Teil 1:** Introduce yourself briefly to the examiners (using guides: Name, Jahre, alt, Herkunft, Wohnort, Sprachen, Beruf, Hobby) and spell a word or state your phone number/ZIP code[cite: 3].
         """)
         rec_t1 = mic_recorder(start_prompt="Record Self-Introduction 🎙️", stop_prompt="Stop Recording 🛑", key="rec_sp_t1")
         if rec_t1:
@@ -992,7 +1089,7 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
                     except Exception as e: st.error(f"Error: {str(e)}")
 
     with sp_tab2:
-        st.markdown("**Teil 2:** Draw a card with a theme and a prompt word, formulate a basic question to ask a partner, and answer their question in return (Verb in Position 2)[cite: 3].")
+        st.markdown("**Teil 2:** Draw a card with a theme and a prompt word, formulate a basic question to ask a partner, and answer their question in return[cite: 3].")
         
         col_sp2_a, col_sp2_b = st.columns(2)
         with col_sp2_a:
@@ -1026,7 +1123,7 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
                         except Exception as e: st.error(f"Error: {str(e)}")
 
     with sp_tab3:
-        st.markdown("**Teil 3:** Draw a card showing an object or situation and make a simple request or give a polite instruction to your partner (Verb in Position 1)[cite: 3].")
+        st.markdown("**Teil 3:** Draw a card showing an object or situation and make a simple request or give a polite instruction to your partner (e.g., asking to borrow a pen or asking for salt), and vice versa[cite: 3].")
         
         col_sp3_a, col_sp3_b = st.columns(2)
         with col_sp3_a:
@@ -1062,12 +1159,12 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
-# 8. GOETHE A1 MOCK EXAMINATION (SIMULATED TIMED WORKFLOW WITH RESET OPTIONS)
+# 9. GOETHE A1 MOCK EXAMINATION (LIVE COUNTDOWN TIMERS & COMPLETE SECTIONS)
 # ----------------------------------------------------
 elif nav_choice == "🏆 Goethe A1 Mock Examination":
     st.markdown('<div class="accent-card">', unsafe_allow_html=True)
     st.subheader("🏆 Full CEFR A1 Timed Mock Examination Simulator")
-    st.write("Simulate the exact Goethe-Zertifikat A1 exam with official section-by-section countdown timers (Lesen: 25 mins, Hören: 20 mins, Schreiben: 20 mins, Sprechen: 15 mins). Each attempt randomizes fresh questions. Track your score progression and predicted passing rate below.")
+    st.write("Simulate the exact Goethe-Zertifikat A1 exam with live section-by-section countdown timers (Lesen: 25 mins, Hören: 20 mins, Schreiben: 20 mins, Sprechen: 15 mins). Each attempt randomizes fresh questions. Track your score progression and predicted passing rate below.")
 
     if "exam_history" not in st.session_state:
         st.session_state.exam_history = []
@@ -1187,7 +1284,7 @@ elif nav_choice == "🏆 Goethe A1 Mock Examination":
             st.session_state.section_timer_start = time.time()
             st.rerun()
 
-        st.markdown(f"### 📖 Part 1: Lesen (Reading) — Time Remaining: **{remaining // 60:02d}:{remaining % 60:02d}**")
+        st.markdown(f"### 📖 Part 1: Lesen (Reading) — Live Countdown Timer: **{remaining // 60:02d}:{remaining % 60:02d}**")
         exam = st.session_state.mock_data
         st.info(exam["lesen"]["text"])
 
@@ -1213,7 +1310,7 @@ elif nav_choice == "🏆 Goethe A1 Mock Examination":
             st.session_state.section_timer_start = time.time()
             st.rerun()
 
-        st.markdown(f"### 🎧 Part 2: Hören (Listening) — Time Remaining: **{remaining // 60:02d}:{remaining % 60:02d}**")
+        st.markdown(f"### 🎧 Part 2: Hören (Listening) — Live Countdown Timer: **{remaining // 60:02d}:{remaining % 60:02d}**")
         exam = st.session_state.mock_data
         st.markdown("Listen to the simulated audio script below:")
         st.audio(generate_german_audio_bytes(exam["hoeren"]["script"]), format="audio/mp3")
@@ -1243,7 +1340,7 @@ elif nav_choice == "🏆 Goethe A1 Mock Examination":
             st.session_state.section_timer_start = time.time()
             st.rerun()
 
-        st.markdown(f"### ✍️ Part 3: Schreiben (Writing) — Time Remaining: **{remaining // 60:02d}:{remaining % 60:02d}**")
+        st.markdown(f"### ✍️ Part 3: Schreiben (Writing) — Live Countdown Timer: **{remaining // 60:02d}:{remaining % 60:02d}**")
         exam = st.session_state.mock_data
         st.markdown("**Part A: Fill out form based on scenario:**")
         st.info(exam["schreiben"]["form_scenario"])
@@ -1253,7 +1350,7 @@ elif nav_choice == "🏆 Goethe A1 Mock Examination":
             m_form_inputs[f["id"]] = st.text_input(f["label"], key=f"m_form_{f['id']}")
 
         st.markdown("---")
-        st.markdown("**Part B: Email Writing:**")
+        st.markdown("**Part B: Email Writing (3 required content points):**")
         st.info(exam["schreiben"]["email_prompt"])
         m_email_input = st.text_area("Your German Email Response (~30 words):", key="m_email_resp")
 
@@ -1274,7 +1371,7 @@ elif nav_choice == "🏆 Goethe A1 Mock Examination":
             st.session_state.exam_stage = "RESULTS"
             st.rerun()
 
-        st.markdown(f"### 🗣️ Part 4: Sprechen (Speaking) — Time Remaining: **{remaining // 60:02d}:{remaining % 60:02d}**")
+        st.markdown(f"### 🗣️ Part 4: Sprechen (Speaking) — Live Countdown Timer: **{remaining // 60:02d}:{remaining % 60:02d}**")
         exam = st.session_state.mock_data
 
         st.markdown("#### Teil 1: Self Introduction")
@@ -1331,7 +1428,7 @@ elif nav_choice == "🏆 Goethe A1 Mock Examination":
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
-# 9. A1 & A2 SHORT STORIES (20 STORIES EACH, UP TO 40 PARTS, FULL STORY SECTION)
+# 10. A1 & A2 SHORT STORIES (20 STORIES EACH, FULL STORY SECTION)
 # ----------------------------------------------------
 elif nav_choice == "📖 A1 & A2 Short Stories":
     st.markdown('<div class="accent-card">', unsafe_allow_html=True)
@@ -1378,13 +1475,13 @@ elif nav_choice == "📖 A1 & A2 Short Stories":
             "In 80 Tagen um die Welt (Around the World in 80 Days)": "Around the World in 80 Days",
             "Der alte Mann und das Meer (The Old Man and the Sea)": "The Old Man and the Sea",
             "Die Zeitmaschine (The Time Machine)": "The Time Machine",
-            "Krieg der Welten (The War of the Worlds)": "The War of the Worlds",
-            "Der letzte Mohikaner (The Last of the Mohicans)": "The Last of the Mohicans",
+            "Krieg der Welten (The War of the Worlds)": "Krieg der Welten",
+            "Der letzte Mohikaner (The Last of the Mohicans)": "Der letzte Mohikaner",
             "Jane Eyre": "Jane Eyre",
-            "Stolz und Vorurteil (Pride and Prejudice)": "Pride and Prejudice",
+            "Stolz und Vorurteil (Pride and Prejudice)": "Stolz und Vorurteil",
             "Oliver Twist": "Oliver Twist",
-            "Eine Weihnachtsgeschichte (A Christmas Carol)": "A Christmas Carol",
-            "Die drei Musketiere (The Three Musketeers)": "The Three Musketeers",
+            "Eine Weihnachtsgeschichte (A Christmas Carol)": "Eine Weihnachtsgeschichte",
+            "Die drei Musketiere (The Three Musketeers)": "Die drei Musketiere",
             "Tom Sawyers Abenteuer (The Adventures of Tom Sawyer)": "Tom Sawyers Abenteuer",
             "Don Quijote (Don Quixote)": "Don Quijote"
         }
