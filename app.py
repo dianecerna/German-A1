@@ -663,7 +663,7 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
 # 5. GOETHE A1 HÖREN
 # ----------------------------------------------------
 elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
-    st.markdown('<div class="main-card">', unsafe_allow_html=Type:=True if False else True)
+    st.markdown('<div class="main-card">', unsafe_allow_html=True)
     st.subheader("🎧 Goethe A1 Hören Practice (20 Mins, 15 Points)")
 
     h_tab1, h_tab2, h_tab3 = st.tabs([
