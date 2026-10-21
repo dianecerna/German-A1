@@ -120,22 +120,25 @@ def generate_cached_content(prompt_text: str, is_json: bool = False) -> str:
         config_args["response_mime_type"] = "application/json"
     
     last_error = None
-    for model_name in FALLBACK_MODELS:
-        try:
-            res = client.models.generate_content(
-                model=model_name,
-                contents=prompt_text,
-                config=types.GenerateContentConfig(**config_args)
-            )
-            return res.text
-        except Exception as e:
-            last_error = e
-            err_str = str(e).lower()
-            if any(k in err_str for k in ["429", "503", "resource_exhausted", "unavailable", "quota"]):
-                continue
-            raise e
+    for attempt in range(2):
+        for model_name in FALLBACK_MODELS:
+            try:
+                res = client.models.generate_content(
+                    model=model_name,
+                    contents=prompt_text,
+                    config=types.GenerateContentConfig(**config_args)
+                )
+                return res.text
+            except Exception as e:
+                last_error = e
+                err_str = str(e).lower()
+                if any(k in err_str for k in ["429", "503", "resource_exhausted", "unavailable", "quota"]):
+                    time.sleep(1)
+                    continue
+                raise e
+        time.sleep(1.5)
             
-    raise Exception(f"All free model quotas are currently exhausted or unavailable. Details: {str(last_error)}")
+    raise Exception(f"All free model quotas are currently exhausted or experiencing high demand. Details: {str(last_error)}")
 
 def generate_dynamic_content(prompt_text: str, is_json: bool = False) -> str:
     config_args = {"system_instruction": SYSTEM_INSTRUCTION}
@@ -143,22 +146,25 @@ def generate_dynamic_content(prompt_text: str, is_json: bool = False) -> str:
         config_args["response_mime_type"] = "application/json"
     
     last_error = None
-    for model_name in FALLBACK_MODELS:
-        try:
-            res = client.models.generate_content(
-                model=model_name,
-                contents=prompt_text,
-                config=types.GenerateContentConfig(**config_args)
-            )
-            return res.text
-        except Exception as e:
-            last_error = e
-            err_str = str(e).lower()
-            if any(k in err_str for k in ["429", "503", "resource_exhausted", "unavailable", "quota"]):
-                continue
-            raise e
+    for attempt in range(2):
+        for model_name in FALLBACK_MODELS:
+            try:
+                res = client.models.generate_content(
+                    model=model_name,
+                    contents=prompt_text,
+                    config=types.GenerateContentConfig(**config_args)
+                )
+                return res.text
+            except Exception as e:
+                last_error = e
+                err_str = str(e).lower()
+                if any(k in err_str for k in ["429", "503", "resource_exhausted", "unavailable", "quota"]):
+                    time.sleep(1)
+                    continue
+                raise e
+        time.sleep(1.5)
             
-    raise Exception(f"All free model quotas are currently exhausted or unavailable. Details: {str(last_error)}")
+    raise Exception(f"All free model quotas are currently exhausted or experiencing high demand. Details: {str(last_error)}")
 
 @st.cache_data(show_spinner=False)
 def generate_german_audio_bytes(text: str) -> bytes:
@@ -224,6 +230,86 @@ TODDLER_VISUAL_TOPICS = {
     ]
 }
 
+# Hören Teil 1 Official Scenarios Bank
+HOREN_TEIL1_SCENARIOS = [
+    {
+        "title": "Jacke, Kino & Apotheke",
+        "desc": "Short everyday dialogues about a jacket's price, the film start and directions to the pharmacy – 6 tasks, a/b/c (played twice)."
+    },
+    {
+        "title": "Zug nach Köln, Markt & Hotel",
+        "desc": "Short everyday dialogues about the train to Köln, the market, weather and a hotel room – 6 tasks, a/b/c (played twice)."
+    },
+    {
+        "title": "Gäste, Supermarkt & Urlaub",
+        "desc": "Short everyday dialogues about guests, holidays, Frau Roth's hobby and lost glasses – 6 tasks, a/b/c (played twice)."
+    },
+    {
+        "title": "Frühstück, Friseur & neue Adresse",
+        "desc": "Short everyday dialogues about a hairdresser's appointment, breakfast prices and the Nowak family's new address – 6 tasks, a/b/c (played twice)."
+    },
+    {
+        "title": "Tomaten, Kleidergröße & neue Kollegin",
+        "desc": "Short everyday dialogues about tomato prices, clothing size and a new colleague – 6 tasks, a/b/c (played twice)."
+    },
+    {
+        "title": "Bäckerei, Restaurant & Schulbeginn",
+        "desc": "Short everyday dialogues about a bakery, a restaurant order and the start of school – 6 tasks, a/b/c (played twice)."
+    },
+    {
+        "title": "Zoo-Ticket, Flug & ICE nach München",
+        "desc": "Short everyday dialogues about a child's ticket, a flight to Berlin and the ICE to München – 6 tasks, a/b/c (played twice)."
+    },
+    {
+        "title": "Monatskarte, Elektriker & Deutschkurs",
+        "desc": "Short everyday dialogues about a monthly pass, an electrician's appointment and the location of a German course – 6 tasks, a/b/c (played twice)."
+    },
+    {
+        "title": "Kaffee, Dr. Helds Urlaub & Messe",
+        "desc": "Short everyday dialogues about coffee, Dr. Held's holiday and travelling to the trade fair – 6 tasks, a/b/c (played twice)."
+    }
+]
+
+# Hören Teil 2 Official Scenarios Bank
+HOREN_TEIL2_SCENARIOS = [
+    {
+        "title": "Markt-, Bahn- & Flughafendurchsagen",
+        "desc": "Short announcements at a market, railway station and airport – 4 tasks, Richtig/Falsch (played once)."
+    },
+    {
+        "title": "Kaufhaus-, Bahn- & Schwimmbaddurchsagen",
+        "desc": "Announcements from a department store, train, swimming pool and airport – 4 tasks, Richtig/Falsch (played once)."
+    },
+    {
+        "title": "Bibliothek, Café & Sommerfest",
+        "desc": "Announcements from a library, train restaurant, parking garage and summer festival – 4 tasks, Richtig/Falsch (played once)."
+    },
+    {
+        "title": "Restaurant-, Bahn- & Flugdurchsagen",
+        "desc": "Announcements from a restaurant, train, airplane and cinema – 4 tasks, Richtig/Falsch (played once)."
+    },
+    {
+        "title": "Bahnhof, Kasse, Museum & Konzert",
+        "desc": "Announcements from a train station, checkout, museum and concert – 4 tasks, Richtig/Falsch (played once)."
+    },
+    {
+        "title": "Fähre, Schule, Bahn & Autobahn",
+        "desc": "Announcements about a ferry, missing child, train and A3 motorway – 4 tasks, Richtig/Falsch (played once)."
+    },
+    {
+        "title": "Pinguinfütterung, Zug & Geschäft",
+        "desc": "Announcements about penguin feeding, a train, shop and airport – 4 tasks, Richtig/Falsch (played once)."
+    },
+    {
+        "title": "Museum, Zug, Bäckerei & Schwimmbad",
+        "desc": "Announcements from a museum, train, bakery and swimming pool – 4 tasks, Richtig/Falsch (played once)."
+    },
+    {
+        "title": "Geschäft, Zug, Messe & Bus",
+        "desc": "Announcements from a shop, train, trade fair and bus – 4 tasks, Richtig/Falsch (played once)."
+    }
+]
+
 # Sidebar Navigation
 st.sidebar.title("🇩🇪 Goethe A1 Studio")
 st.sidebar.caption("Target Exam: Dec 12, 2026")
@@ -288,7 +374,7 @@ if nav_choice == "🏠 Study Dashboard":
 elif nav_choice == "🧸 Toddler Visual Space (Interactive Vocab)":
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
     st.subheader("🧸 Toddler Visual Space: Essential A1 Terms & Visual Matching")
-    st.write("Explore fundamental everyday German terms with visual icons, descriptions, audio pronunciation, and interactive drag-and-drop style matching challenges.")
+    st.write("Explore fundamental everyday German terms with visual icons, descriptions, audio pronunciation, and interactive matching challenges.")
 
     selected_toddler_cat = st.selectbox("📂 Select Visual Category:", list(TODDLER_VISUAL_TOPICS.keys()))
     items = TODDLER_VISUAL_TOPICS[selected_toddler_cat]
@@ -369,7 +455,7 @@ elif nav_choice == "📚 Master Goethe Word Engine":
             "In der Stadt (In the City)": ["das Krankenhaus", "die Post", "die Bank", "die Apotheke", "die Straße", "die Brücke", "der Markt", "das Museum", "die Stadt", "der Park"]
         },
         "7. Gesundheit & Körper (Health & Body)": {
-            "Der Körper (The Body)": ["der Kopf", "der Arm", "das Bein", "das Auge", "der Mund", "das Haar", "der Rücken", "die Hand", "der Fuß", "wehtun"],
+            "Der Körper (The Body)": ["der Kopf", "der Arm", "das Bein", "das Auge", "das Mund", "das Haar", "der Rücken", "die Hand", "der Fuß", "wehtun"],
             "Beim Arzt (At the Doctor)": ["krank", "der Arzt", "die Apotheke", "das Medikament", "das Rezept", "schmerzen", "helfen", "gesund", "das Fieber", "die Praxis"]
         },
         "8. Allgemein (General & Core Grammar)": {
@@ -859,83 +945,104 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
     st.subheader("🎧 Goethe A1 Hören Practice (20 Mins, 15 Points across 3 Parts)")
 
     h_tab1, h_tab2, h_tab3 = st.tabs([
-        "Teil 1: 6 Dialogues (Played 2x - Uncut Dual-Voice Audio)", 
-        "Teil 2: 4 Announcements (Played 1x)", 
+        "Teil 1: 6 Dialogues (Scenarios)", 
+        "Teil 2: 4 Announcements (Scenarios)", 
         "Teil 3: 5 Voicemails (Played 2x)"
     ])
 
     with h_tab1:
-        st.info("ℹ️ Teil 1: 6 dialogues played TWICE[cite: 3]. Each dialogue is synthesized as a continuous conversation containing both speakers sequentially in a single uncut audio track mirroring the official Goethe exam format.")
-        if st.button("🎲 Generate Hören Teil 1 Scenario", type="primary") or st.button("🔄 Generate New Hören Teil 1 Audio & Tasks"):
-            with st.spinner("Gem is synthesizing uncut dual-voice audio dialogues..."):
-                prompt = """
-                Generate Goethe A1 Hören Teil 1: 6 dialogues where a woman and a man converse naturally. Provide a single combined script representing the full conversation for each dialogue.
+        st.markdown("**Teil 1:** Select from official practice scenario sets for dialogues[cite: 3].")
+        
+        selected_scenario_title = st.selectbox("📂 Select Hören Teil 1 Scenario Set:", [s["title"] for s in HOREN_TEIL1_SCENARIOS])
+        selected_scenario_obj = next(s for s in HOREN_TEIL1_SCENARIOS if s["title"] == selected_scenario_title)
+        
+        st.info(f"📌 **Description:** {selected_scenario_obj['desc']}")
+
+        if st.button(f"▶️ Start Exercise ({selected_scenario_title})", type="primary") or f"hoeren_t1_loaded_{selected_scenario_title}" not in st.session_state:
+            with st.spinner(f"Gem is synthesizing 6 dialogues for '{selected_scenario_title}'..."):
+                prompt = f"""
+                Generate Goethe A1 Hören Teil 1 exercises for the specific theme: '{selected_scenario_title}' ({selected_scenario_obj['desc']}).
+                Generate exactly 6 dialogues where two speakers converse naturally. Each dialogue should have 1 multiple-choice task (a/b/c).
                 Return strict JSON format:
-                {
+                {{
+                    "scenario_title": "{selected_scenario_title}",
                     "tasks": [
-                        {"id": "h1_1", "full_script": "Frau Müller: Guten Tag, Herr Schmidt. Haben Sie den Bericht? Herr Schmidt: Ja, Frau Müller, er liegt direkt hier auf dem großen Tisch im Büro.", "question": "Wo ist der Bericht?", "options": ["a) Auf dem Tisch", "b) Im Auto", "c) Zu Hause"], "answer": "a) Auf dem Tisch", "explanation": "..."},
-                        {"id": "h1_2", "full_script": "Frau Wagner: Entschuldigung, wann kommt der nächste Zug nach Berlin? Herr Weber: Der Zug kommt um vierzehn Uhr dreißig an Gleis drei.", "question": "Wann kommt der Zug?", "options": ["a) Um 12:00 Uhr", "b) Um 14:30 Uhr", "c) Um 16:00 Uhr"], "answer": "b) Um 14:30 Uhr", "explanation": "..."},
-                        {"id": "h1_3", "full_script": "Frau Koch: Möchten Sie Kaffee oder Tee? Herr Klein: Ich trinke am Morgen lieber eine Tasse heißen Kaffee mit Milch.", "question": "Was trinkt Herr Klein morgens?", "options": ["a) Tee", "b) Wasser", "c) Kaffee"], "answer": "c) Kaffee", "explanation": "..."},
-                        {"id": "h1_4", "full_script": "Frau Bauer: Wo hast du mein Buch gelassen? Herr Richter: Dein Buch liegt im Wohnzimmer auf dem blauen Sofa.", "question": "Wo ist das Buch?", "options": ["a) Auf dem Sofa", "b) In der Küche", "c) Im Garten"], "answer": "a) Auf dem Sofa", "explanation": "..."},
-                        {"id": "h1_5", "full_script": "Frau Wolf: Wie viel kostet diese Hose? Herr Fuchs: Die Hose kostet heute im Sonderangebot nur zwanzig Euro.", "question": "Wie viel kostet die Hose?", "options": ["a) 10 Euro", "b) 20 Euro", "c) 50 Euro"], "answer": "b) 20 Euro", "explanation": "..."},
-                        {"id": "h1_6", "full_script": "Frau Hoffmann: Wann treffen wir uns im Restaurant? Herr Koch: Wir treffen uns heute Abend pünktlich um acht Uhr.", "question": "Wann treffen sie sich?", "options": ["a) Um 18:00 Uhr", "b) Um 19:00 Uhr", "c) Um 20:00 Uhr"], "answer": "c) Um 20:00 Uhr", "explanation": "..."}
+                        {{"id": "h1_1", "full_script": "Dialogue 1 German script...", "question": "Question 1", "options": ["a) Option A", "b) Option B", "c) Option C"], "answer": "a) Option A", "explanation": "..."}},
+                        {{"id": "h1_2", "full_script": "Dialogue 2 German script...", "question": "Question 2", "options": ["a) Option A", "b) Option B", "c) Option C"], "answer": "b) Option B", "explanation": "..."}},
+                        {{"id": "h1_3", "full_script": "Dialogue 3 German script...", "question": "Question 3", "options": ["a) Option A", "b) Option B", "c) Option C"], "answer": "c) Option C", "explanation": "..."}},
+                        {{"id": "h1_4", "full_script": "Dialogue 4 German script...", "question": "Question 4", "options": ["a) Option A", "b) Option B", "c) Option C"], "answer": "a) Option A", "explanation": "..."}},
+                        {{"id": "h1_5", "full_script": "Dialogue 5 German script...", "question": "Question 5", "options": ["a) Option A", "b) Option B", "c) Option C"], "answer": "b) Option B", "explanation": "..."}},
+                        {{"id": "h1_6", "full_script": "Dialogue 6 German script...", "question": "Question 6", "options": ["a) Option A", "b) Option B", "c) Option C"], "answer": "c) Option C", "explanation": "..."}}
                     ]
-                }
+                }}
                 """
                 try:
                     json_str = generate_dynamic_content(prompt, is_json=True)
-                    st.session_state.hoeren_t1 = json.loads(json_str)
+                    st.session_state[f"hoeren_t1_loaded_{selected_scenario_title}"] = json.loads(json_str)
                 except Exception as e: st.error(f"Error: {str(e)}")
 
-        if "hoeren_t1" in st.session_state:
-            d = st.session_state.hoeren_t1
+        cache_key = f"hoeren_t1_loaded_{selected_scenario_title}"
+        if cache_key in st.session_state:
+            d = st.session_state[cache_key]
             ans1 = {}
             for idx, t in enumerate(d["tasks"], start=1):
-                st.markdown(f"#### 🔊 Dialogue {idx} (Played 2x - Uncut Audio)")
+                st.markdown(f"#### 🔊 Dialogue {idx} ({selected_scenario_title}) — Played 2x")
                 st.audio(generate_german_audio_bytes(t["full_script"]), format="audio/mp3")
 
                 with st.expander(f"👁️ Full Transcript {idx}"): 
                     st.write(t["full_script"])
 
                 st.markdown(f"**Task {idx}: {t['question']}**")
-                ans1[t["id"]] = st.radio(f"Select Q{idx}:", t["options"], key=f"rad_ht1_{t['id']}")
-            if st.button("Submit Hören Teil 1"):
+                ans1[t["id"]] = st.radio(f"Select Q{idx}:", t["options"], key=f"rad_ht1_{selected_scenario_title}_{t['id']}")
+            if st.button(f"Submit Hören Teil 1 ({selected_scenario_title})"):
                 score = sum(1 for t in d["tasks"] if ans1.get(t["id"]) == t["answer"])
-                st.success(f"Teil 1 Score: {score} / 6")
+                st.success(f"Teil 1 Score for '{selected_scenario_title}': {score} / 6")
 
     with h_tab2:
-        st.warning("⚠️ Teil 2: 4 public announcements played ONCE[cite: 3]. Judge Richtig or Falsch.")
-        if st.button("🎲 Generate Hören Teil 2 Scenario", type="primary") or st.button("🔄 Generate New Hören Teil 2 Audio & Tasks"):
-            with st.spinner("Gem is synthesizing 4 new public announcements..."):
-                prompt = """
-                Generate Goethe A1 Hören Teil 2: 4 announcements with 1 Richtig/Falsch task each.
+        st.markdown("**Teil 2:** Select from official practice scenario sets for announcements[cite: 3].")
+        
+        selected_scenario_t2 = st.selectbox("📂 Select Hören Teil 2 Scenario Set:", [s["title"] for s in HOREN_TEIL2_SCENARIOS])
+        selected_scenario_t2_obj = next(s for s in HOREN_TEIL2_SCENARIOS if s["title"] == selected_scenario_t2)
+        
+        st.info(f"📌 **Description:** {selected_scenario_t2_obj['desc']}")
+
+        if st.button(f"▶️ Start Exercise ({selected_scenario_t2})", type="primary") or f"hoeren_t2_loaded_{selected_scenario_t2}" not in st.session_state:
+            with st.spinner(f"Gem is synthesizing 4 announcements for '{selected_scenario_t2}'..."):
+                prompt = f"""
+                Generate Goethe A1 Hören Teil 2 exercises for the specific theme: '{selected_scenario_t2}' ({selected_scenario_t2_obj['desc']}).
+                Generate exactly 4 announcements with 1 Richtig/Falsch task each.
                 Return strict JSON format:
-                {
+                {{
+                    "scenario_title": "{selected_scenario_t2}",
                     "tasks": [
-                        {"id": "h2_1", "script": "Announcement 1 transcript", "statement": "Statement 1", "options": ["richtig", "falsch"], "answer": "richtig", "explanation": "..."},
-                        {"id": "h2_2", "script": "Announcement 2 transcript", "statement": "Statement 2", "options": ["richtig", "falsch"], "answer": "falsch", "explanation": "..."},
-                        {"id": "h2_3", "script": "Announcement 3 transcript", "statement": "Statement 3", "options": ["richtig", "falsch"], "answer": "richtig", "explanation": "..."},
-                        {"id": "h2_4", "script": "Announcement 4 transcript", "statement": "Statement 4", "options": ["richtig", "falsch"], "answer": "falsch", "explanation": "..."}
+                        {{"id": "h2_1", "script": "Announcement 1 transcript...", "statement": "Statement 1", "options": ["richtig", "falsch"], "answer": "richtig", "explanation": "..."}},
+                        {{"id": "h2_2", "script": "Announcement 2 transcript...", "statement": "Statement 2", "options": ["richtig", "falsch"], "answer": "falsch", "explanation": "..."}},
+                        {{"id": "h2_3", "script": "Announcement 3 transcript...", "statement": "Statement 3", "options": ["richtig", "falsch"], "answer": "richtig", "explanation": "..."}},
+                        {{"id": "h2_4", "script": "Announcement 4 transcript...", "statement": "Statement 4", "options": ["richtig", "falsch"], "answer": "falsch", "explanation": "..."}}
                     ]
-                }
+                }}
                 """
                 try:
                     json_str = generate_dynamic_content(prompt, is_json=True)
-                    st.session_state.hoeren_t2 = json.loads(json_str)
+                    st.session_state[f"hoeren_t2_loaded_{selected_scenario_t2}"] = json.loads(json_str)
                 except Exception as e: st.error(f"Error: {str(e)}")
 
-        if "hoeren_t2" in st.session_state:
-            d = st.session_state.hoeren_t2
+        cache_key_t2 = f"hoeren_t2_loaded_{selected_scenario_t2}"
+        if cache_key_t2 in st.session_state:
+            d2 = st.session_state[cache_key_t2]
             ans2 = {}
-            for idx, t in enumerate(d["tasks"], start=1):
-                st.markdown(f"#### 🔊 Public Announcement {idx} (Played 1x)")
+            for idx, t in enumerate(d2["tasks"], start=1):
+                st.markdown(f"#### 🔊 Announcement {idx} ({selected_scenario_t2}) — Played 1x")
                 st.audio(generate_german_audio_bytes(t["script"]), format="audio/mp3")
-                with st.expander(f"👁️ Transcript {idx}"): st.write(t["script"])
+
+                with st.expander(f"👁️ Transcript {idx}"): 
+                    st.write(t["script"])
+
                 st.markdown(f"**Task {idx}: {t['statement']}**")
-                ans2[t["id"]] = st.radio(f"Select Q{idx}:", t["options"], key=f"rad_ht2_{t['id']}")
-            if st.button("Submit Hören Teil 2"):
-                score = sum(1 for t in d["tasks"] if ans2.get(t["id"]) == t["answer"])
-                st.success(f"Teil 2 Score: {score} / 4")
+                ans2[t["id"]] = st.radio(f"Select Q{idx}:", t["options"], key=f"rad_ht2_{selected_scenario_t2}_{t['id']}")
+            if st.button(f"Submit Hören Teil 2 ({selected_scenario_t2})"):
+                score = sum(1 for t in d2["tasks"] if ans2.get(t["id"]) == t["answer"])
+                st.success(f"Teil 2 Score for '{selected_scenario_t2}': {score} / 4")
 
     with h_tab3:
         st.info("ℹ️ Teil 3: 5 phone voicemails played TWICE[cite: 3]. Choose A, B, or C.")
