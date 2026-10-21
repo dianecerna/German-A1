@@ -430,114 +430,86 @@ LESEN_TEIL3_SCENARIOS = [
     }
 ]
 
-# Schreiben Teil 1 Official Scenarios Bank (from screenshots 27, 29, 34, 35, 36)
+# Schreiben Teil 1 Official Scenarios Bank (Mirrored to match exact Goethe A1 Formular format like Bodensee-Rundfahrt)
 SCHREIBEN_TEIL1_SCENARIOS = [
     {
-        "title": "Volkshochschule – Anmeldung Deutschkurs",
-        "desc": "Marco Rossi's registration for a German course – Fill out a form, 5 gaps, 10 min.",
-        "form_title": "Volkshochschule – Anmeldeformular",
+        "title": "Bodensee-Rundfahrt — Anmeldung",
+        "desc": "Registration for a Bodensee tour with Eva Kadavy – Fill out 5 missing gaps in the form.",
+        "aufgabe": "Ihre Freundin, Eva Kadavy, macht mit ihrem Mann und ihren beiden Söhnen (8 und 11 Jahre alt) Urlaub in Seeheim.\n\nIm Reisebüro bucht sie für den nächsten Sonntag eine Busfahrt um den Bodensee.\n\nFrau Kadavy hat keine Kreditkarte.\n\nIn dem Formular fehlen fünf Informationen. Helfen Sie Ihrer Freundin und schreiben Sie die fünf fehlenden Informationen in das Formular.",
+        "form_title": "BODENSEE-RUNDFAHRT — Anmeldung",
         "fields": [
-            {"id": "sf1", "label": "1. Vorname & Nachname", "answer": "Marco Rossi"},
-            {"id": "sf2", "label": "2. Kursnummer", "answer": "DE-104"},
-            {"id": "sf3", "label": "3. Stufe", "answer": "A1"},
-            {"id": "sf4", "label": "4. Kursbeginn", "answer": "10. Oktober"},
-            {"id": "sf5", "label": "5. Zahlungsart", "answer": "Überweisung"}
+            {"id": "sf1", "label": "Familienname, Vorname:", "default": "Kadavy, Eva", "is_gap": False},
+            {"id": "sf2", "label": "1. Anzahl der Personen:", "answer": "4", "is_gap": True, "placeholder": "z. B. 4"},
+            {"id": "sf3", "label": "2. Davon Kinder:", "answer": "2", "is_gap": True, "placeholder": "z. B. 2"},
+            {"id": "sf4", "label": "Urlaubsadresse:", "default": "Hotel Schönblick", "is_gap": False},
+            {"id": "sf5", "label": "Straße, Hausnummer:", "default": "Burgstraße 34", "is_gap": False},
+            {"id": "sf6", "label": "3. PLZ, Urlaubsort:", "answer": "78014 Seeheim", "is_gap": True, "placeholder": "PLZ und Ort"},
+            {"id": "sf7", "label": "4. Zahlungsweise:", "answer": "Bar", "is_gap": True, "placeholder": "Bar oder Kreditkarte", "options": ["Bar", "Kreditkarte"]},
+            {"id": "sf8", "label": "5. Reisetermin:", "answer": "nächsten Sonntag", "is_gap": True, "placeholder": "z. B. nächsten Sonntag"},
+            {"id": "sf9", "label": "Unterschrift:", "default": "Eva Kadavy", "is_gap": False}
         ]
     },
     {
-        "title": "Stadtbibliothek Köln – Anmeldung",
-        "desc": "Anna Kowalski's application for a library card – Fill out a form, 5 gaps, 10 min.",
-        "form_title": "Stadtbibliothek Köln – Leserausweis",
+        "title": "Volkshochschule — Anmeldung Deutschkurs",
+        "desc": "Marco Rossi registers for an evening German course. Fill out 5 missing gaps in the form.",
+        "aufgabe": "Ihr Bekannter, Marco Rossi, wohnt in der Goethestraße 5 in 10625 Berlin.\n\nEr möchte ab nächstem Montag einen Abend-Deutschkurs (Kurs B1.1) besuchen.\n\nEr möchte per Überweisung bezahlen.\n\nIn dem Formular fehlen fünf Informationen. Helfen Sie Ihrem Bekannten und schreiben Sie die fünf fehlenden Informationen in das Formular.",
+        "form_title": "VOLKSHOCHSCHULE BERLIN — Kursanmeldung",
         "fields": [
-            {"id": "sf1", "label": "1. Name", "answer": "Anna Kowalski"},
-            {"id": "sf2", "label": "2. Adresse", "answer": "Domstraße 12"},
-            {"id": "sf3", "label": "3. Geburtsdatum", "answer": "14.05.1995"},
-            {"id": "sf4", "label": "4. Telefonnummer", "answer": "022198765"},
-            {"id": "sf5", "label": "5. Jahresgebühr", "answer": "15 Euro"}
+            {"id": "sf1", "label": "Familienname, Vorname:", "default": "Rossi, Marco", "is_gap": False},
+            {"id": "sf2", "label": "1. Straße, Hausnummer:", "answer": "Goethestraße 5", "is_gap": True, "placeholder": "Straße und Hausnummer"},
+            {"id": "sf3", "label": "2. PLZ, Wohnort:", "answer": "10625 Berlin", "is_gap": True, "placeholder": "PLZ und Wohnort"},
+            {"id": "sf4", "label": "Kursnummer:", "default": "B1.1", "is_gap": False},
+            {"id": "sf5", "label": "3. Kurszeit:", "answer": "Abend", "is_gap": True, "placeholder": "z. B. Abend"},
+            {"id": "sf6", "label": "4. Kursbeginn:", "answer": "nächsten Montag", "is_gap": True, "placeholder": "z. B. nächsten Montag"},
+            {"id": "sf7", "label": "5. Zahlungsweise:", "answer": "Überweisung", "is_gap": True, "placeholder": "Bar oder Überweisung", "options": ["Bar", "Überweisung"]},
+            {"id": "sf8", "label": "Unterschrift:", "default": "Marco Rossi", "is_gap": False}
         ]
     },
     {
-        "title": "Schwimmbad Aqua – Anmeldung Schwimmkurs",
-        "desc": "Emir Yıldız's registration for a beginner swimming course – Fill out a form, 5 gaps, 10 min.",
-        "form_title": "Schwimmbad Aqua – Kursanmeldung",
+        "title": "Stadtbibliothek Köln — Leserausweis",
+        "desc": "Anna Kowalski applies for a library card. Fill out 5 missing gaps in the form.",
+        "aufgabe": "Ihre Freundin Anna Kowalski (geboren am 14.05.1995) wohnt in Köln in der Domstraße 12.\n\nIhre Telefonnummer ist 022198765.\n\nSie möchte Bücher und DVDs ausleihen.\n\nIn dem Formular fehlen fünf Informationen. Helfen Sie Ihrer Freundin und schreiben Sie die fünf fehlenden Informationen in das Formular.",
+        "form_title": "STADTBIBLIOTHEK KÖLN — Leserausweis",
         "fields": [
-            {"id": "sf1", "label": "1. Name", "answer": "Emir Yıldız"},
-            {"id": "sf2", "label": "2. Alter", "answer": "28"},
-            {"id": "sf3", "label": "3. Kursart", "answer": "Anfänger"},
-            {"id": "sf4", "label": "4. Tag", "answer": "Samstag"},
-            {"id": "sf5", "label": "5. Uhrzeit", "answer": "10:00 Uhr"}
+            {"id": "sf1", "label": "Familienname, Vorname:", "default": "Kowalski, Anna", "is_gap": False},
+            {"id": "sf2", "label": "1. Geburtsdatum:", "answer": "14.05.1995", "is_gap": True, "placeholder": "TT.MM.JJJJ"},
+            {"id": "sf3", "label": "2. Straße, Hausnummer:", "answer": "Domstraße 12", "is_gap": True, "placeholder": "Straße und Hausnummer"},
+            {"id": "sf4", "label": "3. PLZ, Ort:", "answer": "50667 Köln", "is_gap": True, "placeholder": "PLZ und Ort"},
+            {"id": "sf5", "label": "4. Telefonnummer:", "answer": "022198765", "is_gap": True, "placeholder": "Telefonnummer"},
+            {"id": "sf6", "label": "Bibliotheksausweis für:", "default": "Bücher und DVDs", "is_gap": False},
+            {"id": "sf7", "label": "5. Jahresgebühr:", "answer": "15 Euro", "is_gap": True, "placeholder": "z. B. 15 Euro"},
+            {"id": "sf8", "label": "Unterschrift:", "default": "Anna Kowalski", "is_gap": False}
         ]
     },
     {
-        "title": "Nordbank – Kontoeröffnung",
-        "desc": "Helping Diego Fernández open a bank account – Fill out a form, 5 gaps, 10 min.",
-        "form_title": "Nordbank – Kontoeröffnungsformular",
+        "title": "Schwimmbad Aqua — Kursanmeldung",
+        "desc": "Emir Yıldız registers for a swimming course. Fill out 5 missing gaps in the form.",
+        "aufgabe": "Emir Yıldız (28 Jahre alt) möchte im Schwimmbad Aqua einen Anfängerschwimmkurs besuchen.\n\nEr hat nur am Samstag um 10:00 Uhr Zeit.\n\nSeine Telefonnummer ist 017654321.\n\nIn dem Formular fehlen fünf Informationen. Helfen Sie ihm und schreiben Sie die fünf fehlenden Informationen in das Formular.",
+        "form_title": "SCHWIMMBAD AQUA — Kursanmeldung",
         "fields": [
-            {"id": "sf1", "label": "1. Familienname", "answer": "Fernández"},
-            {"id": "sf2", "label": "2. Vorname", "answer": "Diego"},
-            {"id": "sf3", "label": "3. Beruf", "answer": "Koch"},
-            {"id": "sf4", "label": "4. E-Mail", "answer": "diego@web.de"},
-            {"id": "sf5", "label": "5. Startguthaben", "answer": "50 Euro"}
+            {"id": "sf1", "label": "Familienname, Vorname:", "default": "Yıldız, Emir", "is_gap": False},
+            {"id": "sf2", "label": "1. Alter:", "answer": "28", "is_gap": True, "placeholder": "z. B. 28"},
+            {"id": "sf3", "label": "2. Kursart:", "answer": "Anfänger", "is_gap": True, "placeholder": "Anfänger oder Fortgeschrittene"},
+            {"id": "sf4", "label": "3. Wochentag:", "answer": "Samstag", "is_gap": True, "placeholder": "z. B. Samstag"},
+            {"id": "sf5", "label": "4. Uhrzeit:", "answer": "10:00 Uhr", "is_gap": True, "placeholder": "z. B. 10:00 Uhr"},
+            {"id": "sf6", "label": "5. Telefonnummer:", "answer": "017654321", "is_gap": True, "placeholder": "Telefonnummer"},
+            {"id": "sf7", "label": "Unterschrift:", "default": "Emir Yıldız", "is_gap": False}
         ]
     },
     {
-        "title": "City Autovermietung – Mietvertrag",
-        "desc": "Helping Hana Kim fill out a car rental agreement – Fill out a form, 5 gaps, 10 min.",
-        "form_title": "City Autovermietung – Mietvertrag",
+        "title": "Nordbank — Kontoeröffnung",
+        "desc": "Diego Fernández opens a bank account. Fill out 5 missing gaps in the form.",
+        "aufgabe": "Diego Fernández arbeitet als Koch und wohnt in München.\n\nSeine E-Mail-Adresse ist diego@web.de.\n\nEr möchte ein Girokonto eröffnen und zahlt 50 Euro Startguthaben ein.\n\nIn dem Formular fehlen fünf Informationen. Helfen Sie ihm und schreiben Sie die fünf fehlenden Informationen in das Formular.",
+        "form_title": "NORDBANK MÜNCHEN — Kontoeröffnung",
         "fields": [
-            {"id": "sf1", "label": "1. Mieter", "answer": "Hana Kim"},
-            {"id": "sf2", "label": "2. Fahrzeugmodell", "answer": "Kleinwagen"},
-            {"id": "sf3", "label": "3. Mietdauer", "answer": "3 Tage"},
-            {"id": "sf4", "label": "4. Abholdatum", "answer": "Freitag"},
-            {"id": "sf5", "label": "5. Selbstbeteiligung", "answer": "300 Euro"}
-        ]
-    },
-    {
-        "title": "Fitnessstudio FitAktiv – Anmeldung",
-        "desc": "Omar Haddad's registration at the FitAktiv gym – Fill out a form, 5 gaps, 10 min.",
-        "form_title": "FitAktiv Mitgliedschaft",
-        "fields": [
-            {"id": "sf1", "label": "1. Name", "answer": "Omar Haddad"},
-            {"id": "sf2", "label": "2. Mitgliedschaft", "answer": "1 Jahr"},
-            {"id": "sf3", "label": "3. Monatsbeitrag", "answer": "30 Euro"},
-            {"id": "sf4", "label": "4. Starttermin", "answer": "01. November"},
-            {"id": "sf5", "label": "5. Bankverbindung", "answer": "DE89...ples"}
-        ]
-    },
-    {
-        "title": "Hotel Seeblick – Reservierung",
-        "desc": "Klara Veidt's reservation at Hotel Seeblick – Fill out a form, 5 gaps, 10 min.",
-        "form_title": "Hotel Seeblick Reservierung",
-        "fields": [
-            {"id": "sf1", "label": "1. Gast", "answer": "Klara Veidt"},
-            {"id": "sf2", "label": "2. Zimmerart", "answer": "Doppelzimmer"},
-            {"id": "sf3", "label": "3. Übernachtungen", "answer": "4 Nächte"},
-            {"id": "sf4", "label": "4. Verpflegung", "answer": "Frühstück"},
-            {"id": "sf5", "label": "5. Ankunft", "answer": "18. Juli"}
-        ]
-    },
-    {
-        "title": "Bodensee-Rundfahrt – Anmeldung",
-        "desc": "Registration for a Bodensee tour with Eva Kadavy – Fill out a form, 5 gaps, 10 min.",
-        "form_title": "Bodensee Schifffahrt Anmeldeformular",
-        "fields": [
-            {"id": "sf1", "label": "1. Name", "answer": "Eva Kadavy"},
-            {"id": "sf2", "label": "2. Personenzahl", "answer": "2"},
-            {"id": "sf3", "label": "3. Datum", "answer": "Sonntag"},
-            {"id": "sf4", "label": "4. Route", "answer": "Konstanz - Meersburg"},
-            {"id": "sf5", "label": "5. Ticketpreis", "answer": "44 Euro"}
-        ]
-    },
-    {
-        "title": "Praxis Dr. Sommer – Patienteninformation",
-        "desc": "Pavel Novák's patient information for a doctor's visit – Fill out a form, 5 gaps, 10 min.",
-        "form_title": "Arztpraxis Dr. Sommer",
-        "fields": [
-            {"id": "sf1", "label": "1. Patient", "answer": "Pavel Novák"},
-            {"id": "sf2", "label": "2. Geburtsjahr", "answer": "1985"},
-            {"id": "sf3", "label": "3. Krankenkasse", "answer": "AOK"},
-            {"id": "sf4", "label": "4. Beschwerde", "answer": "Kopfschmerzen"},
-            {"id": "sf5", "label": "5. Termin", "answer": "Morgen, 9 Uhr"}
+            {"id": "sf1", "label": "Familienname, Vorname:", "default": "Fernández, Diego", "is_gap": False},
+            {"id": "sf2", "label": "1. Beruf:", "answer": "Koch", "is_gap": True, "placeholder": "z. B. Koch"},
+            {"id": "sf3", "label": "2. Wohnort:", "answer": "München", "is_gap": True, "placeholder": "z. B. München"},
+            {"id": "sf4", "label": "3. E-Mail-Adresse:", "answer": "diego@web.de", "is_gap": True, "placeholder": "E-Mail"},
+            {"id": "sf5", "label": "Kontoart:", "default": "Girokonto", "is_gap": False},
+            {"id": "sf6", "label": "4. Startguthaben:", "answer": "50 Euro", "is_gap": True, "placeholder": "z. B. 50 Euro"},
+            {"id": "sf7", "label": "5. Zahlungsart:", "answer": "Bar", "is_gap": True, "placeholder": "Bar oder Überweisung"},
+            {"id": "sf8", "label": "Unterschrift:", "default": "Diego Fernández", "is_gap": False}
         ]
     }
 ]
@@ -577,7 +549,7 @@ SCHREIBEN_TEIL2_SCENARIOS = [
     {
         "title": "Umzug — einen Freund um Hilfe bitten",
         "desc": "Message to Daniel asking for help with moving – E-mail, approx. 30 words, 20 min.",
-        "prompt": "Lieber Daniel,\n\nich ziehe am nächsten Wochenende um und brauche dringend Hilfe beis Einpacken und Tragen. Hättest du am Samstag Zeit, mir zu helfen? Ich gebe auch Pizza aus!\n\nLiebe Grüße,\n[Dein Name]"
+        "prompt": "Lieber Daniel,\n\nich ziehe am nächsten Wochenende um und brauche dringend Hilfe beim Einpacken und Tragen. Hättest du am Samstag Zeit, mir zu helfen? Ich gebe auch Pizza aus!\n\nLiebe Grüße,\n[Dein Name]"
     },
     {
         "title": "Dresden besuchen — Touristeninformation",
@@ -626,12 +598,12 @@ if nav_choice == "🏠 Study Dashboard":
         st.subheader("📖 Lesen & ✍️ Schreiben")
         st.markdown("""
         * **Lesen (25 Mins - 15 Tasks across 3 Parts):**
-          - Teil 1: Short Emails (Richtig/Falsch)[cite: 3]
-          - Teil 2: Classified Ads (Option A or B)[cite: 3]
-          - Teil 3: Public Signs (Richtig/Falsch)[cite: 3]
+          - Teil 1: Short Emails (Richtig/Falsch)
+          - Teil 2: Classified Ads (Option A or B)
+          - Teil 3: Public Signs (Richtig/Falsch)
         * **Schreiben (20 Mins - 2 Parts):**
-          - Teil 1: Fill 5 Missing Gaps on Form with Scenario[cite: 3]
-          - Teil 2: Write ~30-Word Message hitting 3 required points[cite: 3]
+          - Teil 1: Fill 5 Missing Gaps on Form with Scenario (Mirrored exactly to official Goethe format)
+          - Teil 2: Write ~30-Word Message hitting 3 required points
         """)
         st.markdown('</div>', unsafe_allow_html=True)
     with col2:
@@ -639,13 +611,13 @@ if nav_choice == "🏠 Study Dashboard":
         st.subheader("🎧 Hören & 🗣️ Sprechen")
         st.markdown("""
         * **Hören (20 Mins - 15 Tasks across 3 Parts):**
-          - Teil 1: 6 Dialogues (A/B/C)[cite: 3]
-          - Teil 2: 4 Announcements (Richtig/Falsch)[cite: 3]
-          - Teil 3: 5 Voicemails (A/B/C)[cite: 3]
+          - Teil 1: 6 Dialogues (A/B/C)
+          - Teil 2: 4 Announcements (Richtig/Falsch)
+          - Teil 3: 5 Voicemails (A/B/C)
         * **Sprechen (15 Mins - 3 Parts):**
-          - Teil 1: Self-Introduction & Spelling/Numbers[cite: 3]
-          - Teil 2: W-Questions with Topic Card[cite: 3]
-          - Teil 3: Imperative Requests with Object Card[cite: 3]
+          - Teil 1: Self-Introduction & Spelling/Numbers
+          - Teil 2: W-Questions with Topic Card
+          - Teil 3: Imperative Requests with Object Card
         """)
         st.markdown('</div>', unsafe_allow_html=True)
 
@@ -1113,7 +1085,7 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
     ])
 
     with l_tab1:
-        st.markdown("**Teil 1:** Select from official practice scenario sets for short messages/notices (Richtig/Falsch)[cite: 3].")
+        st.markdown("**Teil 1:** Select from official practice scenario sets for short messages/notices (Richtig/Falsch).")
         
         selected_lesen_t1_title = st.selectbox("📂 Select Lesen Teil 1 Scenario Set:", [s["title"] for s in LESEN_TEIL1_SCENARIOS])
         selected_lesen_t1_obj = next(s for s in LESEN_TEIL1_SCENARIOS if s["title"] == selected_lesen_t1_title)
@@ -1158,7 +1130,7 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
                 st.success(f"Teil 1 Score for '{selected_lesen_t1_title}': {score} / 5")
 
     with l_tab2:
-        st.markdown("**Teil 2:** Select from official practice scenario sets for classified ads / website information (Option A or B)[cite: 3].")
+        st.markdown("**Teil 2:** Select from official practice scenario sets for classified ads / website information (Option A or B).")
         
         selected_lesen_t2_title = st.selectbox("📂 Select Lesen Teil 2 Scenario Set:", [s["title"] for s in LESEN_TEIL2_SCENARIOS])
         selected_lesen_t2_obj = next(s for s in LESEN_TEIL2_SCENARIOS if s["title"] == selected_lesen_t2_title)
@@ -1202,7 +1174,7 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
                 st.success(f"Teil 2 Score for '{selected_lesen_t2_title}': {score} / 5")
 
     with l_tab3:
-        st.markdown("**Teil 3:** Select from official practice scenario sets for public signs / notices (Richtig/Falsch)[cite: 3].")
+        st.markdown("**Teil 3:** Select from official practice scenario sets for public signs / notices (Richtig/Falsch).")
         
         selected_lesen_t3_title = st.selectbox("📂 Select Lesen Teil 3 Scenario Set:", [s["title"] for s in LESEN_TEIL3_SCENARIOS])
         selected_lesen_t3_obj = next(s for s in LESEN_TEIL3_SCENARIOS if s["title"] == selected_lesen_t3_title)
@@ -1259,7 +1231,7 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
     ])
 
     with h_tab1:
-        st.markdown("**Teil 1:** Select from official practice scenario sets for dialogues[cite: 3].")
+        st.markdown("**Teil 1:** Select from official practice scenario sets for dialogues.")
         
         selected_scenario_title = st.selectbox("📂 Select Hören Teil 1 Scenario Set:", [s["title"] for s in HOREN_TEIL1_SCENARIOS])
         selected_scenario_obj = next(s for s in HOREN_TEIL1_SCENARIOS if s["title"] == selected_scenario_title)
@@ -1307,7 +1279,7 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
                 st.success(f"Teil 1 Score for '{selected_scenario_title}': {score} / 6")
 
     with h_tab2:
-        st.markdown("**Teil 2:** Select from official practice scenario sets for announcements[cite: 3].")
+        st.markdown("**Teil 2:** Select from official practice scenario sets for announcements.")
         
         selected_scenario_t2 = st.selectbox("📂 Select Hören Teil 2 Scenario Set:", [s["title"] for s in HOREN_TEIL2_SCENARIOS])
         selected_scenario_t2_obj = next(s for s in HOREN_TEIL2_SCENARIOS if s["title"] == selected_scenario_t2)
@@ -1353,7 +1325,7 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
                 st.success(f"Teil 2 Score for '{selected_scenario_t2}': {score} / 4")
 
     with h_tab3:
-        st.info("ℹ️ Teil 3: 5 phone voicemails played TWICE[cite: 3]. Choose A, B, or C.")
+        st.info("ℹ️ Teil 3: 5 phone voicemails played TWICE. Choose A, B, or C.")
         if st.button("🎲 Generate Hören Teil 3 Scenario", type="primary") or st.button("🔄 Generate New Hören Teil 3 Audio & Tasks"):
             with st.spinner("Gem is synthesizing 5 new voicemail messages..."):
                 prompt = """
@@ -1397,58 +1369,68 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
     st.subheader("✍️ Goethe A1 Schreiben Practice (20 Mins, 2 Parts)")
 
     s_tab1, s_tab2 = st.tabs([
-        "Teil 1: Fill 5 Missing Gaps on Form", 
+        "Teil 1: Formular (Mirrored to Official Exam Format)", 
         "Teil 2: Write ~30-Word Email (3 Content Points)"
     ])
 
     with s_tab1:
-        st.markdown("**Teil 1:** Select from official practice scenario sets for filling out registration forms (5 gaps)[cite: 3].")
+        st.markdown("**Teil 1 (Formular):** Select from official practice scenarios. Fill in the 5 missing information gaps exactly like the official Goethe-Zertifikat A1 exam interface.")
         
         selected_schreiben_t1_title = st.selectbox("📂 Select Schreiben Teil 1 Scenario Set:", [s["title"] for s in SCHREIBEN_TEIL1_SCENARIOS])
         selected_schreiben_t1_obj = next(s for s in SCHREIBEN_TEIL1_SCENARIOS if s["title"] == selected_schreiben_t1_title)
         
-        st.info(f"📌 **Description:** {selected_schreiben_t1_obj['desc']}")
+        # Display Aufgabe box matching official UI
+        st.markdown(f"""
+        <div style="background: #f1f5f9; border-left: 5px solid #8b5cf6; padding: 16px; border-radius: 8px; margin-bottom: 20px;">
+            <p style="font-weight: 700; color: #6d28d9; margin-bottom: 8px;">📋 Aufgabe</p>
+            <p style="white-space: pre-line; color: #1e293b; margin-bottom: 0px;">{selected_schreiben_t1_obj['aufgabe']}</p>
+        </div>
+        """, unsafe_allow_html=True)
 
-        if st.button(f"▶️ Start Exercise ({selected_schreiben_t1_title})", type="primary") or f"schreiben_t1_loaded_{selected_schreiben_t1_title}" not in st.session_state:
-            with st.spinner(f"Gem is generating Schreiben Teil 1 exercises for '{selected_schreiben_t1_title}'..."):
-                prompt = f"""
-                Generate Goethe A1 Schreiben Teil 1 form filling exercise for: '{selected_schreiben_t1_title}' ({selected_schreiben_t1_obj['desc']}).
-                Provide a realistic scenario text and exact 5 fields with answers.
-                Return strict JSON format:
-                {{
-                    "scenario": "Detailed background story for {selected_schreiben_t1_title} containing all 5 required form field answers clearly.",
-                    "form_title": "{selected_schreiben_t1_obj['form_title']}",
-                    "fields": {json.dumps(selected_schreiben_t1_obj['fields'])}
-                }}
-                """
-                try:
-                    json_str = generate_dynamic_content(prompt, is_json=True)
-                    st.session_state[f"schreiben_t1_loaded_{selected_schreiben_t1_title}"] = json.loads(json_str)
-                except Exception as e: st.error(f"Error: {str(e)}")
+        st.markdown(f"### 📄 {selected_schreiben_t1_obj['form_title']}")
+        
+        user_form_inputs = {}
+        for field in selected_schreiben_t1_obj["fields"]:
+            if not field["is_gap"]:
+                st.text_input(field["label"], value=field["default"], disabled=True, key=f"disabled_{selected_schreiben_t1_title}_{field['id']}")
+            else:
+                if "options" in field:
+                    user_form_inputs[field["id"]] = st.radio(field["label"], field["options"], key=f"gap_rad_{selected_schreiben_t1_title}_{field['id']}")
+                else:
+                    user_form_inputs[field["id"]] = st.text_input(field["label"], placeholder=field.get("placeholder", "..."), key=f"gap_inp_{selected_schreiben_t1_title}_{field['id']}")
 
-        cache_key_st1 = f"schreiben_t1_loaded_{selected_schreiben_t1_title}"
-        if cache_key_st1 in st.session_state:
-            d = st.session_state[cache_key_st1]
-            st.info(f"**Background Scenario:**\n{d['scenario']}")
-            st.markdown(f"### 📋 {d['form_title']}")
-            user_inputs = {}
-            for f in d["fields"]:
-                user_inputs[f["id"]] = st.text_input(f["label"], key=f"inp_st1_{selected_schreiben_t1_title}_{f['id']}")
-            
-            if st.button(f"Submit Schreiben Teil 1 ({selected_schreiben_t1_title})"):
-                score = 0
-                for f in d["fields"]:
-                    u_val = user_inputs[f["id"]].strip().lower()
-                    c_val = f["answer"].strip().lower()
-                    if u_val == c_val:
+        # Special character helper buttons matching screenshot 38
+        st.markdown("##### ⌨️ Special German Characters")
+        sc_cols = st.columns(7)
+        chars = ["ä", "ö", "ü", "ß", "Ä", "Ö", "Ü"]
+        # Note: Streamlit text inputs don't allow direct cursor injection easily via buttons without state tricks, but we display them clearly for candidate assistance.
+        for idx, ch in enumerate(chars):
+            sc_cols[idx].code(ch)
+
+        col_b_clear, col_b_check = st.columns(2)
+        with col_b_clear:
+            if st.button("✖️ Clear", use_container_width=True):
+                st.rerun()
+        with col_b_check:
+            submit_form_btn = st.button("✔ Check", type="primary", use_container_width=True)
+
+        if submit_form_btn:
+            score = 0
+            total_gaps = sum(1 for f in selected_schreiben_t1_obj["fields"] if f["is_gap"])
+            st.markdown("### 📊 Evaluation Results")
+            for field in selected_schreiben_t1_obj["fields"]:
+                if field["is_gap"]:
+                    u_val = str(user_form_inputs.get(field["id"], "")).strip().lower()
+                    c_val = str(field["answer"]).strip().lower()
+                    if u_val == c_val or c_val in u_val:
                         score += 1
-                        st.success(f"**{f['label']}: Correct!** (`{f['answer']}`)")
+                        st.success(f"**{field['label']}** Correct! (`{field['answer']}`)")
                     else:
-                        st.error(f"**{f['label']}: Incorrect.** Your answer: `{u_val}` | Correct: `{f['answer']}`")
-                st.metric("Form Score", f"{score} / 5")
+                        st.error(f"**{field['label']}** Incorrect. Your answer: `{user_form_inputs.get(field['id'], '')}` | Correct: `{field['answer']}`")
+            st.metric("Formular Score", f"{score} / {total_gaps}")
 
     with s_tab2:
-        st.markdown("**Teil 2:** Select from official practice scenario sets for writing short messages / emails (~30 words, 3 points)[cite: 3].")
+        st.markdown("**Teil 2:** Select from official practice scenario sets for writing short messages / emails (~30 words, 3 points).")
         
         selected_schreiben_t2_title = st.selectbox("📂 Select Schreiben Teil 2 Scenario Set:", [s["title"] for s in SCHREIBEN_TEIL2_SCENARIOS])
         selected_schreiben_t2_obj = next(s for s in SCHREIBEN_TEIL2_SCENARIOS if s["title"] == selected_schreiben_t2_title)
@@ -1485,7 +1467,7 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
 
     with sp_tab1:
         st.markdown("""
-        **Teil 1:** Introduce yourself briefly to the examiners (using guides: Name, Jahre, alt, Herkunft, Wohnort, Sprachen, Beruf, Hobby) and spell a word or state your phone number/ZIP code[cite: 3].
+        **Teil 1:** Introduce yourself briefly to the examiners (using guides: Name, Jahre, alt, Herkunft, Wohnort, Sprachen, Beruf, Hobby) and spell a word or state your phone number/ZIP code.
         """)
         rec_t1 = mic_recorder(start_prompt="Record Self-Introduction 🎙️", stop_prompt="Stop Recording 🛑", key="rec_sp_t1")
         if rec_t1:
@@ -1503,7 +1485,7 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
                     except Exception as e: st.error(f"Error: {str(e)}")
 
     with sp_tab2:
-        st.markdown("**Teil 2:** Draw a card with a theme and a prompt word, formulate a basic question to ask a partner, and answer their question in return[cite: 3].")
+        st.markdown("**Teil 2:** Draw a card with a theme and a prompt word, formulate a basic question to ask a partner, and answer their question in return.")
         
         col_sp2_a, col_sp2_b = st.columns(2)
         with col_sp2_a:
@@ -1537,7 +1519,7 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
                         except Exception as e: st.error(f"Error: {str(e)}")
 
     with sp_tab3:
-        st.markdown("**Teil 3:** Draw a card showing an object or situation and make a simple request or give a polite instruction to your partner[cite: 3].")
+        st.markdown("**Teil 3:** Draw a card showing an object or situation and make a simple request or give a polite instruction to your partner.")
         
         col_sp3_a, col_sp3_b = st.columns(2)
         with col_sp3_a:
