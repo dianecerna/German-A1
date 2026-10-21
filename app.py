@@ -104,11 +104,12 @@ def generate_cached_content(prompt_text: str, is_json: bool = False) -> str:
             return res.text
         except Exception as e:
             last_error = e
-            if "429" in str(e) or "RESOURCE_EXHAUSTED" in str(e) or "quota" in str(e).lower():
+            err_str = str(e).lower()
+            if any(k in err_str for k in ["429", "503", "resource_exhausted", "unavailable", "quota"]):
                 continue
             raise e
             
-    raise Exception(f"All free model quotas are currently exhausted. Details: {str(last_error)}")
+    raise Exception(f"All free model quotas are currently exhausted or unavailable. Details: {str(last_error)}")
 
 def generate_dynamic_content(prompt_text: str, is_json: bool = False) -> str:
     config_args = {"system_instruction": SYSTEM_INSTRUCTION}
@@ -126,11 +127,12 @@ def generate_dynamic_content(prompt_text: str, is_json: bool = False) -> str:
             return res.text
         except Exception as e:
             last_error = e
-            if "429" in str(e) or "RESOURCE_EXHAUSTED" in str(e) or "quota" in str(e).lower():
+            err_str = str(e).lower()
+            if any(k in err_str for k in ["429", "503", "resource_exhausted", "unavailable", "quota"]):
                 continue
             raise e
             
-    raise Exception(f"All free model quotas are currently exhausted. Details: {str(last_error)}")
+    raise Exception(f"All free model quotas are currently exhausted or unavailable. Details: {str(last_error)}")
 
 @st.cache_data
 def load_goethe_vocab():
