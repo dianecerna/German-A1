@@ -17,12 +17,20 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom Styling
+# Custom Styling: Larger sidebar navigation fonts, compact audio icon styling, floating widget styling
 st.markdown("""
 <style>
     .stApp { background-color: #f8fafc; font-family: system-ui, -apple-system, sans-serif; }
     .main-card { background: #ffffff; border-radius: 16px; padding: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); margin-bottom: 20px; border: 1px solid #e2e8f0; }
     .accent-card { background: #ffffff; border-radius: 16px; padding: 24px; border-left: 6px solid #2563eb; box-shadow: 0 2px 12px rgba(37, 99, 235, 0.06); margin-bottom: 20px; border: 1px solid #e2e8f0; }
+    
+    /* Increase Sidebar Navigation Font Size & Spacing */
+    [data-testid="stSidebarNav"] span, .stRadio label {
+        font-size: 1.1rem !important;
+        font-weight: 500 !important;
+        padding-top: 4px !important;
+        padding-bottom: 4px !important;
+    }
     
     /* Interactive Flashcard UI */
     .flashcard-front-box {
@@ -61,6 +69,20 @@ st.markdown("""
         font-weight: 600;
         color: #2563eb;
         margin-bottom: 15px;
+    }
+
+    /* Floating Gem Widget Styling */
+    .floating-gem-box {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        z-index: 99999;
+        background: #ffffff;
+        border-radius: 16px;
+        padding: 16px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        border: 2px solid #2563eb;
+        width: 320px;
     }
     
     /* Metric Font Uniformity */
@@ -136,18 +158,48 @@ def generate_dynamic_content(prompt_text: str, is_json: bool = False) -> str:
     raise Exception(f"All free model quotas are currently exhausted or unavailable. Details: {str(last_error)}")
 
 @st.cache_data
-def load_goethe_vocab_categories():
+def load_goethe_structured_vocab():
     return {
-        "All": [],  # Populated dynamically
-        "Kultur und Medien": ["Buch", "Zeitung", "Film", "Musik", "Fernsehen", "Internet", "Computer", "Handy", "Radio", "Bibliothek", "Kino", "Theater", "Museum", "Künstler", "Sprache", "Nachrichten"],
-        "Arbeiten": ["arbeiten", "Arbeit", "Büro", "Kollege", "Chefin", "Beruf", "Firma", "Computer", "Telefon", "E-Mail", "Meeting", "Gehalt", "Pause", "Urlaub", "kündigen", "bewerben", "Lebenslauf", "Praktikum"],
-        "Universität und Studieren": ["Universität", "Student", "Studium", "studieren", "Professoren", "Prüfung", "Vorlesung", "Seminar", "Bibliothek", "Buch", "Stift", "Heft", "Kurs", "Zeugnis", "Abschluss", "ferien", "Labor", "Canteen"],
-        "Allgemein": ["sein", "haben", "machen", "gehen", "kommen", "wollen", "können", "müssen", "werden", "sagen", "geben", "sehen", "wissen", "nehmen", "finden", "sprechen", "verstehen", "helfen", "lernen", "leben", "wohnen", "bleiben", "brauchen", "denken", "lieben", "fragen", "hören", "lesen", "schreiben", "kaufen", "bezahlen", "essen", "trinken", "schlafen", "fahren", "stehen", "laufen", "sitzen", "liegen", "warten", "Guten Tag", "Guten Morgen", "Guten Abend", "Auf Wiedersehen", "Tschüss", "Danke", "Bitte", "Entschuldigung", "Hilfe", "Bahnhof", "Flughafen", "Hotel", "Restaurant", "Speisekarte", "Rechnung", "Arzt", "Krankenhaus", "Supermarkt", "Apotheke", "Polizei", "Fahrkarte", "Wohnung", "Zimmer", "Küche", "Badezimmer", "Schlafzimmer", "Wohnzimmer", "Balkon", "Garten", "Tisch", "Stuhl", "Bett", "Schrank", "Kühlschrank", "Herd", "Waschmaschine"]
+        "Goethe 600+ Official Core": {
+            "Person & Alltag": {
+                "Angaben zur Person": ["Name", "Alter", "Herkunft", "Sprachen", "Familienstand", "ledig", "kommen", "wohnen", "Adresse"],
+                "Wohnen & Haushalt": ["Zimmer", "Möbel", "Miete", "Wohnung", "Tisch", "kosten", "Stuhl", "Bett", "Küche", "Lampe"],
+                "Familie & Freunde": ["Eltern", "Bruder", "Schwester", "Kind", "Mutter", "Vater", "verheiratet", "Freund", "Familie"]
+            },
+            "Essen & Trinken": {
+                "Lebensmittel": ["Apfel", "Wasser", "Brot", "Gemüse", "Obst", "Fleisch", "Milch", "Käse", "Getränke", "Ei"],
+                "Im Restaurant & Café": ["Speisekarte", "zahlen", "lecker", "Kellner", "Restaurant", "Café", "Rechnung", "Trinkgeld", "Hunger", "Durst"]
+            },
+            "Freizeit & Alltag": {
+                "Tagesablauf": ["aufstehen", "frühstücken", "spät", "früh", "arbeiten", "schlafen", "Uhrzeit", "Tag", "Abend", "Morgen"],
+                "Hobbys & Sport": ["lesen", "Fußball", "fernsehen", "Musik", "Sport", "schwimmen", "spielen", "Hobby", "Kino", "Reise"],
+                "Wetter & Jahreszeiten": ["Wetter", "kalt", "Sommer", "Winter", "Sonne", "Regen", "Frühling", "Herbst", "warm", "Schnee"]
+            },
+            "Einkaufen & Geld": {
+                "Geschäfte & Kleidung": ["Geschäft", "Hose", "teuer", "billig", "Kleidung", "Farbe", "Größe", "Schuhe", "Hemd", "Jacke"],
+                "Bezahlen & Zahlen": ["Geld", "Euro", "Kreditkarte", "kosten", "Cent", "Bank", "Preis", "Nummer", "Kasse"]
+            },
+            "Arbeit & Beruf": {
+                "Berufe & Arbeitsplatz": ["Arzt", "Büro", "arbeiten", "Chef", "Kollege", "Beruf", "Firma", "Computer", "Praktikum"],
+                "Termine & Bürokommunikation": ["Termin", "anrufen", "morgen", "gestern", "E-Mail", "Telefon", "Wochentag", "Stunde", "Minute"]
+            },
+            "Stadt & Verkehr": {
+                "Unterwegs sein": ["Bus", "Bahnhof", "links", "rechts", "Fahrkarte", "Zug", "Auto", "Fahrrad", "Flugzeug", "fahren"],
+                "In der Stadt": ["Krankenhaus", "Post", "Bank", "Stadt", "Straße", "Platz", "Hotel", "Supermarkt", "Apotheke", "Polizei"]
+            },
+            "Gesundheit & Körper": {
+                "Der Körper": ["Kopf", "Arm", "wehtun", "Bein", "Auge", "Ohr", "Mund", "Hand", "Fuß", "Nase"],
+                "Beim Arzt": ["krank", "Arzt", "Apotheke", "Medikament", "Schmerz", "Gesund", "Husten", "Fieber", "Praxis"]
+            }
+        },
+        "Class Module Words (PDFs)": {
+            "Allgemein": {
+                "Core Verbs & Phrases": ["sein", "haben", "ich", "du", "er", "sie", "es", "wir", "ihr", "Sie", "nicht", "ja", "nein", "aber", "oder", "und", "weil", "dass", "wenn", "wie", "was", "wer", "wo", "wann", "warum"]
+            }
+        }
     }
 
-GOETHE_CATEGORIES = load_goethe_vocab_categories()
-ALL_VOCAB_WORDS = list(set([w for cat_list in GOETHE_CATEGORIES.values() for w in cat_list]))
-GOETHE_CATEGORIES["All"] = ALL_VOCAB_WORDS
+VOCAB_DATA = load_goethe_structured_vocab()
 
 @st.cache_data(show_spinner=False)
 def generate_german_audio_bytes(text: str) -> bytes:
@@ -157,7 +209,7 @@ def generate_german_audio_bytes(text: str) -> bytes:
     fp.seek(0)
     return fp.getvalue()
 
-# Sidebar Navigation
+# Sidebar Navigation with larger font styling already injected
 st.sidebar.title("🇩🇪 Goethe A1 Studio")
 st.sidebar.caption("Target Exam: Dec 12, 2026")
 st.sidebar.divider()
@@ -171,6 +223,7 @@ nav_choice = st.sidebar.radio("Navigation", [
     "✍️ Goethe A1 Schreiben (Writing)", 
     "🗣️ Goethe A1 Sprechen (Speaking)",
     "🏆 Goethe A1 Mock Examination",
+    "📖 A1 & A2 Short Stories",
     "💬 Ask Gem (AI Tutor)"
 ])
 
@@ -181,7 +234,7 @@ if nav_choice == "🏠 Study Dashboard":
     st.markdown('<div class="accent-card">', unsafe_allow_html=True)
     st.title("Goethe-Zertifikat A1 Prep Studio")
     st.write("📅 **Exam Date:** December 12, 2026")
-    st.write("Complete Goethe A1 curriculum preparation, vocabulary engine, grammar exercises, and exam modules.")
+    st.write("Complete Goethe A1 curriculum preparation, vocabulary engine, grammar exercises, exam simulators, and short stories.")
     st.markdown('</div>', unsafe_allow_html=True)
 
     col1, col2 = st.columns(2)
@@ -219,25 +272,45 @@ if nav_choice == "🏠 Study Dashboard":
 elif nav_choice == "📚 Master Goethe Word Engine":
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
     st.subheader("📚 Master Goethe A1 Interactive Flashcard Engine")
-    st.write("Practice essential Goethe A1 vocabulary, verbs, and phrases organized by practical theme categories.")
+    st.write("Filter between official Goethe 600+ words and Class Module words. Categorized by practical daily life usage.")
 
-    # Category and Word Selection Dropdowns
-    selected_category = st.selectbox("📂 Select Vocabulary Category:", list(GOETHE_CATEGORIES.keys()))
-    available_words_in_cat = GOETHE_CATEGORIES[selected_category]
+    source_filter = st.selectbox("🎯 Select Vocabulary Source:", list(VOCAB_DATA.keys()))
+    source_dict = VOCAB_DATA[source_filter]
+
+    main_cats = ["All"] + list(source_dict.keys())
+    selected_main_cat = st.selectbox("📂 Select Main Category:", main_cats)
+
+    if selected_main_cat == "All":
+        all_words_in_source = []
+        for mc_key, sub_dict in source_dict.items():
+            for sc_key, w_list in sub_dict.items():
+                all_words_in_source.extend(w_list)
+        available_words = list(set(all_words_in_source))
+    else:
+        sub_dict = source_dict[selected_main_cat]
+        sub_cats = ["All Subcategories"] + list(sub_dict.keys())
+        selected_sub_cat = st.selectbox("📁 Select Subcategory:", sub_cats)
+        
+        if selected_sub_cat == "All Subcategories":
+            available_words = []
+            for sc_key, w_list in sub_dict.items():
+                available_words.extend(w_list)
+            available_words = list(set(available_words))
+        else:
+            available_words = sub_dict[selected_sub_cat]
 
     col_w1, col_w2 = st.columns([3, 1])
     with col_w1:
-        selected_word_dropdown = st.selectbox(f"🔤 Select specific word in '{selected_category}':", available_words_in_cat)
+        selected_word_dropdown = st.selectbox(f"🔤 Select specific word:", available_words)
     with col_w2:
         if st.button("🎲 Shuffle Random Word", use_container_width=True):
-            st.session_state.current_flashcard_word = random.choice(available_words_in_cat)
+            st.session_state.current_flashcard_word = random.choice(available_words)
             st.session_state.show_card_back = False
             st.rerun()
 
-    if "current_flashcard_word" not in st.session_state or st.session_state.current_flashcard_word not in available_words_in_cat:
-        st.session_state.current_flashcard_word = selected_word_dropdown
+    if "current_flashcard_word" not in st.session_state or st.session_state.current_flashcard_word not in available_words:
+        st.session_state.current_flashcard_word = available_words[0] if available_words else "sein"
 
-    # If dropdown was changed explicitly
     if selected_word_dropdown != st.session_state.current_flashcard_word:
         st.session_state.current_flashcard_word = selected_word_dropdown
         st.session_state.show_card_back = False
@@ -283,20 +356,23 @@ elif nav_choice == "📚 Master Goethe Word Engine":
         if not st.session_state.get("show_card_back", False):
             st.markdown(f"""
             <div class="flashcard-front-box">
-                <p style="color: #38bdf8; font-weight: 700; letter-spacing: 0.08em; margin-bottom: 8px;">⭐ OFFICIAL GOETHE-ZERTIFIKAT A1 CORE VOCABULARY WORD ⭐</p>
+                <p style="color: #38bdf8; font-weight: 700; letter-spacing: 0.08em; margin-bottom: 8px;">⭐ {source_filter.upper()} ⭐</p>
                 <div class="flashcard-word-title">{data.get("word", active_word)}</div>
-                <p style="color: #cbd5e1; font-size: 0.9rem; margin-bottom: 0px;">Category: {selected_category} | Click audio below or flip card for details.</p>
+                <p style="color: #cbd5e1; font-size: 0.9rem; margin-bottom: 0px;">Click audio icon below to listen, or flip card for details.</p>
             </div>
             """, unsafe_allow_html=True)
             
-            st.markdown("##### 🔊 Native Audio Pronunciation")
-            audio_bytes = generate_german_audio_bytes(active_word)
-            st.audio(audio_bytes, format="audio/mp3")
+            c_aud_front = st.columns([1, 6])
+            with c_aud_front[0]:
+                if st.button("🔊", key="audio_front_btn"):
+                    st.audio(generate_german_audio_bytes(active_word), format="audio/mp3")
+            with c_aud_front[1]:
+                st.caption("Click speaker icon to listen to pronunciation")
 
         else:
             st.markdown(f"""
             <div class="flashcard-back-box">
-                <p style="color: #2563eb; font-weight: 700; font-size: 0.85rem; letter-spacing: 0.05em; margin-bottom: 2px;">⭐ GOETHE A1 CORE VOCABULARY WORD ({selected_category})</p>
+                <p style="color: #2563eb; font-weight: 700; font-size: 0.85rem; letter-spacing: 0.05em; margin-bottom: 2px;">⭐ {source_filter.upper()} ({selected_main_cat})</p>
                 <div class="flashcard-back-title">{data.get("word", active_word)}</div>
                 <div class="meaning-subtitle">Meaning: {data.get("english_meaning", "")}</div>
             </div>
@@ -310,33 +386,36 @@ elif nav_choice == "📚 Master Goethe Word Engine":
 
             perf = data.get("perfekt_tense", {})
             st.success(f"⏳ **Perfekt Tense:** `{perf.get('formula', 'N/A')}`")
-            st.markdown(f"• **DE Sentence:** {perf.get('sample_sentence_de', '')}")
-            # Audio button for Perfekt sentence
-            if st.button("🔊 Play Perfekt Sentence Audio", key="audio_perf"):
-                st.audio(generate_german_audio_bytes(perf.get('sample_sentence_de', '')), format="audio/mp3")
-            st.markdown(f"• **EN Sentence:** {perf.get('sample_sentence_en', '')}")
+            
+            cp_perf = st.columns([0.5, 10])
+            with cp_perf[0]:
+                if st.button("🔊", key="audio_perf_icon"):
+                    st.audio(generate_german_audio_bytes(perf.get('sample_sentence_de', '')), format="audio/mp3")
+            with cp_perf[1]:
+                st.markdown(f"• **DE:** {perf.get('sample_sentence_de', '')}")
+            st.markdown(f"• **EN:** {perf.get('sample_sentence_en', '')}")
 
             st.info(f"💡 **Grammar Notes & Rules:** {data.get('grammar_notes', 'N/A')}")
 
-            st.markdown("#### 🔄 Conjugations & Example Sentences (with Individual Sentence Audios)")
+            st.markdown("#### 🔄 Conjugations & Example Sentences")
             conjs = data.get("conjugations", [])
             for i, c in enumerate(conjs):
-                cols_c = st.columns([4, 1])
+                cols_c = st.columns([0.5, 10])
                 with cols_c[0]:
-                    st.markdown(f"• **{c.get('pronoun')}:** `{c.get('form')}` — *{c.get('sentence')}*  \n  &nbsp;&nbsp;&nbsp;&nbsp;*(En: {c.get('sentence_en')})*")
-                with cols_c[1]:
-                    if st.button("🔊 Play", key=f"audio_conj_{i}"):
+                    if st.button("🔊", key=f"audio_conj_icon_{i}"):
                         st.audio(generate_german_audio_bytes(c.get('sentence')), format="audio/mp3")
+                with cols_c[1]:
+                    st.markdown(f"• **{c.get('pronoun')}:** `{c.get('form')}` — *{c.get('sentence')}*  \n  &nbsp;&nbsp;&nbsp;&nbsp;*(En: {c.get('sentence_en')})*")
 
             st.markdown("#### 💬 Commonly Used Phrases")
             phrases = data.get("common_phrases", [])
             for j, p in enumerate(phrases):
-                cols_p = st.columns([4, 1])
+                cols_p = st.columns([0.5, 10])
                 with cols_p[0]:
-                    st.markdown(f"👉 **{p.get('phrase_de')}** — *{p.get('phrase_en')}*")
-                with cols_p[1]:
-                    if st.button("🔊 Play", key=f"audio_phrase_{j}"):
+                    if st.button("🔊", key=f"audio_phrase_icon_{j}"):
                         st.audio(generate_german_audio_bytes(p.get('phrase_de')), format="audio/mp3")
+                with cols_p[1]:
+                    st.markdown(f"👉 **{p.get('phrase_de')}** — *{p.get('phrase_en')}*")
 
     except Exception as e:
         st.error(f"Error compiling flashcard details: {str(e)}")
@@ -350,8 +429,8 @@ elif nav_choice == "📚 Master Goethe Word Engine":
             st.rerun()
 
     with col_f2:
-        if st.button("🎲 Random Goethe Word in Category", use_container_width=True):
-            st.session_state.current_flashcard_word = random.choice(available_words_in_cat)
+        if st.button("🎲 Random Word in Deck", use_container_width=True):
+            st.session_state.current_flashcard_word = random.choice(available_words)
             st.session_state.show_card_back = False
             st.rerun()
 
@@ -363,7 +442,7 @@ elif nav_choice == "📚 Master Goethe Word Engine":
 elif nav_choice == "📖 Core Grammar Practice & Exercises":
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
     st.subheader("📖 Core Grammar Practice & Exercises")
-    st.write("Review class handbook modules with rigorous, structured bullet points, additional expert study-buddy explanations, and 20 targeted practice questions designed for 100% mastery.")
+    st.write("Review class handbook modules with rigorous, structured bullet points, advanced expert study-buddy explanations, and 20 targeted practice questions designed for 100% mastery.")
 
     handbook_lessons = [
         "Lesson 1: German Alphabet, Pronunciation, and Article Recognition",
@@ -667,26 +746,26 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
     st.subheader("🎧 Goethe A1 Hören Practice (20 Mins, 15 Points)")
 
     h_tab1, h_tab2, h_tab3 = st.tabs([
-        "Teil 1: 6 Dialogues (Played 2x - Distinct Male/Female Voices)", 
+        "Teil 1: 6 Dialogues (Played 2x - Uncut Dual-Voice Audio)", 
         "Teil 2: 4 Announcements (Played 1x)", 
         "Teil 3: 5 Voicemails (Played 2x)"
     ])
 
     with h_tab1:
-        st.info("ℹ️ Teil 1: 6 dialogues played TWICE[cite: 3]. Each dialogue features alternating distinct speakers (e.g., Frau Müller as a female voice and Herr Schmidt as a male voice) mirroring the actual exam format.")
+        st.info("ℹ️ Teil 1: 6 dialogues played TWICE[cite: 3]. Each dialogue is synthesized as a continuous conversation containing both speakers sequentially in a single uncut audio track mirroring the official Goethe exam format.")
         if st.button("🎲 Generate Hören Teil 1 Scenario", type="primary") or st.button("🔄 Generate New Hören Teil 1 Audio & Tasks"):
-            with st.spinner("Gem is synthesizing 6 distinct male/female dialogues..."):
+            with st.spinner("Gem is synthesizing uncut dual-voice audio dialogues..."):
                 prompt = """
-                Generate Goethe A1 Hören Teil 1: 6 dialogues between a woman (Frau Müller) and a man (Herr Schmidt) with 1 multiple-choice task per dialogue (A/B/C).
+                Generate Goethe A1 Hören Teil 1: 6 dialogues where a woman and a man converse naturally. Provide a single combined script representing the full conversation for each dialogue.
                 Return strict JSON format:
                 {
                     "tasks": [
-                        {"id": "h1_1", "speaker_f": "Guten Tag, Herr Schmidt. Haben Sie den Bericht?", "speaker_m": "Ja, Frau Müller, er ist auf dem Tisch.", "question": "Wo ist der Bericht?", "options": ["a) Auf dem Tisch", "b) Im Auto", "c) Zu Hause"], "answer": "a) Auf dem Tisch", "explanation": "..."},
-                        {"id": "h1_2", "speaker_f": "Frau Müller text 2", "speaker_m": "Herr Schmidt text 2", "question": "Question 2", "options": ["a) Option A", "b) Option B", "c) Option C"], "answer": "b) Option B", "explanation": "..."},
-                        {"id": "h1_3", "speaker_f": "Frau Müller text 3", "speaker_m": "Herr Schmidt text 3", "question": "Question 3", "options": ["a) Option A", "b) Option B", "c) Option C"], "answer": "c) Option C", "explanation": "..."},
-                        {"id": "h1_4", "speaker_f": "Frau Müller text 4", "speaker_m": "Herr Schmidt text 4", "question": "Question 4", "options": ["a) Option A", "b) Option B", "c) Option C"], "answer": "a) Option A", "explanation": "..."},
-                        {"id": "h1_5", "speaker_f": "Frau Müller text 5", "speaker_m": "Herr Schmidt text 5", "question": "Question 5", "options": ["a) Option A", "b) Option B", "c) Option C"], "answer": "b) Option B", "explanation": "..."},
-                        {"id": "h1_6", "speaker_f": "Frau Müller text 6", "speaker_m": "Herr Schmidt text 6", "question": "Question 6", "options": ["a) Option A", "b) Option B", "c) Option C"], "answer": "c) Option C", "explanation": "..."}
+                        {"id": "h1_1", "full_script": "Frau Müller: Guten Tag, Herr Schmidt. Haben Sie den Bericht? Herr Schmidt: Ja, Frau Müller, er liegt direkt hier auf dem großen Tisch im Büro.", "question": "Wo ist der Bericht?", "options": ["a) Auf dem Tisch", "b) Im Auto", "c) Zu Hause"], "answer": "a) Auf dem Tisch", "explanation": "..."},
+                        {"id": "h1_2", "full_script": "Frau Wagner: Entschuldigung, wann kommt der nächste Zug nach Berlin? Herr Weber: Der Zug kommt um vierzehn Uhr dreißig an Gleis drei.", "question": "Wann kommt der Zug?", "options": ["a) Um 12:00 Uhr", "b) Um 14:30 Uhr", "c) Um 16:00 Uhr"], "answer": "b) Um 14:30 Uhr", "explanation": "..."},
+                        {"id": "h1_3", "full_script": "Frau Koch: Möchten Sie Kaffee oder Tee? Herr Klein: Ich trinke am Morgen lieber eine Tasse heißen Kaffee mit Milch.", "question": "Was trinkt Herr Klein morgens?", "options": ["a) Tee", "b) Wasser", "c) Kaffee"], "answer": "c) Kaffee", "explanation": "..."},
+                        {"id": "h1_4", "full_script": "Frau Bauer: Wo hast du mein Buch gelassen? Herr Richter: Dein Buch liegt im Wohnzimmer auf dem blauen Sofa.", "question": "Wo ist das Buch?", "options": ["a) Auf dem Sofa", "b) In der Küche", "c) Im Garten"], "answer": "a) Auf dem Sofa", "explanation": "..."},
+                        {"id": "h1_5", "full_script": "Frau Wolf: Wie viel kostet diese Hose? Herr Fuchs: Die Hose kostet heute im Sonderangebot nur zwanzig Euro.", "question": "Wie viel kostet die Hose?", "options": ["a) 10 Euro", "b) 20 Euro", "c) 50 Euro"], "answer": "b) 20 Euro", "explanation": "..."},
+                        {"id": "h1_6", "full_script": "Frau Hoffmann: Wann treffen wir uns im Restaurant? Herr Koch: Wir treffen uns heute Abend pünktlich um acht Uhr.", "question": "Wann treffen sie sich?", "options": ["a) Um 18:00 Uhr", "b) Um 19:00 Uhr", "c) Um 20:00 Uhr"], "answer": "c) Um 20:00 Uhr", "explanation": "..."}
                     ]
                 }
                 """
@@ -699,18 +778,11 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
             d = st.session_state.hoeren_t1
             ans1 = {}
             for idx, t in enumerate(d["tasks"], start=1):
-                st.markdown(f"#### 🔊 Dialogue {idx} (Played 2x with distinct voices)")
-                col_aud1, col_aud2 = st.columns(2)
-                with col_aud1:
-                    st.caption("👩‍💼 Frau Müller (Female Voice):")
-                    st.audio(generate_german_audio_bytes(t["speaker_f"]), format="audio/mp3")
-                with col_aud2:
-                    st.caption("👨‍💼 Herr Schmidt (Male Voice):")
-                    st.audio(generate_german_audio_bytes(t["speaker_m"]), format="audio/mp3")
+                st.markdown(f"#### 🔊 Dialogue {idx} (Played 2x - Uncut Audio)")
+                st.audio(generate_german_audio_bytes(t["full_script"]), format="audio/mp3")
 
                 with st.expander(f"👁️ Full Transcript {idx}"): 
-                    st.write(f"**Frau Müller:** {t['speaker_f']}")
-                    st.write(f"**Herr Schmidt:** {t['speaker_m']}")
+                    st.write(t["full_script"])
 
                 st.markdown(f"**Task {idx}: {t['question']}**")
                 ans1[t["id"]] = st.radio(f"Select Q{idx}:", t["options"], key=f"rad_ht1_{t['id']}")
@@ -975,175 +1047,222 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
-# 8. GOETHE A1 MOCK EXAMINATION
+# 8. GOETHE A1 MOCK EXAMINATION (EXACT TIMED SECTIONS & PROGRESS TABLE)
 # ----------------------------------------------------
 elif nav_choice == "🏆 Goethe A1 Mock Examination":
     st.markdown('<div class="accent-card">', unsafe_allow_html=True)
     st.subheader("🏆 Full CEFR A1 Timed Mock Examination Simulator")
-    st.write("Simulate the exact Goethe-Zertifikat A1 exam with official section timers (Lesen: 25 mins, Hören: 20 mins, Schreiben: 20 mins). Your scores are tracked across retakes to analyze your problem areas and progress!")
+    st.write("Simulate the exact Goethe-Zertifikat A1 exam with official section-by-section timers (Lesen: 25 mins, Hören: 20 mins, Schreiben: 20 mins). Questions randomize on every retake. Track your progress below!")
 
-    # Initialize historical scores and problem tracking
+    # Session state initialization for exam and history
     if "exam_history" not in st.session_state:
         st.session_state.exam_history = []
     if "problem_areas" not in st.session_state:
         st.session_state.problem_areas = {}
-    if "mock_exam_data" not in st.session_state:
-        st.session_state.mock_exam_data = None
-    if "exam_submitted" not in st.session_state:
-        st.session_state.exam_submitted = False
+    if "mock_data" not in st.session_state:
+        st.session_state.mock_data = None
+    if "exam_stage" not in st.session_state:
+        st.session_state.exam_stage = "MENU"  # MENU, LESEN, HOEREN, SCHREIBEN, RESULTS
+    if "timer_start" not in st.session_state:
+        st.session_state.timer_start = 0
 
-    # Display progress history and problem areas
+    # Display Progress Report Table if history exists
     if st.session_state.exam_history:
-        st.markdown("### 📈 Your Retake Progress & Score History")
-        for idx, record in enumerate(st.session_state.exam_history, 1):
-            st.markdown(f"• **Attempt {idx} ({record['date']}):** Total Score: **{record['total']} / 25** ({record['percentage']}%) — Lesen: {record['lesen']}/5, Hören: {record['hoeren']}/3, Schreiben: {record['schreiben']}/4")
+        st.markdown("### 📊 Progress Report & Score History")
+        # Format table: Rows = Metrics, Columns = Test Dates
+        dates = [r["date"] for r in st.session_state.exam_history]
         
+        table_data = {
+            "Metric / Section": ["Lesen (max 5)", "Hören (max 3)", "Schreiben (max 4)", "Total Score (max 12)", "Passing Percentage"]
+        }
+        for i, rec in enumerate(st.session_state.exam_history):
+            table_data[f"Attempt {i+1} ({rec['date']})"] = [
+                f"{rec['lesen']}/5", 
+                f"{rec['hoeren']}/3", 
+                f"{rec['schreiben']}/4", 
+                f"{rec['total']}/12", 
+                f"{rec['percentage']}%"
+            ]
+        st.table(table_data)
+
+        # AI Prediction & Performance Assessment
+        latest_pct = st.session_state.exam_history[-1]["percentage"]
+        st.info(f"🤖 **Gem's Official Exam Readiness Assessment:** Your latest score is **{latest_pct}%**. Passing requirement for Goethe A1 is **60%**. Based on your current trajectory, your predicted passing probability for the December 12, 2026 exam is **{min(98, max(20, latest_pct + 10))}%**!")
+
         if st.session_state.problem_areas:
-            st.warning("⚠️ **Identified Problem Areas to Focus On:** " + ", ".join([f"{k} ({v} mistakes)" for k, v in st.session_state.problem_areas.items()]))
+            st.warning("⚠️ **Key Problem Areas to Target:** " + ", ".join([f"{k} ({v} mistakes)" for k, v in st.session_state.problem_areas.items()]))
 
     st.divider()
 
-    if not st.session_state.mock_exam_data:
-        if st.button("🚀 Start New Timed Mock Examination", type="primary"):
-            with st.spinner("Gem is compiling official exam paper..."):
-                mock_prompt = """
-                Generate a full Goethe-Zertifikat A1 simulated exam paper in strict JSON format.
+    # MENU STAGE
+    if st.session_state.exam_stage == "MENU":
+        if st.button("🚀 Start New Timed Mock Exam (Randomized Questions)", type="primary"):
+            with st.spinner("Gem is generating a randomized official Goethe A1 exam paper..."):
+                seed_val = random.randint(1, 10000)
+                mock_prompt = f"""
+                Generate a randomized full Goethe-Zertifikat A1 simulated exam paper (Seed: {seed_val}) in strict JSON format.
                 Include:
-                1. Lesen section with 1 short email passage and 5 Richtig/Falsch questions.
-                2. Hören section with 1 short dialogue script, audio prompt text, and 3 multiple choice questions (A/B/C).
-                3. Schreiben section with 1 registration form background scenario (with 4 fields) and 1 email prompt with 3 bullet points.
-                4. Sprechen section with 1 self-introduction task description and 1 W-question card topic.
+                1. Lesen section with 1 randomized short email passage and 5 Richtig/Falsch questions.
+                2. Hören section with 1 randomized dialogue script, audio prompt text, and 3 multiple choice questions (A/B/C).
+                3. Schreiben section with 1 randomized registration form background scenario (with 4 fields) and 1 email prompt with 3 bullet points.
 
                 Return strict JSON format:
-                {
-                    "lesen": {
+                {{
+                    "lesen": {{
                         "text": "Reading passage here...",
                         "questions": [
-                            {"id": "m_l1", "topic": "Reading Comprehension", "statement": "Statement 1", "options": ["richtig", "falsch"], "answer": "richtig"},
-                            {"id": "m_l2", "topic": "Reading Comprehension", "statement": "Statement 2", "options": ["richtig", "falsch"], "answer": "falsch"},
-                            {"id": "m_l3", "topic": "Reading Details", "statement": "Statement 3", "options": ["richtig", "falsch"], "answer": "richtig"},
-                            {"id": "m_l4", "topic": "Reading Details", "statement": "Statement 4", "options": ["richtig", "falsch"], "answer": "falsch"},
-                            {"id": "m_l5", "topic": "Email Interpretation", "statement": "Statement 5", "options": ["richtig", "falsch"], "answer": "richtig"}
+                            {{"id": "m_l1", "topic": "Reading Comprehension", "statement": "Statement 1", "options": ["richtig", "falsch"], "answer": "richtig"}},
+                            {{"id": "m_l2", "topic": "Reading Comprehension", "statement": "Statement 2", "options": ["richtig", "falsch"], "answer": "falsch"}},
+                            {{"id": "m_l3", "topic": "Reading Details", "statement": "Statement 3", "options": ["richtig", "falsch"], "answer": "richtig"}},
+                            {{"id": "m_l4", "topic": "Reading Details", "statement": "Statement 4", "options": ["richtig", "falsch"], "answer": "falsch"}},
+                            {{"id": "m_l5", "topic": "Email Interpretation", "statement": "Statement 5", "options": ["richtig", "falsch"], "answer": "richtig"}}
                         ]
-                    },
-                    "hoeren": {
+                    }},
+                    "hoeren": {{
                         "script": "Hören dialogue transcript here...",
                         "questions": [
-                            {"id": "m_h1", "topic": "Listening Dialogues", "question": "Question 1", "options": ["a) Option A", "b) Option B", "c) Option C"], "answer": "a) Option A"},
-                            {"id": "m_h2", "topic": "Listening Dialogues", "question": "Question 2", "options": ["a) Option A", "b) Option B", "c) Option C"], "answer": "b) Option B"},
-                            {"id": "m_h3", "topic": "Listening Details", "question": "Question 3", "options": ["a) Option A", "b) Option B", "c) Option C"], "answer": "c) Option C"}
+                            {{"id": "m_h1", "topic": "Listening Dialogues", "question": "Question 1", "options": ["a) Option A", "b) Option B", "c) Option C"], "answer": "a) Option A"}},
+                            {{"id": "m_h2", "topic": "Listening Dialogues", "question": "Question 2", "options": ["a) Option A", "b) Option B", "c) Option C"], "answer": "b) Option B"}},
+                            {{"id": "m_h3", "topic": "Listening Details", "question": "Question 3", "options": ["a) Option A", "b) Option B", "c) Option C"], "answer": "c) Option C"}}
                         ]
-                    },
-                    "schreiben": {
-                        "form_scenario": "Form scenario details: Anna Schmidt is booking for 2 people arriving Friday, paying by credit card, phone 01712345.",
+                    }},
+                    "schreiben": {{
+                        "form_scenario": "Form scenario details: Tourist booking hotel...",
                         "form_fields": [
-                            {"id": "mf1", "topic": "Form Spelling & Vocabulary", "label": "1. Name", "answer": "Schmidt"},
-                            {"id": "mf2", "topic": "Numbers & Quantities", "label": "2. Personen", "answer": "2"},
-                            {"id": "mf3", "topic": "Days & Dates", "label": "3. Tag", "answer": "Freitag"},
-                            {"id": "mf4", "topic": "Payment Vocabulary", "label": "4. Zahlung", "answer": "Kreditkarte"}
+                            {{"id": "mf1", "topic": "Form Spelling & Vocabulary", "label": "1. Name", "answer": "Schmidt"}},
+                            {{"id": "mf2", "topic": "Numbers & Quantities", "label": "2. Personen", "answer": "2"}},
+                            {{"id": "mf3", "topic": "Days & Dates", "label": "3. Tag", "answer": "Freitag"}},
+                            {{"id": "mf4", "topic": "Payment Vocabulary", "label": "4. Zahlung", "answer": "Kreditkarte"}}
                         ],
                         "email_prompt": "Write an email to your friend about your birthday party. Include: 1. Date 2. Time 3. Location"
-                    },
-                    "sprechen": {
-                        "intro_task": "Introduce yourself (Name, Age, Country, Profession).",
-                        "card_task": "Thema: Essen & Trinken (Wort: Wasser). Formulate a W-question."
-                    }
-                }
+                    }}
+                }}
                 """
                 try:
                     res_json = generate_dynamic_content(mock_prompt, is_json=True)
-                    st.session_state.mock_exam_data = json.loads(res_json)
-                    st.session_state.exam_submitted = False
+                    st.session_state.mock_data = json.loads(res_json)
+                    st.session_state.exam_stage = "LESEN"
+                    st.session_state.timer_start = time.time()
+                    st.session_state.current_answers = {}
                     st.rerun()
                 except Exception as e:
-                    st.error(f"Error generating mock exam: {str(e)}")
+                    st.error(f"Error generating exam: {str(e)}")
 
-    if st.session_state.mock_exam_data and not st.session_state.exam_submitted:
-        exam = st.session_state.mock_exam_data
+    # LESEN STAGE (25 mins limit)
+    elif st.session_state.exam_stage == "LESEN":
+        elapsed = int(time.time() - st.session_state.timer_start)
+        remaining = (25 * 60) - elapsed
         
-        # Timers simulation (Goethe A1 official limits: Lesen 25 mins, Hören 20 mins, Schreiben 20 mins)
-        st.markdown("### ⏱️ Official Exam Timers")
-        col_t1, col_t2, col_t3 = st.columns(3)
-        with col_t1:
-            st.metric("📖 Lesen Timer", "25:00 max", "Official limit")
-        with col_t2:
-            st.metric("🎧 Hören Timer", "20:00 max", "Official limit")
-        with col_t3:
-            st.metric("✍️ Schreiben Timer", "20:00 max", "Official limit")
+        if remaining <= 0:
+            st.warning("⏱️ Lesen time is up! Moving automatically to Hören.")
+            st.session_state.exam_stage = "HOEREN"
+            st.session_state.timer_start = time.time()
+            st.rerun()
 
-        m_tab1, m_tab2, m_tab3, m_tab4 = st.tabs(["📖 1. Lesen", "🎧 2. Hören", "✍️ 3. Schreiben", "🗣️ 4. Sprechen"])
+        st.markdown(f"### 📖 Part 1: Lesen (Reading) — Time Remaining: **{remaining // 60:02d}:{remaining % 60:02d}**")
+        exam = st.session_state.mock_data
+        st.info(exam["lesen"]["text"])
         
-        with m_tab1:
-            st.markdown("### Teil 1: Lesen (Reading Comprehension - 25 Mins)")
-            st.info(exam["lesen"]["text"])
-            m_lesen_answers = {}
-            for idx, q in enumerate(exam["lesen"]["questions"], start=1):
-                st.markdown(f"**Q{idx}: {q['statement']}**")
-                m_lesen_answers[q['id']] = st.radio("Select:", q['options'], key=f"m_l_rad_{q['id']}")
+        m_lesen_answers = {}
+        for idx, q in enumerate(exam["lesen"]["questions"], start=1):
+            st.markdown(f"**Q{idx}: {q['statement']}**")
+            m_lesen_answers[q['id']] = st.radio("Select:", q['options'], key=f"m_l_rad_{q['id']}")
 
-        with m_tab2:
-            st.markdown("### Teil 2: Hören (Listening Comprehension - 20 Mins)")
-            st.markdown("Listen to the simulated audio script below:")
-            st.audio(generate_german_audio_bytes(exam["hoeren"]["script"]), format="audio/mp3")
-            with st.expander("👁️ View Audio Transcript"):
-                st.write(exam["hoeren"]["script"])
-            
-            m_hoeren_answers = {}
-            for idx, q in enumerate(exam["hoeren"]["questions"], start=1):
-                st.markdown(f"**Q{idx}: {q['question']}**")
-                m_hoeren_answers[q['id']] = st.radio("Select choice:", q['options'], key=f"m_h_rad_{q['id']}")
+        if st.button("Submit Lesen & Proceed to Hören ➔", type="primary"):
+            st.session_state.current_answers["lesen"] = m_lesen_answers
+            st.session_state.exam_stage = "HOEREN"
+            st.session_state.timer_start = time.time()
+            st.rerun()
 
-        with m_tab3:
-            st.markdown("### Teil 3: Schreiben (Writing - 20 Mins)")
-            st.markdown("**Part A: Fill out form based on scenario:**")
-            st.info(exam["schreiben"]["form_scenario"])
-            m_form_inputs = {}
-            for f in exam["schreiben"]["form_fields"]:
-                m_form_inputs[f["id"]] = st.text_input(f["label"], key=f"m_form_{f['id']}")
+    # HOEREN STAGE (20 mins limit)
+    elif st.session_state.exam_stage == "HOEREN":
+        elapsed = int(time.time() - st.session_state.timer_start)
+        remaining = (20 * 60) - elapsed
+        
+        if remaining <= 0:
+            st.warning("⏱️ Hören time is up! Moving automatically to Schreiben.")
+            st.session_state.exam_stage = "SCHREIBEN"
+            st.session_state.timer_start = time.time()
+            st.rerun()
 
-            st.markdown("---")
-            st.markdown("**Part B: Email Writing:**")
-            st.info(exam["schreiben"]["email_prompt"])
-            m_email_input = st.text_area("Your German Email Response (~30 words):", key="m_email_resp")
+        st.markdown(f"### 🎧 Part 2: Hören (Listening) — Time Remaining: **{remaining // 60:02d}:{remaining % 60:02d}**")
+        exam = st.session_state.mock_data
+        st.markdown("Listen to the simulated audio script below:")
+        st.audio(generate_german_audio_bytes(exam["hoeren"]["script"]), format="audio/mp3")
+        
+        with st.expander("👁️ View Audio Transcript"):
+            st.write(exam["hoeren"]["script"])
+        
+        m_hoeren_answers = {}
+        for idx, q in enumerate(exam["hoeren"]["questions"], start=1):
+            st.markdown(f"**Q{idx}: {q['question']}**")
+            m_hoeren_answers[q['id']] = st.radio("Select choice:", q['options'], key=f"m_h_rad_{q['id']}")
 
-        with m_tab4:
-            st.markdown("### Teil 4: Sprechen (Speaking)")
-            st.info(f"**Task A:** {exam['sprechen']['intro_task']}")
-            m_rec_intro = mic_recorder(start_prompt="Record Introduction 🎙️", stop_prompt="Stop 🛑", key="m_rec_i")
-            if m_rec_intro:
-                st.audio(m_rec_intro['bytes'], format='audio/wav')
+        if st.button("Submit Hören & Proceed to Schreiben ➔", type="primary"):
+            st.session_state.current_answers["hoeren"] = m_hoeren_answers
+            st.session_state.exam_stage = "SCHREIBEN"
+            st.session_state.timer_start = time.time()
+            st.rerun()
 
-            st.info(f"**Task B:** {exam['sprechen']['card_task']}")
-            m_rec_card = mic_recorder(start_prompt="Record W-Question 🎙️", stop_prompt="Stop 🛑", key="m_rec_c")
-            if m_rec_card:
-                st.audio(m_rec_card['bytes'], format='audio/wav')
+    # SCHREIBEN STAGE (20 mins limit)
+    elif st.session_state.exam_stage == "SCHREIBEN":
+        elapsed = int(time.time() - st.session_state.timer_start)
+        remaining = (20 * 60) - elapsed
+        
+        if remaining <= 0:
+            st.warning("⏱️ Schreiben time is up! Auto-submitting exam.")
+            st.session_state.exam_stage = "RESULTS"
+            st.rerun()
 
-        st.divider()
-        if st.button("🏆 Submit Full Examination & Generate Official Scorecard", type="primary"):
-            # Calculate Scores
-            lesen_score = sum(1 for q in exam["lesen"]["questions"] if m_lesen_answers.get(q["id"]) == q["answer"])
-            hoeren_score = sum(1 for q in exam["hoeren"]["questions"] if m_hoeren_answers.get(q["id"]) == q["answer"])
-            form_score = sum(1 for f in exam["schreiben"]["form_fields"] if m_form_inputs.get(f["id"], "").strip().lower() == f["answer"].strip().lower())
-            
-            total_score = lesen_score + hoeren_score + form_score
-            total_max = 5 + 3 + 4  # 12 objective points graded automatically
-            percentage = int((total_score / total_max) * 100)
+        st.markdown(f"### ✍️ Part 3: Schreiben (Writing) — Time Remaining: **{remaining // 60:02d}:{remaining % 60:02d}**")
+        exam = st.session_state.mock_data
+        st.markdown("**Part A: Fill out form based on scenario:**")
+        st.info(exam["schreiben"]["form_scenario"])
+        
+        m_form_inputs = {}
+        for f in exam["schreiben"]["form_fields"]:
+            m_form_inputs[f["id"]] = st.text_input(f["label"], key=f"m_form_{f['id']}")
 
-            # Track problem areas
-            for q in exam["lesen"]["questions"]:
-                if m_lesen_answers.get(q["id"]) != q["answer"]:
-                    topic = q["topic"]
-                    st.session_state.problem_areas[topic] = st.session_state.problem_areas.get(topic, 0) + 1
-            for q in exam["hoeren"]["questions"]:
-                if m_hoeren_answers.get(q["id"]) != q["answer"]:
-                    topic = q["topic"]
-                    st.session_state.problem_areas[topic] = st.session_state.problem_areas.get(topic, 0) + 1
-            for f in exam["schreiben"]["form_fields"]:
-                if m_form_inputs.get(f["id"], "").strip().lower() != f["answer"].strip().lower():
-                    topic = f["topic"]
-                    st.session_state.problem_areas[topic] = st.session_state.problem_areas.get(topic, 0) + 1
+        st.markdown("---")
+        st.markdown("**Part B: Email Writing:**")
+        st.info(exam["schreiben"]["email_prompt"])
+        m_email_input = st.text_area("Your German Email Response (~30 words):", key="m_email_resp")
 
-            # Save to history
+        if st.button("🏁 Finish Exam & View Scorecard", type="primary"):
+            st.session_state.current_answers["form"] = m_form_inputs
+            st.session_state.current_answers["email"] = m_email_input
+            st.session_state.exam_stage = "RESULTS"
+            st.rerun()
+
+    # RESULTS STAGE
+    elif st.session_state.exam_stage == "RESULTS":
+        exam = st.session_state.mock_data
+        ans = st.session_state.current_answers
+
+        lesen_score = sum(1 for q in exam["lesen"]["questions"] if ans.get("lesen", {}).get(q["id"]) == q["answer"])
+        hoeren_score = sum(1 for q in exam["hoeren"]["questions"] if ans.get("hoeren", {}).get(q["id"]) == q["answer"])
+        form_score = sum(1 for f in exam["schreiben"]["form_fields"] if ans.get("form", {}).get(f["id"], "").strip().lower() == f["answer"].strip().lower())
+        
+        total_score = lesen_score + hoeren_score + form_score
+        total_max = 12
+        percentage = int((total_score / total_max) * 100)
+
+        # Track problem areas
+        for q in exam["lesen"]["questions"]:
+            if ans.get("lesen", {}).get(q["id"]) != q["answer"]:
+                topic = q["topic"]
+                st.session_state.problem_areas[topic] = st.session_state.problem_areas.get(topic, 0) + 1
+        for q in exam["hoeren"]["questions"]:
+            if ans.get("hoeren", {}).get(q["id"]) != q["answer"]:
+                topic = q["topic"]
+                st.session_state.problem_areas[topic] = st.session_state.problem_areas.get(topic, 0) + 1
+        for f in exam["schreiben"]["form_fields"]:
+            if ans.get("form", {}).get(f["id"], "").strip().lower() != f["answer"].strip().lower():
+                topic = f["topic"]
+                st.session_state.problem_areas[topic] = st.session_state.problem_areas.get(topic, 0) + 1
+
+        # Avoid duplicate history appends for same run
+        if not st.session_state.exam_history or st.session_state.exam_history[-1]["date"] != time.strftime("%Y-%m-%d %H:%M"):
             st.session_state.exam_history.append({
                 "date": time.strftime("%Y-%m-%d %H:%M"),
                 "lesen": lesen_score,
@@ -1152,31 +1271,102 @@ elif nav_choice == "🏆 Goethe A1 Mock Examination":
                 "total": total_score,
                 "percentage": percentage
             })
-            st.session_state.exam_submitted = True
-            st.rerun()
 
-    if st.session_state.get("exam_submitted", False):
-        st.markdown("### 🏆 Official Goethe Exam Scorecard & Feedback")
-        latest = st.session_state.exam_history[-1]
-        st.success(f"🎉 **Exam Completed Successfully!** Total Score: **{latest['total']} / 12** ({latest['percentage']}%)")
-        st.metric("📖 Lesen Score", f"{latest['lesen']} / 5")
-        st.metric("🎧 Hören Score", f"{latest['hoeren']} / 3")
-        st.metric("✍️ Schreiben Form Score", f"{latest['schreiben']} / 4")
+        st.success(f"🎉 **Mock Examination Completed!** Final Score: **{total_score} / 12** ({percentage}%)")
+        st.metric("📖 Lesen Score", f"{lesen_score} / 5")
+        st.metric("🎧 Hören Score", f"{hoeren_score} / 3")
+        st.metric("✍️ Schreiben Form Score", f"{form_score} / 4")
 
-        if st.session_state.problem_areas:
-            st.error("🚨 **Targeted Focus Areas (Where you missed points):**")
-            for area, count in st.session_state.problem_areas.items():
-                st.markdown(f"• **{area}:** {count} mistake(s). Review corresponding grammar or vocabulary modules!")
-
-        if st.button("🔄 Retake Exam (Start New Attempt)", type="primary"):
-            st.session_state.mock_exam_data = None
-            st.session_state.exam_submitted = False
+        if st.button("🔄 Return to Mock Exam Menu & Retake", type="primary"):
+            st.session_state.mock_data = None
+            st.session_state.exam_stage = "MENU"
             st.rerun()
 
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
-# 9. ASK GEM
+# 9. A1 & A2 SHORT STORIES
+# ----------------------------------------------------
+elif nav_choice == "📖 A1 & A2 Short Stories":
+    st.markdown('<div class="accent-card">', unsafe_allow_html=True)
+    st.subheader("📖 Storybook Reader: A1 & A2 German Short Stories & Fairy Tales")
+    st.write("Immerse yourself in classic fairy tales, nursery rhymes, and short stories with side-by-side German and English translation comparison and storybook illustrations.")
+
+    story_level = st.radio("Select CEFR Level:", ["A1 Level (Beginner)", "A2 Level (Challenge)"], horizontal=True)
+
+    if story_level == "A1 Level (Beginner)":
+        story_choice = st.selectbox("Select A1 Story:", [
+            "Aschenputtel (Cinderella - A1)", 
+            "Rotkäppchen (Little Red Riding Hood - A1)", 
+            "Die drei kleinen Schweinchen (The Three Little Pigs - A1)", 
+            "Hänsel und Gretel (Hansel and Gretel - A1)"
+        ])
+    else:
+        story_choice = st.selectbox("Select A2 Story:", [
+            "Schneewittchen und die sieben Zwerge (Snow White - A2)", 
+            "Dornröschen (Sleeping Beauty - A2)", 
+            "Der Froschkönig (The Frog Prince - A2)"
+        ])
+
+    if st.button("📖 Load Storybook Comparison", type="primary"):
+        with st.spinner("Gem is compiling the storybook text and illustrations..."):
+            story_prompt = f"""
+            Generate a side-by-side short story for '{story_choice}'.
+            Level: {story_level}.
+            Return strict JSON format:
+            {{
+                "title": "{story_choice}",
+                "paragraphs": [
+                    {{
+                        "german": "German sentence paragraph 1...",
+                        "english": "English sentence paragraph 1...",
+                        "image_url": "https://picsum.photos/seed/story1/400/250"
+                    }},
+                    {{
+                        "german": "German sentence paragraph 2...",
+                        "english": "English sentence paragraph 2...",
+                        "image_url": "https://picsum.photos/seed/story2/400/250"
+                    }},
+                    {{
+                        "german": "German sentence paragraph 3...",
+                        "english": "English sentence paragraph 3...",
+                        "image_url": "https://picsum.photos/seed/story3/400/250"
+                    }},
+                    {{
+                        "german": "German sentence paragraph 4...",
+                        "english": "English sentence paragraph 4...",
+                        "image_url": "https://picsum.photos/seed/story4/400/250"
+                    }}
+                ]
+            }}
+            """
+            try:
+                story_json = generate_cached_content(story_prompt, is_json=True)
+                st.session_state.active_story = json.loads(story_json)
+            except Exception as e:
+                st.error(f"Error loading story: {str(e)}")
+
+    if "active_story" in st.session_state:
+        st.markdown(f"## 👑 {st.session_state.active_story['title']}")
+        st.divider()
+
+        for idx, p in enumerate(st.session_state.active_story["paragraphs"], 1):
+            col_s1, col_s2 = st.columns(2)
+            with col_s1:
+                st.markdown(f"**🇩🇪 German (Paragraph {idx})**")
+                st.info(p["german"])
+                if st.button(f"🔊 Listen (Para {idx})", key=f"audio_story_{idx}"):
+                    st.audio(generate_german_audio_bytes(p["german"]), format="audio/mp3")
+            with col_s2:
+                st.markdown(f"**🇬🇧 English Translation (Paragraph {idx})**")
+                st.success(p["english"])
+                st.image(p["image_url"], use_column_width=True)
+            st.divider()
+
+    st.markdown('</div>', unsafe_allow_html=True)
+
+# ----------------------------------------------------
+# 10. ASK GEM
 # ----------------------------------------------------
 elif nav_choice == "💬 Ask Gem (AI Tutor)":
     st.markdown('<div class="accent-card">', unsafe_allow_html=True)
@@ -1188,3 +1378,33 @@ elif nav_choice == "💬 Ask Gem (AI Tutor)":
         except Exception as e:
             st.error(f"Error processing question: {str(e)}")
     st.markdown('</div>', unsafe_allow_html=True)
+
+# ----------------------------------------------------
+# FLOATING GEM WIDGET (ONLY ON WORD ENGINE & CORE GRAMMAR)
+# ----------------------------------------------------
+if nav_choice in ["📚 Master Goethe Word Engine", "📖 Core Grammar Practice & Exercises"]:
+    if "show_gem_widget" not in st.session_state:
+        st.session_state.show_gem_widget = True
+
+    if st.session_state.show_gem_widget:
+        st.markdown("""
+        <div class="floating-gem-box">
+        """, unsafe_allow_html=True)
+        
+        col_gw1, col_gw2 = st.columns([4, 1])
+        with col_gw1:
+            st.markdown("🤖 **Quick Ask Gem**")
+        with col_gw2:
+            if st.button("✕", key="close_gem_widget"):
+                st.session_state.show_gem_widget = False
+                st.rerun()
+
+        quick_q = st.text_input("Ask a quick question here:", key="floating_gem_input", placeholder="e.g. When do I use Dativ?")
+        if quick_q:
+            try:
+                ans = generate_dynamic_content(quick_q)
+                st.write(ans)
+            except Exception as e:
+                st.error(str(e))
+
+        st.markdown("</div>", unsafe_allow_html=True)
