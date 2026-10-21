@@ -310,7 +310,7 @@ HOREN_TEIL2_SCENARIOS = [
     }
 ]
 
-# Lesen Teil 1 Official Scenarios Bank (All 9 exact scenarios matching screenshots 54-58)
+# Lesen Teil 1 Official Scenarios Bank (All 9 exact scenarios)
 LESEN_TEIL1_SCENARIOS = [
     {
         "title": "Flughafen & Grillfest",
@@ -449,11 +449,11 @@ LESEN_TEIL1_SCENARIOS = [
     }
 ]
 
-# Lesen Teil 2 Official Scenarios Bank (Matching exact app layout & screenshot 52)
+# Lesen Teil 2 Official Scenarios Bank (All 9 exact scenarios matching screenshots 59-63)
 LESEN_TEIL2_SCENARIOS = [
     {
         "title": "Fahrrad, Schwimmbad & Pizza",
-        "desc": "Information about buying a bicycle, swimming pools, and ordering pizza – 5 tasks, a/b.",
+        "desc": "Information about buying a bicycle, swimming pools, paediatricians and ordering pizza — 5 tasks, a/b.",
         "tasks": [
             {
                 "id": "lt2_t1",
@@ -509,7 +509,7 @@ LESEN_TEIL2_SCENARIOS = [
     },
     {
         "title": "Hotel, Werkstatt & Babysitter",
-        "desc": "Information about hotel bookings, repair shops, and babysitters – 5 tasks, a/b.",
+        "desc": "Information about hotel bookings, repair shops, train connections, cakes and babysitters — 5 tasks, a/b.",
         "tasks": [
             {
                 "id": "lt2_21",
@@ -560,6 +560,398 @@ LESEN_TEIL2_SCENARIOS = [
                 "site_b": "Stadtbibliothek - Bücher ausleihen.",
                 "answer": "Website A",
                 "explanation": "Paketdienst ist für den Versand von Paketen zuständig."
+            }
+        ]
+    },
+    {
+        "title": "Flohmarkt, Kellnerjob & Zahnarzt",
+        "desc": "Information about used furniture, bike trips, waiter jobs, swimming lessons and dentist appointments — 5 tasks, a/b.",
+        "tasks": [
+            {
+                "id": "lt2_31",
+                "situation": "6. Sie möchten alte Möbel günstig kaufen.",
+                "site_a_url": "www.flohmarkt-koeln.de",
+                "site_a": "Flohmarkt & Trödelmarkt Köln\nMöbel, Kleidung und Antiquitäten von privat.",
+                "site_b_url": "www.moebelhaus-luxus.de",
+                "site_b": "Möbelhaus Luxus\nExklusive Designermöbel direkt vom Hersteller.",
+                "answer": "Website A",
+                "explanation": "Flohmarkt bietet günstige gebrauchte Möbel von privat an."
+            },
+            {
+                "id": "lt2_32",
+                "situation": "7. Sie suchen einen Nebenjob als Kellner am Wochenende.",
+                "site_a_url": "www.gastronomie-jobs-muenchen.de",
+                "site_a": "Gastronomie Jobs München\nWir suchen Servicekräfte und Kellner für Cafés und Restaurants.",
+                "site_b_url": "www.buero-arbeit-start.de",
+                "site_b": "Büroarbeit Start\nVollzeit Jobs in der Buchhaltung.",
+                "answer": "Website A",
+                "explanation": "Gastronomie Jobs bietet Stellen als Kellner an."
+            },
+            {
+                "id": "lt2_33",
+                "situation": "8. Sie haben Zahnschmerzen und brauchen dringend einen Termin.",
+                "site_a_url": "www.zahnarzt-dr-schmidt.de",
+                "site_a": "Zahnarztpraxis Dr. Schmidt\nSchmerzsprechstunde täglich ohne Anmeldung.",
+                "site_b_url": "www.augenarzt-zentrum.de",
+                "site_b": "Augenarzt Zentrum\nSehtests und Brillenberatung.",
+                "answer": "Website A",
+                "explanation": "Zahnarztpraxis bietet Schmerzsprechstunde an."
+            },
+            {
+                "id": "lt2_34",
+                "situation": "9. Ihr Kind möchte schwimmen lernen.",
+                "site_a_url": "www.schwimmschule-seestern.de",
+                "site_a": "Schwimmschule Seestern\nSchwimmkurse für Anfänger und Kinder.",
+                "site_b_url": "www.fussball-verein-jugend.de",
+                "site_b": "Fußball Jugendtraining am Nachmittag.",
+                "answer": "Website A",
+                "explanation": "Schwimmschule bietet Schwimmkurse für Kinder."
+            },
+            {
+                "id": "lt2_35",
+                "situation": "10. Sie möchten eine organisierte Radtour durch die Alpen machen.",
+                "site_a_url": "www.alpen-radreisen.de",
+                "site_a": "Alpen Radreisen\nGeführte Fahrradtouren mit Gepäcktransport.",
+                "site_b_url": "www.stadtauto-mieten.de",
+                "site_b": "Autoverleih für Stadtfahrten.",
+                "answer": "Website A",
+                "explanation": "Alpen Radreisen bietet geführte Radtouren an."
+            }
+        ]
+    },
+    {
+        "title": "Deutschkurs, Fahrrad & Taxi",
+        "desc": "Information about German courses, train timetables, used bicycles, night taxis and school closures — 5 tasks, a/b.",
+        "tasks": [
+            {
+                "id": "lt2_41",
+                "situation": "6. Sie suchen einen Intensiv-Deutschkurs am Vormittag.",
+                "site_a_url": "www.sprache-zentrum-hamburg.de",
+                "site_a": "Sprachzentrum Hamburg\nIntensivkurse Deutsch von 9 bis 12 Uhr.",
+                "site_b_url": "www.englisch-fuer-kinder.de",
+                "site_b": "Englischkurse für Vorschulkinder.",
+                "answer": "Website A",
+                "explanation": "Sprachzentrum Hamburg bietet Vormittags-Intensivkurse an."
+            },
+            {
+                "id": "lt2_42",
+                "situation": "7. Sie brauchen nachts um 3 Uhr ein Taxi zum Flughafen.",
+                "site_a_url": "www.city-taxi-ruf.de",
+                "site_a": "City Taxi Ruf\n24-Stunden Fahrdienst und Flughafentransfer.",
+                "site_b_url": "www.stadtbus-fahrplan.de",
+                "site_b": "Stadtbus\nLinienverkehr von 6 bis 23 Uhr.",
+                "answer": "Website A",
+                "explanation": "City Taxi Ruf bietet einen 24-Stunden-Dienst an."
+            },
+            {
+                "id": "lt2_43",
+                "situation": "8. Sie möchten wissen, wann der nächste Zug nach Frankfurt fährt.",
+                "site_a_url": "www.deutsche-bahn-auskunft.de",
+                "site_a": "Deutsche Bahn\nFahrplanauskunft und Ticketkauf für alle Züge.",
+                "site_b_url": "www.autobahn-info.de",
+                "site_b": "Verkehrsmeldungen für Autofahrer.",
+                "answer": "Website A",
+                "explanation": "Deutsche Bahn bietet Fahrplanauskünfte."
+            },
+            {
+                "id": "lt2_44",
+                "situation": "9. Ihre Schule bleibt wegen starkem Schneefall geschlossen. Wo finden Sie aktuelle Infos?",
+                "site_a_url": "www.schulministerium-aktuell.de",
+                "site_a": "Schulministerium\nAktuelle Meldungen bei Unwetter und Schulausfall.",
+                "site_b_url": "www.wetter-profi.de",
+                "site_b": "Wettervorhersage für die Region.",
+                "answer": "Website A",
+                "explanation": "Schulministerium informiert über Schulausfälle."
+            },
+            {
+                "id": "lt2_45",
+                "situation": "10. Sie wollen Ihr altes Fahrrad reparieren lassen und suchen Ersatzteile.",
+                "site_a_url": "www.fahrrad-teile-shop.de",
+                "site_a": "Fahrrad Teile Shop\nErsatzteile, Reifen und Werkzeug für alle Marken.",
+                "site_b_url": "www.computer-reparatur.de",
+                "site_b": "PC und Laptop Service.",
+                "answer": "Website A",
+                "explanation": "Fahrrad Teile Shop bietet Fahrradersatzteile."
+            }
+        ]
+    },
+    {
+        "title": "Pizza, Handy & Fitnessstudio",
+        "desc": "Information about ordering pizza, phone repairs, gyms, used laptops and vegetarian restaurants — 5 tasks, a/b.",
+        "tasks": [
+            {
+                "id": "lt2_51",
+                "situation": "6. Sie möchten im Fitnessstudio trainieren und Muskeln aufbauen.",
+                "site_a_url": "www.fit-und-aktiv-studio.de",
+                "site_a": "Fit & Aktiv\nKrafttraining, Gerätepark und professionelle Betreuung.",
+                "site_b_url": "www.schach-club-online.de",
+                "site_b": "Schachclub\nDenksport und Turniere.",
+                "answer": "Website A",
+                "explanation": "Fit & Aktiv bietet Krafttraining und Geräte."
+            },
+            {
+                "id": "lt2_52",
+                "situation": "7. Ihr Laptop ist kaputt und Sie suchen einen günstigen gebrauchten Computer.",
+                "site_a_url": "www.refurbished-laptops-berlin.de",
+                "site_a": "Gebrauchte Laptops und PCs mit Garantie zum kleinen Preis.",
+                "site_b_url": "www.neuheiten-elektronik.de",
+                "site_b": "Nur Neugeräte der neuesten Generation.",
+                "answer": "Website A",
+                "explanation": "Website A bietet gebrauchte Laptops an."
+            },
+            {
+                "id": "lt2_53",
+                "situation": "8. Sie ernähren sich vegan und suchen ein Restaurant mit rein pflanzlicher Speisekarte.",
+                "site_a_url": "www.vegan-oase-stuttgart.de",
+                "site_a": "Vegan Oase\n100% pflanzliche Gerichte ohne tierische Produkte.",
+                "site_b_url": "www.steakhouse-classic.de",
+                "site_b": "Steakhouse Classic\nFleischspezialitäten vom Grill.",
+                "answer": "Website A",
+                "explanation": "Vegan Oase bietet rein pflanzliche Gerichte."
+            },
+            {
+                "id": "lt2_54",
+                "situation": "9. Sie möchten nachts Essen bestellen.",
+                "site_a_url": "www.nacht-lieferdienst.de",
+                "site_a": "Nacht Express\nWarme Pizza und Getränke bis 3 Uhr nachts geliefert.",
+                "site_b_url": "www.bio-supermarkt.de",
+                "site_b": "Bio Lebensmittel von 8 bis 20 Uhr.",
+                "answer": "Website A",
+                "explanation": "Nacht Express liefert nachts Essen."
+            },
+            {
+                "id": "lt2_55",
+                "situation": "10. Das Display Ihres Smartphones ist zersprungen.",
+                "site_a_url": "www.smartphone-express-reparatur.de",
+                "site_a": "Express Reparatur für Displays innerhalb einer Stunde.",
+                "site_b_url": "www.handy-verleih.de",
+                "site_b": "Handys mieten fürstliche Events.",
+                "answer": "Website A",
+                "explanation": "Express Reparatur repariert Displays."
+            }
+        ]
+    },
+    {
+        "title": "Wohnung, Tierarzt & Umzugsfirma",
+        "desc": "Information about apartments, vets, furniture, moving companies, used furniture and cat care — 5 tasks, a/b.",
+        "tasks": [
+            {
+                "id": "lt2_61",
+                "situation": "6. Sie suchen eine 3-Zimmer-Wohnung zur Miete in der Innenstadt.",
+                "site_a_url": "www.immo-zentral.de",
+                "site_a": "Immo Zentral\nGroße Auswahl an Mietwohnungen in Stadtlage.",
+                "site_b_url": "www.ferienhaus-vermietung.de",
+                "site_b": "Ferienhäuser am See für den Urlaub.",
+                "answer": "Website A",
+                "explanation": "Immo Zentral bietet Mietwohnungen an."
+            },
+            {
+                "id": "lt2_62",
+                "situation": "7. Ihre Katze ist krank und braucht einen Tierarzt.",
+                "site_a_url": "www.tierarztpraxis-paws.de",
+                "site_a": "Tierarztpraxis Paws\nBehandlung von Katzen, Hunden und Kleintieren.",
+                "site_b_url": "www.tiermarkt-kleinanzeigen.de",
+                "site_b": "Haustiere kaufen und verkaufen.",
+                "answer": "Website A",
+                "explanation": "Tierarztpraxis behandelt kranke Tiere."
+            },
+            {
+                "id": "lt2_63",
+                "situation": "8. Sie ziehen nächste Woche um und brauchen professionelle Möbelpacker.",
+                "site_a_url": "www.umzugsprofi-express.de",
+                "site_a": "Umzugsprofi Express\nZuverlässiger Transport und Möbelmontage.",
+                "site_b_url": "www.karton-verkauf.de",
+                "site_b": "Nur Verkauf von Verpackungsmaterial.",
+                "answer": "Website A",
+                "explanation": "Umzugsprofi bietet Transport und Packer an."
+            },
+            {
+                "id": "lt2_64",
+                "situation": "9. Sie fliegen in den Urlaub und brauchen eine Pension für Ihren Hund.",
+                "site_a_url": "www.hunde-ferienheim.de",
+                "site_a": "Hunde Ferienheim\nLiebevolle Betreuung mit Auslauf für Hunde während Ihrer Abwesenheit.",
+                "site_b_url": "www.hundeschule-anfaenger.de",
+                "site_b": "Erziehungskurse für Welpen.",
+                "answer": "Website A",
+                "explanation": "Hunde Ferienheim betreut Hunde im Urlaub."
+            },
+            {
+                "id": "lt2_65",
+                "situation": "10. Sie suchen einen Schreiner für maßgefertigte Regale.",
+                "site_a_url": "www.schreinerei-meier.de",
+                "site_a": "Schreinerei Meier\nIndividueller Möbelbau und Holzarbeiten nach Maß.",
+                "site_b_url": "www.baumarkt-zentrale.de",
+                "site_b": "Baumarkt für Heimwerker.",
+                "answer": "Website A",
+                "explanation": "Schreinerei Meier baut Möbel nach Maß."
+            }
+        ]
+    },
+    {
+        "title": "Konzert, Kino & Tanzschule",
+        "desc": "Websites with information about concert tickets, cinema times, clothing, restaurant reservations and dance courses — 5 tasks, a/b.",
+        "tasks": [
+            {
+                "id": "lt2_71",
+                "situation": "6. Sie möchten Karten für ein Rockkonzert am Wochenende kaufen.",
+                "site_a_url": "www.ticket-express-konzerte.de",
+                "site_a": "Ticket Express\nKartenverkauf für Konzerte, Festivals und Shows.",
+                "site_b_url": "www.museums-pass.de",
+                "site_b": "Eintrittskarten für Museen.",
+                "answer": "Website A",
+                "explanation": "Ticket Express verkauft Konzertkarten."
+            },
+            {
+                "id": "lt2_72",
+                "situation": "7. Sie wollen wissen, wann heute Abend der neue Actionfilm im Kino läuft.",
+                "site_a_url": "www.kino-palast-heute.de",
+                "site_a": "Kino Palast\nAktuelles Filmprogramm und Spielzeiten für heute.",
+                "site_b_url": "www.theater-spielplan.de",
+                "site_b": "Theateraufführungen und Opern.",
+                "answer": "Website A",
+                "explanation": "Kino Palast zeigt die Filmspielzeiten."
+            },
+            {
+                "id": "lt2_73",
+                "situation": "8. Sie möchten Salsa tanzen lernen und suchen einen Tanzkurs.",
+                "site_a_url": "www.tanzschule-ritmo.de",
+                "site_a": "Tanzschule Ritmo\nSalsa, Bachata und Standardtänze für Paare und Singles.",
+                "site_b_url": "www.sport-akademie.de",
+                "site_b": "Fitness und Gymnastik.",
+                "answer": "Website A",
+                "explanation": "Tanzschule Ritmo bietet Tanzkurse an."
+            },
+            {
+                "id": "lt2_74",
+                "situation": "9. Sie möchten einen Tisch für vier Personen in einem italienischen Restaurant reservieren.",
+                "site_a_url": "www.restaurant-reservierung-online.de",
+                "site_a": "Tischreservierung für Restaurants in Ihrer Stadt.",
+                "site_b_url": "www.lieferdienst-direkt.de",
+                "site_b": "Essen nach Hause liefern lassen.",
+                "answer": "Website A",
+                "explanation": "Restaurant Reservierung bietet Online-Tischreservierung."
+            },
+            {
+                "id": "lt2_75",
+                "situation": "10. Sie suchen elegante Abendkleidung für einen festlichen Ball.",
+                "site_a_url": "www.modehaus-elegance.de",
+                "site_a": "Modehaus Elegance\nAbendkleider, Anzüge und festliche Mode.",
+                "site_b_url": "www.sport-kleidung.de",
+                "site_b": "Funktionskleidung zum Wandern.",
+                "answer": "Website A",
+                "explanation": "Modehaus Elegance bietet festliche Abendkleidung."
+            }
+        ]
+    },
+    {
+        "title": "Hotel, Flug & Paket",
+        "desc": "Websites with information about seaside hotels, flights, car repair shops, banks, used cars and parcels — 5 tasks, a/b.",
+        "tasks": [
+            {
+                "id": "lt2_81",
+                "situation": "6. Sie möchten einen günstigen Flug nach Mallorca buchen.",
+                "site_a_url": "www.flug-suche-billig.de",
+                "site_a": "Flug Suche\nWeltweite Flüge zum Bestpreis vergleichen und buchen.",
+                "site_b_url": "www.schiffsreise-buero.de",
+                "site_b": "Kreuzfahrten auf dem Ozean.",
+                "answer": "Website A",
+                "explanation": "Flug Suche vergleicht und bucht Flüge."
+            },
+            {
+                "id": "lt2_82",
+                "situation": "7. Sie möchten ein Konto bei einer Bank mit kostenloser Kontoführung eröffnen.",
+                "site_a_url": "www.direkt-bank-online.de",
+                "site_a": "Direkt Bank\nKostenloses Girokonto und Online-Banking.",
+                "site_b_url": "www.spar-kasse-immobilien.de",
+                "site_b": "Immobilienfinanzierung.",
+                "answer": "Website A",
+                "explanation": "Direkt Bank bietet kostenlose Girokonten."
+            },
+            {
+                "id": "lt2_83",
+                "situation": "8. Sie möchten ein großes Paket sicher ins Ausland schicken.",
+                "site_a_url": "www.global-paket-express.de",
+                "site_a": "Global Paket Express\nInternationaler Versand und Sendungsverfolgung.",
+                "site_b_url": "www.brief-marken-sammler.de",
+                "site_b": "Sammeln von historischen Briefmarken.",
+                "answer": "Website A",
+                "explanation": "Global Paket Express bietet internationalen Versand."
+            },
+            {
+                "id": "lt2_84",
+                "situation": "9. Sie suchen einen Gebrauchtwagen mit TÜV.",
+                "site_a_url": "www.auto-markt-gebraucht.de",
+                "site_a": "Auto Markt\nGebrauchtwagen mit neuem TÜV und Garantie.",
+                "site_b_url": "www.neu-wagen-konfigurator.de",
+                "site_b": "Neuwagen nach Wunsch zusammenstellen.",
+                "answer": "Website A",
+                "explanation": "Auto Markt bietet Gebrauchtwagen mit TÜV."
+            },
+            {
+                "id": "lt2_85",
+                "situation": "10. Ihr Auspuff ist kaputt und Sie brauchen eine Kfz-Werkstatt.",
+                "site_a_url": "www.kfz-meister-werkstatt.de",
+                "site_a": "Kfz Werkstatt\nReparatur von Auspuff, Reifen und Motoren.",
+                "site_b_url": "www.auto-waschanlage-express.de",
+                "site_b": "Nur Außenwäsche und Innenreinigung.",
+                "answer": "Website A",
+                "explanation": "Kfz Werkstatt repariert Auspuff und Motoren."
+            }
+        ]
+    },
+    {
+        "title": "Arzt, Apotheke & Bibliothek",
+        "desc": "Websites with information about doctors, emergency pharmacies, garden plants, dentist appointments, books and gardening tools — 5 tasks, a/b.",
+        "tasks": [
+            {
+                "id": "lt2_91",
+                "situation": "6. Sie suchen ein Buch von einem bekannten Autor zum Ausleihen.",
+                "site_a_url": "www.stadt-buecherei-online.de",
+                "site_a": "Stadtbücherei\nGroße Auswahl an Romanen, Sachbüchern und Medien.",
+                "site_b_url": "www.buch-handlung-kauf.de",
+                "site_b": "Bücher kaufen und bestellen.",
+                "answer": "Website A",
+                "explanation": "Stadtbücherei leiht Bücher aus."
+            },
+            {
+                "id": "lt2_92",
+                "situation": "7. Es ist Sonntagabend und Sie brauchen dringend ein bestimmtes Medikament.",
+                "site_a_url": "www.apotheken-notdienst-heute.de",
+                "site_a": "Notdienst Apotheke\nWelche Apotheke hat heute Nacht und am Sonntag geöffnet?",
+                "site_b_url": "www.drogerie-markt-aktuell.de",
+                "site_b": "Kosmetik und Drogerieartikel zu normalen Öffnungszeiten.",
+                "answer": "Website A",
+                "explanation": "Notdienst Apotheke zeigt geöffnete Notdienst-Apotheken."
+            },
+            {
+                "id": "lt2_93",
+                "situation": "8. Sie möchten neue Blumen für Ihren Balkon kaufen.",
+                "site_a_url": "www.gärtnerei-grün-daumen.de",
+                "site_a": "Gärtnerei Grün Daumen\nBlumen, Balkonpflanzen und Gartenerde.",
+                "site_b_url": "www.möbel-garten-deko.de",
+                "site_b": "Gartenmöbel aus Holz und Kunststoff.",
+                "answer": "Website A",
+                "explanation": "Gärtnerei verkauft Blumen und Pflanzen."
+            },
+            {
+                "id": "lt2_94",
+                "situation": "9. Sie suchen einen Kinderarzt für die Untersuchung Ihres Babys.",
+                "site_a_url": "www.kinderarzt-praxis-sonne.de",
+                "site_a": "Kinderarztpraxis Sonne\nVorsorgeuntersuchungen und Impfungen für Babys und Kinder.",
+                "site_b_url": "www.arzt-fuer-senioren.de",
+                "site_b": "Altersmedizin und Geriatrie.",
+                "answer": "Website A",
+                "explanation": "Kinderarztpraxis behandelt Babys und Kinder."
+            },
+            {
+                "id": "lt2_95",
+                "situation": "10. Sie brauchen einen Rasenmäher für Ihren Garten.",
+                "site_a_url": "www.garten-gerate-profi.de",
+                "site_a": "Garten Geräte Profi\nRasenmäher, Heckenscheren und Gartengeräte.",
+                "site_b_url": "www.blumen-samen-online.de",
+                "site_b": "Nur Blumensamen zum Selberziehen.",
+                "answer": "Website A",
+                "explanation": "Garten Geräte Profi verkauft Rasenmäher."
             }
         ]
     }
@@ -965,7 +1357,7 @@ if nav_choice == "🏠 Study Dashboard":
         st.markdown("""
         * **Lesen (25 Mins - 15 Tasks across 3 Parts):**
           - Teil 1: Short Emails (Richtig/Falsch) - *All 9 official exam scenarios fully integrated!*
-          - Teil 2: Classified Ads (Option A or B) - *Fully integrated with web links & side-by-side site choices!*
+          - Teil 2: Classified Ads (Option A or B) - *All 9 official exam scenarios fully integrated!*
           - Teil 3: Public Signs (Richtig/Falsch) - *Fully integrated with notice boxes & example items!*
         * **Schreiben (20 Mins - 2 Parts):**
           - Teil 1: Fill 5 Missing Gaps on Form with Scenario (All 9 official exam scenarios fully integrated!)
@@ -1494,7 +1886,7 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
             st.metric("Lesen Teil 1 Score", f"{score} / 5")
 
     with l_tab2:
-        st.markdown("**Teil 2 (Zuordnung / Classified Ads):** Match 5 user situations to website options A or B.")
+        st.markdown("**Teil 2 (Zuordnung / Classified Ads):** Select from all 9 official Goethe A1 practice scenarios. Match 5 user situations to website options A or B.")
         
         selected_lesen_t2_title = st.selectbox("📂 Select Lesen Teil 2 Scenario Set:", [s["title"] for s in LESEN_TEIL2_SCENARIOS], key="lesen_t2_sel")
         selected_lesen_t2_obj = next(s for s in LESEN_TEIL2_SCENARIOS if s["title"] == selected_lesen_t2_title)
