@@ -310,7 +310,7 @@ HOREN_TEIL2_SCENARIOS = [
     }
 ]
 
-# Lesen Teil 1 Official Scenarios Bank (from user screenshots 12 to 16)
+# Lesen Teil 1 Official Scenarios Bank
 LESEN_TEIL1_SCENARIOS = [
     {
         "title": "Vegetarisches Essen & Fußballtraining",
@@ -350,7 +350,7 @@ LESEN_TEIL1_SCENARIOS = [
     }
 ]
 
-# Lesen Teil 2 Official Scenarios Bank (from user screenshots 17 to 21)
+# Lesen Teil 2 Official Scenarios Bank
 LESEN_TEIL2_SCENARIOS = [
     {
         "title": "Fahrrad, Schwimmbad & Pizza",
@@ -387,6 +387,46 @@ LESEN_TEIL2_SCENARIOS = [
     {
         "title": "Arzt, Apotheke & Bibliothek",
         "desc": "Websites with information about doctors, emergency pharmacies, garden plants, dentist appointments, books and gardening tools – 5 tasks, a/b."
+    }
+]
+
+# Lesen Teil 3 Official Scenarios Bank (from user screenshots 22 to 26)
+LESEN_TEIL3_SCENARIOS = [
+    {
+        "title": "Mittagsmenü, Schwimmbad & Bibliothek",
+        "desc": "Signs and notices about a lunch menu, swimming pool, bus route, job vacancy and library – 5 tasks, Richtig/Falsch."
+    },
+    {
+        "title": "Haltestelle, Schule & Freibad",
+        "desc": "Signs and notices about a ticket machine, bus stop, school, lift and outdoor pool – 5 tasks, Richtig/Falsch."
+    },
+    {
+        "title": "Bäckerei, Markt & Parkhaus",
+        "desc": "Signs and notices about a bakery, market, museum, library and car park – 5 tasks, Richtig/Falsch."
+    },
+    {
+        "title": "Apotheke, Kino & Arztpraxis",
+        "desc": "Signs and notices about an emergency pharmacy, cinema, park, shoes and a medical practice – 5 tasks, Richtig/Falsch."
+    },
+    {
+        "title": "Notdienst, Bibliothek & Park",
+        "desc": "Signs and notices about emergency services, a medical practice, the library and the park – 5 tasks, Richtig/Falsch."
+    },
+    {
+        "title": "Bäckerei, Sporthalle & Computerkurs",
+        "desc": "Signs and notices about a bakery, restaurant, special offers, sports hall and computer course – 5 tasks, Richtig/Falsch."
+    },
+    {
+        "title": "Hausordnung, Aufzug & Mülltonnen",
+        "desc": "Signs and notices about house rules, lifts, dog leashes, waste sorting and quiet hours – 5 tasks, Richtig/Falsch."
+    },
+    {
+        "title": "Vorstellung, Museum & Kinderfest",
+        "desc": "Signs and notices about a performance, admission times, clothing, a museum, children's festival and concert – 5 tasks, Richtig/Falsch."
+    },
+    {
+        "title": "Frühstück, Geldautomat & Tankstelle",
+        "desc": "Signs and notices about breakfast, the cash machine, parking, the workshop, the petrol station and the post office – 5 tasks, Richtig/Falsch."
     }
 ]
 
@@ -908,7 +948,7 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
     l_tab1, l_tab2, l_tab3 = st.tabs([
         "Teil 1: Short Messages (Scenarios)", 
         "Teil 2: Classified Ads (Scenarios)", 
-        "Teil 3: Public Signs (5 Tasks)"
+        "Teil 3: Public Signs (Scenarios)"
     ])
 
     with l_tab1:
@@ -1001,37 +1041,46 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
                 st.success(f"Teil 2 Score for '{selected_lesen_t2_title}': {score} / 5")
 
     with l_tab3:
-        st.markdown("**Teil 3:** Read public signs/notices and answer 5 Richtig/Falsch tasks[cite: 3].")
-        if st.button("🎲 Generate Lesen Teil 3 Scenario", type="primary") or st.button("🔄 Generate New Lesen Teil 3 Set"):
-            with st.spinner("Gem is generating a fresh Lesen Teil 3 sign set..."):
-                prompt = """
-                Generate Goethe A1 Lesen Teil 3 exercise: 5 public signs with 1 statement task per sign (Richtig/Falsch).
+        st.markdown("**Teil 3:** Select from official practice scenario sets for public signs / notices (Richtig/Falsch)[cite: 3].")
+        
+        selected_lesen_t3_title = st.selectbox("📂 Select Lesen Teil 3 Scenario Set:", [s["title"] for s in LESEN_TEIL3_SCENARIOS])
+        selected_lesen_t3_obj = next(s for s in LESEN_TEIL3_SCENARIOS if s["title"] == selected_lesen_t3_title)
+        
+        st.info(f"📌 **Description:** {selected_lesen_t3_obj['desc']}")
+
+        if st.button(f"▶️ Start Exercise ({selected_lesen_t3_title})", type="primary") or f"lesen_t3_loaded_{selected_lesen_t3_title}" not in st.session_state:
+            with st.spinner(f"Gem is generating Lesen Teil 3 exercises for '{selected_lesen_t3_title}'..."):
+                prompt = f"""
+                Generate Goethe A1 Lesen Teil 3 exercises for the specific theme: '{selected_lesen_t3_title}' ({selected_lesen_t3_obj['desc']}).
+                Generate exactly 5 public signs/notices with 1 Richtig/Falsch statement task each.
                 Return strict JSON format:
-                {
+                {{
+                    "scenario_title": "{selected_lesen_t3_title}",
                     "tasks": [
-                        {"id": "l3_1", "sign": "Sign text 1", "statement": "Statement 1", "options": ["richtig", "falsch"], "answer": "richtig", "explanation": "..."},
-                        {"id": "l3_2", "sign": "Sign text 2", "statement": "Statement 2", "options": ["richtig", "falsch"], "answer": "falsch", "explanation": "..."},
-                        {"id": "l3_3", "sign": "Sign text 3", "statement": "Statement 3", "options": ["richtig", "falsch"], "answer": "richtig", "explanation": "..."},
-                        {"id": "l3_4", "sign": "Sign text 4", "statement": "Statement 4", "options": ["richtig", "falsch"], "answer": "falsch", "explanation": "..."},
-                        {"id": "l3_5", "sign": "Sign text 5", "statement": "Statement 5", "options": ["richtig", "falsch"], "answer": "richtig", "explanation": "..."}
+                        {{"id": "lt3_1", "sign": "Sign text 1", "statement": "Statement 1", "options": ["richtig", "falsch"], "answer": "richtig", "explanation": "..."}},
+                        {{"id": "lt3_2", "sign": "Sign text 2", "statement": "Statement 2", "options": ["richtig", "falsch"], "answer": "falsch", "explanation": "..."}},
+                        {{"id": "lt3_3", "sign": "Sign text 3", "statement": "Statement 3", "options": ["richtig", "falsch"], "answer": "richtig", "explanation": "..."}},
+                        {{"id": "lt3_4", "sign": "Sign text 4", "statement": "Statement 4", "options": ["richtig", "falsch"], "answer": "falsch", "explanation": "..."}},
+                        {{"id": "lt3_5", "sign": "Sign text 5", "statement": "Statement 5", "options": ["richtig", "falsch"], "answer": "richtig", "explanation": "..."}}
                     ]
-                }
+                }}
                 """
                 try:
                     json_str = generate_dynamic_content(prompt, is_json=True)
-                    st.session_state.lesen_t3 = json.loads(json_str)
+                    st.session_state[f"lesen_t3_loaded_{selected_lesen_t3_title}"] = json.loads(json_str)
                 except Exception as e: st.error(f"Error: {str(e)}")
 
-        if "lesen_t3" in st.session_state:
-            d = st.session_state.lesen_t3
+        cache_key_lt3 = f"lesen_t3_loaded_{selected_lesen_t3_title}"
+        if cache_key_lt3 in st.session_state:
+            d3 = st.session_state[cache_key_lt3]
             ans3 = {}
-            for idx, task in enumerate(d["tasks"], start=1):
+            for idx, task in enumerate(d3["tasks"], start=1):
                 st.error(f"🛑 **Sign {idx}:** {task['sign']}")
                 st.markdown(f"**Task {idx}: {task['statement']}**")
-                ans3[task["id"]] = st.radio("Choice:", task["options"], key=f"rad_lt3_{task['id']}")
-            if st.button("Submit Lesen Teil 3"):
-                score = sum(1 for t in d["tasks"] if ans3.get(t["id"]) == t["answer"])
-                st.success(f"Teil 3 Score: {score} / 5")
+                ans3[task["id"]] = st.radio("Choice:", task["options"], key=f"rad_lt3_{selected_lesen_t3_title}_{task['id']}")
+            if st.button(f"Submit Lesen Teil 3 ({selected_lesen_t3_title})"):
+                score = sum(1 for t in d3["tasks"] if ans3.get(t["id"]) == t["answer"])
+                st.success(f"Teil 3 Score for '{selected_lesen_t3_title}': {score} / 5")
 
     st.markdown('</div>', unsafe_allow_html=True)
 
@@ -1170,7 +1219,7 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
             for idx, t in enumerate(d["tasks"], start=1):
                 st.markdown(f"#### 🔊 Phone Message {idx} (Played 2x)")
                 st.audio(generate_german_audio_bytes(t["script"]), format="audio/mp3")
-                with st.expander(f"👁️ Transcript {idx} analytical notes"): st.write(t["script"])
+                with st.expander(f"👁️ Transcript {idx}"): st.write(t["script"])
                 st.markdown(f"**Task {idx}: {t['question']}**")
                 ans3[t["id"]] = st.radio(f"Select Q{idx}:", t["options"], key=f"rad_ht3_{t['id']}")
             if st.button("Submit Hören Teil 3"):
@@ -1820,7 +1869,6 @@ if st.session_state.bot_open:
 
 if not st.session_state.bot_open:
     if st.button("🤖 Chat with Gem", key="open_bot_btn", type="primary"):
-        st.session_state.bot_open =Key = True
         st.session_state.bot_open = True
         st.rerun()
 
