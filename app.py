@@ -616,7 +616,7 @@ elif nav_choice == "📖 Core Grammar Practice & Exercises":
 # ----------------------------------------------------
 elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
-    st.subheader("📖 Goethe A1 Lesen Practice (25 Mins, 15 Points)")
+    st.subheader("📖 Goethe A1 Lesen Practice (25 Mins, 15 Tasks)")
 
     l_tab1, l_tab2, l_tab3 = st.tabs([
         "Teil 1: Short Messages (5 Tasks)", 
@@ -625,16 +625,16 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
     ])
 
     with l_tab1:
-        st.markdown("**Teil 1:** Read short emails or notes and answer 5 Richtig/Falsch tasks[cite: 3].")
+        st.markdown("**Teil 1:** Read short emails, notes, or text messages and decide if statements are Richtig (True) or Falsch (False)[cite: 3].")
         if st.button("🎲 Generate Lesen Teil 1", type="primary"):
             st.session_state.lesen_t1 = {"text": "Sample Email Text...", "questions": [{"id": "l1_1", "statement": "Statement 1", "answer": "richtig"}]}
         st.info("Click generate to load Lesen Teil 1 practice exercises.")
 
     with l_tab2:
-        st.markdown("**Teil 2:** Match user situations to classified website ads A or B (5 tasks)[cite: 3].")
+        st.markdown("**Teil 2:** Match situations/people to classified ads or text displays (choosing between options A or B)[cite: 3].")
 
     with l_tab3:
-        st.markdown("**Teil 3:** Read public signs/notices and answer 5 Richtig/Falsch tasks[cite: 3].")
+        st.markdown("**Teil 3:** Read public signs, notices, or info boards and answer Richtig / Falsch[cite: 3].")
 
     st.markdown('</div>', unsafe_allow_html=True)
 
@@ -643,9 +643,12 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
 # ----------------------------------------------------
 elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
-    st.subheader("🎧 Goethe A1 Hören Practice (20 Mins, 15 Points)")
-    st.info("Listen to authentic audio samples mimicking Goethe-Zertifikat A1 Start Deutsch 1 standards[cite: 3].")
-    
+    st.subheader("🎧 Goethe A1 Hören Practice (20 Mins, 15 Tasks)")
+    st.markdown("""
+    * **Part 1:** Listen to 6 short everyday dialogues (played twice) and answer multiple-choice questions (A, B, or C)[cite: 3].
+    * **Part 2:** Listen to 4 public announcements at a station, airport, or store (played once) and judge statements as Richtig or Falsch[cite: 3].
+    * **Part 3:** Listen to 5 short phone messages or intercom announcements (played twice) and choose multiple-choice options (A, B, or C)[cite: 3].
+    """)
     if st.button("🔊 Play Sample Exam Conversation"):
         play_direct_audio("Guten Tag! Wo ist der Bahnhof bitte? Gehen Sie geradeaus und dann nach links.", "sample_audio")
 
@@ -658,8 +661,8 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
     st.subheader("✍️ Goethe A1 Schreiben Practice (20 Mins, 15 Points)")
     st.markdown("""
-    * **Part 1:** Fill out 5 missing gaps on a simple form or registration slip[cite: 3].
-    * **Part 2:** Write a ~30-word message responding to a situation, hitting 3 required content points[cite: 3].
+    * **Part 1:** Fill out 5 missing gaps on a simple form or registration slip based on a short prompt[cite: 3].
+    * **Part 2:** Write a short informal message, email, or note (around 30 words) responding to a given situation, making sure to hit 3 required content points (e.g., apologizing, making an alternative suggestion, and asking a question)[cite: 3].
     """)
     st.markdown('</div>', unsafe_allow_html=True)
 
@@ -670,14 +673,14 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
     st.subheader("🗣️ Goethe A1 Sprechen Practice (15 Mins, Small Group Format)")
     st.markdown("""
-    * **Part 1:** Introduce yourself & spell a word / state phone number[cite: 3].
-    * **Part 2:** Formulate a W-question from a topic card[cite: 3].
-    * **Part 3:** Make a polite request/instruction based on a picture card[cite: 3].
+    * **Part 1:** Introduce yourself briefly to the examiners and spell a word or state your phone number/ZIP code[cite: 3].
+    * **Part 2:** Draw a card with a theme and a prompt word, formulate a basic question to ask a partner, and answer their question in return[cite: 3].
+    * **Part 3:** Draw a card showing an object or situation and make a simple request or give a polite instruction to your partner (e.g., asking to borrow a pen or asking for salt), and vice versa[cite: 3].
     """)
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
-# 8. GOETHE A1 MOCK EXAMINATION (TIMED SIMULATION & PROGRESS REPORT TABLE)
+# 8. GOETHE A1 MOCK EXAMINATION (SIMULATION, TIMERS, PROGRESS REPORT TABLE)
 # ----------------------------------------------------
 elif nav_choice == "🏆 Goethe A1 Mock Examination":
     st.markdown('<div class="accent-card">', unsafe_allow_html=True)
@@ -694,16 +697,15 @@ elif nav_choice == "🏆 Goethe A1 Mock Examination":
     # Progress Report Table (Rows = Metrics/Scores, Columns = Test Dates)
     if st.session_state.exam_history:
         st.markdown("### 📊 Progress Report Table")
-        dates_cols = [rec['date'] for rec in st.session_state.exam_history]
-        table_dict = {"Metric / Section": ["Lesen (max 5)", "Hören (max 3)", "Schreiben (max 4)", "Sprechen (max 3)", "Total Score (max 15)", "Final Percentage (%)"]}
+        table_dict = {"Metric / Section": ["Lesen (max 15)", "Hören (max 15)", "Schreiben (max 15)", "Sprechen (max 15)", "Total Score (max 60)", "Final Percentage (%)"]}
         for idx, rec in enumerate(st.session_state.exam_history):
             col_name = f"Attempt {idx+1} ({rec['date']})"
             table_dict[col_name] = [
-                f"{rec['lesen']}/5",
-                f"{rec['hoeren']}/3",
-                f"{rec['schreiben']}/4",
-                f"{rec['sprechen']}/3",
-                f"{rec['total']}/15",
+                f"{rec['lesen']}/15",
+                f"{rec['hoeren']}/15",
+                f"{rec['schreiben']}/15",
+                f"{rec['sprechen']}/15",
+                f"{rec['total']}/60",
                 f"{rec['percentage']}%"
             ]
         st.table(table_dict)
@@ -728,12 +730,12 @@ elif nav_choice == "🏆 Goethe A1 Mock Examination":
             st.session_state.timer_end = time.time() + (20 * 60)  # 20 minutes for Hören
             st.rerun()
         
-        st.markdown(f"### 📖 Part 1: Lesen (Reading) — Time Remaining: **{time_left // 60:02d}:{time_left % 60:02d}**")
-        st.info("Read the short email and answer the 5 tasks[cite: 3].")
-        l_ans = st.radio("Task 1 Statement:", ["richtig", "falsch"], key="mock_l1")
+        st.markdown(f"### 📖 Lesen (Reading) — Time Remaining: **{time_left // 60:02d}:{time_left % 60:02d}** (~25 mins, 3 parts, 15 tasks)[cite: 3]")
+        st.markdown("**Part 1 (Short emails/notes - Richtig/Falsch)[cite: 3], Part 2 (Classified ads - A/B)[cite: 3], Part 3 (Public signs - Richtig/Falsch)[cite: 3].**")
+        l_ans = st.radio("Sample Lesen Task 1:", ["richtig", "falsch"], key="mock_l1")
         
         if st.button("Submit Lesen & Proceed to Hören ➔", type="primary"):
-            st.session_state.mock_answers["lesen"] = 5 if l_ans == "richtig" else 3
+            st.session_state.mock_answers["lesen"] = 12 if l_ans == "richtig" else 8
             st.session_state.mock_stage = "HOEREN"
             st.session_state.timer_end = time.time() + (20 * 60)
             st.rerun()
@@ -746,12 +748,13 @@ elif nav_choice == "🏆 Goethe A1 Mock Examination":
             st.session_state.timer_end = time.time() + (20 * 60)  # 20 minutes for Schreiben
             st.rerun()
 
-        st.markdown(f"### 🎧 Part 2: Hören (Listening) — Time Remaining: **{time_left // 60:02d}:{time_left % 60:02d}**")
+        st.markdown(f"### 🎧 Hören (Listening) — Time Remaining: **{time_left // 60:02d}:{time_left % 60:02d}** (~20 mins, 3 parts, 15 tasks)[cite: 3]")
+        st.markdown("**Part 1 (6 dialogues, 2x audio, A/B/C)[cite: 3], Part 2 (4 announcements, 1x audio, R/F)[cite: 3], Part 3 (5 voicemails, 2x audio, A/B/C)[cite: 3].**")
         st.audio(generate_german_audio_bytes("Guten Tag, Herr Müller. Wann kommt der nächste Zug nach Berlin? Um 14:30 Uhr an Gleis 3."), format="audio/mp3")
         h_ans = st.radio("Listening Question: Wann kommt der Zug?", ["a) 12:00", "b) 14:30", "c) 16:00"], key="mock_h1")
 
         if st.button("Submit Hören & Proceed to Schreiben ➔", type="primary"):
-            st.session_state.mock_answers["hoeren"] = 3 if "14:30" in h_ans else 1
+            st.session_state.mock_answers["hoeren"] = 13 if "14:30" in h_ans else 9
             st.session_state.mock_stage = "SCHREIBEN"
             st.session_state.timer_end = time.time() + (20 * 60)
             st.rerun()
@@ -764,13 +767,13 @@ elif nav_choice == "🏆 Goethe A1 Mock Examination":
             st.session_state.timer_end = time.time() + (15 * 60)  # 15 minutes for Sprechen
             st.rerun()
 
-        st.markdown(f"### ✍️ Part 3: Schreiben (Writing) — Time Remaining: **{time_left // 60:02d}:{time_left % 60:02d}**")
-        st.info("Fill out form gaps and write your 30-word email[cite: 3].")
+        st.markdown(f"### ✍️ Schreiben (Writing) — Time Remaining: **{time_left // 60:02d}:{time_left % 60:02d}** (~20 mins, 2 tasks)[cite: 3]")
+        st.markdown("**Part 1: Fill 5 form gaps[cite: 3]. Part 2: Write ~30-word email hitting 3 content points[cite: 3].**")
         st.text_input("1. Familienname:", key="mock_form_name")
         st.text_area("2. Email Response (~30 words):", key="mock_email_resp")
 
         if st.button("Submit Schreiben & Proceed to Sprechen ➔", type="primary"):
-            st.session_state.mock_answers["schreiben"] = 4
+            st.session_state.mock_answers["schreiben"] = 14
             st.session_state.mock_stage = "SPRECHEN"
             st.session_state.timer_end = time.time() + (15 * 60)
             st.rerun()
@@ -782,23 +785,23 @@ elif nav_choice == "🏆 Goethe A1 Mock Examination":
             st.session_state.mock_stage = "RESULTS"
             st.rerun()
 
-        st.markdown(f"### 🗣️ Part 4: Sprechen (Speaking) — Time Remaining: **{time_left // 60:02d}:{time_left % 60:02d}**")
-        st.info("Record your self-introduction and responses[cite: 3].")
+        st.markdown(f"### 🗣️ Sprechen (Speaking) — Time Remaining: **{time_left // 60:02d}:{time_left % 60:02d}** (~15 mins, 3 parts)[cite: 3]")
+        st.markdown("**Part 1: Self-Intro & Spelling[cite: 3]. Part 2: W-Questions[cite: 3]. Part 3: Polite Requests[cite: 3].**")
         mic_recorder(start_prompt="Record Speaking Task 🎙️", stop_prompt="Stop 🛑", key="mock_sp_rec")
 
         if st.button("🏁 Finish Exam & View Scorecard", type="primary"):
-            st.session_state.mock_answers["sprechen"] = 3
+            st.session_state.mock_answers["sprechen"] = 13
             st.session_state.mock_stage = "RESULTS"
             st.rerun()
 
     elif st.session_state.mock_stage == "RESULTS":
         ans = st.session_state.mock_answers
-        l_score = ans.get("lesen", 5)
-        h_score = ans.get("hoeren", 3)
-        s_score = ans.get("schreiben", 4)
-        sp_score = ans.get("sprechen", 3)
+        l_score = ans.get("lesen", 12)
+        h_score = ans.get("hoeren", 13)
+        s_score = ans.get("schreiben", 14)
+        sp_score = ans.get("sprechen", 13)
         total = l_score + h_score + s_score + sp_score
-        pct = int((total / 15) * 100)
+        pct = int((total / 60) * 100)
 
         current_date = time.strftime("%Y-%m-%d %H:%M")
         if not st.session_state.exam_history or st.session_state.exam_history[-1]["date"] != current_date:
@@ -812,7 +815,7 @@ elif nav_choice == "🏆 Goethe A1 Mock Examination":
                 "percentage": pct
             })
 
-        st.success(f"🎉 **Mock Examination Completed!** Total Score: **{total} / 15** ({pct}%)")
+        st.success(f"🎉 **Mock Examination Completed!** Total Score: **{total} / 60** ({pct}%)")
         if st.button("🔄 Retake Mock Exam", type="primary"):
             st.session_state.mock_stage = "MENU"
             st.rerun()
@@ -825,7 +828,7 @@ elif nav_choice == "🏆 Goethe A1 Mock Examination":
 elif nav_choice == "📖 A1 & A2 Short Stories":
     st.markdown('<div class="accent-card">', unsafe_allow_html=True)
     st.subheader("📖 Enchanted Storybook Reader: 20 Fairy Tales & 20 Classics")
-    st.write("Immerse yourself in 20 A1 fairytale/Disney adaptations and 20 A2 classic novels. Each story features 20 parts, AI cartoon visuals, side-by-side German/English layouts, and uncut audio.")
+    st.write("Immerse yourself in 20 A1 fairytale/Disney adaptations and 20 A2 classic novels. Each story features up to 20 parts, AI-generated cartoon visuals, side-by-side German/English layouts, and uncut audio.")
 
     story_level = st.radio("Select CEFR Level:", ["A1 Level (20 Fairy Tales & Disney)", "A2 Level (20 Classics & Fiction)"], horizontal=True)
 
