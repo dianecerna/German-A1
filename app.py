@@ -310,11 +310,11 @@ HOREN_TEIL2_SCENARIOS = [
     }
 ]
 
-# Lesen Teil 1 Official Scenarios Bank (Matching exact app layout & screenshot 51)
+# Lesen Teil 1 Official Scenarios Bank (All 9 exact scenarios matching screenshots 54-58)
 LESEN_TEIL1_SCENARIOS = [
     {
         "title": "Flughafen & Grillfest",
-        "desc": "Two short messages: airport pickup (email from Lena to Tom) and a garden barbecue (letter to Sofia) – 5 tasks, Richtig/Falsch.",
+        "desc": "Two short messages: airport pickup and a garden barbecue — 5 tasks, Richtig/Falsch.",
         "text1_label": "E-Mail (Lena an Tom)",
         "text1": "BETREFF: Hallo Tom,\n\nvielen Dank für deine Nachricht! Ich hole dich am Sonntag vom Flughafen ab. Dein Flugzeug landet um 14.20 Uhr. Ich bin schon um 14 Uhr da und warte am Ausgang.\nRuf mich bitte an, wenn dein Flug später kommt. Meine Nummer hast du ja.\nBis Sonntag!\nLena",
         "text2_label": "BRIEF (Einladung zum Grillfest)",
@@ -328,33 +328,123 @@ LESEN_TEIL1_SCENARIOS = [
         ]
     },
     {
+        "title": "Krankmeldung & Vereinsausflug",
+        "desc": "Two short messages: a sick note and a club outing — 5 tasks, Richtig/Falsch.",
+        "text1_label": "E-Mail an die Arbeit",
+        "text1": "Sehr geehrte Frau Braun,\nich kann heute leider nicht ins Büro kommen, da ich starkes Fieber und Husten habe. Ich gehe heute Nachmittag zum Arzt und bringe morgen die Krankmeldung mit.\nMit freundlichen Grüßen,\nMarkus Weber",
+        "text2_label": "Aushang (Sportverein)",
+        "text2": "Liebe Vereinsmitglieder,\nserer Jahresausflug findet am Samstag, den 14. Juli, statt. Wir fahren mit dem Bus in die Berge zum Wandern. Anmeldung bitte bis Mittwoch bei Trainer Klaus.",
+        "questions": [
+            {"id": "lt1_21", "statement": "Markus hat Fieber und Husten.", "options": ["richtig", "falsch"], "answer": "richtig", "explanation": "Markus schreibt, dass er starkes Fieber und Husten hat."},
+            {"id": "lt1_22", "statement": "Markus bringt die Krankmeldung erst nächste Woche.", "options": ["richtig", "falsch"], "answer": "falsch", "explanation": "Er bringt sie *morgen* mit."},
+            {"id": "lt1_23", "statement": "Der Vereinsausflug ist am Sonntag.", "options": ["richtig", "falsch"], "answer": "falsch", "explanation": "Der Ausflug findet am *Samstag*, den 14. Juli, statt."},
+            {"id": "lt1_24", "statement": "Man fährt mit dem Bus in die Berge.", "options": ["richtig", "falsch"], "answer": "richtig", "explanation": "Im Aushang steht: 'Wir fahren mit dem Bus in die Berge.'"},
+            {"id": "lt1_25", "statement": "Man muss sich bis Mittwoch bei Klaus anmelden.", "options": ["richtig", "falsch"], "answer": "richtig", "explanation": "Anmeldung bitte bis Mittwoch bei Trainer Klaus."}
+        ]
+    },
+    {
         "title": "Vegetarisches Essen & Fußballtraining",
-        "desc": "Two short messages: vegetarian dinner and football training – 5 tasks, Richtig/Falsch.",
+        "desc": "Two short messages: a vegetarian dinner and football training — 5 tasks, Richtig/Falsch.",
         "text1_label": "E-Mail (Abendessen)",
-        "text1": "Hallo Anna,\n\nich koche heute Abend vegetarisch. Es gibt Gemüselasuppe und Salat. Komm doch um 19 Uhr zu mir!\nLiebe Grüße,\nMaria",
+        "text1": "Hallo Anna,\n\nich koche heute Abend vegetarisch. Es gibt Gemüsesuppe und Salat. Komm doch um 19 Uhr zu mir!\nLiebe Grüße,\nMaria",
         "text2_label": "SMS (Fußball)",
         "text2": "Hallo zusammen, das Fußballtraining am Mittwoch fällt leider aus, weil der Platz nass ist. Nächste Woche spielen wir wieder normal.\nGruß, Trainer Stefan",
         "questions": [
-            {"id": "lt1_21", "statement": "Maria kocht heute Abend Fleisch.", "options": ["richtig", "falsch"], "answer": "falsch", "explanation": "Maria kocht vegetarisch (Gemüsesuppe und Salat)."},
-            {"id": "lt1_22", "statement": "Das Essen beginnt um 19 Uhr.", "options": ["richtig", "falsch"], "answer": "richtig", "explanation": "Maria lädt Anna um 19 Uhr ein."},
-            {"id": "lt1_23", "statement": "Das Fußballtraining findet am Mittwoch statt.", "options": ["richtig", "falsch"], "answer": "falsch", "explanation": "Das Training fällt aus."},
-            {"id": "lt1_24", "statement": "Der Sportplatz ist nass.", "options": ["richtig", "falsch"], "answer": "richtig", "explanation": "Grund für den Ausfall ist ein nasser Platz."},
-            {"id": "lt1_25", "statement": "Nächste Woche findet das Training wieder statt.", "options": ["richtig", "falsch"], "answer": "richtig", "explanation": "Der Trainer schreibt: 'Nächste Woche spielen wir wieder normal.'"}
+            {"id": "lt1_41", "statement": "Maria kocht heute Abend Fleisch.", "options": ["richtig", "falsch"], "answer": "falsch", "explanation": "Maria kocht vegetarisch (Gemüsesuppe und Salat)."},
+            {"id": "lt1_42", "statement": "Das Essen beginnt um 19 Uhr.", "options": ["richtig", "falsch"], "answer": "richtig", "explanation": "Maria lädt Anna um 19 Uhr ein."},
+            {"id": "lt1_43", "statement": "Das Fußballtraining findet am Mittwoch statt.", "options": ["richtig", "falsch"], "answer": "falsch", "explanation": "Das Training fällt aus."},
+            {"id": "lt1_44", "statement": "Der Sportplatz ist nass.", "options": ["richtig", "falsch"], "answer": "richtig", "explanation": "Grund für den Ausfall ist ein nasser Platz."},
+            {"id": "lt1_45", "statement": "Nächste Woche findet das Training wieder statt.", "options": ["richtig", "falsch"], "answer": "richtig", "explanation": "Der Trainer schreibt: 'Nächste Woche spielen wir wieder normal.'"}
         ]
     },
     {
         "title": "Umzugshilfe & Katze im Garten",
-        "desc": "Two short notices about moving help and a found cat – 5 tasks, Richtig/Falsch.",
+        "desc": "Two short notices about moving help and a found cat — 5 tasks, Richtig/Falsch.",
         "text1_label": "Zettel am Schwarzen Brett",
         "text1": "Hallo liebe Nachbarn, ich ziehe am 1. September in eine neue Wohnung und suche Helfer für Möbeltragen. Es gibt Pizza und Getränke für alle!",
         "text2_label": "Nachricht",
         "text2": "Guten Tag, wir haben seit gestern eine kleine graue Katze im Garten. Sie hat ein rotes Halsband. Wem gehört sie? Bitte melden unter Tel. 0171...",
         "questions": [
-            {"id": "lt1_31", "statement": "Der Autor zieht im August um.", "options": ["richtig", "falsch"], "answer": "falsch", "explanation": "Der Umzug ist am 1. September."},
-            {"id": "lt1_32", "statement": "Helfer bekommen Pizza und Getränke.", "options": ["richtig", "falsch"], "answer": "richtig", "explanation": "Es gibt Pizza und Getränke für alle."},
-            {"id": "lt1_33", "statement": "Die gefundene Katze ist schwarz.", "options": ["richtig", "falsch"], "answer": "falsch", "explanation": "Die Katze ist grau."},
-            {"id": "lt1_34", "statement": "Die Katze trägt ein rotes Halsband.", "options": ["richtig", "falsch"], "answer": "richtig", "explanation": "Im Text steht: 'Sie hat ein rotes Halsband.'"},
-            {"id": "lt1_35", "statement": "Man kann den Finder telefonisch erreichen.", "options": ["richtig", "falsch"], "answer": "richtig", "explanation": "Es ist eine Telefonnummer angegeben."}
+            {"id": "lt1_61", "statement": "Der Autor zieht im August um.", "options": ["richtig", "falsch"], "answer": "falsch", "explanation": "Der Umzug ist am 1. September."},
+            {"id": "lt1_62", "statement": "Helfer bekommen Pizza und Getränke.", "options": ["richtig", "falsch"], "answer": "richtig", "explanation": "Es gibt Pizza und Getränke für alle."},
+            {"id": "lt1_63", "statement": "Die gefundene Katze ist schwarz.", "options": ["richtig", "falsch"], "answer": "falsch", "explanation": "Die Katze ist grau."},
+            {"id": "lt1_64", "statement": "Die Katze trägt ein rotes Halsband.", "options": ["richtig", "falsch"], "answer": "richtig", "explanation": "Im Text steht: 'Sie hat ein rotes Halsband.'"},
+            {"id": "lt1_65", "statement": "Man kann den Finder telefonisch erreichen.", "options": ["richtig", "falsch"], "answer": "richtig", "explanation": "Es ist eine Telefonnummer angegeben."}
+        ]
+    },
+    {
+        "title": "Wochenendbesuch & Hochzeitseinladung",
+        "desc": "Two short messages: a sister's weekend visit and a wedding invitation — 5 tasks, Richtig/Falsch.",
+        "text1_label": "E-Mail von der Schwester",
+        "text1": "Liebe Sandra,\nich komme diesen Samstag mit dem Zug um 10 Uhr an. Holst du mich am Bahnhof ab? Wir können dann zusammen auf den Markt gehen.\nDein Bruder Lukas",
+        "text2_label": "Hochzeitskarte",
+        "text2": "Liebe Freunde, wir heiraten am 20. August um 14 Uhr in der Stadtkirche. Danach feiern wir im Restaurant 'Zur Linde'. Bitte gebt uns bis zum 1. August Bescheid.",
+        "questions": [
+            {"id": "lt1_81", "statement": "Lukas kommt am Samstag mit dem Zug an.", "options": ["richtig", "falsch"], "answer": "richtig", "explanation": "Lukas schreibt, dass er diesen Samstag mit dem Zug ankommt."},
+            {"id": "lt1_82", "statement": "Lukas kommt um 12 Uhr an.", "options": ["richtig", "falsch"], "answer": "falsch", "explanation": "Er kommt um 10 Uhr an."},
+            {"id": "lt1_83", "statement": "Die Hochzeit findet in einer Kirche statt.", "options": ["richtig", "falsch"], "answer": "richtig", "explanation": "In der Karte steht: '...in der Stadtkirche.'"},
+            {"id": "lt1_84", "statement": "Die Feier ist im Restaurant 'Zur Linde'.", "options": ["richtig", "falsch"], "answer": "richtig", "explanation": "Danach feiern wir im Restaurant 'Zur Linde'."},
+            {"id": "lt1_85", "statement": "Man muss bis zum 15. August Bescheid geben.", "options": ["richtig", "falsch"], "answer": "falsch", "explanation": "Man muss bis zum *1. August* Bescheid geben."}
+        ]
+    },
+    {
+        "title": "Computerkurs & Zoobesuch",
+        "desc": "Two short messages: a computer course and a class trip to the zoo — 5 tasks, Richtig/Falsch.",
+        "text1_label": "Kursinformation",
+        "text1": "Volkshochschule: Der Computerkurs für Senioren beginnt am Montag, den 5. Oktober, um 10 Uhr im Raum 204. Bitte bringen Sie einen eigenen Laptop mit.",
+        "text2_label": "Elternbrief",
+        "text2": "Liebe Eltern, am Freitag machen wir mit der Klasse einen Ausflug in den Zoo. Die Kinder brauchen kein Klassenzimmer-Material, aber Regenkleidung und Brotzeit.",
+        "questions": [
+            {"id": "lt1_101", "statement": "Der Computerkurs ist für Senioren.", "options": ["richtig", "falsch"], "answer": "richtig", "explanation": "Es ist ein Computerkurs für Senioren."},
+            {"id": "lt1_102", "statement": "Der Kurs findet in Raum 101 statt.", "options": ["richtig", "falsch"], "answer": "falsch", "explanation": "Er findet in Raum *204* statt."},
+            {"id": "lt1_103", "statement": "Man soll einen Laptop mitbringen.", "options": ["richtig", "falsch"], "answer": "richtig", "explanation": "Bitte bringen Sie einen eigenen Laptop mit."},
+            {"id": "lt1_104", "statement": "Der Schulausflug geht in den Zoo.", "options": ["richtig", "falsch"], "answer": "richtig", "explanation": "Ausflug in den Zoo."},
+            {"id": "lt1_105", "statement": "Die Kinder müssen Regenkleidung mitnehmen.", "options": ["richtig", "falsch"], "answer": "richtig", "explanation": "Regenkleidung und Brotzeit sind erforderlich."}
+        ]
+    },
+    {
+        "title": "Geburtstagsparty & Sommerfest",
+        "desc": "Two short notices about a birthday party and a summer festival — 5 tasks, Richtig/Falsch.",
+        "text1_label": "Einladung",
+        "text1": "Hallo Tina, ich feiere am Freitag meinen Geburtstag ab 19:30 Uhr bei mir zu Hause. Bring bitte gute Laune und Musik mit!",
+        "text2_label": "Aushang",
+        "text2": "Sommerfest im Stadtpark am Samstag von 12 bis 18 Uhr. Es gibt Live-Musik, Grillwurst und Kuchen für alle Besucher. Eintritt frei!",
+        "questions": [
+            {"id": "lt1_121", "statement": "Tina feiert ihren Geburtstag.", "options": ["richtig", "falsch"], "answer": "richtig", "explanation": "Der Absender feiert Geburtstag."},
+            {"id": "lt1_122", "statement": "Die Party beginnt um 19:30 Uhr.", "options": ["richtig", "falsch"], "answer": "richtig", "explanation": "Ab 19:30 Uhr bei mir zu Hause."},
+            {"id": "lt1_123", "statement": "Das Sommerfest ist im Stadtpark.", "options": ["richtig", "falsch"], "answer": "richtig", "explanation": "Sommerfest im Stadtpark."},
+            {"id": "lt1_124", "statement": "Das Sommerfest kostet Eintritt.", "options": ["richtig", "falsch"], "answer": "falsch", "explanation": "Auf dem Aushang steht: 'Eintritt frei!'"},
+            {"id": "lt1_125", "statement": "Es gibt Grillwurst und Kuchen.", "options": ["richtig", "falsch"], "answer": "richtig", "explanation": "Grillwurst und Kuchen sind vorhanden."}
+        ]
+    },
+    {
+        "title": "Blumen gießen & Auto abholen",
+        "desc": "Two short notices about watering flowers and a repaired car — 5 tasks, Richtig/Falsch.",
+        "text1_label": "Zettel",
+        "text1": "Liebe Nachbarin, ich bin im Urlaub. Kannst du bitte jede Woche meine Blumen auf dem Balkon gießen? Der Schlüssel liegt unter der Fußmatte. Danke!",
+        "text2_label": "Werkstatt-SMS",
+        "text2": "Guten Tag, Ihr Auto ist fertig repariert und kann heute bis 18 Uhr in der Werkstatt abgeholt werden. Kostenpunkt: 150 Euro.",
+        "questions": [
+            {"id": "lt1_141", "statement": "Die Nachbarin ist im Urlaub.", "options": ["richtig", "falsch"], "answer": "falsch", "explanation": "Der Absender der Notiz ist im Urlaub; die Nachbarin soll gießen."},
+            {"id": "lt1_142", "statement": "Der Schlüssel liegt unter der Fußmatte.", "options": ["richtig", "falsch"], "answer": "richtig", "explanation": "Der Schlüssel liegt unter der Fußmatte."},
+            {"id": "lt1_143", "statement": "Das Auto ist repariert.", "options": ["richtig", "falsch"], "answer": "richtig", "explanation": "Ihr Auto ist fertig repariert."},
+            {"id": "lt1_144", "statement": "Man kann das Auto nach 20 Uhr abholen.", "options": ["richtig", "falsch"], "answer": "falsch", "explanation": "Abholung heute *bis 18 Uhr*."},
+            {"id": "lt1_145", "statement": "Die Reparatur kostet 150 Euro.", "options": ["richtig", "falsch"], "answer": "richtig", "explanation": "Kostenpunkt: 150 Euro."}
+        ]
+    },
+    {
+        "title": "Arzttermin & Blumen pflanzen",
+        "desc": "Two short notices about a doctor's appointment and planting flowers in a community garden — 5 tasks, Richtig/Falsch.",
+        "text1_label": "Praxis-Notiz",
+        "text1": "Erinnerung an Ihren Termin bei Dr. Klein am Donnerstag um 11:15 Uhr. Bitte bringen Sie Ihre Versichertenkarte mit.",
+        "text2_label": "Garten-Aufruf",
+        "text2": "Liebe Nachbarn, wir treffen uns am Samstag um 10 Uhr im Gemeinschaftsgarten, um neue Blumen zu pflanzen. Wer Schaufeln hat, bitte mitbringen!",
+        "questions": [
+            {"id": "lt1_161", "statement": "Der Arzttermin ist am Donnerstag.", "options": ["richtig", "falsch"], "answer": "richtig", "explanation": "Termin am Donnerstag."},
+            {"id": "lt1_162", "statement": "Der Termin ist um 10 Uhr.", "options": ["richtig", "falsch"], "answer": "falsch", "explanation": "Der Termin ist um 11:15 Uhr."},
+            {"id": "lt1_163", "statement": "Man soll die Versichertenkarte mitbringen.", "options": ["richtig", "falsch"], "answer": "richtig", "explanation": "Bitte bringen Sie Ihre Versichertenkarte mit."},
+            {"id": "lt1_164", "statement": "Das Treffen im Gemeinschaftsgarten ist am Samstag.", "options": ["richtig", "falsch"], "answer": "richtig", "explanation": "Samstag um 10 Uhr."},
+            {"id": "lt1_165", "statement": "Man soll Schaufeln mitbringen, wenn man welche hat.", "options": ["richtig", "falsch"], "answer": "richtig", "explanation": "Wer Schaufeln hat, bitte mitbringen!"}
         ]
     }
 ]
@@ -791,7 +881,7 @@ SCHREIBEN_TEIL2_SCENARIOS = [
             "2. Einladung zur Einweihungsparty am Freitag.",
             "3. Frage nach Zusage."
         ],
-        "prompt": "Liebe Sophie,\n\nich bin endlich in meine neue Wohnung umgezogen! Am Freitag mache ich um 19 Uhr eine kleine Einweihungsparty. Hast du Zeit und kommst auch?\n\nLiebe Grüße,\n[Dein Name]"
+        "prompt": "Liebe Sophie,\n\nich bin endlich in meine neue Wohnung umzogen! Am Freitag mache ich um 19 Uhr eine kleine Einweihungsparty. Hast du Zeit und kommst auch?\n\nLiebe Grüße,\n[Dein Name]"
     },
     {
         "title": "Umzug — einen Freund um Hilfe bitten",
@@ -874,7 +964,7 @@ if nav_choice == "🏠 Study Dashboard":
         st.subheader("📖 Lesen & ✍️ Schreiben")
         st.markdown("""
         * **Lesen (25 Mins - 15 Tasks across 3 Parts):**
-          - Teil 1: Short Emails (Richtig/Falsch) - *Fully integrated with official scenarios & email layout UI!*
+          - Teil 1: Short Emails (Richtig/Falsch) - *All 9 official exam scenarios fully integrated!*
           - Teil 2: Classified Ads (Option A or B) - *Fully integrated with web links & side-by-side site choices!*
           - Teil 3: Public Signs (Richtig/Falsch) - *Fully integrated with notice boxes & example items!*
         * **Schreiben (20 Mins - 2 Parts):**
@@ -1361,14 +1451,13 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
     ])
 
     with l_tab1:
-        st.markdown("**Teil 1 (Kurze Mitteilungen):** Read two short messages/emails and determine if the 5 statements are Richtig or Falsch (matching exact app UI & screenshot 51).")
+        st.markdown("**Teil 1 (Kurze Mitteilungen):** Select from all 9 official Goethe A1 practice scenarios. Read two short messages/emails and determine if the 5 statements are Richtig or Falsch.")
         
         selected_lesen_t1_title = st.selectbox("📂 Select Lesen Teil 1 Scenario Set:", [s["title"] for s in LESEN_TEIL1_SCENARIOS], key="lesen_t1_sel")
         selected_lesen_t1_obj = next(s for s in LESEN_TEIL1_SCENARIOS if s["title"] == selected_lesen_t1_title)
         
         st.info(f"📌 **Description:** {selected_lesen_t1_obj['desc']}")
 
-        # Display Message 1 box matching screenshot 51 UI
         st.markdown(f"""
         <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.02);">
             <div style="display: flex; align-items: center; margin-bottom: 12px;">
@@ -1378,7 +1467,6 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
         </div>
         """, unsafe_allow_html=True)
 
-        # Display Message 2 box matching screenshot 51 UI
         st.markdown(f"""
         <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.02);">
             <div style="display: flex; align-items: center; margin-bottom: 12px;">
@@ -1406,7 +1494,7 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
             st.metric("Lesen Teil 1 Score", f"{score} / 5")
 
     with l_tab2:
-        st.markdown("**Teil 2 (Zuordnung / Classified Ads):** Match 5 user situations to website options A or B (matching exact app UI & screenshot 52).")
+        st.markdown("**Teil 2 (Zuordnung / Classified Ads):** Match 5 user situations to website options A or B.")
         
         selected_lesen_t2_title = st.selectbox("📂 Select Lesen Teil 2 Scenario Set:", [s["title"] for s in LESEN_TEIL2_SCENARIOS], key="lesen_t2_sel")
         selected_lesen_t2_obj = next(s for s in LESEN_TEIL2_SCENARIOS if s["title"] == selected_lesen_t2_title)
@@ -1451,14 +1539,13 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
             st.metric("Lesen Teil 2 Score", f"{score} / 5")
 
     with l_tab3:
-        st.markdown("**Teil 3 (Öffentliche Hinweise / Public Signs):** Read public signs and notices and determine if statements are Richtig or Falsch (matching exact app UI & screenshot 53).")
+        st.markdown("**Teil 3 (Öffentliche Hinweise / Public Signs):** Read public signs and notices and determine if statements are Richtig or Falsch.")
         
         selected_lesen_t3_title = st.selectbox("📂 Select Lesen Teil 3 Scenario Set:", [s["title"] for s in LESEN_TEIL3_SCENARIOS], key="lesen_t3_sel")
         selected_lesen_t3_obj = next(s for s in LESEN_TEIL3_SCENARIOS if s["title"] == selected_lesen_t3_title)
         
         st.info(f"📌 **Description:** {selected_lesen_t3_obj['desc']}")
 
-        # Display Example Box matching screenshot 53 UI
         ex = selected_lesen_t3_obj["example"]
         st.markdown(f"""
         <div style="background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 12px; padding: 20px; margin-bottom: 20px;">
