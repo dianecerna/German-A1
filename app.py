@@ -173,7 +173,7 @@ def play_direct_audio(text_to_speak, unique_key):
     b64_audio = io.BytesIO(audio_bytes).read()
     st.audio(b64_audio, format="audio/mp3", autoplay=True)
 
-# Master Vocabulary Categories & Subcategories based on new instructions
+# Master Vocabulary Categories & Subcategories based on instructions
 TOP_1000_VOCAB_CATEGORIES = {
     "1. Person & Alltag (Personal & Daily Life)": {
         "Angaben zur Person (Personal Info)": ["der Name", "das Alter", "die Herkunft", "die Sprache", "ledig", "verheiratet", "kommen", "wohnen", "heißen", "sprechen"],
@@ -240,7 +240,7 @@ if nav_choice == "🏠 Study Dashboard":
     st.markdown('<div class="accent-card">', unsafe_allow_html=True)
     st.title("Goethe-Zertifikat A1 Prep Studio")
     st.write("📅 **Exam Date:** December 12, 2026")
-    st.write("Complete Goethe A1 curriculum preparation, official top 1000 vocabulary flashcards with 'ALL' shuffle, interactive grammar knowledge checks, timed exam simulations, and refined storybooks.")
+    st.write("Complete Goethe A1 curriculum preparation, official top 1000 vocabulary flashcards with 'ALL' shuffle, interactive grammar knowledge checks, timed exam simulations with mid-exam resets and scoring wipes, and refined storybooks with full story reading sections.")
     st.markdown('</div>', unsafe_allow_html=True)
 
     col1, col2 = st.columns(2)
@@ -1062,7 +1062,7 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
-# 8. GOETHE A1 MOCK EXAMINATION (SIMULATED TIMED WORKFLOW)
+# 8. GOETHE A1 MOCK EXAMINATION (SIMULATED TIMED WORKFLOW WITH RESET OPTIONS)
 # ----------------------------------------------------
 elif nav_choice == "🏆 Goethe A1 Mock Examination":
     st.markdown('<div class="accent-card">', unsafe_allow_html=True)
@@ -1077,6 +1077,8 @@ elif nav_choice == "🏆 Goethe A1 Mock Examination":
         st.session_state.exam_stage = "MENU"
     if "section_timer_start" not in st.session_state:
         st.session_state.section_timer_start = 0
+    if "exam_answers" not in st.session_state:
+        st.session_state.exam_answers = {}
 
     if st.session_state.exam_history:
         st.markdown("### 📊 Progress Report & Score History")
@@ -1094,10 +1096,26 @@ elif nav_choice == "🏆 Goethe A1 Mock Examination":
             ]
         st.table(table_data)
 
-        latest_pct = st.session_state.exam_history[-1]["percentage"]
-        st.info(f"🤖 **Gem's Official Exam Readiness Assessment:** Your latest mock score is **{latest_pct}%**. Passing requirement for Goethe A1 is **60%**. Based on your exam performance trajectory, your predicted passing probability for the December 12, 2026 exam is **{min(98, max(20, latest_pct + 12))}%**!")
+        col_h1, col_h2 = st.columns(2)
+        with col_h1:
+            latest_pct = st.session_state.exam_history[-1]["percentage"]
+            st.info(f"🤖 **Gem's Official Exam Readiness Assessment:** Your latest mock score is **{latest_pct}%**. Passing requirement for Goethe A1 is **60%**. Predicted passing probability: **{min(98, max(20, latest_pct + 12))}%**!")
+        with col_h2:
+            if st.button("🗑️ Reset All Score History", type="secondary"):
+                st.session_state.exam_history = []
+                st.success("All score history cleared!")
+                st.rerun()
 
     st.divider()
+
+    # Mid-exam reset button when examination is active
+    if st.session_state.exam_stage != "MENU":
+        if st.button("🔄 Reset Current Exam & Return to Menu", type="secondary"):
+            st.session_state.mock_data = None
+            st.session_state.exam_stage = "MENU"
+            st.session_state.exam_answers = {}
+            st.rerun()
+        st.divider()
 
     if st.session_state.exam_stage == "MENU":
         if st.button("🚀 Start Full Timed Mock Exam Simulation", type="primary"):
@@ -1313,12 +1331,12 @@ elif nav_choice == "🏆 Goethe A1 Mock Examination":
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
-# 9. A1 & A2 SHORT STORIES (20 STORIES EACH, UP TO 40 PARTS, REFINED LAYOUT)
+# 9. A1 & A2 SHORT STORIES (20 STORIES EACH, UP TO 40 PARTS, FULL STORY SECTION)
 # ----------------------------------------------------
 elif nav_choice == "📖 A1 & A2 Short Stories":
     st.markdown('<div class="accent-card">', unsafe_allow_html=True)
     st.subheader("📖 Enchanted Storybook Reader: 20 Fairy Tales & 20 Classics (Up to 40 Parts)")
-    st.write("Immerse yourself in 20 A1 fairy tales and 20 A2 classic fictions with one main story illustration at the top, audio icon on the left, followed by the German text, followed by the English translation.")
+    st.write("Immerse yourself in 20 A1 fairy tales and 20 A2 classic fictions with one main story illustration at the top, audio icon on the left, followed by the German text, followed by the English translation. Includes a dedicated Full Story Reading tab.")
 
     story_level = st.radio("Select CEFR Level:", ["A1 Level (20 Fairy Tales & Disney Stories)", "A2 Level (20 Fiction Classics & Novels)"], horizontal=True)
 
@@ -1386,6 +1404,7 @@ elif nav_choice == "📖 A1 & A2 Short Stories":
             Also provide:
             - 'main_image_url': A main cartoon/animated style storybook cover image URL.
             - 'full_audio_text': The entire German story as one continuous uncut string.
+            - 'full_english_text': The entire English story translation as one continuous paragraph.
 
             Return strict JSON format:
             {{
@@ -1393,6 +1412,7 @@ elif nav_choice == "📖 A1 & A2 Short Stories":
                 "title_en": "{story_choice_en}",
                 "main_image_url": "https://picsum.photos/seed/{story_choice_en.replace(' ', '')}cover/800/400",
                 "full_audio_text": "Full continuous German text...",
+                "full_english_text": "Full continuous English translation...",
                 "paragraphs": [
                     {{"german": "German part 1...", "english": "English part 1..."}},
                     {{"german": "German part 2...", "english": "English part 2..."}}
@@ -1408,20 +1428,41 @@ elif nav_choice == "📖 A1 & A2 Short Stories":
     if "active_story" in st.session_state:
         st.markdown(f"## 👑 {st.session_state.active_story['title_de']} / *{st.session_state.active_story['title_en']}*")
         st.image(st.session_state.active_story["main_image_url"], use_column_width=True)
-        st.markdown("🎧 **Full Story Audio Narration (Uncut Track):**")
-        st.audio(generate_german_audio_bytes(st.session_state.active_story['full_audio_text']), format="audio/mp3")
-        st.divider()
-
-        for idx, p in enumerate(st.session_state.active_story["paragraphs"], 1):
-            st.markdown(f"### Part {idx}")
-            col_aud, col_text = st.columns([0.5, 10])
-            with col_aud:
-                if st.button("🔊", key=f"audio_story_p_{idx}"):
-                    play_direct_audio(p["german"], f"story_p_{idx}")
-            with col_text:
-                st.info(f"**🇩🇪 German:** {p['german']}")
-                st.success(f"**🇬🇧 English:** {p['english']}")
+        
+        story_tab1, story_tab2 = st.tabs(["📖 Sentence-by-Sentence Reader", "📜 Full Story Reader (Combined Paragraph)"])
+        
+        with story_tab1:
+            st.markdown("#### 🎧 Section Audio Narration (Full Story)")
+            col_fa, _ = st.columns([0.5, 10])
+            with col_fa:
+                if st.button("🔊", key="audio_full_story_btn"):
+                    play_direct_audio(st.session_state.active_story['full_audio_text'], "full_story_audio")
             st.divider()
+
+            for idx, p in enumerate(st.session_state.active_story["paragraphs"], 1):
+                st.markdown(f"**Part {idx}**")
+                col_aud, col_text = st.columns([0.5, 10])
+                with col_aud:
+                    if st.button("🔊", key=f"audio_story_p_{idx}"):
+                        play_direct_audio(p["german"], f"story_p_{idx}")
+                with col_text:
+                    st.info(f"**🇩🇪 German:** {p['german']}")
+                    st.success(f"**🇬🇧 English:** {p['english']}")
+                st.divider()
+
+        with story_tab2:
+            st.markdown("### 📜 Full Story Combined Reading")
+            col_fa2, _ = st.columns([0.5, 10])
+            with col_fa2:
+                if st.button("🔊", key="audio_full_story_combined"):
+                    play_direct_audio(st.session_state.active_story['full_audio_text'], "full_story_combined_audio")
+            st.caption("Click speaker icon to listen to the entire German story.")
+            
+            st.markdown("#### 🇩🇪 German Full Text")
+            st.info(st.session_state.active_story['full_audio_text'])
+            
+            st.markdown("#### 🇬🇧 English Full Translation")
+            st.success(st.session_state.active_story['full_english_text'])
 
     st.markdown('</div>', unsafe_allow_html=True)
 
