@@ -1,6 +1,7 @@
 import os
 import json
 import io
+import random
 import streamlit as st
 from google import genai
 from google.genai import types
@@ -15,40 +16,38 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# CSS for Flip Flashcard Styling & Custom Layout
+# Custom Styling
 st.markdown("""
 <style>
     .stApp { background-color: #f8fafc; font-family: system-ui, -apple-system, sans-serif; }
     .main-card { background: #ffffff; border-radius: 16px; padding: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); margin-bottom: 20px; border: 1px solid #e2e8f0; }
     .accent-card { background: #ffffff; border-radius: 16px; padding: 24px; border-left: 6px solid #2563eb; box-shadow: 0 2px 12px rgba(37, 99, 235, 0.06); margin-bottom: 20px; border: 1px solid #e2e8f0; }
     
-    /* Interactive Flashcard Front UI */
+    /* Interactive Flashcard UI */
     .flashcard-front-box {
         background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
         color: #ffffff;
         border-radius: 20px;
-        padding: 50px 20px;
+        padding: 40px 20px;
         text-align: center;
         box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.25);
         border: 2px solid #38bdf8;
-        margin-bottom: 20px;
+        margin-bottom: 15px;
     }
     .flashcard-word-title {
-        font-size: 3.5rem;
+        font-size: 3rem;
         font-weight: 800;
         letter-spacing: -0.025em;
         color: #38bdf8;
-        margin-bottom: 15px;
+        margin-bottom: 10px;
     }
-    
-    /* Interactive Flashcard Back UI */
     .flashcard-back-box {
         background: #ffffff;
         border: 2px solid #2563eb;
         border-radius: 20px;
-        padding: 30px;
+        padding: 25px;
         box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.12);
-        margin-bottom: 20px;
+        margin-bottom: 15px;
     }
     .flashcard-back-title {
         font-size: 2.2rem;
@@ -62,6 +61,12 @@ st.markdown("""
         color: #2563eb;
         margin-bottom: 15px;
     }
+    
+    /* Metric Font Uniformity */
+    [data-testid="stMetricValue"] {
+        font-size: 1rem !important;
+        font-weight: 600 !important;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -72,13 +77,12 @@ if not api_key:
     st.stop()
 
 client = genai.Client(api_key=api_key.strip())
-MODEL_NAME = "gemini-3.5-flash-lite"
+MODEL_NAME = "gemini-2.5-flash"
 
 SYSTEM_INSTRUCTION = """
 You are Gem, an expert German tutor and official Goethe-Institut examiner evaluating candidates for the Goethe-Zertifikat A1 exam.
-
-You follow standard CEFR A1 learning objectives and handbook guidelines.
-When generating structured content, exercise sets, or JSON flashcards, ensure exact correctness, clear explanations, and strict output formats.
+Follow standard CEFR A1 learning objectives and handbook guidelines.
+Ensure exact correctness, clear explanations, thorough lesson reviews, and strict JSON output formats when requested.
 """
 
 @st.cache_data(show_spinner=False)
@@ -101,12 +105,13 @@ def load_goethe_vocab():
             return json.load(f)
     except Exception:
         return {
-            "🍎 Essen & Trinken": ["einkaufen", "das Brot", "der Apfel", "die Milch", "das Wasser"],
-            "🚗 Reisen & Verkehr": ["die Fahrkarte", "der Bahnhof", "der Flughafen", "abholen"],
-            "🏠 Wohnen & Alltag": ["die Wohnung", "der Schlüssel", "das Zimmer", "aufstehen"]
+            "Essen & Trinken": ["einkaufen", "das Brot", "der Apfel", "die Milch", "das Wasser"],
+            "Reisen & Verkehr": ["die Fahrkarte", "der Bahnhof", "der Flughafen", "abholen"],
+            "Wohnen & Alltag": ["die Wohnung", "der Schlüssel", "das Zimmer", "aufstehen"]
         }
 
 GOETHE_WORD_BANK = load_goethe_vocab()
+ALL_WORDS = [word for cat in GOETHE_WORD_BANK.values() for word in cat]
 
 @st.cache_data(show_spinner=False)
 def generate_german_audio_bytes(text: str) -> bytes:
@@ -172,42 +177,28 @@ if nav_choice == "🏠 Study Dashboard":
         st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
-# 2. MASTER GOETHE WORD ENGINE (UPDATED FLASHCARD)
+# 2. MASTER GOETHE WORD ENGINE (FLASHCARD DIRECT SHOW)
 # ----------------------------------------------------
 elif nav_choice == "📚 Master Goethe Word Engine":
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
     st.subheader("📚 Master Goethe A1 Interactive Flashcard Engine")
-    st.write("Front features center word and native audio. Flip to reveal complete grammatical breakdowns.")
 
-    cat_col, word_col = st.columns(2)
-    with cat_col:
-        selected_cat = st.selectbox("Select Category:", list(GOETHE_WORD_BANK.keys()))
-    with word_col:
-        selected_word = st.selectbox("Select Keyword:", GOETHE_WORD_BANK[selected_cat])
-    
-    custom_word = st.text_input("Or type any German word directly:")
-    active_word = custom_word.strip() if custom_word.strip() else selected_word
-
+    if "current_flashcard_word" not in st.session_state:
+        st.session_state.current_flashcard_word = "einkaufen"
     if "show_card_back" not in st.session_state:
         st.session_state.show_card_back = False
 
-    col_b1, col_b2 = st.columns(2)
-    with col_b1:
-        if st.button(f"🔍 Load Card for '{active_word}'", type="primary", use_container_width=True):
-            st.session_state.show_card_back = False
-    with col_b2:
-        if st.button("🔄 Flip Flashcard (Front / Back)", use_container_width=True):
-            st.session_state.show_card_back = not st.session_state.show_card_back
+    active_word = st.session_state.current_flashcard_word
 
     prompt = f"""
     Generate an exhaustive A1 study card JSON for '{active_word}'.
     Return strict JSON with this exact schema:
     {{
         "word": "{active_word}",
-        "part_of_speech": "Noun / Verb / Adjective / Preposition / Conjunction",
+        "part_of_speech": "Verb",
         "english_meaning": "English translation",
-        "gender": "der / die / das / N/A",
-        "plural_form": "Plural form or N/A",
+        "gender": "N/A",
+        "plural_form": "N/A",
         "conjugations": [
             {{"pronoun": "ich", "form": "...", "sentence": "German sentence", "sentence_en": "English sentence"}},
             {{"pronoun": "du", "form": "...", "sentence": "German sentence", "sentence_en": "English sentence"}},
@@ -221,7 +212,7 @@ elif nav_choice == "📚 Master Goethe Word Engine":
             "sample_sentence_de": "German Perfekt sentence",
             "sample_sentence_en": "English Perfekt sentence"
         }},
-        "comparative_superlative": "Comparative / Superlative or N/A",
+        "comparative_superlative": "N/A",
         "common_phrases": [
             {{"phrase_de": "German phrase", "phrase_en": "English translation"}},
             {{"phrase_de": "German phrase", "phrase_en": "English translation"}}
@@ -229,6 +220,7 @@ elif nav_choice == "📚 Master Goethe Word Engine":
         "grammar_notes": "Important A1 grammar note (case triggers, prepositions, forced accusative, separable prefix, etc.)"
     }}
     """
+
     try:
         raw_json = generate_cached_content(prompt, is_json=True)
         data = json.loads(raw_json)
@@ -237,13 +229,13 @@ elif nav_choice == "📚 Master Goethe Word Engine":
         if not st.session_state.show_card_back:
             st.markdown(f"""
             <div class="flashcard-front-box">
-                <p style="color: #94a3b8; font-weight: 600; letter-spacing: 0.05em;">GERMAN A1 FLASHCARD (FRONT)</p>
+                <p style="color: #94a3b8; font-weight: 600; letter-spacing: 0.05em; margin-bottom: 5px;">GERMAN A1 FLASHCARD (FRONT)</p>
                 <div class="flashcard-word-title">{data.get("word", active_word)}</div>
-                <p style="color: #cbd5e1; font-size: 0.95rem;">Listen to pronunciation below, then click 'Flip Flashcard 🔄' to view full details.</p>
+                <p style="color: #cbd5e1; font-size: 0.9rem; margin-bottom: 0px;">Listen to pronunciation below, then flip the card to see detailed grammar.</p>
             </div>
             """, unsafe_allow_html=True)
             
-            st.markdown("#### 🔊 Native Audio Pronunciation")
+            st.markdown("##### 🔊 Native Audio Pronunciation")
             audio_bytes = generate_german_audio_bytes(active_word)
             st.audio(audio_bytes, format="audio/mp3")
 
@@ -257,15 +249,15 @@ elif nav_choice == "📚 Master Goethe Word Engine":
             """, unsafe_allow_html=True)
 
             c1, c2, c3, c4 = st.columns(4)
-            c1.metric("Part of Speech", data.get("part_of_speech", "-"))
-            c2.metric("Gender", data.get("gender", "-"))
-            c3.metric("Plural Form", data.get("plural_form", "-"))
-            c4.metric("Comp. / Superlative", data.get("comparative_superlative", "-"))
+            c1.metric("Part of Speech", data.get("part_of_speech", "N/A"))
+            c2.metric("Gender", data.get("gender", "N/A"))
+            c3.metric("Plural Form", data.get("plural_form", "N/A"))
+            c4.metric("Comp. / Superlative", data.get("comparative_superlative", "N/A"))
 
             perf = data.get("perfekt_tense", {})
             st.success(f"⏳ **Perfekt Tense:** `{perf.get('formula', 'N/A')}`\n\n• **DE:** {perf.get('sample_sentence_de', '')}\n• **EN:** {perf.get('sample_sentence_en', '')}")
 
-            st.info(f"💡 **Grammar Notes & Rules:** {data.get('grammar_notes', '')}")
+            st.info(f"💡 **Grammar Notes & Rules:** {data.get('grammar_notes', 'N/A')}")
 
             st.markdown("#### 🔄 Conjugations & Example Sentences")
             conjs = data.get("conjugations", [])
@@ -280,15 +272,37 @@ elif nav_choice == "📚 Master Goethe Word Engine":
     except Exception as e:
         st.error(f"Error compiling flashcard details: {str(e)}")
 
+    st.divider()
+
+    # CONTROLS
+    col_f1, col_f2 = st.columns([1, 1])
+    with col_f1:
+        if st.button("🔄 Flip Flashcard (Front / Back)", use_container_width=True, type="primary"):
+            st.session_state.show_card_back = not st.session_state.show_card_back
+            st.rerun()
+
+    with col_f2:
+        if st.button("🎲 Random Goethe Word", use_container_width=True):
+            st.session_state.current_flashcard_word = random.choice(ALL_WORDS)
+            st.session_state.show_card_back = False
+            st.rerun()
+
+    search_word = st.text_input("🔍 Type any German word to load onto flashcard:", placeholder="e.g. Bahnhof, einkaufen, schlafen...")
+    if search_word.strip():
+        if st.button(f"Load '{search_word.strip()}'"):
+            st.session_state.current_flashcard_word = search_word.strip()
+            st.session_state.show_card_back = False
+            st.rerun()
+
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
-# 3. CORE GRAMMAR PRACTICE & EXERCISES (HANDBOOK MATCHED)
+# 3. CORE GRAMMAR PRACTICE & EXERCISES (THOROUGH REVIEW BEFORE EXERCISES)
 # ----------------------------------------------------
 elif nav_choice == "📖 Core Grammar Practice & Exercises":
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
-    st.subheader("📖 Core Grammar Modules & Practice Exercises")
-    st.write("Review class handbook modules and complete 20 practice exercises per lesson with instant evaluations and explanations.")
+    st.subheader("📖 Core Grammar Practice & Exercises")
+    st.write("Review class handbook modules with thorough lesson explanations, then complete 20 targeted practice exercises.")
 
     handbook_lessons = [
         "Lesson 1: German Alphabet, Pronunciation, and Article Recognition",
@@ -333,16 +347,16 @@ elif nav_choice == "📖 Core Grammar Practice & Exercises":
         "Lesson 40: CEFR A1 Mock Examination Overview"
     ]
 
-    selected_lesson = st.selectbox("Select Handbook Lesson to Study:", handbook_lessons)
+    selected_lesson = st.selectbox("Select Handbook Lesson to Review & Practice:", handbook_lessons)
 
-    if st.button("🎲 Generate Lesson Summary & 20 Targeted Practice Exercises", type="primary"):
-        with st.spinner("Gem is summarizing module and constructing 20 targeted practice exercises..."):
+    if st.button("📖 Load Thorough Lesson Review & 20 Practice Exercises", type="primary"):
+        with st.spinner("Gem is compiling lesson review notes and 20 practice exercises..."):
             prompt = f"""
-            Create a complete study & exercise package for '{selected_lesson}'.
+            Create a detailed study review & 20-exercise package for '{selected_lesson}'.
             Return strict JSON with this exact schema:
             {{
                 "lesson_title": "{selected_lesson}",
-                "lesson_summary": "Detailed, highly practical explanation of core grammar rules and handbook concepts for this lesson.",
+                "lesson_explanation": "Thorough, detailed, and structured review breakdown of '{selected_lesson}'. Include core grammar rules, clear bullet points, sentence structure patterns, key exceptions, and practical beginner shortcuts.",
                 "exercises_mc": [
                     {{"id": "mc1", "question": "Question 1", "options": ["A", "B", "C", "D"], "correct": "A", "explanation": "Why A is correct..."}},
                     {{"id": "mc2", "question": "Question 2", "options": ["A", "B", "C", "D"], "correct": "B", "explanation": "Why B is correct..."}},
@@ -381,8 +395,10 @@ elif nav_choice == "📖 Core Grammar Practice & Exercises":
 
     if "active_grammar_module" in st.session_state:
         mod = st.session_state.active_grammar_module
-        st.markdown(f"### 📘 {mod['lesson_title']}")
-        st.info(mod["lesson_summary"])
+        
+        # Comprehensive Lesson Review & Explanation Box
+        st.markdown(f"### 📘 Comprehensive Lesson Review: {mod['lesson_title']}")
+        st.info(mod["lesson_explanation"])
 
         st.divider()
         st.subheader("📝 Practice Exercises (20 Questions)")
@@ -449,7 +465,7 @@ elif nav_choice == "📖 Core Grammar Practice & Exercises":
                 else:
                     st.error(f"**Q{idx}: Incorrect.** Your answer: `{u_ans}` | Correct: `{q['answer']}`\n\n💡 **Reason:** {q['explanation']}")
 
-            # Grade Section 3 & 4 with AI verification
+            # Grade Section 3 & 4
             st.markdown("#### 3 & 4. Sentence Creation & Translation Evaluation")
             with st.spinner("Gem is evaluating sentence structures and translations..."):
                 sc_st_prompt = f"""
