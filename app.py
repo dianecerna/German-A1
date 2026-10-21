@@ -430,11 +430,11 @@ LESEN_TEIL3_SCENARIOS = [
     }
 ]
 
-# Schreiben Teil 1 Official Scenarios Bank (Mirrored to match exact Goethe A1 Formular format like Bodensee-Rundfahrt)
+# Schreiben Teil 1 Official Scenarios Bank (All 7 exact scenarios requested from images 39-43)
 SCHREIBEN_TEIL1_SCENARIOS = [
     {
         "title": "Bodensee-Rundfahrt — Anmeldung",
-        "desc": "Registration for a Bodensee tour with Eva Kadavy – Fill out 5 missing gaps in the form.",
+        "desc": "Registration for a Bodensee tour with Eva Kadavy – Fill out a form, 5 gaps, 10 min.",
         "aufgabe": "Ihre Freundin, Eva Kadavy, macht mit ihrem Mann und ihren beiden Söhnen (8 und 11 Jahre alt) Urlaub in Seeheim.\n\nIm Reisebüro bucht sie für den nächsten Sonntag eine Busfahrt um den Bodensee.\n\nFrau Kadavy hat keine Kreditkarte.\n\nIn dem Formular fehlen fünf Informationen. Helfen Sie Ihrer Freundin und schreiben Sie die fünf fehlenden Informationen in das Formular.",
         "form_title": "BODENSEE-RUNDFAHRT — Anmeldung",
         "fields": [
@@ -450,66 +450,123 @@ SCHREIBEN_TEIL1_SCENARIOS = [
         ]
     },
     {
-        "title": "Volkshochschule — Anmeldung Deutschkurs",
-        "desc": "Marco Rossi registers for an evening German course. Fill out 5 missing gaps in the form.",
-        "aufgabe": "Ihr Bekannter, Marco Rossi, wohnt in der Goethestraße 5 in 10625 Berlin.\n\nEr möchte ab nächstem Montag einen Abend-Deutschkurs (Kurs B1.1) besuchen.\n\nEr möchte per Überweisung bezahlen.\n\nIn dem Formular fehlen fünf Informationen. Helfen Sie Ihrem Bekannten und schreiben Sie die fünf fehlenden Informationen in das Formular.",
-        "form_title": "VOLKSHOCHSCHULE BERLIN — Kursanmeldung",
+        "title": "Praxis Dr. Sommer — Patienteninformation",
+        "desc": "Pavel Novák's patient information for a doctor's visit – Fill out a form, 5 gaps, 10 min.",
+        "aufgabe": "Pavel Novák (geboren 1985) hat starke Kopfschmerzen und geht in die Arztpraxis Dr. Sommer.\n\nEr ist bei der Krankenkasse AOK versichert.\n\nEr möchte morgen um 9 Uhr einen Termin.\n\nIn dem Formular fehlen fünf Informationen. Helfen Sie ihm und schreiben Sie die fünf fehlenden Informationen in das Formular.",
+        "form_title": "ARZTPRAXIS DR. SOMMER — Patientenkarte",
         "fields": [
-            {"id": "sf1", "label": "Familienname, Vorname:", "default": "Rossi, Marco", "is_gap": False},
-            {"id": "sf2", "label": "1. Straße, Hausnummer:", "answer": "Goethestraße 5", "is_gap": True, "placeholder": "Straße und Hausnummer"},
-            {"id": "sf3", "label": "2. PLZ, Wohnort:", "answer": "10625 Berlin", "is_gap": True, "placeholder": "PLZ und Wohnort"},
-            {"id": "sf4", "label": "Kursnummer:", "default": "B1.1", "is_gap": False},
-            {"id": "sf5", "label": "3. Kurszeit:", "answer": "Abend", "is_gap": True, "placeholder": "z. B. Abend"},
-            {"id": "sf6", "label": "4. Kursbeginn:", "answer": "nächsten Montag", "is_gap": True, "placeholder": "z. B. nächsten Montag"},
-            {"id": "sf7", "label": "5. Zahlungsweise:", "answer": "Überweisung", "is_gap": True, "placeholder": "Bar oder Überweisung", "options": ["Bar", "Überweisung"]},
-            {"id": "sf8", "label": "Unterschrift:", "default": "Marco Rossi", "is_gap": False}
+            {"id": "sf1", "label": "Familienname, Vorname:", "default": "Novák, Pavel", "is_gap": False},
+            {"id": "sf2", "label": "1. Geburtsjahr:", "answer": "1985", "is_gap": True, "placeholder": "z. B. 1985"},
+            {"id": "sf3", "label": "2. Beschwerde:", "answer": "Kopfschmerzen", "is_gap": True, "placeholder": "z. B. Kopfschmerzen"},
+            {"id": "sf4", "label": "3. Krankenkasse:", "answer": "AOK", "is_gap": True, "placeholder": "z. B. AOK"},
+            {"id": "sf5", "label": "4. Termin gewünscht:", "answer": "morgen, 9 Uhr", "is_gap": True, "placeholder": "z. B. morgen, 9 Uhr"},
+            {"id": "sf6", "label": "5. Telefonnummer:", "answer": "015239871", "is_gap": True, "placeholder": "Telefonnummer"},
+            {"id": "sf7", "label": "Unterschrift:", "default": "Pavel Novák", "is_gap": False}
         ]
     },
     {
-        "title": "Stadtbibliothek Köln — Leserausweis",
-        "desc": "Anna Kowalski applies for a library card. Fill out 5 missing gaps in the form.",
-        "aufgabe": "Ihre Freundin Anna Kowalski (geboren am 14.05.1995) wohnt in Köln in der Domstraße 12.\n\nIhre Telefonnummer ist 022198765.\n\nSie möchte Bücher und DVDs ausleihen.\n\nIn dem Formular fehlen fünf Informationen. Helfen Sie Ihrer Freundin und schreiben Sie die fünf fehlenden Informationen in das Formular.",
+        "title": "Fitnessstudio FitAktiv — Anmeldung",
+        "desc": "Omar Haddad's registration at the FitAktiv gym – Fill out a form, 5 gaps, 10 min.",
+        "aufgabe": "Omar Haddad möchte eine Mitgliedschaft im Fitnessstudio FitAktiv für 1 Jahr abschließen.\n\nDer Monatsbeitrag beträgt 30 Euro.\n\nEr möchte am 01. November starten.\n\nIn dem Formular fehlen fünf Informationen. Helfen Sie ihm und tragen Sie die fehlenden Angaben ein.",
+        "form_title": "FITAKTIV MITGLIEDSCHAFT",
+        "fields": [
+            {"id": "sf1", "label": "Familienname, Vorname:", "default": "Haddad, Omar", "is_gap": False},
+            {"id": "sf2", "label": "1. Mitgliedschaft:", "answer": "1 Jahr", "is_gap": True, "placeholder": "z. B. 1 Jahr"},
+            {"id": "sf3", "label": "2. Monatsbeitrag:", "answer": "30 Euro", "is_gap": True, "placeholder": "z. B. 30 Euro"},
+            {"id": "sf4", "label": "3. Starttermin:", "answer": "01. November", "is_gap": True, "placeholder": "Datum"},
+            {"id": "sf5", "label": "4. Zahlungsart:", "answer": "Überweisung", "is_gap": True, "placeholder": "Bar oder Überweisung", "options": ["Bar", "Überweisung"]},
+            {"id": "sf6", "label": "5. Bankverbindung:", "answer": "DE89...ples", "is_gap": True, "placeholder": "IBAN"},
+            {"id": "sf7", "label": "Unterschrift:", "default": "Omar Haddad", "is_gap": False}
+        ]
+    },
+    {
+        "title": "Hotel Seeblick — Reservierung",
+        "desc": "Klara Veidt's reservation at Hotel Seeblick – Fill out a form, 5 gaps, 10 min.",
+        "aufgabe": "Klara Veidt möchte im Hotel Seeblick ein Doppelzimmer für 4 Nächte mit Frühstück reservieren.\n\nSie reist am 18. Juli an.\n\nIn dem Formular fehlen fünf Informationen. Helfen Sie ihr und tragen Sie die fehlenden Angaben ein.",
+        "form_title": "HOTEL SEEBLICK — Reservierung",
+        "fields": [
+            {"id": "sf1", "label": "Familienname, Vorname:", "default": "Veidt, Klara", "is_gap": False},
+            {"id": "sf2", "label": "1. Zimmerart:", "answer": "Doppelzimmer", "is_gap": True, "placeholder": "Einzelzimmer oder Doppelzimmer", "options": ["Einzelzimmer", "Doppelzimmer"]},
+            {"id": "sf3", "label": "2. Übernachtungen:", "answer": "4 Nächte", "is_gap": True, "placeholder": "z. B. 4 Nächte"},
+            {"id": "sf4", "label": "3. Verpflegung:", "answer": "Frühstück", "is_gap": True, "placeholder": "z. B. Frühstück"},
+            {"id": "sf5", "label": "4. Ankunft:", "answer": "18. Juli", "is_gap": True, "placeholder": "Datum"},
+            {"id": "sf6", "label": "5. Telefonnummer:", "answer": "089123456", "is_gap": True, "placeholder": "Telefonnummer"},
+            {"id": "sf7", "label": "Unterschrift:", "default": "Klara Veidt", "is_gap": False}
+        ]
+    },
+    {
+        "title": "Volkshochschule — Anmeldung Deutschkurs",
+        "desc": "Marco Rossi's registration for a German course – Fill out a form, 5 gaps, 10 min.",
+        "aufgabe": "Marco Rossi möchte an der Volkshochschule den Deutschkurs DE-104 (Stufe A1) ab dem 10. Oktober besuchen.\n\nEr bezahlt per Überweisung.\n\nIn dem Formular fehlen fünf Informationen. Helfen Sie ihm und tragen Sie die fehlenden Angaben ein.",
+        "form_title": "VOLKSHOCHSCHULE — Anmeldeformular",
+        "fields": [
+            {"id": "sf1", "label": "Familienname, Vorname:", "default": "Rossi, Marco", "is_gap": False},
+            {"id": "sf2", "label": "1. Kursnummer:", "answer": "DE-104", "is_gap": True, "placeholder": "z. B. DE-104"},
+            {"id": "sf3", "label": "2. Stufe:", "answer": "A1", "is_gap": True, "placeholder": "A1, A2, B1"},
+            {"id": "sf4", "label": "3. Kursbeginn:", "answer": "10. Oktober", "is_gap": True, "placeholder": "Datum"},
+            {"id": "sf5", "label": "4. Zahlungsart:", "answer": "Überweisung", "is_gap": True, "placeholder": "Bar oder Überweisung", "options": ["Bar", "Überweisung"]},
+            {"id": "sf6", "label": "5. Telefonnummer:", "answer": "030987654", "is_gap": True, "placeholder": "Telefonnummer"},
+            {"id": "sf7", "label": "Unterschrift:", "default": "Marco Rossi", "is_gap": False}
+        ]
+    },
+    {
+        "title": "Stadtbibliothek Köln — Anmeldung",
+        "desc": "Anna Kowalski's application for a library card – Fill out a form, 5 gaps, 10 min.",
+        "aufgabe": "Anna Kowalski wohnt in der Domstraße 12 in Köln und wurde am 14.05.1995 geboren.\n\nIhre Telefonnummer ist 022198765.\n\nDie Jahresgebühr beträgt 15 Euro.\n\nIn dem Formular fehlen fünf Informationen. Helfen Sie ihr und tragen Sie die fehlenden Angaben ein.",
         "form_title": "STADTBIBLIOTHEK KÖLN — Leserausweis",
         "fields": [
             {"id": "sf1", "label": "Familienname, Vorname:", "default": "Kowalski, Anna", "is_gap": False},
-            {"id": "sf2", "label": "1. Geburtsdatum:", "answer": "14.05.1995", "is_gap": True, "placeholder": "TT.MM.JJJJ"},
-            {"id": "sf3", "label": "2. Straße, Hausnummer:", "answer": "Domstraße 12", "is_gap": True, "placeholder": "Straße und Hausnummer"},
-            {"id": "sf4", "label": "3. PLZ, Ort:", "answer": "50667 Köln", "is_gap": True, "placeholder": "PLZ und Ort"},
-            {"id": "sf5", "label": "4. Telefonnummer:", "answer": "022198765", "is_gap": True, "placeholder": "Telefonnummer"},
-            {"id": "sf6", "label": "Bibliotheksausweis für:", "default": "Bücher und DVDs", "is_gap": False},
-            {"id": "sf7", "label": "5. Jahresgebühr:", "answer": "15 Euro", "is_gap": True, "placeholder": "z. B. 15 Euro"},
-            {"id": "sf8", "label": "Unterschrift:", "default": "Anna Kowalski", "is_gap": False}
+            {"id": "sf2", "label": "1. Adresse:", "answer": "Domstraße 12", "is_gap": True, "placeholder": "Straße und Hausnummer"},
+            {"id": "sf3", "label": "2. Geburtsdatum:", "answer": "14.05.1995", "is_gap": True, "placeholder": "TT.MM.JJJJ"},
+            {"id": "sf4", "label": "3. Telefonnummer:", "answer": "022198765", "is_gap": True, "placeholder": "Telefonnummer"},
+            {"id": "sf5", "label": "4. Jahresgebühr:", "answer": "15 Euro", "is_gap": True, "placeholder": "z. B. 15 Euro"},
+            {"id": "sf6", "label": "5. Stadtteil:", "answer": "Köln", "is_gap": True, "placeholder": "Stadt"},
+            {"id": "sf7", "label": "Unterschrift:", "default": "Anna Kowalski", "is_gap": False}
         ]
     },
     {
-        "title": "Schwimmbad Aqua — Kursanmeldung",
-        "desc": "Emir Yıldız registers for a swimming course. Fill out 5 missing gaps in the form.",
-        "aufgabe": "Emir Yıldız (28 Jahre alt) möchte im Schwimmbad Aqua einen Anfängerschwimmkurs besuchen.\n\nEr hat nur am Samstag um 10:00 Uhr Zeit.\n\nSeine Telefonnummer ist 017654321.\n\nIn dem Formular fehlen fünf Informationen. Helfen Sie ihm und schreiben Sie die fünf fehlenden Informationen in das Formular.",
+        "title": "Schwimmbad Aqua — Anmeldung Schwimmkurs",
+        "desc": "Emir Yıldız's registration for a beginner swimming course – Fill out a form, 5 gaps, 10 min.",
+        "aufgabe": "Emir Yıldız (28 Jahre alt) möchte einen Anfängerschwimmkurs am Samstag um 10:00 Uhr im Schwimmbad Aqua besuchen.\n\nIn dem Formular fehlen fünf Informationen. Helfen Sie ihm und tragen Sie die fehlenden Angaben ein.",
         "form_title": "SCHWIMMBAD AQUA — Kursanmeldung",
         "fields": [
             {"id": "sf1", "label": "Familienname, Vorname:", "default": "Yıldız, Emir", "is_gap": False},
             {"id": "sf2", "label": "1. Alter:", "answer": "28", "is_gap": True, "placeholder": "z. B. 28"},
-            {"id": "sf3", "label": "2. Kursart:", "answer": "Anfänger", "is_gap": True, "placeholder": "Anfänger oder Fortgeschrittene"},
-            {"id": "sf4", "label": "3. Wochentag:", "answer": "Samstag", "is_gap": True, "placeholder": "z. B. Samstag"},
-            {"id": "sf5", "label": "4. Uhrzeit:", "answer": "10:00 Uhr", "is_gap": True, "placeholder": "z. B. 10:00 Uhr"},
+            {"id": "sf3", "label": "2. Kursart:", "answer": "Anfänger", "is_gap": True, "placeholder": "Anfänger"},
+            {"id": "sf4", "label": "3. Tag:", "answer": "Samstag", "is_gap": True, "placeholder": "Wochentag"},
+            {"id": "sf5", "label": "4. Uhrzeit:", "answer": "10:00 Uhr", "is_gap": True, "placeholder": "Uhrzeit"},
             {"id": "sf6", "label": "5. Telefonnummer:", "answer": "017654321", "is_gap": True, "placeholder": "Telefonnummer"},
             {"id": "sf7", "label": "Unterschrift:", "default": "Emir Yıldız", "is_gap": False}
         ]
     },
     {
         "title": "Nordbank — Kontoeröffnung",
-        "desc": "Diego Fernández opens a bank account. Fill out 5 missing gaps in the form.",
-        "aufgabe": "Diego Fernández arbeitet als Koch und wohnt in München.\n\nSeine E-Mail-Adresse ist diego@web.de.\n\nEr möchte ein Girokonto eröffnen und zahlt 50 Euro Startguthaben ein.\n\nIn dem Formular fehlen fünf Informationen. Helfen Sie ihm und schreiben Sie die fünf fehlenden Informationen in das Formular.",
-        "form_title": "NORDBANK MÜNCHEN — Kontoeröffnung",
+        "desc": "Helping Diego Fernández open a bank account – Fill out a form, 5 gaps, 10 min.",
+        "aufgabe": "Diego Fernández arbeitet als Koch und möchte bei der Nordbank ein Konto eröffnen.\n\nSeine E-Mail ist diego@web.de und das Startguthaben beträgt 50 Euro.\n\nIn dem Formular fehlen fünf Informationen. Helfen Sie ihm und tragen Sie die fehlenden Angaben ein.",
+        "form_title": "NORDBANK — Kontoeröffnungsformular",
         "fields": [
-            {"id": "sf1", "label": "Familienname, Vorname:", "default": "Fernández, Diego", "is_gap": False},
-            {"id": "sf2", "label": "1. Beruf:", "answer": "Koch", "is_gap": True, "placeholder": "z. B. Koch"},
-            {"id": "sf3", "label": "2. Wohnort:", "answer": "München", "is_gap": True, "placeholder": "z. B. München"},
-            {"id": "sf4", "label": "3. E-Mail-Adresse:", "answer": "diego@web.de", "is_gap": True, "placeholder": "E-Mail"},
-            {"id": "sf5", "label": "Kontoart:", "default": "Girokonto", "is_gap": False},
-            {"id": "sf6", "label": "4. Startguthaben:", "answer": "50 Euro", "is_gap": True, "placeholder": "z. B. 50 Euro"},
-            {"id": "sf7", "label": "5. Zahlungsart:", "answer": "Bar", "is_gap": True, "placeholder": "Bar oder Überweisung"},
-            {"id": "sf8", "label": "Unterschrift:", "default": "Diego Fernández", "is_gap": False}
+            {"id": "sf1", "label": "Familienname:", "default": "Fernández", "is_gap": False},
+            {"id": "sf2", "label": "1. Vorname:", "answer": "Diego", "is_gap": True, "placeholder": "Vorname"},
+            {"id": "sf3", "label": "2. Beruf:", "answer": "Koch", "is_gap": True, "placeholder": "Beruf"},
+            {"id": "sf4", "label": "3. E-Mail:", "answer": "diego@web.de", "is_gap": True, "placeholder": "E-Mail"},
+            {"id": "sf5", "label": "4. Startguthaben:", "answer": "50 Euro", "is_gap": True, "placeholder": "Betrag"},
+            {"id": "sf6", "label": "5. Bankfiliale:", "answer": "München", "is_gap": True, "placeholder": "Stadt"},
+            {"id": "sf7", "label": "Unterschrift:", "default": "Diego Fernández", "is_gap": False}
+        ]
+    },
+    {
+        "title": "City Autovermietung — Mietvertrag",
+        "desc": "Helping Hana Kim fill out a car rental agreement – Fill out a form, 5 gaps, 10 min.",
+        "aufgabe": "Hana Kim mietet einen Kleinwagen für 3 Tage ab Freitag bei der City Autovermietung.\n\nDie Selbstbeteiligung beträgt 300 Euro.\n\nIn dem Formular fehlen fünf Informationen. Helfen Sie ihr und tragen Sie die fehlenden Angaben ein.",
+        "form_title": "CITY AUTOVERMIETUNG — Mietvertrag",
+        "fields": [
+            {"id": "sf1", "label": "Mieter:", "default": "Hana Kim", "is_gap": False},
+            {"id": "sf2", "label": "1. Fahrzeugmodell:", "answer": "Kleinwagen", "is_gap": True, "placeholder": "Fahrzeugtyp"},
+            {"id": "sf3", "label": "2. Mietdauer:", "answer": "3 Tage", "is_gap": True, "placeholder": "Dauer"},
+            {"id": "sf4", "label": "3. Abholdatum:", "answer": "Freitag", "is_gap": True, "placeholder": "Wochentag"},
+            {"id": "sf5", "label": "4. Selbstbeteiligung:", "answer": "300 Euro", "is_gap": True, "placeholder": "Betrag"},
+            {"id": "sf6", "label": "5. Zahlungsart:", "answer": "Kreditkarte", "is_gap": True, "placeholder": "Bar oder Kreditkarte", "options": ["Bar", "Kreditkarte"]},
+            {"id": "sf7", "label": "Unterschrift:", "default": "Hana Kim", "is_gap": False}
         ]
     }
 ]
@@ -602,7 +659,7 @@ if nav_choice == "🏠 Study Dashboard":
           - Teil 2: Classified Ads (Option A or B)
           - Teil 3: Public Signs (Richtig/Falsch)
         * **Schreiben (20 Mins - 2 Parts):**
-          - Teil 1: Fill 5 Missing Gaps on Form with Scenario (Mirrored exactly to official Goethe format)
+          - Teil 1: Fill 5 Missing Gaps on Form with Scenario (All 9 official exam scenarios fully integrated!)
           - Teil 2: Write ~30-Word Message hitting 3 required points
         """)
         st.markdown('</div>', unsafe_allow_html=True)
@@ -1369,12 +1426,12 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
     st.subheader("✍️ Goethe A1 Schreiben Practice (20 Mins, 2 Parts)")
 
     s_tab1, s_tab2 = st.tabs([
-        "Teil 1: Formular (Mirrored to Official Exam Format)", 
+        "Teil 1: Formular (Official 9 Scenarios)", 
         "Teil 2: Write ~30-Word Email (3 Content Points)"
     ])
 
     with s_tab1:
-        st.markdown("**Teil 1 (Formular):** Select from official practice scenarios. Fill in the 5 missing information gaps exactly like the official Goethe-Zertifikat A1 exam interface.")
+        st.markdown("**Teil 1 (Formular):** Select from all 9 official Goethe A1 practice scenarios. Fill in the 5 missing information gaps exactly like the official Goethe-Zertifikat A1 exam interface.")
         
         selected_schreiben_t1_title = st.selectbox("📂 Select Schreiben Teil 1 Scenario Set:", [s["title"] for s in SCHREIBEN_TEIL1_SCENARIOS])
         selected_schreiben_t1_obj = next(s for s in SCHREIBEN_TEIL1_SCENARIOS if s["title"] == selected_schreiben_t1_title)
@@ -1403,7 +1460,6 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
         st.markdown("##### ⌨️ Special German Characters")
         sc_cols = st.columns(7)
         chars = ["ä", "ö", "ü", "ß", "Ä", "Ö", "Ü"]
-        # Note: Streamlit text inputs don't allow direct cursor injection easily via buttons without state tricks, but we display them clearly for candidate assistance.
         for idx, ch in enumerate(chars):
             sc_cols[idx].code(ch)
 
