@@ -390,7 +390,7 @@ LESEN_TEIL2_SCENARIOS = [
     }
 ]
 
-# Lesen Teil 3 Official Scenarios Bank (from user screenshots 22 to 26)
+# Lesen Teil 3 Official Scenarios Bank
 LESEN_TEIL3_SCENARIOS = [
     {
         "title": "Mittagsmenü, Schwimmbad & Bibliothek",
@@ -427,6 +427,167 @@ LESEN_TEIL3_SCENARIOS = [
     {
         "title": "Frühstück, Geldautomat & Tankstelle",
         "desc": "Signs and notices about breakfast, the cash machine, parking, the workshop, the petrol station and the post office – 5 tasks, Richtig/Falsch."
+    }
+]
+
+# Schreiben Teil 1 Official Scenarios Bank (from screenshots 27, 29, 34, 35, 36)
+SCHREIBEN_TEIL1_SCENARIOS = [
+    {
+        "title": "Volkshochschule – Anmeldung Deutschkurs",
+        "desc": "Marco Rossi's registration for a German course – Fill out a form, 5 gaps, 10 min.",
+        "form_title": "Volkshochschule – Anmeldeformular",
+        "fields": [
+            {"id": "sf1", "label": "1. Vorname & Nachname", "answer": "Marco Rossi"},
+            {"id": "sf2", "label": "2. Kursnummer", "answer": "DE-104"},
+            {"id": "sf3", "label": "3. Stufe", "answer": "A1"},
+            {"id": "sf4", "label": "4. Kursbeginn", "answer": "10. Oktober"},
+            {"id": "sf5", "label": "5. Zahlungsart", "answer": "Überweisung"}
+        ]
+    },
+    {
+        "title": "Stadtbibliothek Köln – Anmeldung",
+        "desc": "Anna Kowalski's application for a library card – Fill out a form, 5 gaps, 10 min.",
+        "form_title": "Stadtbibliothek Köln – Leserausweis",
+        "fields": [
+            {"id": "sf1", "label": "1. Name", "answer": "Anna Kowalski"},
+            {"id": "sf2", "label": "2. Adresse", "answer": "Domstraße 12"},
+            {"id": "sf3", "label": "3. Geburtsdatum", "answer": "14.05.1995"},
+            {"id": "sf4", "label": "4. Telefonnummer", "answer": "022198765"},
+            {"id": "sf5", "label": "5. Jahresgebühr", "answer": "15 Euro"}
+        ]
+    },
+    {
+        "title": "Schwimmbad Aqua – Anmeldung Schwimmkurs",
+        "desc": "Emir Yıldız's registration for a beginner swimming course – Fill out a form, 5 gaps, 10 min.",
+        "form_title": "Schwimmbad Aqua – Kursanmeldung",
+        "fields": [
+            {"id": "sf1", "label": "1. Name", "answer": "Emir Yıldız"},
+            {"id": "sf2", "label": "2. Alter", "answer": "28"},
+            {"id": "sf3", "label": "3. Kursart", "answer": "Anfänger"},
+            {"id": "sf4", "label": "4. Tag", "answer": "Samstag"},
+            {"id": "sf5", "label": "5. Uhrzeit", "answer": "10:00 Uhr"}
+        ]
+    },
+    {
+        "title": "Nordbank – Kontoeröffnung",
+        "desc": "Helping Diego Fernández open a bank account – Fill out a form, 5 gaps, 10 min.",
+        "form_title": "Nordbank – Kontoeröffnungsformular",
+        "fields": [
+            {"id": "sf1", "label": "1. Familienname", "answer": "Fernández"},
+            {"id": "sf2", "label": "2. Vorname", "answer": "Diego"},
+            {"id": "sf3", "label": "3. Beruf", "answer": "Koch"},
+            {"id": "sf4", "label": "4. E-Mail", "answer": "diego@web.de"},
+            {"id": "sf5", "label": "5. Startguthaben", "answer": "50 Euro"}
+        ]
+    },
+    {
+        "title": "City Autovermietung – Mietvertrag",
+        "desc": "Helping Hana Kim fill out a car rental agreement – Fill out a form, 5 gaps, 10 min.",
+        "form_title": "City Autovermietung – Mietvertrag",
+        "fields": [
+            {"id": "sf1", "label": "1. Mieter", "answer": "Hana Kim"},
+            {"id": "sf2", "label": "2. Fahrzeugmodell", "answer": "Kleinwagen"},
+            {"id": "sf3", "label": "3. Mietdauer", "answer": "3 Tage"},
+            {"id": "sf4", "label": "4. Abholdatum", "answer": "Freitag"},
+            {"id": "sf5", "label": "5. Selbstbeteiligung", "answer": "300 Euro"}
+        ]
+    },
+    {
+        "title": "Fitnessstudio FitAktiv – Anmeldung",
+        "desc": "Omar Haddad's registration at the FitAktiv gym – Fill out a form, 5 gaps, 10 min.",
+        "form_title": "FitAktiv Mitgliedschaft",
+        "fields": [
+            {"id": "sf1", "label": "1. Name", "answer": "Omar Haddad"},
+            {"id": "sf2", "label": "2. Mitgliedschaft", "answer": "1 Jahr"},
+            {"id": "sf3", "label": "3. Monatsbeitrag", "answer": "30 Euro"},
+            {"id": "sf4", "label": "4. Starttermin", "answer": "01. November"},
+            {"id": "sf5", "label": "5. Bankverbindung", "answer": "DE89...ples"}
+        ]
+    },
+    {
+        "title": "Hotel Seeblick – Reservierung",
+        "desc": "Klara Veidt's reservation at Hotel Seeblick – Fill out a form, 5 gaps, 10 min.",
+        "form_title": "Hotel Seeblick Reservierung",
+        "fields": [
+            {"id": "sf1", "label": "1. Gast", "answer": "Klara Veidt"},
+            {"id": "sf2", "label": "2. Zimmerart", "answer": "Doppelzimmer"},
+            {"id": "sf3", "label": "3. Übernachtungen", "answer": "4 Nächte"},
+            {"id": "sf4", "label": "4. Verpflegung", "answer": "Frühstück"},
+            {"id": "sf5", "label": "5. Ankunft", "answer": "18. Juli"}
+        ]
+    },
+    {
+        "title": "Bodensee-Rundfahrt – Anmeldung",
+        "desc": "Registration for a Bodensee tour with Eva Kadavy – Fill out a form, 5 gaps, 10 min.",
+        "form_title": "Bodensee Schifffahrt Anmeldeformular",
+        "fields": [
+            {"id": "sf1", "label": "1. Name", "answer": "Eva Kadavy"},
+            {"id": "sf2", "label": "2. Personenzahl", "answer": "2"},
+            {"id": "sf3", "label": "3. Datum", "answer": "Sonntag"},
+            {"id": "sf4", "label": "4. Route", "answer": "Konstanz - Meersburg"},
+            {"id": "sf5", "label": "5. Ticketpreis", "answer": "44 Euro"}
+        ]
+    },
+    {
+        "title": "Praxis Dr. Sommer – Patienteninformation",
+        "desc": "Pavel Novák's patient information for a doctor's visit – Fill out a form, 5 gaps, 10 min.",
+        "form_title": "Arztpraxis Dr. Sommer",
+        "fields": [
+            {"id": "sf1", "label": "1. Patient", "answer": "Pavel Novák"},
+            {"id": "sf2", "label": "2. Geburtsjahr", "answer": "1985"},
+            {"id": "sf3", "label": "3. Krankenkasse", "answer": "AOK"},
+            {"id": "sf4", "label": "4. Beschwerde", "answer": "Kopfschmerzen"},
+            {"id": "sf5", "label": "5. Termin", "answer": "Morgen, 9 Uhr"}
+        ]
+    }
+]
+
+# Schreiben Teil 2 Official Scenarios Bank (from screenshots 28, 30, 31, 32, 33)
+SCHREIBEN_TEIL2_SCENARIOS = [
+    {
+        "title": "Heizung kaputt — Nachricht an den Vermieter",
+        "desc": "Message to Mr Berg about the broken heating – E-mail, approx. 30 words, 20 min.",
+        "prompt": "Sehr geehrter Herr Berg,\n\nin meiner Wohnung (Apartment 4B) ist die Heizung seit gestern kaputt. Es ist sehr kalt. Könnten Sie bitte schnell einen Handwerker schicken?\n\nMit freundlichen Grüßen,\n[Dein Name]"
+    },
+    {
+        "title": "Danke für das Geschenk — Nachricht an einen Freund",
+        "desc": "Thank-you message to Lukas for a birthday present – E-mail, approx. 30 words, 20 min.",
+        "prompt": "Lieber Lukas,\n\nvielen herzlichen Dank für das tolle Geburtstagsgeschenk! Ich habe mich riesig gefreut. Wollen wir uns nächste Woche auf einen Kaffee treffen?\n\nLiebe Grüße,\n[Dein Name]"
+    },
+    {
+        "title": "Termin in der Autowerkstatt",
+        "desc": "Email to the auto repair shop about car noises and an appointment – E-mail, approx. 30 words, 20 min.",
+        "prompt": "Sehr geehrte Damen und Herren,\n\nmein Auto macht seit gestern komische Geräusche beim Bremsen. Ich brauche dringend einen Termin in Ihrer Werkstatt. Geht es am Donnerstag um 10 Uhr?\n\nMit freundlichen Grüßen,\n[Dein Name]"
+    },
+    {
+        "title": "Freier Tag — Nachricht an die Chefin",
+        "desc": "Message to Ms Schäfer about a doctor's appointment and taking a day off – E-mail, approx. 30 words, 20 min.",
+        "prompt": "Sehr geehrte Frau Schäfer,\n\nich habe am kommenden Dienstag einen wichtigen Arzttermin am Vormittag. Könnte ich an diesem Tag bitte erst ab 13:00 Uhr ins Büro kommen?\n\nMit freundlichen Grüßen,\n[Dein Name]"
+    },
+    {
+        "title": "Treffen am Wochenende — Nachricht an eine Freundin",
+        "desc": "Message to Mia about plans together at the weekend – E-mail, approx. 30 words, 20 min.",
+        "prompt": "Liebe Mia,\n\nhast du am Samstag Zeit und Lust, zusammen in den Park zu gehen und ein Eis zu essen? Melde dich doch kurz!\n\nLiebe Grüße,\n[Dein Name]"
+    },
+    {
+        "title": "Neue Wohnung — Einladung an eine Freundin",
+        "desc": "Invitation to Sophie for a party at the new apartment – E-mail, approx. 30 words, 20 min.",
+        "prompt": "Liebe Sophie,\n\nich bin endlich in meine neue Wohnung umgezogen! Am Freitag mache ich eine kleine Einweihungsparty. Kommst du auch um 19 Uhr?\n\nLiebe Grüße,\n[Dein Name]"
+    },
+    {
+        "title": "Umzug — einen Freund um Hilfe bitten",
+        "desc": "Message to Daniel asking for help with moving – E-mail, approx. 30 words, 20 min.",
+        "prompt": "Lieber Daniel,\n\nich ziehe am nächsten Wochenende um und brauche dringend Hilfe beis Einpacken und Tragen. Hättest du am Samstag Zeit, mir zu helfen? Ich gebe auch Pizza aus!\n\nLiebe Grüße,\n[Dein Name]"
+    },
+    {
+        "title": "Dresden besuchen — Touristeninformation",
+        "desc": "Message to the tourist information office about visiting Dresden – E-mail, approx. 30 words, 20 min.",
+        "prompt": "Sehr geehrte Damen und Herren,\n\nich plane nächstes Wochenende eine Reise nach Dresden und möchte gerne wissen, welche Sehenswürdigkeiten sonntags geöffnet sind und ob es Stadtführungen auf Deutsch gibt.\n\nMit freundlichen Grüßen,\n[Dein Name]"
+    },
+    {
+        "title": "Krank — Nachricht an den Deutschkurs",
+        "desc": "Email to Frau Wolf about being ill and missing German class – E-mail, approx. 30 words, 20 min.",
+        "prompt": "Liebe Frau Wolf,\n\nich liege leider mit starkem Fieber im Bett und kann heute nicht in den Deutschkurs kommen. Ich wünsche Ihnen einen schönen Unterricht.\n\nLiebe Grüße,\n[Dein Name]"
     }
 ]
 
@@ -1241,40 +1402,40 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
     ])
 
     with s_tab1:
-        st.markdown("**Teil 1:** Read the background scenario and complete the 5 missing fields on a registration form[cite: 3].")
-        if st.button("🎲 Generate Schreiben Teil 1 Scenario", type="primary") or st.button("🔄 Generate New Form Scenario"):
-            with st.spinner("Gem is creating complete form exercise..."):
-                prompt = """
-                Generate a complete Goethe A1 Schreiben Teil 1 form exercise.
-                CRITICAL INSTRUCTION: The 'scenario' text MUST explicitly state all 5 details required to answer every single form field!
+        st.markdown("**Teil 1:** Select from official practice scenario sets for filling out registration forms (5 gaps)[cite: 3].")
+        
+        selected_schreiben_t1_title = st.selectbox("📂 Select Schreiben Teil 1 Scenario Set:", [s["title"] for s in SCHREIBEN_TEIL1_SCENARIOS])
+        selected_schreiben_t1_obj = next(s for s in SCHREIBEN_TEIL1_SCENARIOS if s["title"] == selected_schreiben_t1_title)
+        
+        st.info(f"📌 **Description:** {selected_schreiben_t1_obj['desc']}")
 
+        if st.button(f"▶️ Start Exercise ({selected_schreiben_t1_title})", type="primary") or f"schreiben_t1_loaded_{selected_schreiben_t1_title}" not in st.session_state:
+            with st.spinner(f"Gem is generating Schreiben Teil 1 exercises for '{selected_schreiben_t1_title}'..."):
+                prompt = f"""
+                Generate Goethe A1 Schreiben Teil 1 form filling exercise for: '{selected_schreiben_t1_title}' ({selected_schreiben_t1_obj['desc']}).
+                Provide a realistic scenario text and exact 5 fields with answers.
                 Return strict JSON format:
-                {
-                    "scenario": "Your friend / tourist [Full Name] is booking a hotel room for [X] people arriving on [Day]. They want to pay by [Payment Method] and their phone number is [Phone Number]. Write out a full detailed 3-4 sentence background scenario containing ALL of these 5 facts clearly.",
-                    "form_title": "Anmeldeformular",
-                    "fields": [
-                        {"id": "f1", "label": "1. Familienname", "answer": "Müller"},
-                        {"id": "f2", "label": "2. Anzahl der Personen", "answer": "2"},
-                        {"id": "f3", "label": "3. Anreisetag", "answer": "Samstag"},
-                        {"id": "f4", "label": "4. Zahlungsart", "answer": "Bar"},
-                        {"id": "f5", "label": "5. Telefonnummer", "answer": "015123456"}
-                    ]
-                }
+                {{
+                    "scenario": "Detailed background story for {selected_schreiben_t1_title} containing all 5 required form field answers clearly.",
+                    "form_title": "{selected_schreiben_t1_obj['form_title']}",
+                    "fields": {json.dumps(selected_schreiben_t1_obj['fields'])}
+                }}
                 """
                 try:
                     json_str = generate_dynamic_content(prompt, is_json=True)
-                    st.session_state.schreiben_t1 = json.loads(json_str)
+                    st.session_state[f"schreiben_t1_loaded_{selected_schreiben_t1_title}"] = json.loads(json_str)
                 except Exception as e: st.error(f"Error: {str(e)}")
 
-        if "schreiben_t1" in st.session_state:
-            d = st.session_state.schreiben_t1
+        cache_key_st1 = f"schreiben_t1_loaded_{selected_schreiben_t1_title}"
+        if cache_key_st1 in st.session_state:
+            d = st.session_state[cache_key_st1]
             st.info(f"**Background Scenario:**\n{d['scenario']}")
             st.markdown(f"### 📋 {d['form_title']}")
             user_inputs = {}
             for f in d["fields"]:
-                user_inputs[f["id"]] = st.text_input(f["label"], key=f"inp_{f['id']}")
+                user_inputs[f["id"]] = st.text_input(f["label"], key=f"inp_st1_{selected_schreiben_t1_title}_{f['id']}")
             
-            if st.button("Check Form Gaps"):
+            if st.button(f"Submit Schreiben Teil 1 ({selected_schreiben_t1_title})"):
                 score = 0
                 for f in d["fields"]:
                     u_val = user_inputs[f["id"]].strip().lower()
@@ -1287,26 +1448,25 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
                 st.metric("Form Score", f"{score} / 5")
 
     with s_tab2:
-        st.markdown("**Teil 2:** Write a short informal message, email, or note (~30 words) responding to a given situation, making sure to hit 3 required content points[cite: 3].")
-        if st.button("🎲 Generate Schreiben Teil 2 Prompt", type="primary") or st.button("🔄 Generate Another Email Prompt"):
-            with st.spinner("Gem is generating email prompt..."):
-                try:
-                    prompt = "Generate an official Goethe A1 Schreiben Teil 2 prompt specifying a clear scenario and 3 explicit bullet points."
-                    st.session_state.schreiben_t2_prompt = generate_dynamic_content(prompt)
-                except Exception as e: st.error(f"Error: {str(e)}")
+        st.markdown("**Teil 2:** Select from official practice scenario sets for writing short messages / emails (~30 words, 3 points)[cite: 3].")
+        
+        selected_schreiben_t2_title = st.selectbox("📂 Select Schreiben Teil 2 Scenario Set:", [s["title"] for s in SCHREIBEN_TEIL2_SCENARIOS])
+        selected_schreiben_t2_obj = next(s for s in SCHREIBEN_TEIL2_SCENARIOS if s["title"] == selected_schreiben_t2_title)
+        
+        st.info(f"📌 **Description:** {selected_schreiben_t2_obj['desc']}")
+        st.info(f"**Situation Prompt:**\n{selected_schreiben_t2_obj['prompt']}")
 
-        if "schreiben_t2_prompt" in st.session_state:
-            st.info(st.session_state.schreiben_t2_prompt)
-            u_email = st.text_area("Your German Response (~30 words hitting all 3 points):", height=140)
-            if st.button("Evaluate Email with Gem"):
-                if u_email.strip():
-                    with st.spinner("Gem is evaluating task fulfillment across all 3 points..."):
-                        try:
-                            eval_prompt = f"PROMPT:\n{st.session_state.schreiben_t2_prompt}\n\nSUBMISSION:\n{u_email}\n\nGrade task fulfillment across all 3 bullet points, V2 verb order, and appropriate salutations/closings."
-                            eval_res = generate_dynamic_content(eval_prompt)
-                            st.markdown("### Official Examiner Breakdown")
-                            st.write(eval_res)
-                        except Exception as e: st.error(f"Error: {str(e)}")
+        u_email = st.text_area(f"Your German Response for '{selected_schreiben_t2_title}' (~30 words):", height=140, key=f"email_resp_{selected_schreiben_t2_title}")
+        
+        if st.button(f"Evaluate Email with Gem ({selected_schreiben_t2_title})", type="primary"):
+            if u_email.strip():
+                with st.spinner("Gem is evaluating task fulfillment across all 3 points..."):
+                    try:
+                        eval_prompt = f"PROMPT SCENARIO:\n{selected_schreiben_t2_obj['prompt']}\n\nSTUDENT SUBMISSION:\n{u_email}\n\nGrade task fulfillment across all 3 required points, V2 verb order, and appropriate German salutations/closings against Goethe A1 standards."
+                        eval_res = generate_dynamic_content(eval_prompt)
+                        st.markdown("### Official Examiner Breakdown")
+                        st.write(eval_res)
+                    except Exception as e: st.error(f"Error: {str(e)}")
 
     st.markdown('</div>', unsafe_allow_html=True)
 
