@@ -16,17 +16,17 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Custom Sunflower Wallpaper & Pastel Theme with Yellow, Pink, and Orange Gradient Accents on Main UI Elements
+# Custom Dark Glow Theme with Yellow, Pink, and Orange Neon Glow Accents
 st.markdown("""
 <style>
-    /* Global Sunflower Wallpaper Background with Soft Light Overlay */
+    /* Global Dark Background with Subtle Glow Wallpaper */
     .stApp {
-        background: linear-gradient(rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.92)), 
+        background: linear-gradient(rgba(15, 23, 42, 0.94), rgba(15, 23, 42, 0.94)), 
                     url("https://images.unsplash.com/photo-1597848212624-a19eb35e2651?auto=format&fit=crop&w=2000&q=80") !important;
         background-size: cover !important;
         background-position: center !important;
         background-attachment: fixed !important;
-        color: #1e293b !important;
+        color: #f8fafc !important;
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
     }
     
@@ -51,72 +51,73 @@ st.markdown("""
         gap: 0.8rem !important;
     }
 
-    /* Yellow, Pink, and Orange Pastel Gradient Accents on Main Buttons / UI Elements */
+    /* Dark Neon Glow Custom Button Styling with Yellow, Pink, and Orange Accents */
     .stButton > button {
         width: 100% !important;
-        background: linear-gradient(135deg, #fef08a 0%, #f472b6 50%, #fb923c 100%) !important;
-        border: 1px solid rgba(244, 114, 182, 0.5) !important;
+        background: linear-gradient(135deg, rgba(254, 240, 138, 0.15) 0%, rgba(244, 114, 182, 0.2) 50%, rgba(251, 146, 60, 0.15) 100%) !important;
+        border: 1px solid #f472b6 !important;
         border-radius: 12px !important;
         padding: 12px 18px !important;
         text-align: center !important;
         font-size: 0.95rem !important;
         font-weight: 700 !important;
-        color: #7c2d12 !important;
-        box-shadow: 0 4px 15px rgba(251, 146, 60, 0.2) !important;
+        color: #fef08a !important;
+        box-shadow: 0 0 15px rgba(244, 114, 182, 0.25) !important;
         transition: all 0.2s ease !important;
         margin-bottom: 6px !important;
     }
     
     .stButton > button:hover {
-        background: linear-gradient(135deg, #fde047 0%, #ec4899 50%, #f97316 100%) !important;
-        border-color: #ec4899 !important;
+        background: linear-gradient(135deg, #fef08a 0%, #f472b6 50%, #fb923c 100%) !important;
+        border-color: #fde047 !important;
         transform: translateY(-1px);
-        box-shadow: 0 6px 20px rgba(244, 63, 94, 0.3) !important;
-        color: #ffffff !important;
+        box-shadow: 0 0 25px rgba(244, 114, 182, 0.5), 0 0 10px rgba(251, 146, 60, 0.4) !important;
+        color: #0f172a !important;
     }
 
-    /* Yellow, Pink, and Orange Pastel Gradient Accent on Section Header Boxes */
+    /* Dark Glow Section Header Boxes */
     .section-header-box {
-        background: linear-gradient(135deg, rgba(254, 240, 138, 0.85) 0%, rgba(244, 114, 182, 0.75) 50%, rgba(251, 146, 60, 0.8) 100%) !important;
+        background: linear-gradient(135deg, rgba(30, 41, 59, 0.9) 0%, rgba(51, 65, 85, 0.9) 100%) !important;
         backdrop-filter: blur(8px);
-        border-left: 6px solid #db2777;
-        border-top: 1px solid rgba(254, 240, 138, 0.9);
-        border-right: 1px solid rgba(251, 146, 60, 0.9);
-        border-bottom: 1px solid rgba(244, 114, 182, 0.9);
+        border-left: 6px solid #f472b6;
+        border-top: 1px solid rgba(244, 114, 182, 0.4);
+        border-right: 1px solid rgba(251, 146, 60, 0.4);
+        border-bottom: 1px solid rgba(254, 240, 138, 0.4);
         border-radius: 12px;
         padding: 14px 20px;
         margin-bottom: 14px;
-        color: #7c2d12 !important;
+        color: #fef08a !important;
         font-size: 1.25rem;
         font-weight: 800;
-        box-shadow: 0 4px 18px rgba(244, 114, 182, 0.25);
+        box-shadow: 0 0 20px rgba(244, 114, 182, 0.2);
     }
 
-    /* Main Content Container Cards with Pastel Gradient Highlights */
+    /* Main Content Container Cards with Dark Glow */
     .main-card {
-        background: rgba(255, 255, 255, 0.95);
+        background: rgba(30, 41, 59, 0.85);
         backdrop-filter: blur(8px);
         border-radius: 14px;
         padding: 22px 26px;
-        box-shadow: 0 6px 20px rgba(244, 114, 182, 0.12);
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
         margin-bottom: 14px;
-        border: 2px solid rgba(244, 114, 182, 0.4);
+        border: 1px solid rgba(244, 114, 182, 0.3);
+        color: #f8fafc;
     }
 
-    /* Hero Banner with Yellow, Pink, and Orange Pastel Gradient Glow Border */
+    /* Hero Banner with Dark Neon Glow Border */
     .hero-banner {
-        background: linear-gradient(135deg, rgba(254, 240, 138, 0.3) 0%, rgba(244, 114, 182, 0.2) 50%, rgba(251, 146, 60, 0.25) 100%);
+        background: linear-gradient(135deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.9) 100%);
         backdrop-filter: blur(8px);
         border-radius: 14px;
         padding: 26px;
-        color: #1e293b;
+        color: #f8fafc;
         margin-bottom: 16px;
         border: 2px solid #f472b6;
-        box-shadow: 0 8px 25px rgba(244, 114, 182, 0.2);
+        box-shadow: 0 0 30px rgba(244, 114, 182, 0.25);
     }
     .hero-badge {
         display: inline-block;
-        background: linear-gradient(135deg, #fef08a 0%, #f472b6 100%);
+        background: rgba(244, 114, 182, 0.15);
         border: 1px solid #f472b6;
         padding: 4px 12px;
         border-radius: 6px;
@@ -124,70 +125,71 @@ st.markdown("""
         font-weight: 700;
         letter-spacing: 0.05em;
         margin-bottom: 8px;
-        color: #7c2d12;
+        color: #f472b6;
+        box-shadow: 0 0 10px rgba(244, 114, 182, 0.2);
     }
     .hero-title {
         font-size: 2rem;
         font-weight: 800;
         letter-spacing: -0.025em;
         margin-bottom: 4px;
-        background: linear-gradient(90deg, #ca8a04 0%, #db2777 50%, #ea580c 100%);
+        background: linear-gradient(90deg, #fef08a 0%, #f472b6 50%, #fb923c 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
     }
     .hero-subtitle {
         font-size: 0.95rem;
-        color: #475569;
+        color: #94a3b8;
         line-height: 1.4;
         margin-bottom: 0px;
         font-weight: 500;
     }
 
-    /* Clean Minimalist Dropdown Box Design */
+    /* Clean Minimalist Dropdown Box Design for Dark Theme */
     .stSelectbox div[data-baseweb="select"] {
-        background-color: #ffffff !important;
+        background-color: #1e293b !important;
         border-radius: 10px !important;
     }
     .stSelectbox div[data-baseweb="select"] > div {
-        background-color: #ffffff !important;
+        background-color: #1e293b !important;
         border: 2px solid #f472b6 !important;
         border-radius: 10px !important;
-        color: #1e293b !important;
+        color: #f8fafc !important;
         padding: 8px 14px !important;
-        box-shadow: 0 4px 15px rgba(244, 114, 182, 0.15) !important;
+        box-shadow: 0 0 15px rgba(244, 114, 182, 0.2) !important;
         min-height: 44px !important;
     }
     .stSelectbox div[data-baseweb="select"] > div:hover {
         border-color: #fb923c !important;
     }
     .stSelectbox span, .stSelectbox div[data-baseweb="select"] span {
-        color: #1e293b !important;
+        color: #f8fafc !important;
         font-weight: 600 !important;
         font-size: 0.95rem !important;
     }
 
     /* Open Dropdown Popup List Container & Options */
     div[data-baseweb="menu"] {
-        background-color: #ffffff !important;
+        background-color: #1e293b !important;
         border: 1px solid #f472b6 !important;
         border-radius: 10px !important;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5) !important;
     }
     div[data-baseweb="menu"] ul {
-        background-color: #ffffff !important;
+        background-color: #1e293b !important;
     }
     div[data-baseweb="menu"] li, div[data-baseweb="menu"] div {
-        background-color: #ffffff !important;
-        color: #1e293b !important;
+        background-color: #1e293b !important;
+        color: #f8fafc !important;
         font-weight: 600 !important;
         padding: 10px 16px !important;
     }
     div[data-baseweb="menu"] li span, div[data-baseweb="menu"] div span {
-        color: #1e293b !important;
+        color: #f8fafc !important;
     }
     div[data-baseweb="menu"] li:hover, div[data-baseweb="menu"] div[aria-selected="true"] {
-        background-color: #fef08a40 !important;
-        color: #c2410c !important;
+        background-color: rgba(244, 114, 182, 0.2) !important;
+        color: #fef08a !important;
     }
 
     /* DYNAMIC FLASHCARD SECTION (EXACTLY UNTOUCHED COLOR RULES PER INSTRUCTION) */
@@ -198,7 +200,7 @@ st.markdown("""
         border-radius: 14px;
         padding: 28px 20px;
         text-align: center;
-        box-shadow: 0 6px 20px rgba(59, 130, 246, 0.25);
+        box-shadow: 0 0 25px rgba(59, 130, 246, 0.4);
         margin-bottom: 12px;
     }
     .card-masculine-container * { color: #ffffff !important; }
@@ -210,7 +212,7 @@ st.markdown("""
         border-radius: 14px;
         padding: 28px 20px;
         text-align: center;
-        box-shadow: 0 6px 20px rgba(239, 68, 68, 0.25);
+        box-shadow: 0 0 25px rgba(239, 68, 68, 0.4);
         margin-bottom: 12px;
     }
     .card-feminine-container * { color: #ffffff !important; }
@@ -222,7 +224,7 @@ st.markdown("""
         border-radius: 14px;
         padding: 28px 20px;
         text-align: center;
-        box-shadow: 0 6px 20px rgba(16, 185, 129, 0.25);
+        box-shadow: 0 0 25px rgba(16, 185, 129, 0.4);
         margin-bottom: 12px;
     }
     .card-neuter-container * { color: #ffffff !important; }
@@ -234,7 +236,7 @@ st.markdown("""
         border-radius: 14px;
         padding: 28px 20px;
         text-align: center;
-        box-shadow: 0 6px 20px rgba(249, 115, 22, 0.25);
+        box-shadow: 0 0 25px rgba(249, 115, 22, 0.4);
         margin-bottom: 12px;
     }
     .card-verb-container * { color: #ffffff !important; }
@@ -246,7 +248,7 @@ st.markdown("""
         border-radius: 14px;
         padding: 28px 20px;
         text-align: center;
-        box-shadow: 0 6px 20px rgba(168, 85, 247, 0.25);
+        box-shadow: 0 0 25px rgba(168, 85, 247, 0.4);
         margin-bottom: 12px;
     }
     .card-other-container * { color: #ffffff !important; }
@@ -258,15 +260,15 @@ st.markdown("""
         color: #ffffff !important;
     }
 
-    /* Clean Card Section Wrapper for Back Details */
+    /* Clean Dark Card Section Wrapper for Back Details */
     .detail-section-card {
-        background: rgba(255, 255, 255, 0.95);
+        background: rgba(30, 41, 59, 0.9);
         border: 1px solid rgba(244, 114, 182, 0.4);
         border-radius: 12px;
         padding: 14px 18px;
         margin-bottom: 10px;
-        color: #1e293b;
-        box-shadow: 0 2px 8px rgba(244, 114, 182, 0.08);
+        color: #f8fafc;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
     }
 </style>
 """, unsafe_allow_html=True)
@@ -335,7 +337,7 @@ A1_VOCABULARY_DATABASE = {
     "essen_und_trinken": ["das Essen", "das Wasser", "der Kaffee", "der Tee", "die Milch", "das Brot", "das Fleisch", "der Fisch", "das Obst", "das Gemüse", "essen", "trinken", "kochen", "backen", "das Restaurant", "der Hunger", "der Durst", "das Frühstück", "das Mittagessen", "das Abendessen"],
     "freizeit_und_hobbys": ["das Hobby", "spielen", "lesen", "schwimmen", "reisen", "fotografieren", "der Sport", "das Buch", "die Musik", "tanzen", "singen", "malen", "der Film", "das Kino", "das Theater", "wandern", "joggen", "treffen", "lachen", "fernsehen"],
     "einkaufen_und_geld": ["einkaufen", "das Geld", "der Euro", "der Cent", "kosten", "teuer", "billig", "der Laden", "das Geschäft", "der Markt", "der Supermarkt", "kaufen", "verkaufen", "bezahlen", "die Karte", "bar", "der Preis", "das Angebot", "die Kasse", "der Kunde"],
-    "verkehr_und_reisen": ["fahren", "fliegen", "reisen", "der Urlaub", "das Ticket", "der Bahnhof", "der Zug", "das Auto", "das Flugzeug", "der Bus", "die Straßenbahn", "das Fahrrad", "die Haltestelle", "der Flughafen", "das Hotel", "ankommen", "abfahren"],
+    "verkehr_und_reisen": ["fahren", "fliegen", "reisen", "der Urlaub", "das Ticket", "der Bahnhof", "der Zug", "das Auto", "das Flugzeug", "das Bus", "die Straßenbahn", "das Fahrrad", "die Haltestelle", "der Flughafen", "das Hotel", "ankommen", "abfahren"],
     "gesundheit_und_ernaehrung": ["der Arzt", "die Ärztin", "das Krankenhaus", "die Apotheke", "krank", "gesund", "der Schmerz", "die Medizin", "die Gesundheit", "helfen", "ruhig", "müde", "schlecht", "die Tablette", "der Notfall", "untersuchen", "das Rezept", "fühlen", "leben"],
     "medien_und_kommunikation": ["sprechen", "sagen", "hören", "telefonieren", "das Handy", "das Internet", "die Zeitung", "das Fernsehen", "das Radio", "die Nachricht", "fragen", "antworten", "verstehen", "erklären", "zeigen", "bestellen", "kommunizieren"],
     "zeit_und_wetter": ["die Zeit", "die Stunde", "die Minute", "der Tag", "die Woche", "der Monat", "das Jahr", "heute", "gestern", "morgen", "jetzt", "immer", "nie", "das Wetter", "die Sonne", "der Regen", "der Schnee", "kalt", "warm", "schön"]
@@ -551,7 +553,7 @@ elif nav_choice == "📚 Master Goethe Word Engine":
 
         st.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
 
-        # 1. Plural Version with Audio
+        # 1. Plural Version with Audio (PLACED BEFORE WORD TYPE AS REQUESTED)
         plural = data.get("plural_form", "N/A")
         if plural and plural != "N/A":
             st.markdown(f'<div class="detail-section-card"><b>Plural Version:</b> {plural}</div>', unsafe_allow_html=True)
@@ -575,7 +577,7 @@ elif nav_choice == "📚 Master Goethe Word Engine":
             st.markdown(f'''<div class="detail-section-card">
                 <b>Auxiliary Verb & Partizip II Sample Sentence:</b><br>
                 <em>{aux_sent}</em><br>
-                <small style="color: #475569;">({data.get('aux_sentence_en', '')})</small>
+                <small style="color: #94a3b8;">({data.get('aux_sentence_en', '')})</small>
             </div>''', unsafe_allow_html=True)
             if st.button("🔊 Audio (Aux Sentence)", key="audio_aux_sent"):
                 play_direct_audio(aux_sent, "aux_sent_audio")
