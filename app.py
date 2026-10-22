@@ -325,7 +325,6 @@ if nav_choice == "🏠 Study Dashboard":
     """, unsafe_allow_html=True)
 
     modules = [
-        "🏠 Study Dashboard",
         "📚 Master Goethe Word Engine",
         "📖 Core Grammar Practice & Exercises",
         "📖 Goethe A1 Lesen (Reading)",
