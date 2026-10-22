@@ -138,18 +138,9 @@ st.markdown("""
         box-shadow: 0 4px 12px rgba(254, 240, 138, 0.4);
     }
 
-    /* Collapse sidebar control button replacement of double arrow text to an actual clickable arrow button */
-    [data-testid="collapsedControl"] svg {
-        display: inline-block;
-    }
-    [data-testid="collapsedControl"] span {
+    /* Hide default messy Streamlit collapsed sidebar text icon completely */
+    [data-testid="collapsedControl"] {
         display: none !important;
-    }
-    [data-testid="collapsedControl"]::before {
-        content: "➔";
-        font-size: 1.4rem;
-        font-weight: bold;
-        color: #1e3a8a;
     }
 
     /* Outlined & Framed Dropdown / Select Elements */
@@ -1813,7 +1804,7 @@ nav_options = [
 
 # Sidebar Rendering
 with st.sidebar:
-    # Top Action Row with Toggle Button replacing text arrow
+    # Top Action Row with clean Custom Clickable Arrow Toggle Button
     c_toggle, c_title = st.columns([1, 4])
     with c_toggle:
         if st.button("➔", key="sidebar_collapse_arrow", help="Toggle Sidebar"):
