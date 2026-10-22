@@ -284,7 +284,7 @@ FALLBACK_MODELS = ["gemini-3.8-flash", "gemini-3.5-flash-lite"]
 
 SYSTEM_INSTRUCTION = """
 You are Gem, an expert German tutor and official Goethe-Institut examiner evaluating candidates for the Goethe-Zertifikat A1 exam.
-Follow standard CEFR A1 learning objectives and exhaustive Goethe-Zertifikat A1 vocabulary standards (top 1000 essential words).
+Follow standard CEFR A1 learning objectives and exhaustive Goethe-Zertifikat A1 vocabulary standards (top 1000 essential words across nouns, verbs, prepositions, adjectives, pronouns).
 Provide accurate grammatical breakdowns, exact plurals, case usages, conjugations, komparativ/superlative, and always provide sentences for each pronoun even for nouns or other parts of speech. Never leave fields as blank or N/A in conjugations. Clean and concise formatting.
 """
 
@@ -327,28 +327,29 @@ def play_direct_audio(text_to_speak, unique_key):
     b64_audio = io.BytesIO(audio_bytes).read()
     st.audio(b64_audio, format="audio/mp3", autoplay=True)
 
-# Exhaustive List of Applicable A1 Categories/Themes (Top 1000 Essential Vocabulary Database Expansion)
+# Expanded Exhaustive A1 Vocabulary Database across Nouns, Verbs, Prepositions, Adjectives, Pronouns (Top Essential Words)
 A1_VOCABULARY_DATABASE = {
     "ALL": [],
-    "allgemein": ["sein", "haben", "werden", "gut", "ja", "nein", "nicht", "sehr", "und", "oder", "aber", "also", "hier", "da", "was", "wer", "wie", "wo", "woher", "wohin"],
-    "arbeiten_und_beruf": ["arbeiten", "der Beruf", "die Firma", "das Büro", "der Kollege", "die Kollegin", "der Chef", "die Chefin", "die Arbeit", "der Job", "der Termin", "die Pause", "verdienen", "schreiben", "anrufen", "der Computer", "das Telefon", "die E-Mail", "der Brief", "die Besprechung"],
-    "mensch_und_koerper": ["die Familie", "der Vater", "die Mutter", "der Sohn", "die Tochter", "der Bruder", "die Schwester", "die Eltern", "das Kind", "der Mensch", "der Freund", "die Freundin", "die Person", "der Name", "das Alter", "der Kopf", "das Auge", "das Ohr", "die Hand", "der Fuß"],
-    "wohnen_und_haushalt": ["das Haus", "die Wohnung", "das Zimmer", "die Küche", "das Bad", "das Schlafzimmer", "das Wohnzimmer", "die Tür", "das Fenster", "der Tisch", "der Stuhl", "das Bett", "die Lampe", "wohnen", "mieten", "der Schlüssel", "der Garten", "das Balkon", "die Miete", "umziehen"],
-    "essen_und_trinken": ["das Essen", "das Wasser", "der Kaffee", "der Tee", "die Milch", "das Brot", "das Fleisch", "der Fisch", "das Obst", "das Gemüse", "essen", "trinken", "kochen", "backen", "das Restaurant", "der Hunger", "der Durst", "das Frühstück", "das Mittagessen", "das Abendessen"],
-    "freizeit_und_hobbys": ["das Hobby", "spielen", "lesen", "schwimmen", "reisen", "fotografieren", "der Sport", "das Buch", "die Musik", "tanzen", "singen", "malen", "der Film", "das Kino", "das Theater", "wandern", "joggen", "treffen", "lachen", "fernsehen"],
-    "einkaufen_und_geld": ["einkaufen", "das Geld", "der Euro", "der Cent", "kosten", "teuer", "billig", "der Laden", "das Geschäft", "der Markt", "der Supermarkt", "kaufen", "verkaufen", "bezahlen", "die Karte", "bar", "der Preis", "das Angebot", "die Kasse", "der Kunde"],
-    "verkehr_und_reisen": ["fahren", "fliegen", "reisen", "der Urlaub", "das Ticket", "der Bahnhof", "der Zug", "das Auto", "das Flugzeug", "das Bus", "die Straßenbahn", "das Fahrrad", "die Haltestelle", "der Flughafen", "das Hotel", "ankommen", "abfahren"],
-    "gesundheit_und_ernaehrung": ["der Arzt", "die Ärztin", "das Krankenhaus", "die Apotheke", "krank", "gesund", "der Schmerz", "die Medizin", "die Gesundheit", "helfen", "ruhig", "müde", "schlecht", "die Tablette", "der Notfall", "untersuchen", "das Rezept", "fühlen", "leben"],
-    "medien_und_kommunikation": ["sprechen", "sagen", "hören", "telefonieren", "das Handy", "das Internet", "die Zeitung", "das Fernsehen", "das Radio", "die Nachricht", "fragen", "antworten", "verstehen", "erklären", "zeigen", "bestellen", "kommunizieren"],
-    "zeit_und_wetter": ["die Zeit", "die Stunde", "die Minute", "der Tag", "die Woche", "der Monat", "das Jahr", "heute", "gestern", "morgen", "jetzt", "immer", "nie", "das Wetter", "die Sonne", "der Regen", "der Schnee", "kalt", "warm", "schön"]
+    "allgemein": ["sein", "haben", "werden", "gut", "ja", "nein", "nicht", "sehr", "und", "oder", "aber", "also", "hier", "da", "was", "wer", "wie", "wo", "woher", "wohin", "machen", "gehen", "kommen", "sehen", "geben", "nehmen", "stehen", "liegen", "finden", "bleiben", "sprechen", "sprechen", "fragen", "antworten", "kennen", "wissen", "denken", "glauben", "sollen", "wollen", "können", "müssen", "dürfen", "möchten", "mögen"],
+    "arbeiten_und_beruf": ["arbeiten", "der Beruf", "die Firma", "das Büro", "der Kollege", "die Kollegin", "der Chef", "die Chefin", "die Arbeit", "der Job", "der Termin", "die Pause", "verdienen", "schreiben", "anrufen", "der Computer", "das Telefon", "die E-Mail", "der Brief", "die Besprechung", "der Vertrag", "die Bewerbung", "der Kollege", "die Arbeitszeit", "die Abteilung", "der Kunde", "das Gehalt", "kündigen", "planen", "organisieren"],
+    "mensch_und_koerper": ["die Familie", "der Vater", "die Mutter", "der Sohn", "die Tochter", "der Bruder", "die Schwester", "die Eltern", "das Kind", "der Mensch", "der Freund", "die Freundin", "die Person", "der Name", "das Alter", "der Kopf", "das Auge", "das Ohr", "die Hand", "der Fuß", "der Rücken", "der Bauch", "das Haar", "die Nase", "der Mund", "der Zahn", "das Bein", "das Herz", "gesund", "krank"],
+    "wohnen_und_haushalt": ["das Haus", "die Wohnung", "das Zimmer", "die Küche", "das Bad", "das Schlafzimmer", "das Wohnzimmer", "die Tür", "das Fenster", "der Tisch", "der Stuhl", "das Bett", "die Lampe", "wohnen", "mieten", "der Schlüssel", "der Garten", "das Balkon", "die Miete", "umziehen", "die Heizung", "die Treppe", "das Dach", "der Flur", "die Wand", "der Boden", "putzen", "aufräumen", "einrichten", "die Garage"],
+    "essen_und_trinken": ["das Essen", "das Wasser", "der Kaffee", "der Tee", "die Milch", "das Brot", "das Fleisch", "der Fisch", "das Obst", "das Gemüse", "essen", "trinken", "kochen", "backen", "das Restaurant", "der Hunger", "der Durst", "das Frühstück", "das Mittagessen", "das Abendessen", "der Zucker", "das Salz", "das Ei", "der Käse", "die Butter", "der Apfel", "die Banane", "die Kartoffel", "die Tomate", "schmecken"],
+    "freizeit_und_hobbys": ["das Hobby", "spielen", "lesen", "schwimmen", "reisen", "fotografieren", "der Sport", "das Buch", "die Musik", "tanzen", "singen", "malen", "der Film", "das Kino", "das Theater", "wandern", "joggen", "treffen", "lachen", "fernsehen", "das Konzert", "das Museum", "das Lied", "das Spiel", "entspannen", "interessieren", "feiern", "grillen", "paddeln", "fotografieren"],
+    "einkaufen_und_geld": ["einkaufen", "das Geld", "der Euro", "der Cent", "kosten", "teuer", "billig", "der Laden", "das Geschäft", "der Markt", "der Supermarkt", "kaufen", "verkaufen", "bezahlen", "die Karte", "bar", "der Preis", "das Angebot", "die Kasse", "der Kunde", "die Rechnung", "das Kleingeld", "tauschen", "sparen", "umtauschen", "der Rabatt", "die Bank", "die Kreditkarte", "die Tüte", "öffnen"],
+    "verkehr_und_reisen": ["fahren", "fliegen", "reisen", "der Urlaub", "das Ticket", "der Bahnhof", "der Zug", "das Auto", "das Flugzeug", "der Bus", "die Straßenbahn", "das Fahrrad", "die Haltestelle", "der Flughafen", "das Hotel", "ankommen", "abfahren", "die Reise", "der Fahrplan", "die Verspätung", "das Gepäck", "der Pass", "die Karte", "einsteigen", "aussteigen", "umsteigen", "mieten", "die Tour", "die Fahrt", "der Hafen"],
+    "gesundheit_und_ernaehrung": ["der Arzt", "die Ärztin", "das Krankenhaus", "die Apotheke", "krank", "gesund", "der Schmerz", "die Medizin", "die Gesundheit", "helfen", "ruhig", "müde", "schlecht", "die Tablette", "der Notfall", "untersuchen", "das Rezept", "fühlen", "leben", "sterben", "die Praxis", "der Unfall", "verletzt", "atmen", "schlafen", "die Diät", "vitamin", "allergisch", "das Fieber", "der Husten"],
+    "medien_und_kommunikation": ["sprechen", "sagen", "hören", "telefonieren", "das Handy", "das Internet", "die Zeitung", "das Fernsehen", "das Radio", "die Nachricht", "fragen", "antworten", "verstehen", "erklären", "zeigen", "bestellen", "kommunizieren", "schreiben", "lesen", "das Buch", "der Brief", "die Sprache", "rufen", "melden", "antworten", "diskutieren", "erzählen", "der Computer", "die Website", "online"],
+    "zeit_und_wetter": ["die Zeit", "die Stunde", "die Minute", "der Tag", "die Woche", "der Monat", "das Jahr", "heute", "gestern", "morgen", "jetzt", "immer", "nie", "das Wetter", "die Sonne", "der Regen", "der Schnee", "kalt", "warm", "schön", "der Wind", "die Wolke", "heiß", "kühl", "der Frühling", "der Sommer", "der Herbst", "der Winter", "früh", "spät"],
+    "praepositionen_und_grammatik": ["in", "an", "auf", "unter", "über", "vor", "hinter", "neben", "zwischen", "mit", "ohne", "für", "gegen", "durch", "um", "aus", "bei", "nach", "seit", "von", "zu", "und", "oder", "aber", "denn", "weil", "dass", "wenn", "als", "ob"]
 }
 
-# Populate ALL category dynamically
+# Populate ALL category dynamically with unique sorted words
 all_words_set = set()
 for cat, w_list in A1_VOCABULARY_DATABASE.items():
     if cat != "ALL":
         all_words_set.update(w_list)
-A1_VOCABULARY_DATABASE["ALL"] = list(all_words_set)
+A1_VOCABULARY_DATABASE["ALL"] = sorted(list(all_words_set))
 
 # Persistent Memorized Word Bank Storage State
 if "memorized_words_dict" not in st.session_state:
@@ -358,7 +359,7 @@ if "memorized_words_dict" not in st.session_state:
 if "quiz_active" not in st.session_state:
     st.session_state.quiz_active = False
 if "quiz_mode" not in st.session_state:
-    st.session_state.quiz_mode = None  # "German to English" or "English to German"
+    st.session_state.quiz_mode = None
 if "quiz_questions" not in st.session_state:
     st.session_state.quiz_questions = []
 if "quiz_current_index" not in st.session_state:
@@ -434,7 +435,11 @@ elif nav_choice == "📚 Master Goethe Word Engine":
     st.markdown('<div class="section-header-box">🌻 Master Goethe Word Engine</div>', unsafe_allow_html=True)
     
     categories = list(A1_VOCABULARY_DATABASE.keys())
-    cat_options = {cat.replace('_', ' ').title(): cat for cat in categories}
+    cat_options = {"ALL (All Categories)": "ALL"}
+    for cat in categories:
+        if cat != "ALL":
+            cat_options[cat.replace('_', ' ').title()] = cat
+
     current_display_name = [k for k, v in cat_options.items() if v == st.session_state.vocab_category][0]
     
     selected_display_name = st.selectbox("Select Category:", list(cat_options.keys()), index=list(cat_options.keys()).index(current_display_name), key="category_dropdown", label_visibility="collapsed")
@@ -452,17 +457,22 @@ elif nav_choice == "📚 Master Goethe Word Engine":
     if not current_word_list:
         current_word_list = ["sein"]
 
-    # --- ALPHABETICALLY SORTED WORD DROPDOWN BELOW CATEGORY DROPDOWN ---
+    # --- ALPHABETICALLY SORTED WORD DROPDOWN WITH "ALL" OPTION AS FIRST OPTION ---
     sorted_current_words = sorted(current_word_list)
-    active_word = current_word_list[st.session_state.vocab_index]
-    if active_word not in sorted_current_words:
-        active_word = sorted_current_words[0]
+    word_dropdown_options = ["ALL (Shuffle / Show All Words)"] + sorted_current_words
 
-    selected_word_dropdown = st.selectbox("Select Word (Sorted Alphabetically):", sorted_current_words, index=sorted_current_words.index(active_word), key="word_alpha_dropdown", label_visibility="collapsed")
-    if selected_word_dropdown != active_word:
-        st.session_state.vocab_index = current_word_list.index(selected_word_dropdown)
-        st.session_state.is_card_flipped = False
-        st.rerun()
+    active_word = current_word_list[st.session_state.vocab_index]
+
+    selected_word_dropdown = st.selectbox("Select Word (Sorted Alphabetically):", word_dropdown_options, key="word_alpha_dropdown", label_visibility="collapsed")
+    
+    if selected_word_dropdown == "ALL (Shuffle / Show All Words)":
+        # Keep current active word or shuffle if needed
+        pass
+    else:
+        if selected_word_dropdown != active_word:
+            st.session_state.vocab_index = current_word_list.index(selected_word_dropdown)
+            st.session_state.is_card_flipped = False
+            st.rerun()
 
     st.markdown("<div style='height: 6px;'></div>", unsafe_allow_html=True)
 
@@ -528,7 +538,7 @@ elif nav_choice == "📚 Master Goethe Word Engine":
             "grammar_notes": str(e)
         }
 
-    # Determine Card Color Class based on exact user rules (untouched flashcard section):
+    # Determine Card Color Class based on exact user rules:
     # - blue for masculine ("der")
     # - red for feminine ("die")
     # - green for neuter ("das")
@@ -580,7 +590,7 @@ elif nav_choice == "📚 Master Goethe Word Engine":
 
         st.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
 
-        # 1. Plural Version with Audio (PLACED BEFORE WORD TYPE AS REQUESTED)
+        # 1. Plural Version with Audio (PLACED BEFORE WORD TYPE)
         plural = data.get("plural_form", "N/A")
         if plural and plural != "N/A":
             st.markdown(f'<div class="detail-section-card"><b>Plural Version:</b> {plural}</div>', unsafe_allow_html=True)
@@ -758,8 +768,7 @@ elif nav_choice == "📖 Vocabulary":
     render_top_back_button()
     st.markdown('<div class="section-header-box">📖 Vocabulary Word Bank</div>', unsafe_allow_html=True)
     
-    # --- QUIZ ME INTERACTIVE WIDGET AT THE TOP ---
-    st.markdown('<div class="main-card">', unsafe_allow_html=True)
+    # --- QUIZ ME INTERACTIVE WIDGET AT THE TOP (NO EXTRA WHITE BOXES) ---
     st.markdown("### 🧠 Quiz Me Challenge")
     
     memorized_items = list(st.session_state.memorized_words_dict.items())
@@ -856,7 +865,6 @@ elif nav_choice == "📖 Vocabulary":
                     final_score = st.session_state.quiz_total_score
                     final_total = st.session_state.quiz_total_answered
                     st.success(f"🎉 Quiz finished! Total score tallied: **Scored {final_score}/{final_total}**.")
-                    # Reset quiz session states
                     st.session_state.quiz_active = False
                     st.session_state.quiz_round_complete = False
                     st.session_state.quiz_awaiting_next_round_prompt = False
@@ -865,11 +873,9 @@ elif nav_choice == "📖 Vocabulary":
                     time.sleep(1.5)
                     st.rerun()
 
-    st.markdown('</div>', unsafe_allow_html=True)
     st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
 
-    # --- MEMORIZED WORDS WORD BANK DISPLAY (ALPHABETICAL SORT) ---
-    st.markdown('<div class="main-card">', unsafe_allow_html=True)
+    # --- MEMORIZED WORDS WORD BANK DISPLAY (ALPHABETICAL SORT, NO EXTRA WHITE BOXES) ---
     st.markdown("### 📚 Memorized Word Bank")
     st.markdown("Here are all the words you have tagged as **Memorized** in the *Master Goethe Word Engine*, sorted in alphabetical order:")
     
@@ -888,8 +894,6 @@ elif nav_choice == "📖 Vocabulary":
             rc1.markdown(f"**{g_word}**")
             rc2.markdown(f"{e_trans}")
             st.markdown("<hr style='border-color: rgba(244, 114, 182, 0.15); margin: 4px 0;'>", unsafe_allow_html=True)
-            
-    st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
 # 10. GEM AI TUTOR
