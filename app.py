@@ -18,9 +18,14 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom Styling: Pastel Blue background, Dark Navy headers, Pastel Framed Elements
+# Custom Styling & Header Removal
 st.markdown("""
 <style>
+    /* Completely remove Streamlit's native header overlay that blocks top-left clicks */
+    header[data-testid="stHeader"], [data-testid="collapsedControl"] {
+        display: none !important;
+    }
+
     /* Global Clean Modern Sans-Serif Font & Pastel Blue Background */
     .stApp {
         background-color: #e0f2fe !important;
@@ -426,7 +431,7 @@ SCHREIBEN_TEIL2_SCENARIOS = [
     {
         "title": "Dresden besuchen — Touristeninformation",
         "desc": "Message to the tourist information office about visiting Dresden – E-mail, approx. 30 words, 20 min.",
-        "aufgabe_text": "Sie möchten im August Dresden besuchen. Schreiben Sie an die Touristeninformation.\n\nSchreiben Sie zu jedem Punkt ein bis zwei Sätze (circa 30 Wörter).\n\nSchreiben Sie auch eine Anrede und einen Gruß.",
+        "aufgabe_text": "Sie möchten im August Dresden besuchen. Schreiben Sie an la Touristeninformation.\n\nSchreiben Sie zu jedem Punkt ein bis zwei Sätze (circa 30 Wörter).\n\nSchreiben Sie auch eine Anrede und einen Gruß.",
         "points": [
             "1. Warum schreiben Sie?",
             "2. Bitten Sie: Informationen über Filme, Museen usw. (Kulturprogramm).",
@@ -477,10 +482,10 @@ if st.session_state.sidebar_visible:
 
 nav_choice = st.session_state.nav_choice
 
-# Persistent Top-Bar Menu Button (Always visible at the top left of the page)
-col_menu, _ = st.columns([1, 10])
-with col_menu:
-    if st.button("📁 Menu", key="top_persistent_menu_btn", use_container_width=True, type="secondary"):
+# Dedicated Top-Left Menu Button to Open/Close Navigation Panel
+c_menu, _ = st.columns([1, 10])
+with c_menu:
+    if st.button("📁 Menu", key="top_persistent_menu_btn", use_container_width=True, type="primary"):
         st.session_state.sidebar_visible = not st.session_state.sidebar_visible
         st.rerun()
 
