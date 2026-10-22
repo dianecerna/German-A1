@@ -499,7 +499,7 @@ elif nav_choice == "📚 Master Goethe Word Engine":
             "grammar_notes": str(e)
         }
 
-    # Determine Card Color Gradient based on user rules:
+    # Determine Card Color Gradient based on rules:
     # - blue gradient for masculine ("der")
     # - red gradient for feminine ("die")
     # - green gradient for neuter ("das")
@@ -697,7 +697,7 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
 # ----------------------------------------------------
 elif nav_choice == "📖 A1 & A2 Short Stories":
     render_top_back_button()
-    st.markdown('<div class="section-header-box">📖 A1 & A2 Short Stories</div>', unsafe_allow_html=Thread_unsupported = True) # handled cleanly
+    st.markdown('<div class="section-header-box">📖 A1 & A2 Short Stories</div>', unsafe_allow_html=True)
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
     st.write("Content removed.")
     st.markdown('</div>', unsafe_allow_html=True)
