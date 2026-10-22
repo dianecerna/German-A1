@@ -190,43 +190,75 @@ st.markdown("""
         color: #c2410c !important;
     }
 
-    /* DYNAMIC CARD COLOR STYLING (Blue for masculine, red for feminine, green for neuter, orange for verbs, purple for rest) */
-    .card-masculine > button {
-        background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%) !important;
-        border: 2px solid #2563eb !important;
+    /* DYNAMIC STATIC CARD CONTAINER STYLING (Blue for masculine, red for feminine, green for neuter, orange for verbs, purple for rest) */
+    .card-masculine-container {
+        background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+        border: 2px solid #2563eb;
+        color: #ffffff;
+        border-radius: 14px;
+        padding: 28px 20px;
+        text-align: center;
+        box-shadow: 0 6px 20px rgba(59, 130, 246, 0.25);
+        margin-bottom: 8px;
+    }
+    .card-masculine-container * { color: #ffffff !important; }
+
+    .card-feminine-container {
+        background: linear-gradient(135deg, #f87171 0%, #ef4444 100%);
+        border: 2px solid #dc2626;
+        color: #ffffff;
+        border-radius: 14px;
+        padding: 28px 20px;
+        text-align: center;
+        box-shadow: 0 6px 20px rgba(239, 68, 68, 0.25);
+        margin-bottom: 8px;
+    }
+    .card-feminine-container * { color: #ffffff !important; }
+
+    .card-neuter-container {
+        background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+        border: 2px solid #059669;
+        color: #ffffff;
+        border-radius: 14px;
+        padding: 28px 20px;
+        text-align: center;
+        box-shadow: 0 6px 20px rgba(16, 185, 129, 0.25);
+        margin-bottom: 8px;
+    }
+    .card-neuter-container * { color: #ffffff !important; }
+
+    .card-verb-container {
+        background: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
+        border: 2px solid #ea580c;
+        color: #ffffff;
+        border-radius: 14px;
+        padding: 28px 20px;
+        text-align: center;
+        box-shadow: 0 6px 20px rgba(249, 115, 22, 0.25);
+        margin-bottom: 8px;
+    }
+    .card-verb-container * { color: #ffffff !important; }
+
+    .card-other-container {
+        background: linear-gradient(135deg, #c084fc 0%, #a855f7 100%);
+        border: 2px solid #9333ea;
+        color: #ffffff;
+        border-radius: 14px;
+        padding: 28px 20px;
+        text-align: center;
+        box-shadow: 0 6px 20px rgba(168, 85, 247, 0.25);
+        margin-bottom: 8px;
+    }
+    .card-other-container * { color: #ffffff !important; }
+
+    .flashcard-word-title {
+        font-size: 2.8rem;
+        font-weight: 800;
+        margin-bottom: 4px;
         color: #ffffff !important;
     }
-    .card-masculine > button * { color: #ffffff !important; }
 
-    .card-feminine > button {
-        background: linear-gradient(135deg, #f87171 0%, #ef4444 100%) !important;
-        border: 2px solid #dc2626 !important;
-        color: #ffffff !important;
-    }
-    .card-feminine > button * { color: #ffffff !important; }
-
-    .card-neuter > button {
-        background: linear-gradient(135deg, #34d399 0%, #10b981 100%) !important;
-        border: 2px solid #059669 !important;
-        color: #ffffff !important;
-    }
-    .card-neuter > button * { color: #ffffff !important; }
-
-    .card-verb > button {
-        background: linear-gradient(135deg, #fb923c 0%, #f97316 100%) !important;
-        border: 2px solid #ea580c !important;
-        color: #ffffff !important;
-    }
-    .card-verb > button * { color: #ffffff !important; }
-
-    .card-other > button {
-        background: linear-gradient(135deg, #c084fc 0%, #a855f7 100%) !important;
-        border: 2px solid #9333ea !important;
-        color: #ffffff !important;
-    }
-    .card-other > button * { color: #ffffff !important; }
-
-    /* Regular Black Font Styling for Specified Back Sections */
+    /* Regular Black Font Styling matching Grammar Notes size */
     .regular-black-text, .regular-black-text * {
         color: #000000 !important;
         font-size: 1rem !important;
@@ -451,7 +483,7 @@ elif nav_choice == "📚 Master Goethe Word Engine":
             "grammar_notes": str(e)
         }
 
-    # Determine Card Color Class based strictly on user rules:
+    # Determine Card Color Class based on rules:
     # - blue for masculine ("der")
     # - red for feminine ("die")
     # - green for neuter ("das")
@@ -461,35 +493,44 @@ elif nav_choice == "📚 Master Goethe Word Engine":
     word_type_val = str(data.get("word_type", "")).strip().lower()
 
     if gender_val == "der":
-        card_color_class = "card-masculine"
+        container_class = "card-masculine-container"
     elif gender_val == "die":
-        card_color_class = "card-feminine"
+        container_class = "card-feminine-container"
     elif gender_val == "das":
-        card_color_class = "card-neuter"
+        container_class = "card-neuter-container"
     elif "verb" in word_type_val:
-        card_color_class = "card-verb"
+        container_class = "card-verb-container"
     else:
-        card_color_class = "card-other"
+        container_class = "card-other-container"
 
-    # --- DIRECT CARD TAP FLIP MECHANISM WRAPPED IN DYNAMIC COLOR CLASS ---
-    st.markdown(f'<div class="{card_color_class}">', unsafe_allow_html=True)
+    # --- STATIC CARD CONTAINER WITH DYNAMIC COLOR-CODING ---
+    st.markdown(f'<div class="{container_class}">', unsafe_allow_html=True)
     if not st.session_state.is_card_flipped:
-        # Front of Card
-        card_btn_label = f"🌻 Category: {data.get('category', '').replace('_', ' ').title()}\n\n{data.get('word', active_word)}\n\nGender / Article: {data.get('gender', 'N/A')}\n\n[ Tap card to flip to back / View details ]"
-        if st.button(card_btn_label, key="actual_card_front_tap"):
-            st.session_state.is_card_flipped = True
-            st.rerun()
+        st.markdown(f"""
+        <div style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">🌻 Category: {data.get('category', '').replace('_', ' ').title()}</div>
+        <div class="flashcard-word-title">{data.get('word', active_word)}</div>
+        <div style="font-size: 1rem; margin-top: 4px;">Gender / Article: <b>{data.get('gender', 'N/A')}</b></div>
+        """, unsafe_allow_html=True)
     else:
-        # Back of Card
-        card_btn_label = f"📖 Detailed Breakdown\n\n{data.get('word', active_word)}\n\nMeaning: {data.get('english_meaning', '')}\n\n[ Tap card to flip back to front ]"
-        if st.button(card_btn_label, key="actual_card_back_tap"):
-            st.session_state.is_card_flipped = False
-            st.rerun()
+        st.markdown(f"""
+        <div style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px;">📖 Detailed Breakdown</div>
+        <div class="flashcard-word-title" style="font-size: 2.2rem;">{data.get('word', active_word)}</div>
+        <div style="font-size: 1.2rem; font-weight: 700; margin-bottom: 0px;">Meaning: {data.get('english_meaning', '')}</div>
+        """, unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # Audio pronunciation button for the main word
-    col_audio1, col_audio2 = st.columns([1, 1])
-    with col_audio1:
+    # --- BUTTONS BELOW THE CARD (FLIP & PRONOUNCE) ---
+    col_btn1, col_btn2 = st.columns([1, 1])
+    with col_btn1:
+        if not st.session_state.is_card_flipped:
+            if st.button("Flip", key="flip_to_back_btn"):
+                st.session_state.is_card_flipped = True
+                st.rerun()
+        else:
+            if st.button("Flip", key="flip_to_front_btn"):
+                st.session_state.is_card_flipped = False
+                st.rerun()
+    with col_btn2:
         if not st.session_state.is_card_flipped:
             if st.button("🔊 Pronounce Word", key="audio_front_btn"):
                 play_direct_audio(data.get("word", active_word), "front_audio")
@@ -497,10 +538,11 @@ elif nav_choice == "📚 Master Goethe Word Engine":
             if st.button("🔊 Pronounce Word", key="audio_back_word"):
                 play_direct_audio(data.get("word", active_word), "back_audio")
 
+    # --- BACK OF THE CARD CONTENT ---
     if st.session_state.is_card_flipped:
         st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
 
-        # 1. Plural Version Group (Regular black font, regular size)
+        # 1. Plural Version
         plural = data.get("plural_form", "N/A")
         if plural and plural != "N/A":
             col_pl1, col_pl2 = st.columns([4, 1])
@@ -510,19 +552,19 @@ elif nav_choice == "📚 Master Goethe Word Engine":
                     play_direct_audio(plural, "plural_audio")
             st.markdown("<hr style='border-color: #cbd5e1; margin: 6px 0;'>", unsafe_allow_html=True)
 
-        # 2. Word Type and Case Usage Group (Regular black font, regular size)
+        # 2. Word Type and Case Usage
         wt_col, cu_col = st.columns(2)
         wt_col.markdown(f'<div class="regular-black-text"><b>Word Type:</b> {data.get("word_type", "N/A")}</div>', unsafe_allow_html=True)
         cu_col.markdown(f'<div class="regular-black-text"><b>Case Usage:</b> {data.get("case_usage", "N/A")}</div>', unsafe_allow_html=True)
         st.markdown("<hr style='border-color: #cbd5e1; margin: 6px 0;'>", unsafe_allow_html=True)
 
-        # 3. Auxiliary Verb & Partizip II Group (Regular black font, regular size)
+        # 3. Auxiliary Verb & Partizip II
         aux_verb = data.get('auxiliary_verb', 'N/A')
         part_ii = data.get('partizip_ii', 'N/A')
         st.markdown(f'<div class="regular-black-text"><b>Auxiliary Verb & Partizip II:</b> {aux_verb} ({part_ii})</div>', unsafe_allow_html=True)
         st.markdown("<hr style='border-color: #cbd5e1; margin: 6px 0;'>", unsafe_allow_html=True)
 
-        # 4. Auxiliary Verb & Partizip II Sample Sentence Group
+        # 4. Aux/Partizip II Sample Sentence
         aux_sent = data.get('aux_sentence_de', '')
         if aux_sent and aux_sent != "N/A":
             st.markdown(f'<div class="regular-black-text"><b>Aux/Partizip II Sample Sentence:</b></div>', unsafe_allow_html=True)
@@ -533,7 +575,7 @@ elif nav_choice == "📚 Master Goethe Word Engine":
                     play_direct_audio(aux_sent, "aux_sent_audio")
             st.markdown("<hr style='border-color: #cbd5e1; margin: 6px 0;'>", unsafe_allow_html=True)
 
-        # 5. Komparativ and Superlative Group
+        # 5. Komparativ and Superlative
         komp = data.get('komparativ', 'N/A')
         sup = data.get('superlative', 'N/A')
         if komp != "N/A" or sup != "N/A":
@@ -544,8 +586,8 @@ elif nav_choice == "📚 Master Goethe Word Engine":
                     play_direct_audio(f"{komp} {sup}", "komp_audio")
             st.markdown("<hr style='border-color: #cbd5e1; margin: 6px 0;'>", unsafe_allow_html=True)
 
-        # 6. Conjugation and Sample Sentences Group
-        st.markdown("#### 📝 Conjugation & Sample Sentences")
+        # 6. Conjugation & Sample Sentences (Mirrored font size to Grammar Notes via regular-black-text, no icons, capitalized)
+        st.markdown('<div class="regular-black-text"><b>Conjugation & Sample Sentences</b></div>', unsafe_allow_html=True)
         st.markdown("<div style='height: 4px;'></div>", unsafe_allow_html=True)
         conjugations = data.get("conjugations", [])
         if conjugations:
@@ -559,10 +601,10 @@ elif nav_choice == "📚 Master Goethe Word Engine":
                         play_direct_audio(conj.get('sentence', ''), f"conj_{conj.get('pronoun', '')}")
                 st.markdown("<hr style='border-color: #cbd5e1; margin: 6px 0;'>", unsafe_allow_html=True)
 
-        # 7. Colloquial & Daily Phrases Group
+        # 7. Colloquial & Daily Phrases (Mirrored font size, no icons, capitalized)
         phrases = data.get("colloquial_phrases", [])
         if phrases:
-            st.markdown("#### 💬 Colloquial & Daily Phrases")
+            st.markdown('<div class="regular-black-text"><b>Colloquial & Daily Phrases</b></div>', unsafe_allow_html=True)
             st.markdown("<div style='height: 4px;'></div>", unsafe_allow_html=True)
             for idx, ph in enumerate(phrases):
                 p_de = ph.get("phrase_de", "")
@@ -574,8 +616,8 @@ elif nav_choice == "📚 Master Goethe Word Engine":
                         play_direct_audio(p_de, f"phrase_audio_{idx}")
             st.markdown("<hr style='border-color: #cbd5e1; margin: 6px 0;'>", unsafe_allow_html=True)
 
-        # 8. Grammar Notes Group
-        st.markdown(f'<div class="regular-black-text">🌻 <b>Grammar Notes:</b> {data.get("grammar_notes", "N/A")}</div>', unsafe_allow_html=True)
+        # 8. Grammar Notes (Bolded header, regular black text, no icon)
+        st.markdown(f'<div class="regular-black-text"><b>Grammar Notes:</b> {data.get("grammar_notes", "N/A")}</div>', unsafe_allow_html=True)
 
     st.markdown("<div style='height: 15px;'></div>", unsafe_allow_html=True)
 
