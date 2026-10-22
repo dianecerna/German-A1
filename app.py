@@ -15,7 +15,7 @@ st.set_page_config(
     page_title="German A1 Learning", 
     page_icon="🇩🇪", 
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="collapsed"
 )
 
 # Custom Dark Theme Styling matching Exifa.net interface
@@ -33,13 +33,9 @@ st.markdown("""
         color: #f8fafc;
     }
 
-    /* Dark Mode Sidebar Styling */
+    /* Hide Sidebar Completely */
     [data-testid="stSidebar"] {
-        background-color: #0f172a !important;
-        border-right: 1px solid #1e293b;
-    }
-    [data-testid="stSidebar"] * {
-        color: #e2e8f0 !important;
+        display: none !important;
     }
 
     /* Main Content Cards / Containers */
@@ -101,25 +97,6 @@ st.markdown("""
         color: #f8fafc;
         font-size: 1.4rem;
         font-weight: 700;
-    }
-
-    /* Custom Sidebar Nav Link Button Styling */
-    .stButton > button {
-        width: 100%;
-        background: #1f2937 !important;
-        border: 1px solid #374151 !important;
-        border-radius: 10px !important;
-        padding: 10px 16px !important;
-        text-align: left !important;
-        font-size: 1rem !important;
-        font-weight: 600 !important;
-        color: #f8fafc !important;
-        transition: all 0.2s ease !important;
-    }
-    .stButton > button:hover {
-        background: #374151 !important;
-        border-color: #60a5fa !important;
-        color: #ffffff !important;
     }
 
     /* Outlined Dropdown / Select Elements */
@@ -300,45 +277,9 @@ SCHREIBEN_TEIL1_SCENARIOS = [
     }
 ]
 
-SCHREIBEN_TEIL2_SCENARIOS = [
-    {
-        "title": "Dresden besuchen — Touristeninformation",
-        "desc": "Message to the tourist information office about visiting Dresden – E-mail, approx. 30 words.",
-        "aufgabe_text": "Sie möchten im August Dresden besuchen. Schreiben Sie an die Touristeninformation.\n\nSchreiben Sie zu jedem Punkt ein bis zwei Sätze (circa 30 Wörter).",
-        "points": [
-            "1. Warum schreiben Sie?",
-            "2. Bitten Sie: Informationen über Filme, Museen usw. (Kulturprogramm).",
-            "3. Fragen Sie: Hoteladressen?"
-        ]
-    }
-]
-
 # Navigation State Management
 if "nav_choice" not in st.session_state:
     st.session_state.nav_choice = "🏠 Study Dashboard"
-
-nav_options = [
-    "🏠 Study Dashboard", 
-    "📚 Master Goethe Word Engine",
-    "📖 Core Grammar Practice & Exercises",
-    "📖 Goethe A1 Lesen (Reading)",
-    "🎧 Goethe A1 Hören (Listening)",
-    "✍️ Goethe A1 Schreiben (Writing)", 
-    "🗣️ Goethe A1 Sprechen (Speaking)",
-    "📖 A1 & A2 Short Stories",
-    "🐱 Gem AI Tutor"
-]
-
-# Sidebar Rendering (With native collapse arrow preserved)
-with st.sidebar:
-    st.markdown("<h2 style='margin:0; font-size:1.35rem; color:#f8fafc;'>🇩🇪 Exifa.net (German A1)</h2>", unsafe_allow_html=True)
-    st.markdown("<div style='height: 15px;'></div>", unsafe_allow_html=True)
-    st.markdown("<p style='font-size:0.95rem; font-weight:600; color:#94a3b8; margin-bottom:10px;'>Navigation</p>", unsafe_allow_html=True)
-    
-    for opt in nav_options:
-        if st.button(opt, key=f"nav_btn_{opt}", use_container_width=True):
-            st.session_state.nav_choice = opt
-            st.rerun()
 
 nav_choice = st.session_state.nav_choice
 
@@ -351,33 +292,31 @@ if nav_choice == "🏠 Study Dashboard":
     <div class="hero-banner">
         <div class="hero-badge">✨ GERMAN A1 LEARNING HUB</div>
         <div class="hero-title">Master Goethe-Zertifikat A1</div>
-        <div class="hero-subtitle">Explore interactive modules, practice materials, and master the curriculum with dark theme fidelity.</div>
+        <div class="hero-subtitle">Select a module below to start practicing.</div>
     </div>
     """, unsafe_allow_html=True)
 
-    st.markdown("### 🚀 Study Modules & Practice Centers")
+    st.markdown("### 🚀 Study Modules")
     
     col1, col2 = st.columns(2)
     modules = [
-        ("📚 Master Goethe Word Engine", "Interactive flashcard engine with Goethe A1 vocabulary categories and audio pronunciation."),
-        ("📖 Core Grammar Practice & Exercises", "Handbook review modules with bulleted guides and multiple-choice practice."),
-        ("📖 Goethe A1 Lesen (Reading)", "Practice Lesen Teil 1, Teil 2, and Teil 3 exam tasks with instant feedback."),
-        ("🎧 Goethe A1 Hören (Listening)", "Listen to dialogues and station/airport announcements with audio playback."),
-        ("✍️ Goethe A1 Schreiben (Writing)", "Practice form filling (Teil 1) and short email writing (Teil 2)."),
-        ("🗣️ Goethe A1 Sprechen (Speaking)", "Record and evaluate your self-introductions, Q&A, and polite requests."),
-        ("📖 A1 & A2 Short Stories", "Immerse yourself in fairy tales and classic fictions with built-in audio narration."),
-        ("🐱 Gem AI Tutor", "Ask Gem any questions about German grammar, vocabulary, or exam prep.")
+        "📚 Master Goethe Word Engine",
+        "📖 Core Grammar Practice & Exercises",
+        "📖 Goethe A1 Lesen (Reading)",
+        "🎧 Goethe A1 Hören (Listening)",
+        "✍️ Goethe A1 Schreiben (Writing)",
+        "🗣️ Goethe A1 Sprechen (Speaking)",
+        "📖 A1 & A2 Short Stories",
+        "🐱 Gem AI Tutor"
     ]
 
-    for i, (mod_title, mod_desc) in enumerate(modules):
+    for i, mod_title in enumerate(modules):
         target_col = col1 if i % 2 == 0 else col2
         with target_col:
-            st.markdown(f'<div class="main-card">', unsafe_allow_html=True)
-            if st.button(mod_title, key=f"dash_card_{i}", use_container_width=True):
+            if st.button(mod_title, key=f"dash_card_{i}", use_container_width=True, type="primary"):
                 st.session_state.nav_choice = mod_title
                 st.rerun()
-            st.markdown(f"<p style='color: #94a3b8; font-size: 0.9rem; margin-top: 10px; margin-bottom: 0px;'>{mod_desc}</p>", unsafe_allow_html=True)
-            st.markdown('</div>', unsafe_allow_html=True)
+            st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
 
 # ----------------------------------------------------
 # 2. MASTER GOETHE WORD ENGINE
