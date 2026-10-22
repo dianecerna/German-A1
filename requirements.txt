@@ -1,5 +1,7 @@
 streamlit
 google-genai
+gtts
 streamlit-mic-recorder
-gTTS
 pypdf
+requests
+beautifulsoup4
