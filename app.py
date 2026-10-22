@@ -33,7 +33,6 @@ st.markdown("""
     
     *, div, span, p, h1, h2, h3, h4, h5, h6, label {
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
-        color: #1e293b;
     }
 
     /* Hide Sidebar Completely */
@@ -191,7 +190,7 @@ st.markdown("""
         color: #c2410c !important;
     }
 
-    /* EXACT CARD GRADIENTS PER USER REQUIREMENT */
+    /* DYNAMIC CARD GRADIENTS */
     .flashcard-masculine {
         background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%) !important;
         border: 2px solid #2563eb !important;
@@ -274,11 +273,11 @@ st.markdown("""
         color: #ffffff !important;
     }
 
-    /* Metric & Text Uniformity */
-    [data-testid="stMetricValue"] {
-        font-size: 1.1rem !important;
-        font-weight: 700 !important;
-        color: #db2777 !important;
+    /* Regular Black Font Styling for Specified Back Sections */
+    .regular-black-text, .regular-black-text * {
+        color: #000000 !important;
+        font-size: 1rem !important;
+        font-weight: 400 !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -295,7 +294,7 @@ FALLBACK_MODELS = ["gemini-3.8-flash", "gemini-3.5-flash-lite"]
 SYSTEM_INSTRUCTION = """
 You are Gem, an expert German tutor and official Goethe-Institut examiner evaluating candidates for the Goethe-Zertifikat A1 exam.
 Follow standard CEFR A1 learning objectives and exhaustive Goethe-Zertifikat A1 vocabulary standards.
-Provide accurate grammatical breakdowns, exact plurals, case usages, conjugations, komparativ/superlative, and always provide sentences for each pronoun even for nouns or other parts of speech. Never leave fields as blank or N/A in conjugations.
+Provide accurate grammatical breakdowns, exact plurals, case usages, conjugations, komparativ/superlative, and always provide sentences for each pronoun even for nouns or other parts of speech. Never leave fields as blank or N/A in conjugations. Clean and concise formatting.
 """
 
 @st.cache_data(show_spinner=False)
@@ -343,7 +342,7 @@ A1_VOCABULARY_DATABASE = {
     "allgemein": ["sein", "haben", "werden", "gut", "ja", "nein", "nicht", "sehr", "und", "oder", "aber", "also", "hier", "da", "was", "wer", "wie", "wo", "woher", "wohin"],
     "arbeit_und_beruf": ["arbeiten", "der Beruf", "die Firma", "das Büro", "der Kollege", "die Kollegin", "der Chef", "die Chefin", "die Arbeit", "der Job", "der Termin", "die Pause", "verdienen", "schreiben", "anrufen", "der Computer", "das Telefon", "die E-Mail", "der Brief", "die Besprechung"],
     "mensch_und_koerper": ["die Familie", "der Vater", "die Mutter", "der Sohn", "die Tochter", "der Bruder", "die Schwester", "die Eltern", "das Kind", "der Mensch", "der Freund", "die Freundin", "die Person", "der Name", "das Alter", "der Kopf", "das Auge", "das Ohr", "die Hand", "der Fuß"],
-    "wohnen_und_haushalt": ["das Haus", "die Wohnung", "das Zimmer", "das Küche", "das Bad", "das Schlafzimmer", "das Wohnzimmer", "die Tür", "das Fenster", "der Tisch", "der Stuhl", "das Bett", "die Lampe", "wohnen", "mieten", "der Schlüssel", "der Garten", "der Balkon", "die Miete", "umziehen"],
+    "wohnen_und_haushalt": ["das Haus", "die Wohnung", "das Zimmer", "das Küche", "das Bad", "das Schlafzimmer", "das Wohnzimmer", "die Tür", "das Fenster", "der Tisch", "der Stuhl", "das Bett", "die Lampe", "wohnen", "mieten", "der Schlüssel", "der Garten", "das Balkon", "die Miete", "umziehen"],
     "essen_und_trinken": ["das Essen", "das Wasser", "der Kaffee", "der Tee", "die Milch", "das Brot", "das Fleisch", "der Fisch", "das Obst", "das Gemüse", "essen", "trinken", "kochen", "backen", "das Restaurant", "der Hunger", "der Durst", "das Frühstück", "das Mittagessen", "das Abendessen"],
     "freizeit_und_hobbys": ["das Hobby", "spielen", "lesen", "schwimmen", "reisen", "fotografieren", "der Sport", "das Buch", "die Musik", "tanzen", "singen", "malen", "der Film", "das Kino", "das Theater", "wandern", "joggen", "treffen", "lachen", "fernsehen"],
     "einkaufen_und_geld": ["einkaufen", "das Geld", "der Euro", "der Cent", "kosten", "teuer", "billig", "der Laden", "das Geschäft", "der Markt", "der Supermarkt", "kaufen", "verkaufen", "bezahlen", "die Karte", "bar", "der Preis", "das Angebot", "die Kasse", "der Kunde"],
@@ -499,7 +498,7 @@ elif nav_choice == "📚 Master Goethe Word Engine":
             "grammar_notes": str(e)
         }
 
-    # Determine Card Color Gradient based on rules:
+    # Determine Card Color Gradient based on user rules:
     # - blue gradient for masculine ("der")
     # - red gradient for feminine ("die")
     # - green gradient for neuter ("das")
@@ -545,34 +544,34 @@ elif nav_choice == "📚 Master Goethe Word Engine":
 
         st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
 
-        # 1. Plural Version Group (No extra white background box wrapper)
+        # 1. Plural Version Group (Regular black font, regular size, no bracket citations)
         plural = data.get("plural_form", "N/A")
         if plural and plural != "N/A":
             col_pl1, col_pl2 = st.columns([4, 1])
-            col_pl1.markdown(f"**Plural Version:** `{plural}`[cite: 8]")
+            col_pl1.markdown(f'<div class="regular-black-text"><b>Plural Version:</b> {plural}</div>', unsafe_allow_html=True)
             with col_pl2:
                 if st.button("🔊 Audio", key="audio_plural"):
                     play_direct_audio(plural, "plural_audio")
             st.markdown("<hr style='border-color: rgba(255,255,255,0.3); margin: 6px 0;'>", unsafe_allow_html=True)
 
-        # 2. Word Type and Case Usage Group
+        # 2. Word Type and Case Usage Group (Regular black font, regular size)
         wt_col, cu_col = st.columns(2)
-        wt_col.markdown(f"**Word Type:** `{data.get('word_type', 'N/A')}`[cite: 8]")
-        cu_col.markdown(f"**Case Usage:** `{data.get('case_usage', 'N/A')}`[cite: 8]")
+        wt_col.markdown(f'<div class="regular-black-text"><b>Word Type:</b> {data.get("word_type", "N/A")}</div>', unsafe_allow_html=True)
+        cu_col.markdown(f'<div class="regular-black-text"><b>Case Usage:</b> {data.get("case_usage", "N/A")}</div>', unsafe_allow_html=True)
         st.markdown("<hr style='border-color: rgba(255,255,255,0.3); margin: 6px 0;'>", unsafe_allow_html=True)
 
-        # 3. Auxiliary Verb & Partizip II Group
+        # 3. Auxiliary Verb & Partizip II Group (Regular black font, regular size)
         aux_verb = data.get('auxiliary_verb', 'N/A')
         part_ii = data.get('partizip_ii', 'N/A')
-        st.markdown(f"**Auxiliary Verb & Partizip II:** `{aux_verb} ({part_ii})`[cite: 8]")
+        st.markdown(f'<div class="regular-black-text"><b>Auxiliary Verb & Partizip II:</b> {aux_verb} ({part_ii})</div>', unsafe_allow_html=True)
         st.markdown("<hr style='border-color: rgba(255,255,255,0.3); margin: 6px 0;'>", unsafe_allow_html=True)
 
         # 4. Auxiliary Verb & Partizip II Sample Sentence Group
         aux_sent = data.get('aux_sentence_de', '')
         if aux_sent and aux_sent != "N/A":
-            st.markdown(f"**Aux/Partizip II Sample Sentence:**")
+            st.markdown(f'<div class="regular-black-text"><b>Aux/Partizip II Sample Sentence:</b></div>', unsafe_allow_html=True)
             as_col1, as_col2 = st.columns([4, 1])
-            as_col1.markdown(f"*{aux_sent}* <br><small style='opacity:0.8;'>({data.get('aux_sentence_en', '')})</small>", unsafe_allow_html=True)
+            as_col1.markdown(f'<div class="regular-black-text">*{aux_sent}* <br>({data.get("aux_sentence_en", "")})</div>', unsafe_allow_html=True)
             with as_col2:
                 if st.button("🔊 Audio", key="audio_aux_sent"):
                     play_direct_audio(aux_sent, "aux_sent_audio")
@@ -583,7 +582,7 @@ elif nav_choice == "📚 Master Goethe Word Engine":
         sup = data.get('superlative', 'N/A')
         if komp != "N/A" or sup != "N/A":
             k_col1, k_col2 = st.columns([4, 1])
-            k_col1.markdown(f"**Komparativ & Superlative:** `{komp}` | `{sup}`[cite: 8]")
+            k_col1.markdown(f'<div class="regular-black-text"><b>Komparativ & Superlative:</b> {komp} | {sup}</div>', unsafe_allow_html=True)
             with k_col2:
                 if st.button("🔊 Audio", key="audio_komp"):
                     play_direct_audio(f"{komp} {sup}", "komp_audio")
@@ -596,9 +595,9 @@ elif nav_choice == "📚 Master Goethe Word Engine":
         if conjugations:
             for conj in conjugations:
                 c1, c2, c3, c4 = st.columns([1, 1, 2.5, 0.8])
-                c1.markdown(f"**{conj.get('pronoun', '')}**")
-                c2.markdown(f"`{conj.get('form', '--')}`")
-                c3.markdown(f"*{conj.get('sentence', '')}*<br><small style='opacity:0.8;'>({conj.get('english_sentence', '')})</small>", unsafe_allow_html=True)
+                c1.markdown(f'<div class="regular-black-text"><b>{conj.get("pronoun", "")}</b></div>', unsafe_allow_html=True)
+                c2.markdown(f'<div class="regular-black-text">{conj.get("form", "--")}</div>', unsafe_allow_html=True)
+                c3.markdown(f'<div class="regular-black-text">*{conj.get("sentence", "")}*<br>({conj.get("english_sentence", "")})</div>', unsafe_allow_html=True)
                 with c4:
                     if st.button("🔊", key=f"audio_conj_{conj.get('pronoun', '')}"):
                         play_direct_audio(conj.get('sentence', ''), f"conj_{conj.get('pronoun', '')}")
@@ -613,14 +612,14 @@ elif nav_choice == "📚 Master Goethe Word Engine":
                 p_de = ph.get("phrase_de", "")
                 p_en = ph.get("phrase_en", "")
                 ph_c1, ph_c2 = st.columns([4, 1])
-                ph_c1.markdown(f"• **{p_de}** — *{p_en}*[cite: 8]")
+                ph_c1.markdown(f'<div class="regular-black-text">• <b>{p_de}</b> — *{p_en}*</div>', unsafe_allow_html=True)
                 with ph_c2:
                     if st.button("🔊 Audio", key=f"audio_phrase_{idx}"):
                         play_direct_audio(p_de, f"phrase_audio_{idx}")
             st.markdown("<hr style='border-color: rgba(255,255,255,0.3); margin: 6px 0;'>", unsafe_allow_html=True)
 
         # 8. Grammar Notes Group
-        st.markdown(f'🌻 <b>Grammar Notes:</b> {data.get("grammar_notes", "N/A")}[cite: 8]')
+        st.markdown(f'<div class="regular-black-text">🌻 <b>Grammar Notes:</b> {data.get("grammar_notes", "N/A")}</div>', unsafe_allow_html=True)
 
     st.markdown("<div style='height: 15px;'></div>", unsafe_allow_html=True)
 
