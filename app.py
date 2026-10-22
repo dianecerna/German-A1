@@ -12,18 +12,18 @@ from streamlit_mic_recorder import mic_recorder
 # Streamlit Page Configuration
 st.set_page_config(
     page_title="German A1 Learning", 
-    page_icon="✨", 
+    page_icon="🚀", 
     layout="wide",
     initial_sidebar_state="collapsed"
 )
 
-# Custom Deep Indigo Mystical Theme with Cyan-Glow Border & Refined Dropdown Styling
+# Custom Silk Teal-to-Bronze Gradient Theme with Fully Aligned Dropdown Styling
 st.markdown("""
 <style>
-    /* Global Deep Indigo Mystical Background & Comfortable Spacing */
+    /* Global Silk Dark Void & Comfortable Spacing */
     .stApp {
-        background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #0f172a 70%) !important;
-        background-color: #0f172a !important;
+        background: radial-gradient(circle at 50% 0%, #0d2122 0%, #060c0e 70%) !important;
+        background-color: #060c0e !important;
         color: #f8fafc !important;
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
         background-attachment: fixed !important;
@@ -50,57 +50,57 @@ st.markdown("""
         gap: 0.6rem !important;
     }
 
-    /* Custom Button Styling with Subtle Cyan Glow */
+    /* Custom Teal-Glow Pill Button Styling Matching Reference */
     .stButton > button {
         width: 100% !important;
-        background: rgba(30, 41, 59, 0.7) !important;
-        border: 1px solid rgba(45, 212, 191, 0.4) !important;
-        border-radius: 12px !important;
-        padding: 10px 16px !important;
-        text-align: left !important;
+        background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%) !important;
+        border: 1px solid rgba(45, 212, 191, 0.5) !important;
+        border-radius: 9999px !important;
+        padding: 12px 24px !important;
+        text-align: center !important;
         font-size: 0.95rem !important;
         font-weight: 700 !important;
-        color: #f8fafc !important;
-        box-shadow: 0 4px 15px rgba(45, 212, 191, 0.1) !important;
+        color: #ffffff !important;
+        box-shadow: 0 4px 20px rgba(13, 148, 136, 0.4) !important;
         transition: all 0.2s ease !important;
         margin-bottom: 6px !important;
     }
     
     .stButton > button:hover {
-        background: rgba(45, 212, 191, 0.15) !important;
+        background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%) !important;
         border-color: #2dd4bf !important;
         transform: translateY(-1px);
-        box-shadow: 0 6px 20px rgba(45, 212, 191, 0.25) !important;
+        box-shadow: 0 6px 25px rgba(20, 184, 166, 0.6) !important;
         color: #ffffff !important;
     }
 
-    /* Compact Main Content Cards / Containers */
+    /* Compact Main Content Cards / Containers with Silk Sheen */
     .main-card {
-        background: rgba(15, 23, 42, 0.85);
-        backdrop-filter: blur(12px);
-        border-radius: 16px;
-        padding: 16px 20px;
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+        background: rgba(13, 33, 34, 0.75);
+        backdrop-filter: blur(16px);
+        border-radius: 20px;
+        padding: 20px 24px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
         margin-bottom: 12px;
-        border: 1px solid rgba(45, 212, 191, 0.25);
+        border: 1px solid rgba(45, 212, 191, 0.2);
     }
     
-    /* Compact Hero Banner with Cyan Border Vibe */
+    /* Compact Hero Banner */
     .hero-banner {
-        background: linear-gradient(135deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.95) 100%);
-        border-radius: 16px;
-        padding: 24px;
+        background: linear-gradient(135deg, rgba(13, 148, 136, 0.3) 0%, rgba(13, 33, 34, 0.8) 60%, rgba(120, 53, 15, 0.3) 100%);
+        border-radius: 20px;
+        padding: 28px;
         color: #ffffff;
         margin-bottom: 16px;
-        border: 1px solid rgba(45, 212, 191, 0.4);
-        box-shadow: 0 8px 25px rgba(45, 212, 191, 0.15);
+        border: 1px solid rgba(45, 212, 191, 0.3);
+        box-shadow: 0 10px 30px rgba(13, 148, 136, 0.2);
     }
     .hero-badge {
         display: inline-block;
         background: rgba(45, 212, 191, 0.15);
         border: 1px solid rgba(45, 212, 191, 0.4);
-        padding: 4px 12px;
-        border-radius: 16px;
+        padding: 4px 14px;
+        border-radius: 9999px;
         font-size: 0.75rem;
         font-weight: 700;
         letter-spacing: 0.05em;
@@ -124,33 +124,33 @@ st.markdown("""
 
     /* Section Header Box */
     .section-header-box {
-        background: rgba(15, 23, 42, 0.9);
+        background: rgba(13, 33, 34, 0.85);
         border: 1px solid rgba(45, 212, 191, 0.3);
-        border-radius: 12px;
-        padding: 10px 16px;
+        border-radius: 16px;
+        padding: 12px 18px;
         margin-bottom: 12px;
         color: #2dd4bf;
         font-size: 1.2rem;
         font-weight: 800;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
     }
 
-    /* Cyan-Bordered Dropdown Box Design matching the Theme */
+    /* Teal-Glow Dropdown Box Design matching the Theme */
     .stSelectbox div[data-baseweb="select"] {
-        background: rgba(15, 23, 42, 0.95) !important;
-        border-radius: 12px !important;
+        background: rgba(13, 33, 34, 0.95) !important;
+        border-radius: 14px !important;
     }
     .stSelectbox div[data-baseweb="select"] > div {
-        background: rgba(15, 23, 42, 0.95) !important;
+        background: rgba(13, 33, 34, 0.95) !important;
         border: 1px solid rgba(45, 212, 191, 0.4) !important;
-        border-radius: 12px !important;
+        border-radius: 14px !important;
         color: #ffffff !important;
         padding: 10px 16px !important;
-        box-shadow: 0 4px 15px rgba(45, 212, 191, 0.1) !important;
+        box-shadow: 0 4px 15px rgba(13, 148, 136, 0.2) !important;
         min-height: 48px !important;
     }
     .stSelectbox div[data-baseweb="select"] > div:hover {
-        background: rgba(30, 41, 59, 0.95) !important;
+        background: rgba(13, 148, 136, 0.2) !important;
         border-color: #2dd4bf !important;
     }
     .stSelectbox span, .stSelectbox div[data-baseweb="select"] span {
@@ -161,10 +161,10 @@ st.markdown("""
 
     /* Open Dropdown Popup List Container & Options */
     div[data-baseweb="menu"] {
-        background: rgba(15, 23, 42, 0.98) !important;
+        background: rgba(13, 33, 34, 0.98) !important;
         border: 1px solid rgba(45, 212, 191, 0.4) !important;
-        border-radius: 12px !important;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6) !important;
+        border-radius: 14px !important;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7) !important;
     }
     div[data-baseweb="menu"] ul {
         background: transparent !important;
@@ -179,7 +179,7 @@ st.markdown("""
         color: #ffffff !important;
     }
     div[data-baseweb="menu"] li:hover, div[data-baseweb="menu"] div[aria-selected="true"] {
-        background: rgba(45, 212, 191, 0.2) !important;
+        background: rgba(13, 148, 136, 0.35) !important;
         color: #ffffff !important;
     }
     div[data-baseweb="menu"] li:hover span, div[data-baseweb="menu"] div[aria-selected="true"] span {
@@ -188,52 +188,52 @@ st.markdown("""
 
     /* Detailed Back Card Separated Sections Style */
     .detail-box {
-        background: rgba(30, 41, 59, 0.6);
+        background: rgba(13, 33, 34, 0.6);
         border: 1px solid rgba(45, 212, 191, 0.3);
-        border-radius: 12px;
-        padding: 12px 16px;
+        border-radius: 14px;
+        padding: 14px 18px;
         margin-bottom: 10px;
     }
 
     /* Gender-based Flashcard Containers */
     .flashcard-masculine {
-        background: linear-gradient(135deg, rgba(30, 58, 138, 0.6) 0%, rgba(15, 23, 42, 0.9) 100%);
-        border: 2px solid #3b82f6;
+        background: linear-gradient(135deg, rgba(13, 148, 136, 0.4) 0%, rgba(13, 33, 34, 0.9) 100%);
+        border: 2px solid #2dd4bf;
         color: #ffffff;
-        border-radius: 16px;
-        padding: 24px 16px;
+        border-radius: 18px;
+        padding: 28px 18px;
         text-align: center;
-        box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+        box-shadow: 0 8px 30px rgba(13, 148, 136, 0.3);
         margin-bottom: 12px;
     }
     .flashcard-feminine {
-        background: linear-gradient(135deg, rgba(136, 19, 55, 0.6) 0%, rgba(15, 23, 42, 0.9) 100%);
-        border: 2px solid #ec4899;
+        background: linear-gradient(135deg, rgba(190, 24, 93, 0.4) 0%, rgba(13, 33, 34, 0.9) 100%);
+        border: 2px solid #f43f5e;
         color: #ffffff;
-        border-radius: 16px;
-        padding: 24px 16px;
+        border-radius: 18px;
+        padding: 28px 18px;
         text-align: center;
-        box-shadow: 0 8px 25px rgba(236, 72, 153, 0.3);
+        box-shadow: 0 8px 30px rgba(244, 63, 94, 0.3);
         margin-bottom: 12px;
     }
     .flashcard-neuter {
-        background: linear-gradient(135deg, rgba(6, 78, 59, 0.6) 0%, rgba(15, 23, 42, 0.9) 100%);
+        background: linear-gradient(135deg, rgba(16, 185, 129, 0.4) 0%, rgba(13, 33, 34, 0.9) 100%);
         border: 2px solid #10b981;
         color: #ffffff;
-        border-radius: 16px;
-        padding: 24px 16px;
+        border-radius: 18px;
+        padding: 28px 18px;
         text-align: center;
-        box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+        box-shadow: 0 8px 30px rgba(16, 185, 129, 0.3);
         margin-bottom: 12px;
     }
     .flashcard-other {
-        background: linear-gradient(135deg, rgba(124, 45, 18, 0.6) 0%, rgba(15, 23, 42, 0.9) 100%);
-        border: 2px solid #f97316;
+        background: linear-gradient(135deg, rgba(217, 119, 6, 0.4) 0%, rgba(13, 33, 34, 0.9) 100%);
+        border: 2px solid #f59e0b;
         color: #ffffff;
-        border-radius: 16px;
-        padding: 24px 16px;
+        border-radius: 18px;
+        padding: 28px 18px;
         text-align: center;
-        box-shadow: 0 8px 25px rgba(249, 115, 22, 0.3);
+        box-shadow: 0 8px 30px rgba(245, 158, 11, 0.3);
         margin-bottom: 12px;
     }
     .flashcard-word-title {
@@ -312,7 +312,7 @@ A1_VOCABULARY_DATABASE = {
     "allgemein": ["sein", "haben", "werden", "gut", "ja", "nein", "nicht", "sehr", "und", "oder", "aber", "also", "hier", "da", "was", "wer", "wie", "wo", "woher", "wohin"],
     "arbeit_und_beruf": ["arbeiten", "der Beruf", "die Firma", "das Büro", "der Kollege", "die Kollegin", "der Chef", "die Chefin", "die Arbeit", "der Job", "der Termin", "die Pause", "verdienen", "schreiben", "anrufen", "der Computer", "das Telefon", "die E-Mail", "der Brief", "die Besprechung"],
     "mensch_und_koerper": ["die Familie", "der Vater", "die Mutter", "der Sohn", "die Tochter", "der Bruder", "die Schwester", "die Eltern", "das Kind", "der Mensch", "der Freund", "die Freundin", "die Person", "der Name", "das Alter", "der Kopf", "das Auge", "das Ohr", "die Hand", "der Fuß"],
-    "wohnen_und_haushalt": ["das Haus", "die Wohnung", "das Zimmer", "die Küche", "das Bad", "das Schlafzimmer", "das Wohnzimmer", "die Tür", "das Fenster", "der Tisch", "der Stuhl", "das Bett", "die Lampe", "wohnen", "mieten", "der Schlüssel", "der Garten", "der Balkon", "die Miete", "umziehen"],
+    "wohnen_und_haushalt": ["das Haus", "die Wohnung", "das Zimmer", "das Küche", "das Bad", "das Schlafzimmer", "das Wohnzimmer", "die Tür", "das Fenster", "der Tisch", "der Stuhl", "das Bett", "die Lampe", "wohnen", "mieten", "der Schlüssel", "der Garten", "der Balkon", "die Miete", "umziehen"],
     "essen_und_trinken": ["das Essen", "das Wasser", "der Kaffee", "der Tee", "die Milch", "das Brot", "das Fleisch", "der Fisch", "das Obst", "das Gemüse", "essen", "trinken", "kochen", "backen", "das Restaurant", "der Hunger", "der Durst", "das Frühstück", "das Mittagessen", "das Abendessen"],
     "freizeit_und_hobbys": ["das Hobby", "spielen", "lesen", "schwimmen", "reisen", "fotografieren", "der Sport", "das Buch", "die Musik", "tanzen", "singen", "malen", "der Film", "das Kino", "das Theater", "wandern", "joggen", "treffen", "lachen", "fernsehen"],
     "einkaufen_und_geld": ["einkaufen", "das Geld", "der Euro", "der Cent", "kosten", "teuer", "billig", "der Laden", "das Geschäft", "der Markt", "der Supermarkt", "kaufen", "verkaufen", "bezahlen", "die Karte", "bar", "der Preis", "das Angebot", "die Kasse", "der Kunde"],
@@ -355,7 +355,7 @@ def render_top_back_button():
 # 1. STUDY DASHBOARD
 # ----------------------------------------------------
 if nav_choice == "🏠 Study Dashboard":
-    st.markdown('<div class="section-header-box">✨ Study Dashboard</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-header-box">🚀 Study Dashboard</div>', unsafe_allow_html=True)
     st.markdown("""
     <div class="hero-banner">
         <div class="hero-badge">MY GERMAN STUDY BUDDY</div>
@@ -385,10 +385,10 @@ if nav_choice == "🏠 Study Dashboard":
 # ----------------------------------------------------
 elif nav_choice == "📚 Master Goethe Word Engine":
     render_top_back_button()
-    st.markdown('<div class="section-header-box">✨ Master Goethe Word Engine</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-header-box">🚀 Master Goethe Word Engine</div>', unsafe_allow_html=True)
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
     
-    st.markdown("##### ✨ Categories")
+    st.markdown("##### 🚀 Categories")
     categories = list(A1_VOCABULARY_DATABASE.keys())
     
     cat_options = {cat.replace('_', ' ').title(): cat for cat in categories}
@@ -481,7 +481,7 @@ elif nav_choice == "📚 Master Goethe Word Engine":
     if not st.session_state.is_card_flipped:
         st.markdown(f"""
         <div class="{card_class}">
-            <p style="color: #2dd4bf; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">✨ Category: {data.get("category", "").replace('_', ' ').title()}</p>
+            <p style="color: #2dd4bf; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">🚀 Category: {data.get("category", "").replace('_', ' ').title()}</p>
             <div class="flashcard-word-title">{data.get("word", active_word)}</div>
             <p style="color: #cbd5e1; font-size: 1rem; margin-top: 4px;">Gender / Article: <b>{data.get("gender", "N/A")}</b></p>
             <p style="color: #94a3b8; font-size: 0.85rem; margin-top: 10px;">Click below to listen or flip card for separated detail boxes.</p>
@@ -573,7 +573,7 @@ elif nav_choice == "📚 Master Goethe Word Engine":
             st.markdown('</div>', unsafe_allow_html=True)
 
         # 6. Grammar Notes Box
-        st.markdown(f'<div class="detail-box">✨ <b>Grammar Notes:</b> {data.get("grammar_notes", "N/A")}</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="detail-box">🚀 <b>Grammar Notes:</b> {data.get("grammar_notes", "N/A")}</div>', unsafe_allow_html=True)
 
         st.markdown("<div style='height: 5px;'></div>", unsafe_allow_html=True)
         if st.button("🔄 Flip back to Front", type="primary", use_container_width=True):
@@ -652,7 +652,7 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
     st.write("Content removed.")
     st.markdown('</div>', unsafe_allow_html=True)
 
-# ----------------------------------------------------
+# --------------------------------main--------------------
 # 8. A1 & A2 SHORT STORIES
 # ----------------------------------------------------
 elif nav_choice == "📖 A1 & A2 Short Stories":
