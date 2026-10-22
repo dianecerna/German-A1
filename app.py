@@ -12,18 +12,18 @@ from streamlit_mic_recorder import mic_recorder
 # Streamlit Page Configuration
 st.set_page_config(
     page_title="German A1 Learning", 
-    page_icon="⚡", 
+    page_icon="✨", 
     layout="wide",
     initial_sidebar_state="collapsed"
 )
 
-# Custom Deep Purple-to-Magenta Gradient Glow Theme with Relaxed Top Spacing & Perfect Dropdown Styling
+# Custom Deep Indigo Mystical Theme with Cyan-Glow Border & Refined Dropdown Styling
 st.markdown("""
 <style>
-    /* Global Deep Gradient Dark Void & Comfortable Spacing */
+    /* Global Deep Indigo Mystical Background & Comfortable Spacing */
     .stApp {
-        background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #09090b 70%) !important;
-        background-color: #09090b !important;
+        background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #0f172a 70%) !important;
+        background-color: #0f172a !important;
         color: #f8fafc !important;
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
         background-attachment: fixed !important;
@@ -50,75 +50,73 @@ st.markdown("""
         gap: 0.6rem !important;
     }
 
-    /* Smooth Gradient Border Custom Button Styling */
+    /* Custom Button Styling with Subtle Cyan Glow */
     .stButton > button {
         width: 100% !important;
-        background: linear-gradient(135deg, rgba(30, 27, 75, 0.6) 0%, rgba(15, 23, 42, 0.8) 100%) !important;
-        border: 1px solid rgba(236, 72, 153, 0.4) !important;
+        background: rgba(30, 41, 59, 0.7) !important;
+        border: 1px solid rgba(45, 212, 191, 0.4) !important;
         border-radius: 12px !important;
         padding: 10px 16px !important;
         text-align: left !important;
         font-size: 0.95rem !important;
         font-weight: 700 !important;
         color: #f8fafc !important;
-        box-shadow: 0 4px 15px rgba(168, 85, 247, 0.15) !important;
+        box-shadow: 0 4px 15px rgba(45, 212, 191, 0.1) !important;
         transition: all 0.2s ease !important;
         margin-bottom: 6px !important;
     }
     
     .stButton > button:hover {
-        background: linear-gradient(135deg, rgba(168, 85, 247, 0.2) 0%, rgba(236, 72, 153, 0.2) 100%) !important;
-        border-color: #ec4899 !important;
+        background: rgba(45, 212, 191, 0.15) !important;
+        border-color: #2dd4bf !important;
         transform: translateY(-1px);
-        box-shadow: 0 6px 20px rgba(236, 72, 153, 0.35) !important;
+        box-shadow: 0 6px 20px rgba(45, 212, 191, 0.25) !important;
         color: #ffffff !important;
     }
 
     /* Compact Main Content Cards / Containers */
     .main-card {
-        background: rgba(15, 23, 42, 0.75);
+        background: rgba(15, 23, 42, 0.85);
         backdrop-filter: blur(12px);
         border-radius: 16px;
         padding: 16px 20px;
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
         margin-bottom: 12px;
-        border: 1px solid rgba(168, 85, 247, 0.2);
+        border: 1px solid rgba(45, 212, 191, 0.25);
     }
     
-    /* Compact Hero Banner */
+    /* Compact Hero Banner with Cyan Border Vibe */
     .hero-banner {
-        background: linear-gradient(135deg, rgba(76, 29, 149, 0.4) 0%, rgba(15, 23, 42, 0.8) 50%, rgba(131, 24, 66, 0.4) 100%);
+        background: linear-gradient(135deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.95) 100%);
         border-radius: 16px;
         padding: 24px;
         color: #ffffff;
         margin-bottom: 16px;
-        border: 1px solid rgba(236, 72, 153, 0.3);
-        box-shadow: 0 8px 25px rgba(126, 34, 206, 0.25);
+        border: 1px solid rgba(45, 212, 191, 0.4);
+        box-shadow: 0 8px 25px rgba(45, 212, 191, 0.15);
     }
     .hero-badge {
         display: inline-block;
-        background: rgba(168, 85, 247, 0.15);
-        border: 1px solid rgba(236, 72, 153, 0.4);
+        background: rgba(45, 212, 191, 0.15);
+        border: 1px solid rgba(45, 212, 191, 0.4);
         padding: 4px 12px;
         border-radius: 16px;
         font-size: 0.75rem;
         font-weight: 700;
         letter-spacing: 0.05em;
         margin-bottom: 8px;
-        color: #f472b6;
+        color: #2dd4bf;
     }
     .hero-title {
         font-size: 2rem;
         font-weight: 800;
         letter-spacing: -0.025em;
         margin-bottom: 4px;
-        background: linear-gradient(90deg, #ffffff 30%, #38bdf8 60%, #ec4899 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+        color: #ffffff;
     }
     .hero-subtitle {
         font-size: 0.95rem;
-        color: #cbd5e1;
+        color: #94a3b8;
         line-height: 1.4;
         margin-bottom: 0px;
         font-weight: 500;
@@ -126,34 +124,34 @@ st.markdown("""
 
     /* Section Header Box */
     .section-header-box {
-        background: rgba(15, 23, 42, 0.8);
-        border: 1px solid rgba(168, 85, 247, 0.3);
+        background: rgba(15, 23, 42, 0.9);
+        border: 1px solid rgba(45, 212, 191, 0.3);
         border-radius: 12px;
         padding: 10px 16px;
         margin-bottom: 12px;
-        color: #f472b6;
+        color: #2dd4bf;
         font-size: 1.2rem;
         font-weight: 800;
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     }
 
-    /* Exactly Mirrored Button-Style Dropdown Box Design with Clear High Contrast Text */
+    /* Cyan-Bordered Dropdown Box Design matching the Theme */
     .stSelectbox div[data-baseweb="select"] {
-        background: linear-gradient(135deg, rgba(30, 27, 75, 0.6) 0%, rgba(15, 23, 42, 0.8) 100%) !important;
+        background: rgba(15, 23, 42, 0.95) !important;
         border-radius: 12px !important;
     }
     .stSelectbox div[data-baseweb="select"] > div {
-        background: linear-gradient(135deg, rgba(30, 27, 75, 0.6) 0%, rgba(15, 23, 42, 0.8) 100%) !important;
-        border: 1px solid rgba(236, 72, 153, 0.4) !important;
+        background: rgba(15, 23, 42, 0.95) !important;
+        border: 1px solid rgba(45, 212, 191, 0.4) !important;
         border-radius: 12px !important;
         color: #ffffff !important;
         padding: 10px 16px !important;
-        box-shadow: 0 4px 15px rgba(168, 85, 247, 0.15) !important;
+        box-shadow: 0 4px 15px rgba(45, 212, 191, 0.1) !important;
         min-height: 48px !important;
     }
     .stSelectbox div[data-baseweb="select"] > div:hover {
-        background: linear-gradient(135deg, rgba(168, 85, 247, 0.2) 0%, rgba(236, 72, 153, 0.2) 100%) !important;
-        border-color: #ec4899 !important;
+        background: rgba(30, 41, 59, 0.95) !important;
+        border-color: #2dd4bf !important;
     }
     .stSelectbox span, .stSelectbox div[data-baseweb="select"] span {
         color: #ffffff !important;
@@ -161,10 +159,10 @@ st.markdown("""
         font-size: 0.95rem !important;
     }
 
-    /* Open Dropdown Popup List Container & Options Mirrored to Button Theme */
+    /* Open Dropdown Popup List Container & Options */
     div[data-baseweb="menu"] {
-        background: linear-gradient(135deg, rgba(30, 27, 75, 0.95) 0%, rgba(15, 23, 42, 0.95) 100%) !important;
-        border: 1px solid rgba(236, 72, 153, 0.4) !important;
+        background: rgba(15, 23, 42, 0.98) !important;
+        border: 1px solid rgba(45, 212, 191, 0.4) !important;
         border-radius: 12px !important;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6) !important;
     }
@@ -181,7 +179,7 @@ st.markdown("""
         color: #ffffff !important;
     }
     div[data-baseweb="menu"] li:hover, div[data-baseweb="menu"] div[aria-selected="true"] {
-        background: linear-gradient(135deg, rgba(168, 85, 247, 0.3) 0%, rgba(236, 72, 153, 0.3) 100%) !important;
+        background: rgba(45, 212, 191, 0.2) !important;
         color: #ffffff !important;
     }
     div[data-baseweb="menu"] li:hover span, div[data-baseweb="menu"] div[aria-selected="true"] span {
@@ -191,7 +189,7 @@ st.markdown("""
     /* Detailed Back Card Separated Sections Style */
     .detail-box {
         background: rgba(30, 41, 59, 0.6);
-        border: 1px solid rgba(168, 85, 247, 0.3);
+        border: 1px solid rgba(45, 212, 191, 0.3);
         border-radius: 12px;
         padding: 12px 16px;
         margin-bottom: 10px;
@@ -242,16 +240,14 @@ st.markdown("""
         font-size: 2.5rem;
         font-weight: 800;
         margin-bottom: 4px;
-        background: linear-gradient(90deg, #ffffff, #f472b6);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+        color: #ffffff;
     }
 
     /* Metric & Text Uniformity */
     [data-testid="stMetricValue"] {
         font-size: 1.1rem !important;
         font-weight: 700 !important;
-        color: #38bdf8 !important;
+        color: #2dd4bf !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -322,7 +318,7 @@ A1_VOCABULARY_DATABASE = {
     "einkaufen_und_geld": ["einkaufen", "das Geld", "der Euro", "der Cent", "kosten", "teuer", "billig", "der Laden", "das Geschäft", "der Markt", "der Supermarkt", "kaufen", "verkaufen", "bezahlen", "die Karte", "bar", "der Preis", "das Angebot", "die Kasse", "der Kunde"],
     "verkehr_und_reisen": ["fahren", "fliegen", "reisen", "der Urlaub", "das Ticket", "der Bahnhof", "der Zug", "das Auto", "das Flugzeug", "das Bus", "die Straßenbahn", "das Fahrrad", "die Haltestelle", "der Flughafen", "das Hotel", "das Zimmer", "das Karte", "das Reise", "ankommen", "abfahren"],
     "gesundheit_und_ernaehrung": ["der Arzt", "die Ärztin", "das Krankenhaus", "die Apotheke", "krank", "gesund", "der Schmerz", "die Medizin", "die Gesundheit", "helfen", "ruhig", "müde", "gut", "schlecht", "die Tablette", "der Notfall", "untersuchen", "das Rezept", "fühlen", "leben"],
-    "medien_und_kommunikation": ["sprechen", "sagen", "hören", "lesen", "schreiben", "telefonieren", "das Handy", "der Computer", "das Internet", "die Zeitung", "das Fernsehen", "das Radio", "die Nachricht", "fragen", "antworten", "verstehen", "erklären", "zeigen", "bestellen", "kommunizieren"],
+    "medien_und_kommunikation": ["sprechen", "sagen", "hören", "lesen", "schreiben", "telefonieren", "das Handy", "der Computer", "das Internet", "die Zeitung", "das Fernsehen", "das Radio", "das Nachricht", "fragen", "antworten", "verstehen", "erklären", "zeigen", "bestellen", "kommunizieren"],
     "zeit_und_wetter": ["die Zeit", "die Stunde", "die Minute", "der Tag", "die Woche", "der Monat", "das Jahr", "heute", "gestern", "morgen", "jetzt", "immer", "nie", "das Wetter", "die Sonne", "der Regen", "der Schnee", "kalt", "warm", "schön"]
 }
 
@@ -359,7 +355,7 @@ def render_top_back_button():
 # 1. STUDY DASHBOARD
 # ----------------------------------------------------
 if nav_choice == "🏠 Study Dashboard":
-    st.markdown('<div class="section-header-box">⚡ Study Dashboard</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-header-box">✨ Study Dashboard</div>', unsafe_allow_html=True)
     st.markdown("""
     <div class="hero-banner">
         <div class="hero-badge">MY GERMAN STUDY BUDDY</div>
@@ -389,10 +385,10 @@ if nav_choice == "🏠 Study Dashboard":
 # ----------------------------------------------------
 elif nav_choice == "📚 Master Goethe Word Engine":
     render_top_back_button()
-    st.markdown('<div class="section-header-box">⚡ Master Goethe Word Engine</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-header-box">✨ Master Goethe Word Engine</div>', unsafe_allow_html=True)
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
     
-    st.markdown("##### ⚡ Categories")
+    st.markdown("##### ✨ Categories")
     categories = list(A1_VOCABULARY_DATABASE.keys())
     
     cat_options = {cat.replace('_', ' ').title(): cat for cat in categories}
@@ -485,7 +481,7 @@ elif nav_choice == "📚 Master Goethe Word Engine":
     if not st.session_state.is_card_flipped:
         st.markdown(f"""
         <div class="{card_class}">
-            <p style="color: #38bdf8; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">⚡ Category: {data.get("category", "").replace('_', ' ').title()}</p>
+            <p style="color: #2dd4bf; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">✨ Category: {data.get("category", "").replace('_', ' ').title()}</p>
             <div class="flashcard-word-title">{data.get("word", active_word)}</div>
             <p style="color: #cbd5e1; font-size: 1rem; margin-top: 4px;">Gender / Article: <b>{data.get("gender", "N/A")}</b></p>
             <p style="color: #94a3b8; font-size: 0.85rem; margin-top: 10px;">Click below to listen or flip card for separated detail boxes.</p>
@@ -504,9 +500,9 @@ elif nav_choice == "📚 Master Goethe Word Engine":
     else:
         st.markdown(f"""
         <div class="{card_class}">
-            <p style="color: #38bdf8; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px;">📖 Detailed Breakdown</p>
+            <p style="color: #2dd4bf; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px;">📖 Detailed Breakdown</p>
             <div class="flashcard-word-title" style="font-size: 2.2rem;">{data.get("word", active_word)}</div>
-            <p style="color: #f472b6; font-size: 1.2rem; font-weight: 700; margin-bottom: 0px;">Meaning: {data.get("english_meaning", "")}</p>
+            <p style="color: #2dd4bf; font-size: 1.2rem; font-weight: 700; margin-bottom: 0px;">Meaning: {data.get("english_meaning", "")}</p>
         </div>
         """, unsafe_allow_html=True)
 
@@ -558,7 +554,7 @@ elif nav_choice == "📚 Master Goethe Word Engine":
                 with c4:
                     if st.button("🔊", key=f"audio_conj_{conj.get('pronoun', '')}"):
                         play_direct_audio(conj.get('sentence', ''), f"conj_{conj.get('pronoun', '')}")
-                st.markdown("<hr style='border-color: rgba(168, 85, 247, 0.15); margin: 4px 0;'>", unsafe_allow_html=True)
+                st.markdown("<hr style='border-color: rgba(45, 212, 191, 0.15); margin: 4px 0;'>", unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
 
         # 5. Colloquial & Daily Phrases Box with Audio
@@ -577,7 +573,7 @@ elif nav_choice == "📚 Master Goethe Word Engine":
             st.markdown('</div>', unsafe_allow_html=True)
 
         # 6. Grammar Notes Box
-        st.markdown(f'<div class="detail-box">💡 <b>Grammar Notes:</b> {data.get("grammar_notes", "N/A")}</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="detail-box">✨ <b>Grammar Notes:</b> {data.get("grammar_notes", "N/A")}</div>', unsafe_allow_html=True)
 
         st.markdown("<div style='height: 5px;'></div>", unsafe_allow_html=True)
         if st.button("🔄 Flip back to Front", type="primary", use_container_width=True):
