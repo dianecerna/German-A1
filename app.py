@@ -21,10 +21,11 @@ st.set_page_config(
 # Custom Styling: Pastel Blue background, Dark Navy headers, Pastel Framed Elements
 st.markdown("""
 <style>
-/* Completely remove Streamlit's native header toggle area where the text fallback appears */
-header[data-testid="stHeader"] {
-    display: none !important;
-}
+    /* Completely remove Streamlit's native header toggle area where the text fallback appears */
+    header[data-testid="stHeader"] {
+        display: none !important;
+    }
+
     /* Global Clean Modern Sans-Serif Font & Pastel Blue Background */
     .stApp {
         background-color: #e0f2fe !important;
@@ -33,11 +34,6 @@ header[data-testid="stHeader"] {
     
     *, div, span, p, h1, h2, h3, h4, h5, h6, label, button {
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
-    }
-
-    /* Completely hide Streamlit's native collapse control bar to remove the raw text */
-    [data-testid="collapsedControl"], button[kind="header"] {
-        display: none !important;
     }
 
     /* Cards Styling with Vibrant Backgrounds & Subtle Hover Micro-Interactions */
@@ -467,7 +463,6 @@ nav_options = [
 # Sidebar Rendering
 if st.session_state.sidebar_visible:
     with st.sidebar:
-        # Top Action Row with hide arrow button inside sidebar
         c_toggle, c_title = st.columns([1, 4])
         with c_toggle:
             if st.button("⬅️", key="sidebar_collapse_arrow", help="Hide Sidebar"):
@@ -487,10 +482,10 @@ if st.session_state.sidebar_visible:
 
 nav_choice = st.session_state.nav_choice
 
-# Add a "Menu" button at the top left of the main screen if the sidebar is currently hidden
+# Render "Menu" button at top left corner of the main screen when sidebar is hidden
 if not st.session_state.sidebar_visible:
-    c_menu, _ = st.columns([1, 10])
-    with c_menu:
+    col_menu, _ = st.columns([1, 10])
+    with col_menu:
         if st.button("📁 Menu", key="show_sidebar_main_btn", use_container_width=True):
             st.session_state.sidebar_visible = True
             st.rerun()
@@ -835,7 +830,7 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
                 if u_ans == t["answer"]:
                     st.success(f"**Task {idx}: Correct!** (`{t['answer']}`) — {t['explanation']}")
                 else:
-                    st.error(f"**Task {idx}: Incorrect.** Your answer: `{u_ans}` | Correct: `{q['answer']}`\n\n💡 **Explanation:** {q['explanation']}")
+                    st.error(f"**Task {idx}: Incorrect.** Your answer: `{u_ans}` | Correct: `{q['answer']}`\n\n💡 **Explanation:** {t['explanation']}")
 
     st.markdown('</div>', unsafe_allow_html=True)
 
