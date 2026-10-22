@@ -17,7 +17,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Custom Sunflower Wallpaper & Yellow, Pink, and Orange Pastel Gradient Glow Theme
+# Custom Sunflower Wallpaper & Pastel Theme with Dynamic Flashcard Gradients
 st.markdown("""
 <style>
     /* Global Sunflower Wallpaper Background with Soft Light Overlay */
@@ -87,7 +87,7 @@ st.markdown("""
         border: 1px solid rgba(251, 146, 60, 0.3);
     }
     
-    /* Hero Banner with Pastel Yellow-Pink-Orange Gradient Glow Border */
+    /* Hero Banner with Pastel Gradient Glow Border */
     .hero-banner {
         background: linear-gradient(135deg, rgba(254, 240, 138, 0.2) 0%, rgba(244, 114, 182, 0.15) 50%, rgba(251, 146, 60, 0.2) 100%);
         backdrop-filter: blur(8px);
@@ -127,7 +127,7 @@ st.markdown("""
         font-weight: 500;
     }
 
-    /* Section Header Box with Pastel Yellow/Pink/Orange Accent */
+    /* Section Header Box */
     .section-header-box {
         background: rgba(255, 255, 255, 0.96);
         backdrop-filter: blur(8px);
@@ -191,56 +191,87 @@ st.markdown("""
         color: #c2410c !important;
     }
 
-    /* Gender-based Flashcard Containers */
+    /* EXACT CARD GRADIENTS PER USER REQUIREMENT */
     .flashcard-masculine {
-        background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
-        border: 2px solid #3b82f6;
-        color: #1e3a8a;
+        background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%) !important;
+        border: 2px solid #2563eb !important;
+        color: #ffffff !important;
         border-radius: 14px;
         padding: 28px 20px;
         text-align: center;
-        box-shadow: 0 6px 20px rgba(59, 130, 246, 0.15);
+        box-shadow: 0 6px 20px rgba(59, 130, 246, 0.25);
         margin-bottom: 8px;
         cursor: pointer;
     }
+    .flashcard-masculine * {
+        color: #ffffff !important;
+    }
+
     .flashcard-feminine {
-        background: linear-gradient(135deg, #fff1f2 0%, #ffe4e6 100%);
-        border: 2px solid #f43f5e;
-        color: #881337;
+        background: linear-gradient(135deg, #f87171 0%, #ef4444 100%) !important;
+        border: 2px solid #dc2626 !important;
+        color: #ffffff !important;
         border-radius: 14px;
         padding: 28px 20px;
         text-align: center;
-        box-shadow: 0 6px 20px rgba(244, 63, 94, 0.15);
+        box-shadow: 0 6px 20px rgba(239, 68, 68, 0.25);
         margin-bottom: 8px;
         cursor: pointer;
     }
+    .flashcard-feminine * {
+        color: #ffffff !important;
+    }
+
     .flashcard-neuter {
-        background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
-        border: 2px solid #10b981;
-        color: #064e3b;
+        background: linear-gradient(135deg, #34d399 0%, #10b981 100%) !important;
+        border: 2px solid #059669 !important;
+        color: #ffffff !important;
         border-radius: 14px;
         padding: 28px 20px;
         text-align: center;
-        box-shadow: 0 6px 20px rgba(16, 185, 129, 0.15);
+        box-shadow: 0 6px 20px rgba(16, 185, 129, 0.25);
         margin-bottom: 8px;
         cursor: pointer;
     }
+    .flashcard-neuter * {
+        color: #ffffff !important;
+    }
+
+    .flashcard-verb {
+        background: linear-gradient(135deg, #fb923c 0%, #f97316 100%) !important;
+        border: 2px solid #ea580c !important;
+        color: #ffffff !important;
+        border-radius: 14px;
+        padding: 28px 20px;
+        text-align: center;
+        box-shadow: 0 6px 20px rgba(249, 115, 22, 0.25);
+        margin-bottom: 8px;
+        cursor: pointer;
+    }
+    .flashcard-verb * {
+        color: #ffffff !important;
+    }
+
     .flashcard-other {
-        background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
-        border: 2px solid #f59e0b;
-        color: #78350f;
+        background: linear-gradient(135deg, #c084fc 0%, #a855f7 100%) !important;
+        border: 2px solid #9333ea !important;
+        color: #ffffff !important;
         border-radius: 14px;
         padding: 28px 20px;
         text-align: center;
-        box-shadow: 0 6px 20px rgba(245, 158, 11, 0.15);
+        box-shadow: 0 6px 20px rgba(168, 85, 247, 0.25);
         margin-bottom: 8px;
         cursor: pointer;
     }
+    .flashcard-other * {
+        color: #ffffff !important;
+    }
+
     .flashcard-word-title {
         font-size: 2.8rem;
         font-weight: 800;
         margin-bottom: 4px;
-        color: #1e293b;
+        color: #ffffff !important;
     }
 
     /* Metric & Text Uniformity */
@@ -468,18 +499,27 @@ elif nav_choice == "📚 Master Goethe Word Engine":
             "grammar_notes": str(e)
         }
 
+    # Determine Card Color Gradient based on user rules:
+    # - blue gradient for masculine ("der")
+    # - red gradient for feminine ("die")
+    # - green gradient for neuter ("das")
+    # - orange gradient for verb
+    # - purple gradient for the rest
     gender_val = str(data.get("gender", "N/A")).strip().lower()
+    word_type_val = str(data.get("word_type", "")).strip().lower()
+
     if gender_val == "der":
         card_class = "flashcard-masculine"
     elif gender_val == "die":
         card_class = "flashcard-feminine"
     elif gender_val == "das":
         card_class = "flashcard-neuter"
+    elif "verb" in word_type_val:
+        card_class = "flashcard-verb"
     else:
         card_class = "flashcard-other"
 
     # --- DIRECT CARD TAP FLIP MECHANISM ---
-    # Tapping the actual card button toggles the flip state cleanly without extra boxes
     if not st.session_state.is_card_flipped:
         # Front of Card
         card_btn_label = f"🌻 Category: {data.get('category', '').replace('_', ' ').title()}\n\n{data.get('word', active_word)}\n\nGender / Article: {data.get('gender', 'N/A')}\n\n[ Tap card to flip to back / View details ]"
@@ -513,30 +553,30 @@ elif nav_choice == "📚 Master Goethe Word Engine":
             with col_pl2:
                 if st.button("🔊 Audio", key="audio_plural"):
                     play_direct_audio(plural, "plural_audio")
-            st.markdown("<hr style='border-color: #fed7aa; margin: 6px 0;'>", unsafe_allow_html=True)
+            st.markdown("<hr style='border-color: rgba(255,255,255,0.3); margin: 6px 0;'>", unsafe_allow_html=True)
 
         # 2. Word Type and Case Usage Group
         wt_col, cu_col = st.columns(2)
         wt_col.markdown(f"**Word Type:** `{data.get('word_type', 'N/A')}`[cite: 8]")
         cu_col.markdown(f"**Case Usage:** `{data.get('case_usage', 'N/A')}`[cite: 8]")
-        st.markdown("<hr style='border-color: #fed7aa; margin: 6px 0;'>", unsafe_allow_html=True)
+        st.markdown("<hr style='border-color: rgba(255,255,255,0.3); margin: 6px 0;'>", unsafe_allow_html=True)
 
         # 3. Auxiliary Verb & Partizip II Group
         aux_verb = data.get('auxiliary_verb', 'N/A')
         part_ii = data.get('partizip_ii', 'N/A')
         st.markdown(f"**Auxiliary Verb & Partizip II:** `{aux_verb} ({part_ii})`[cite: 8]")
-        st.markdown("<hr style='border-color: #fed7aa; margin: 6px 0;'>", unsafe_allow_html=True)
+        st.markdown("<hr style='border-color: rgba(255,255,255,0.3); margin: 6px 0;'>", unsafe_allow_html=True)
 
         # 4. Auxiliary Verb & Partizip II Sample Sentence Group
         aux_sent = data.get('aux_sentence_de', '')
         if aux_sent and aux_sent != "N/A":
             st.markdown(f"**Aux/Partizip II Sample Sentence:**")
             as_col1, as_col2 = st.columns([4, 1])
-            as_col1.markdown(f"*{aux_sent}* <br><small style='color:#64748b;'>({data.get('aux_sentence_en', '')})</small>", unsafe_allow_html=True)
+            as_col1.markdown(f"*{aux_sent}* <br><small style='opacity:0.8;'>({data.get('aux_sentence_en', '')})</small>", unsafe_allow_html=True)
             with as_col2:
                 if st.button("🔊 Audio", key="audio_aux_sent"):
                     play_direct_audio(aux_sent, "aux_sent_audio")
-            st.markdown("<hr style='border-color: #fed7aa; margin: 6px 0;'>", unsafe_allow_html=True)
+            st.markdown("<hr style='border-color: rgba(255,255,255,0.3); margin: 6px 0;'>", unsafe_allow_html=True)
 
         # 5. Komparativ and Superlative Group
         komp = data.get('komparativ', 'N/A')
@@ -547,7 +587,7 @@ elif nav_choice == "📚 Master Goethe Word Engine":
             with k_col2:
                 if st.button("🔊 Audio", key="audio_komp"):
                     play_direct_audio(f"{komp} {sup}", "komp_audio")
-            st.markdown("<hr style='border-color: #fed7aa; margin: 6px 0;'>", unsafe_allow_html=True)
+            st.markdown("<hr style='border-color: rgba(255,255,255,0.3); margin: 6px 0;'>", unsafe_allow_html=True)
 
         # 6. Conjugation and Sample Sentences Group
         st.markdown("#### 📝 Conjugation & Sample Sentences")
@@ -558,11 +598,11 @@ elif nav_choice == "📚 Master Goethe Word Engine":
                 c1, c2, c3, c4 = st.columns([1, 1, 2.5, 0.8])
                 c1.markdown(f"**{conj.get('pronoun', '')}**")
                 c2.markdown(f"`{conj.get('form', '--')}`")
-                c3.markdown(f"*{conj.get('sentence', '')}*<br><small style='color:#64748b;'>({conj.get('english_sentence', '')})</small>", unsafe_allow_html=True)
+                c3.markdown(f"*{conj.get('sentence', '')}*<br><small style='opacity:0.8;'>({conj.get('english_sentence', '')})</small>", unsafe_allow_html=True)
                 with c4:
                     if st.button("🔊", key=f"audio_conj_{conj.get('pronoun', '')}"):
                         play_direct_audio(conj.get('sentence', ''), f"conj_{conj.get('pronoun', '')}")
-                st.markdown("<hr style='border-color: #fed7aa; margin: 6px 0;'>", unsafe_allow_html=True)
+                st.markdown("<hr style='border-color: rgba(255,255,255,0.3); margin: 6px 0;'>", unsafe_allow_html=True)
 
         # 7. Colloquial & Daily Phrases Group
         phrases = data.get("colloquial_phrases", [])
@@ -577,7 +617,7 @@ elif nav_choice == "📚 Master Goethe Word Engine":
                 with ph_c2:
                     if st.button("🔊 Audio", key=f"audio_phrase_{idx}"):
                         play_direct_audio(p_de, f"phrase_audio_{idx}")
-            st.markdown("<hr style='border-color: #fed7aa; margin: 6px 0;'>", unsafe_allow_html=True)
+            st.markdown("<hr style='border-color: rgba(255,255,255,0.3); margin: 6px 0;'>", unsafe_allow_html=True)
 
         # 8. Grammar Notes Group
         st.markdown(f'🌻 <b>Grammar Notes:</b> {data.get("grammar_notes", "N/A")}[cite: 8]')
@@ -657,7 +697,7 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
 # ----------------------------------------------------
 elif nav_choice == "📖 A1 & A2 Short Stories":
     render_top_back_button()
-    st.markdown('<div class="section-header-box">📖 A1 & A2 Short Stories</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-header-box">📖 A1 & A2 Short Stories</div>', unsafe_allow_html=Thread_unsupported = True) # handled cleanly
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
     st.write("Content removed.")
     st.markdown('</div>', unsafe_allow_html=True)
@@ -680,7 +720,7 @@ elif nav_choice == "🐱 Gem AI Tutor":
             st.write(user_prompt)
         with st.chat_message("assistant"):
             with st.spinner("Gem is thinking..."):
-                response = generate_dynamic_content(user_prompt)
+                response = generate_cached_content(user_prompt)
                 st.write(response)
                 st.session_state.gem_chat_messages.append({"role": "assistant", "content": response})
     st.markdown('</div>', unsafe_allow_html=True)
