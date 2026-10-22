@@ -18,7 +18,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Custom Dark Theme & Smooth Button Card Styling
+# Custom Dark Theme & Dropdown Styling
 st.markdown("""
 <style>
     /* Global Dark Theme & Modern Sans-Serif Font */
@@ -38,7 +38,7 @@ st.markdown("""
         display: none !important;
     }
 
-    /* Smooth Custom Button Styling matching reference interface */
+    /* Smooth Custom Button Styling */
     .stButton > button {
         width: 100% !important;
         background-color: #111827 !important;
@@ -120,12 +120,19 @@ st.markdown("""
         font-weight: 700;
     }
 
-    /* Outlined Dropdown / Select Elements */
+    /* FIX: Force all dropdown elements to have white background and black font color */
+    .stSelectbox div[data-baseweb="select"] {
+        background-color: #ffffff !important;
+        border-radius: 10px !important;
+    }
     .stSelectbox div[data-baseweb="select"] > div {
-        background-color: #1f2937 !important;
+        background-color: #ffffff !important;
         border: 1px solid #374151 !important;
         border-radius: 10px !important;
-        color: #f8fafc !important;
+        color: #000000 !important;
+    }
+    .stSelectbox span, .stSelectbox div[data-baseweb="select"] span {
+        color: #000000 !important;
     }
     
     /* Flashcard Front Container */
