@@ -18,7 +18,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom Styling: Pastel Blue background, Dark Navy headers, Pastel Framed Elements & Gem AI Floating Widget
+# Custom Styling: Pastel Blue background, Dark Navy headers, Pastel Framed Elements
 st.markdown("""
 <style>
     /* Global Clean Modern Sans-Serif Font & Pastel Blue Background */
@@ -295,21 +295,6 @@ def play_direct_audio(text_to_speak, unique_key):
     b64_audio = io.BytesIO(audio_bytes).read()
     st.audio(b64_audio, format="audio/mp3", autoplay=True)
 
-def render_gem_ai_tutor_widget():
-    """Renders the AI tutor 'Gem' button widget at the bottom of pages."""
-    st.markdown("---")
-    st.markdown("### 🐱 Gem — Your AI German Tutor")
-    with st.expander("💬 Ask Gem a question or get instant explanations"):
-        user_query = st.text_input("What would you like to ask Gem?", key=f"gem_query_{random.randint(1,10000)}")
-        if st.button("Ask Gem", key=f"gem_ask_btn_{random.randint(1,10000)}"):
-            if user_query:
-                with st.spinner("Gem is thinking..."):
-                    try:
-                        ans = generate_dynamic_content(f"Answer this German learning query concisely and helpfully: {user_query}")
-                        st.success(ans)
-                    except Exception as e:
-                        st.error(f"Error: {str(e)}")
-
 # Hören Teil 1 Official Scenarios Bank
 HOREN_TEIL1_SCENARIOS = [
     {
@@ -468,7 +453,8 @@ nav_options = [
     "🎧 Goethe A1 Hören (Listening)",
     "✍️ Goethe A1 Schreiben (Writing)", 
     "🗣️ Goethe A1 Sprechen (Speaking)",
-    "📖 A1 & A2 Short Stories"
+    "📖 A1 & A2 Short Stories",
+    "🐱 Gem AI Tutor"
 ]
 
 # Sidebar Rendering
@@ -509,30 +495,9 @@ if nav_choice == "🏠 Study Dashboard":
     <div class="hero-banner">
         <div class="hero-badge">✨ MY GERMAN STUDY BUDDY</div>
         <div class="hero-title">German A1 Learning Dashboard</div>
-        <div class="hero-subtitle">Track your daily study progress, explore interactive modules, and master the Goethe A1 curriculum.</div>
+        <div class="hero-subtitle">Explore interactive modules, practice materials, and master the Goethe A1 curriculum.</div>
     </div>
     """, unsafe_allow_html=True)
-
-    st.markdown("### 📅 Interactive Study Calendar")
-    st.markdown("Click and mark the dates below to indicate that you have studied on that day!")
-
-    if "study_dates" not in st.session_state:
-        st.session_state.study_dates = {f"Oct {d}": (d in [18, 19, 20, 21, 22, 23]) for d in range(1, 32)}
-
-    cal_cols = st.columns(7)
-    days_in_oct = list(range(1, 32))
-    
-    for idx, day_num in enumerate(days_in_oct):
-        col_idx = idx % 7
-        date_key = f"Oct {day_num}"
-        with cal_cols[col_idx]:
-            is_checked = st.session_state.study_dates.get(date_key, False)
-            btn_label = f"✅ {date_key}" if is_checked else f"📅 {date_key}"
-            if st.button(btn_label, key=f"cal_day_{day_num}", use_container_width=True):
-                st.session_state.study_dates[date_key] = not is_checked
-                st.rerun()
-
-    render_gem_ai_tutor_widget()
 
 # ----------------------------------------------------
 # 2. MASTER GOETHE WORD ENGINE
@@ -690,7 +655,6 @@ elif nav_choice == "📚 Master Goethe Word Engine":
             st.rerun()
 
     st.markdown('</div>', unsafe_allow_html=True)
-    render_gem_ai_tutor_widget()
 
 # ----------------------------------------------------
 # 3. CORE GRAMMAR PRACTICE & EXERCISES
@@ -752,7 +716,6 @@ elif nav_choice == "📖 Core Grammar Practice & Exercises":
                     st.error(f"**Q{idx}: Incorrect.** Your answer: `{u_ans}` | Correct: `{q['correct']}`\n\n💡 **Explanation / Correction:** {q['explanation']}")
 
     st.markdown('</div>', unsafe_allow_html=True)
-    render_gem_ai_tutor_widget()
 
 # ----------------------------------------------------
 # 4. GOETHE A1 LESEN
@@ -866,7 +829,6 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
                     st.error(f"**Task {idx}: Incorrect.** Your answer: `{u_ans}` | Correct: `{t['answer']}`\n\n💡 **Explanation:** {t['explanation']}")
 
     st.markdown('</div>', unsafe_allow_html=True)
-    render_gem_ai_tutor_widget()
 
 # ----------------------------------------------------
 # 5. GOETHE A1 HÖREN
@@ -902,7 +864,6 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
                 st.error("Incorrect. The train has a delay.")
 
     st.markdown('</div>', unsafe_allow_html=True)
-    render_gem_ai_tutor_widget()
 
 # ----------------------------------------------------
 # 6. GOETHE A1 SCHREIBEN
@@ -966,7 +927,6 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
                 st.warning("Please write something first.")
 
     st.markdown('</div>', unsafe_allow_html=True)
-    render_gem_ai_tutor_widget()
 
 # ----------------------------------------------------
 # 7. GOETHE A1 SPRECHEN
@@ -1006,7 +966,6 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
             st.audio(rec_t3['bytes'], format='audio/wav')
 
     st.markdown('</div>', unsafe_allow_html=True)
-    render_gem_ai_tutor_widget()
 
 # ----------------------------------------------------
 # 8. A1 & A2 SHORT STORIES
@@ -1035,4 +994,35 @@ elif nav_choice == "📖 A1 & A2 Short Stories":
                 play_direct_audio(st.session_state.active_story_text, "story_audio")
 
     st.markdown('</div>', unsafe_allow_html=True)
-    render_gem_ai_tutor_widget()
+
+# ----------------------------------------------------
+# 9. GEM AI TUTOR
+# ----------------------------------------------------
+elif nav_choice == "🐱 Gem AI Tutor":
+    st.markdown('<div class="section-header-box">🐱 Gem — Your AI German Tutor</div>', unsafe_allow_html=True)
+    st.markdown('<div class="main-card">', unsafe_allow_html=True)
+    st.subheader("Chat with Gem")
+    st.write("Ask Gem any questions about German grammar, vocabulary, exam preparation, or general explanations.")
+
+    if "gem_chat_messages" not in st.session_state:
+        st.session_state.gem_chat_messages = []
+
+    for msg in st.session_state.gem_chat_messages:
+        with st.chat_message(msg["role"]):
+            st.write(msg["content"])
+
+    if user_prompt := st.chat_input("Ask Gem a question about German..."):
+        st.session_state.gem_chat_messages.append({"role": "user", "content": user_prompt})
+        with st.chat_message("user"):
+            st.write(user_prompt)
+
+        with st.chat_message("assistant"):
+            with st.spinner("Gem is thinking..."):
+                try:
+                    response_text = generate_dynamic_content(user_prompt)
+                    st.write(response_text)
+                    st.session_state.gem_chat_messages.append({"role": "assistant", "content": response_text})
+                except Exception as e:
+                    st.error(f"Error: {str(e)}")
+
+    st.markdown('</div>', unsafe_allow_html=True)
