@@ -12,12 +12,12 @@ from streamlit_mic_recorder import mic_recorder
 # Streamlit Page Configuration
 st.set_page_config(
     page_title="German A1 Learning", 
-    page_icon="✨", 
+    page_icon="⚡", 
     layout="wide",
     initial_sidebar_state="collapsed"
 )
 
-# Custom Deep Purple-to-Magenta Gradient Glow Theme with Compact Spacing & Light Dropdown Design
+# Custom Deep Purple-to-Magenta Gradient Glow Theme with Mirrored Dropdown Styling
 st.markdown("""
 <style>
     /* Global Deep Gradient Dark Void & Compact Spacing */
@@ -137,44 +137,45 @@ st.markdown("""
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     }
 
-    /* Light Clean Dropdown Box Design */
+    /* Mirrored Dropdown Box Design Matching Overall UI Theme */
     .stSelectbox div[data-baseweb="select"] {
-        background-color: #385378 !important;
+        background: linear-gradient(135deg, rgba(30, 27, 75, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%) !important;
         border-radius: 12px !important;
     }
     .stSelectbox div[data-baseweb="select"] > div {
-        background-color: #385378 !important;
-        border: 2px solid #0F151C !important;
+        background: linear-gradient(135deg, rgba(30, 27, 75, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%) !important;
+        border: 1px solid rgba(236, 72, 153, 0.4) !important;
         border-radius: 12px !important;
-        color: #1A1818 !important;
+        color: #f8fafc !important;
         padding: 4px 10px !important;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+        box-shadow: 0 4px 15px rgba(168, 85, 247, 0.15) !important;
     }
     .stSelectbox div[data-baseweb="select"] > div:hover {
-        border-color: #0F151C !important;
+        border-color: #ec4899 !important;
+        background: linear-gradient(135deg, rgba(168, 85, 247, 0.2) 0%, rgba(236, 72, 153, 0.2) 100%) !important;
     }
     .stSelectbox span, .stSelectbox div[data-baseweb="select"] span {
-        color: #1A1818 !important;
+        color: #f8fafc !important;
         font-weight: 700 !important;
     }
 
-    /* Open Dropdown Popup List Container & Options (Light) */
+    /* Open Dropdown Popup List Container & Options (Mirrored Theme) */
     div[data-baseweb="menu"] {
-        background-color: #385378 !important;
-        border: 1px solid #0F151C !important;
+        background-color: #0f172a !important;
+        border: 1px solid rgba(168, 85, 247, 0.4) !important;
         border-radius: 12px !important;
     }
     div[data-baseweb="menu"] ul {
-        background-color: #385378 !important;
+        background-color: #0f172a !important;
     }
     div[data-baseweb="menu"] li, div[data-baseweb="menu"] div {
-        background-color: #385378 !important;
-        color: #FFFFFF !important;
+        background-color: #0f172a !important;
+        color: #f8fafc !important;
         font-weight: 600 !important;
     }
     div[data-baseweb="menu"] li:hover, div[data-baseweb="menu"] div[aria-selected="true"] {
-        background-color: #385378 !important;
-        color: #3BC217 !important;
+        background: linear-gradient(135deg, rgba(168, 85, 247, 0.25) 0%, rgba(236, 72, 153, 0.25) 100%) !important;
+        color: #f472b6 !important;
     }
 
     /* Detailed Back Card Separated Sections Style */
