@@ -17,7 +17,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Custom Dark Theme, Gender-Based Flashcard Styling & Custom Rounded Dropdown / Selectbox Design
+# Custom Dark Theme, Gender-Based Flashcard Styling & Fully Black Rounded Dropdown Styling
 st.markdown("""
 <style>
     /* Global Dark Theme & Modern Sans-Serif Font */
@@ -119,13 +119,13 @@ st.markdown("""
         font-weight: 700;
     }
 
-    /* Clean Smooth Rounded Dropdown Styling Matching Reference Design */
+    /* Fully Black Rounded Dropdown Styling Matching Reference Design */
     .stSelectbox div[data-baseweb="select"] {
-        background-color: #111827 !important;
+        background-color: #000000 !important;
         border-radius: 14px !important;
     }
     .stSelectbox div[data-baseweb="select"] > div {
-        background-color: #111827 !important;
+        background-color: #000000 !important;
         border: 1px solid #374151 !important;
         border-radius: 14px !important;
         color: #f8fafc !important;
@@ -140,21 +140,21 @@ st.markdown("""
         font-weight: 600 !important;
     }
 
-    /* Open Dropdown Popup List Container & Options Dark Theme Fix */
+    /* Open Dropdown Popup List Container & Options Black Theme */
     div[data-baseweb="menu"] {
-        background-color: #111827 !important;
+        background-color: #000000 !important;
         border: 1px solid #374151 !important;
         border-radius: 14px !important;
     }
     div[data-baseweb="menu"] ul {
-        background-color: #111827 !important;
+        background-color: #000000 !important;
     }
     div[data-baseweb="menu"] li, div[data-baseweb="menu"] div {
-        background-color: #111827 !important;
+        background-color: #000000 !important;
         color: #f8fafc !important;
     }
     div[data-baseweb="menu"] li:hover, div[data-baseweb="menu"] div[aria-selected="true"] {
-        background-color: #1f2937 !important;
+        background-color: #111827 !important;
         color: #60a5fa !important;
     }
 
