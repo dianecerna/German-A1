@@ -18,13 +18,49 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom Styling: Storybook aesthetics, mobile side-by-side layout, compact direct audio, bot chat input UI
+# Custom Styling: Storybook aesthetics, mobile side-by-side layout, compact direct audio, bot chat input UI & Super Nice Blue Hero Banner
 st.markdown("""
 <style>
     .stApp { background-color: #f8fafc; font-family: system-ui, -apple-system, sans-serif; }
     .main-card { background: #ffffff; border-radius: 16px; padding: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); margin-bottom: 20px; border: 1px solid #e2e8f0; }
     .accent-card { background: #ffffff; border-radius: 16px; padding: 24px; border-left: 6px solid #2563eb; box-shadow: 0 2px 12px rgba(37, 99, 235, 0.06); margin-bottom: 20px; border: 1px solid #e2e8f0; }
     
+    /* Super Nice Dark Blue Header Banner Style */
+    .hero-banner {
+        background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+        border-radius: 20px;
+        padding: 40px;
+        color: #ffffff;
+        margin-bottom: 25px;
+        box-shadow: 0 10px 25px -5px rgba(30, 58, 138, 0.3);
+    }
+    .hero-badge {
+        display: inline-block;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        margin-bottom: 15px;
+        color: #38bdf8;
+    }
+    .hero-title {
+        font-size: 2.5rem;
+        font-weight: 800;
+        letter-spacing: -0.025em;
+        margin-bottom: 10px;
+        color: #ffffff;
+    }
+    .hero-subtitle {
+        font-size: 1.05rem;
+        color: #cbd5e1;
+        line-height: 1.6;
+        max-width: 800px;
+        margin-bottom: 0px;
+    }
+
     /* Increase Sidebar Navigation Font Size & Spacing */
     [data-testid="stSidebarNav"] span, .stRadio label {
         font-size: 1.1rem !important;
@@ -105,7 +141,7 @@ if not api_key:
 
 client = genai.Client(api_key=api_key.strip())
 
-FALLBACK_MODELS = ["gemini-2.5-flash", "gemini-2.5-flash-lite", "gemini-2.0-flash"]
+FALLBACK_MODELS = ["gemini-2.0-flash", "gemini-2.5-flash-lite"]
 
 SYSTEM_INSTRUCTION = """
 You are Gem, an expert German tutor and official Goethe-Institut examiner evaluating candidates for the Goethe-Zertifikat A1 exam.
@@ -132,13 +168,13 @@ def generate_cached_content(prompt_text: str, is_json: bool = False) -> str:
             except Exception as e:
                 last_error = e
                 err_str = str(e).lower()
-                if any(k in err_str for k in ["429", "503", "resource_exhausted", "unavailable", "quota"]):
+                if any(k in err_str for k in ["429", "503", "resource_exhausted", "unavailable", "quota", "not_found"]):
                     time.sleep(1)
                     continue
                 raise e
         time.sleep(1.5)
             
-    raise Exception(f"All free model quotas are currently exhausted or experiencing high demand. Details: {str(last_error)}")
+    raise Exception(f"All model quotas are currently exhausted or experiencing high demand. Details: {str(last_error)}")
 
 def generate_dynamic_content(prompt_text: str, is_json: bool = False) -> str:
     config_args = {"system_instruction": SYSTEM_INSTRUCTION}
@@ -158,13 +194,13 @@ def generate_dynamic_content(prompt_text: str, is_json: bool = False) -> str:
             except Exception as e:
                 last_error = e
                 err_str = str(e).lower()
-                if any(k in err_str for k in ["429", "503", "resource_exhausted", "unavailable", "quota"]):
+                if any(k in err_str for k in ["429", "503", "resource_exhausted", "unavailable", "quota", "not_found"]):
                     time.sleep(1)
                     continue
                 raise e
         time.sleep(1.5)
             
-    raise Exception(f"All free model quotas are currently exhausted or experiencing high demand. Details: {str(last_error)}")
+    raise Exception(f"All model quotas are currently exhausted or experiencing high demand. Details: {str(last_error)}")
 
 @st.cache_data(show_spinner=False)
 def generate_german_audio_bytes(text: str) -> bytes:
@@ -1698,11 +1734,13 @@ nav_choice = st.sidebar.radio("Navigation", [
 # 1. DASHBOARD
 # ----------------------------------------------------
 if nav_choice == "🏠 Study Dashboard":
-    st.markdown('<div class="accent-card">', unsafe_allow_html=True)
-    st.title("Goethe-Zertifikat A1 Prep Studio")
-    st.write("📅 **Exam Date:** December 12, 2026")
-    st.write("Complete Goethe A1 curriculum preparation featuring the complete 612-word Goethe vocabulary list, official 1000-word flashcards, grammar exercises, fully structured 3-part Goethe exam simulators with live countdowns, and enchanted storybooks.")
-    st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown("""
+    <div class="hero-banner">
+        <div class="hero-badge">✨ GOETHE A1 EXAM PREP STUDIO</div>
+        <div class="hero-title">Goethe-Zertifikat A1 Studio</div>
+        <div class="hero-subtitle">Target Exam: December 12, 2026. Complete Goethe A1 curriculum preparation featuring the complete 612-word Goethe vocabulary list, official flashcards, grammar exercises, fully structured 3-part Goethe exam simulators with live countdowns, and enchanted storybooks.</div>
+    </div>
+    """, unsafe_allow_html=True)
 
     col1, col2 = st.columns(2)
     with col1:
@@ -1755,7 +1793,7 @@ elif nav_choice == "📚 Master Goethe Word Engine":
         },
         "3. Freizeit & Alltag (Leisure & Routine)": {
             "Verben": ["spielen", "wandern", "schwimmen", "tanzen", "reisen", "feiern", "fernsehen", "lachen", "fotografieren", "hören", "lesen", "schreiben", "malen", "spazieren", "sich treffen"],
-            "Nomen": ["die Freizeit", "das Hobby", "der Sport", "das Spiel", "das Buch", "die Zeitung", "das Lied", "der Film", "das Kino", "die Party", "der Urlaub", "die Reise", "das Reisebüro", "der Reiseführer", "das Schwimmbad", "die Disco", "das Restaurant", "das Café", "der Park", "das Meer", "der See", "der Berg", "das Wetter", "die Sonne", "der Regen", "der Wind", "der Schnee", "das Geschenk", "die Musik", "das Foto", "die Kamera", "der Computer", "das Handy", "das Internet", "die E-Mail", "der Brief", "die Briefmarke"],
+            "Nomen": ["die Freizeit", "das Hobby", "der Sport", "das Spiel", "das Buch", "die Zeitung", "das Lied", "der Film", "das Kino", "die Party", "der Urlaub", "die Reise", "das Reisebüro", "der Reiseführer", "das Schwimmbad", "die Disco", "das Restaurant", "das Café", "der Park", "das Meer", "der See", "das Berg", "das Wetter", "die Sonne", "der Regen", "der Wind", "der Schnee", "das Geschenk", "die Musik", "das Foto", "die Kamera", "der Computer", "das Handy", "das Internet", "die E-Mail", "der Brief", "die Briefmarke"],
             "Adjektive & Adverbien": ["oft", "manchmal", "nie", "immer", "bald", "gestern", "heute", "morgen", "spät", "früh", "langweilig", "interessant", "wunderbar", "schön", "lustig", "traurig"]
         },
         "4. Einkaufen & Geld (Shopping & Money)": {
@@ -2495,7 +2533,7 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
             for idx, t in enumerate(d["tasks"], start=1):
                 st.markdown(f"#### 🔊 Phone Message {idx} (Played 2x)")
                 st.audio(generate_german_audio_bytes(t["script"]), format="audio/mp3")
-                with st.expander(f"👁️ Transcript {idx}"): st.write(t["script"])
+                with st.expander(f"👁️ Transcript {idx}ீரி"): st.write(t["script"])
                 st.markdown(f"**Task {idx}: {t['question']}**")
                 ans3[t["id"]] = st.radio(f"Select Q{idx}:", t["options"], key=f"rad_ht3_{t['id']}")
             if st.button("Submit Hören Teil 3"):
