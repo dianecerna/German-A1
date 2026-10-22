@@ -526,30 +526,18 @@ elif nav_choice == "📚 Master Goethe Word Engine":
     card_html_content += '</div>'
     st.markdown(card_html_content, unsafe_allow_html=True)
 
-    # --- AUDIO & FLIP TO BACK BUTTON (FRONT ONLY) ---
+    # --- "LISTEN" BUTTON FOR FRONT CARD ---
     if not st.session_state.is_card_flipped:
-        col_audio, col_flip = st.columns([1, 1])
-        with col_audio:
-            if st.button("🔊 Pronounce Word", key="audio_front_btn"):
-                play_direct_audio(data.get("word", active_word), "front_audio")
-        with col_flip:
-            if st.button("Flip to See Details", key="front_flip_details_btn"):
-                st.session_state.is_card_flipped = True
-                st.rerun()
+        if st.button("Listen", key="audio_front_btn"):
+            play_direct_audio(data.get("word", active_word), "front_audio")
 
     # --- BACK OF CARD ARRANGEMENT OF INFORMATION ---
     if st.session_state.is_card_flipped:
         st.markdown("<div style='height: 4px;'></div>", unsafe_allow_html=True)
         
-        # Audio & Pronounce for Back Card Header
-        col_baudio, col_bflip = st.columns([1, 1])
-        with col_baudio:
-            if st.button("🔊 Pronounce Word", key="audio_back_word"):
-                play_direct_audio(data.get("word", active_word), "back_audio")
-        with col_bflip:
-            if st.button("Flip to Front", key="back_flip_front_btn"):
-                st.session_state.is_card_flipped = False
-                st.rerun()
+        # "Listen" button for Back Card Header
+        if st.button("Listen", key="audio_back_word"):
+            play_direct_audio(data.get("word", active_word), "back_audio")
 
         st.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
 
@@ -557,7 +545,7 @@ elif nav_choice == "📚 Master Goethe Word Engine":
         plural = data.get("plural_form", "N/A")
         if plural and plural != "N/A":
             st.markdown(f'<div class="detail-section-card"><b>Plural Version:</b> {plural}</div>', unsafe_allow_html=True)
-            if st.button("🔊 Audio (Plural)", key="audio_plural"):
+            if st.button("Listen (Plural)", key="audio_plural"):
                 play_direct_audio(plural, "plural_audio")
 
         # 2. Word Type
@@ -579,7 +567,7 @@ elif nav_choice == "📚 Master Goethe Word Engine":
                 <em>{aux_sent}</em><br>
                 <small style="color: #94a3b8;">({data.get('aux_sentence_en', '')})</small>
             </div>''', unsafe_allow_html=True)
-            if st.button("🔊 Audio (Aux Sentence)", key="audio_aux_sent"):
+            if st.button("Listen (Aux Sentence)", key="audio_aux_sent"):
                 play_direct_audio(aux_sent, "aux_sent_audio")
 
         # 6. Komparativ and Superlative with Audio
@@ -587,7 +575,7 @@ elif nav_choice == "📚 Master Goethe Word Engine":
         sup = data.get('superlative', 'N/A')
         if komp != "N/A" or sup != "N/A":
             st.markdown(f'<div class="detail-section-card"><b>Komparativ & Superlative:</b> {komp} | {sup}</div>', unsafe_allow_html=True)
-            if st.button("🔊 Audio (Komparativ / Superlative)", key="audio_komp"):
+            if st.button("Listen (Komparativ / Superlative)", key="audio_komp"):
                 play_direct_audio(f"{komp} {sup}", "komp_audio")
 
         # 7. Conjugation and Sample Sentences for each pronoun with Audio
@@ -598,7 +586,7 @@ elif nav_choice == "📚 Master Goethe Word Engine":
                 conj_html += f'<li><b>{conj.get("pronoun", "")}</b> ({conj.get("form", "--")}): <em>{conj.get("sentence", "")}</em> <small>({conj.get("english_sentence", "")})</small></li>'
             conj_html += '</ul></div>'
             st.markdown(conj_html, unsafe_allow_html=True)
-            if st.button("🔊 Audio (Conjugations)", key="audio_conj_all"):
+            if st.button("Listen (Conjugations)", key="audio_conj_all"):
                 full_conj_text = ". ".join([c.get("sentence", "") for c in conjugations])
                 play_direct_audio(full_conj_text, "conj_all_audio")
 
@@ -610,7 +598,7 @@ elif nav_choice == "📚 Master Goethe Word Engine":
                 ph_html += f'<li><b>{ph.get("phrase_de", "")}</b> — <em>{ph.get("phrase_en", "")}</em></li>'
             ph_html += '</ul></div>'
             st.markdown(ph_html, unsafe_allow_html=True)
-            if st.button("🔊 Audio (Colloquial Phrases)", key="audio_phrases_all"):
+            if st.button("Listen (Colloquial Phrases)", key="audio_phrases_all"):
                 full_ph_text = ". ".join([p.get("phrase_de", "") for p in phrases])
                 play_direct_audio(full_ph_text, "ph_all_audio")
 
