@@ -17,7 +17,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Custom Deep Purple-to-Magenta Gradient Glow Theme with Mirrored Dropdown Styling
+# Custom Deep Purple-to-Magenta Gradient Glow Theme with High-Contrast Dropdown Styling
 st.markdown("""
 <style>
     /* Global Deep Gradient Dark Void & Compact Spacing */
@@ -137,32 +137,31 @@ st.markdown("""
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     }
 
-    /* Mirrored Dropdown Box Design Matching Overall UI Theme */
+    /* High-Contrast Dark Dropdown Box Design (Fixing White-on-White Issue) */
     .stSelectbox div[data-baseweb="select"] {
-        background: linear-gradient(135deg, rgba(30, 27, 75, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%) !important;
+        background-color: #0f172a !important;
         border-radius: 12px !important;
     }
     .stSelectbox div[data-baseweb="select"] > div {
-        background: linear-gradient(135deg, rgba(30, 27, 75, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%) !important;
-        border: 1px solid rgba(236, 72, 153, 0.4) !important;
+        background-color: #0f172a !important;
+        border: 2px solid rgba(236, 72, 153, 0.5) !important;
         border-radius: 12px !important;
-        color: #f8fafc !important;
+        color: #ffffff !important;
         padding: 4px 10px !important;
-        box-shadow: 0 4px 15px rgba(168, 85, 247, 0.15) !important;
+        box-shadow: 0 4px 15px rgba(168, 85, 247, 0.2) !important;
     }
     .stSelectbox div[data-baseweb="select"] > div:hover {
         border-color: #ec4899 !important;
-        background: linear-gradient(135deg, rgba(168, 85, 247, 0.2) 0%, rgba(236, 72, 153, 0.2) 100%) !important;
     }
     .stSelectbox span, .stSelectbox div[data-baseweb="select"] span {
-        color: #f8fafc !important;
+        color: #ffffff !important;
         font-weight: 700 !important;
     }
 
-    /* Open Dropdown Popup List Container & Options (Mirrored Theme) */
+    /* Open Dropdown Popup List Container & Options (Dark Background with White Text) */
     div[data-baseweb="menu"] {
         background-color: #0f172a !important;
-        border: 1px solid rgba(168, 85, 247, 0.4) !important;
+        border: 2px solid rgba(236, 72, 153, 0.5) !important;
         border-radius: 12px !important;
     }
     div[data-baseweb="menu"] ul {
@@ -173,9 +172,15 @@ st.markdown("""
         color: #f8fafc !important;
         font-weight: 600 !important;
     }
+    div[data-baseweb="menu"] li span, div[data-baseweb="menu"] div span {
+        color: #f8fafc !important;
+    }
     div[data-baseweb="menu"] li:hover, div[data-baseweb="menu"] div[aria-selected="true"] {
-        background: linear-gradient(135deg, rgba(168, 85, 247, 0.25) 0%, rgba(236, 72, 153, 0.25) 100%) !important;
-        color: #f472b6 !important;
+        background: linear-gradient(135deg, rgba(168, 85, 247, 0.4) 0%, rgba(236, 72, 153, 0.4) 100%) !important;
+        color: #ffffff !important;
+    }
+    div[data-baseweb="menu"] li:hover span, div[data-baseweb="menu"] div[aria-selected="true"] span {
+        color: #ffffff !important;
     }
 
     /* Detailed Back Card Separated Sections Style */
@@ -306,7 +311,7 @@ A1_VOCABULARY_DATABASE = {
     "allgemein": ["sein", "haben", "werden", "gut", "ja", "nein", "nicht", "sehr", "und", "oder", "aber", "also", "hier", "da", "was", "wer", "wie", "wo", "woher", "wohin"],
     "arbeit_und_beruf": ["arbeiten", "der Beruf", "die Firma", "das Büro", "der Kollege", "die Kollegin", "der Chef", "die Chefin", "die Arbeit", "der Job", "der Termin", "die Pause", "verdienen", "schreiben", "anrufen", "der Computer", "das Telefon", "die E-Mail", "der Brief", "die Besprechung"],
     "mensch_und_koerper": ["die Familie", "der Vater", "die Mutter", "der Sohn", "die Tochter", "der Bruder", "die Schwester", "die Eltern", "das Kind", "der Mensch", "der Freund", "die Freundin", "die Person", "der Name", "das Alter", "der Kopf", "das Auge", "das Ohr", "die Hand", "der Fuß"],
-    "wohnen_und_haushalt": ["das Haus", "die Wohnung", "das Zimmer", "die Küche", "das Bad", "das Schlafzimmer", "das Wohnzimmer", "die Tür", "das Fenster", "der Tisch", "der Stuhl", "das Bett", "die Lampe", "wohnen", "mieten", "der Schlüssel", "der Garten", "der Balkon", "die Miete", "umziehen"],
+    "wohnen_und_haushalt": ["das Haus", "die Wohnung", "das Zimmer", "das Küche", "das Bad", "das Schlafzimmer", "das Wohnzimmer", "die Tür", "das Fenster", "der Tisch", "der Stuhl", "das Bett", "die Lampe", "wohnen", "mieten", "der Schlüssel", "der Garten", "der Balkon", "die Miete", "umziehen"],
     "essen_und_trinken": ["das Essen", "das Wasser", "der Kaffee", "der Tee", "die Milch", "das Brot", "das Fleisch", "der Fisch", "das Obst", "das Gemüse", "essen", "trinken", "kochen", "backen", "das Restaurant", "der Hunger", "der Durst", "das Frühstück", "das Mittagessen", "das Abendessen"],
     "freizeit_und_hobbys": ["das Hobby", "spielen", "lesen", "schwimmen", "reisen", "fotografieren", "der Sport", "das Buch", "die Musik", "tanzen", "singen", "malen", "der Film", "das Kino", "das Theater", "wandern", "joggen", "treffen", "lachen", "fernsehen"],
     "einkaufen_und_geld": ["einkaufen", "das Geld", "der Euro", "der Cent", "kosten", "teuer", "billig", "der Laden", "das Geschäft", "der Markt", "der Supermarkt", "kaufen", "verkaufen", "bezahlen", "die Karte", "bar", "der Preis", "das Angebot", "die Kasse", "der Kunde"],
