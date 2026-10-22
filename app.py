@@ -105,7 +105,7 @@ if not api_key:
 
 client = genai.Client(api_key=api_key.strip())
 
-FALLBACK_MODELS = ["gemini-3.8-flash", "gemini-3.5-flash", "gemini-3.1-flash-lite"]
+FALLBACK_MODELS = ["gemini-2.5-flash", "gemini-2.5-flash-lite", "gemini-2.0-flash"]
 
 SYSTEM_INSTRUCTION = """
 You are Gem, an expert German tutor and official Goethe-Institut examiner evaluating candidates for the Goethe-Zertifikat A1 exam.
@@ -178,63 +178,6 @@ def play_direct_audio(text_to_speak, unique_key):
     audio_bytes = generate_german_audio_bytes(text_to_speak)
     b64_audio = io.BytesIO(audio_bytes).read()
     st.audio(b64_audio, format="audio/mp3", autoplay=True)
-
-# Expanded Visual Learning Space Data Bank (Objects, clothing, food, weather, professions, transport, etc.)
-VISUAL_LEARNING_TOPICS = {
-    "Körper & Gesundheit (Body & Health)": [
-        {"term": "das Haar", "en": "Hair", "icon": "💇", "desc": "Grows on top of your head."},
-        {"term": "das Auge", "en": "Eye", "icon": "👁️", "desc": "Used for seeing colors and reading."},
-        {"term": "der Kopf", "en": "Head", "icon": "🧠", "desc": "Used for thinking and wearing hats."},
-        {"term": "die Nase", "en": "Nose", "icon": "👃", "desc": "Used for smelling flowers and food."},
-        {"term": "der Mund", "en": "Mouth", "icon": "👄", "desc": "Used for speaking German and eating."},
-        {"term": "das Ohr", "en": "Ear", "icon": "👂", "desc": "Used for listening to German audio."},
-        {"term": "die Hand", "en": "Hand", "icon": "✋", "desc": "Used for writing and waving."},
-        {"term": "das Bein", "en": "Leg", "icon": "🦵", "desc": "Used for walking and running."}
-    ],
-    "Berufe & Personen (Professions)": [
-        {"term": "der Arzt", "en": "Doctor (male)", "icon": "👨‍⚕️", "desc": "Treats sick patients in a clinic."},
-        {"term": "die Krankenschwester", "en": "Nurse (female)", "icon": "👩‍⚕️", "desc": "Cares for patients in hospitals."},
-        {"term": "der Lehrer", "en": "Teacher", "icon": "👨‍🏫", "desc": "Teaches students in school."},
-        {"term": "der Koch", "en": "Cook / Chef", "icon": "👨‍🍳", "desc": "Prepares meals in a restaurant."}
-    ],
-    "Kleidung & Mode (Clothing & Fashion)": [
-        {"term": "das Kleid", "en": "Dress", "icon": "👗", "desc": "One-piece garment worn for special events or daily wear."},
-        {"term": "das Hemd", "en": "Shirt / Button-down", "icon": "👔", "desc": "Formal upper-body garment with buttons and collar."},
-        {"term": "die Hose", "en": "Trousers / Pants", "icon": "👖", "desc": "Garment covering the lower body."},
-        {"term": "die Schuhe", "en": "Shoes", "icon": "👞", "desc": "Footwear worn outside."},
-        {"term": "die Jacke", "en": "Jacket", "icon": "🧥", "desc": "Outerwear for cold weather."}
-    ],
-    "Haus & Küche (House, Kitchen & Objects)": [
-        {"term": "das Haus", "en": "House", "icon": "🏠", "desc": "Building where families live."},
-        {"term": "der Tisch", "en": "Table", "icon": "🪵", "desc": "Furniture with a flat surface for dining or writing."},
-        {"term": "das Messer", "en": "Knife", "icon": "🔪", "desc": "Utensil used for cutting food in the kitchen."},
-        {"term": "der Stuhl", "en": "Chair", "icon": "🪑", "desc": "Seat for one person."},
-        {"term": "das Zimmer", "en": "Room", "icon": "🚪", "desc": "Enclosed space inside a building."},
-        {"term": "das Bett", "en": "Bed", "icon": "🛏️", "desc": "Furniture used for sleeping at night."}
-    ],
-    "Verkehrsmittel (Transportation)": [
-        {"term": "der Bus", "en": "Bus", "icon": "🚌", "desc": "Large public transport vehicle on roads."},
-        {"term": "das Fahrrad", "en": "Bicycle", "icon": "🚲", "desc": "Two-wheeled pedal vehicle for riding."},
-        {"term": "das Auto", "en": "Car", "icon": "🚗", "desc": "Motor vehicle for driving on streets."},
-        {"term": "der Zug", "en": "Train", "icon": "🚆", "desc": "Rail transport connecting cities."},
-        {"term": "das Flugzeug", "en": "Airplane", "icon": "✈️", "desc": "Aircraft for flying across the sky."}
-    ],
-    "Farben (Colors)": [
-        {"term": "rot", "en": "Red", "icon": "🔴", "desc": "Color of roses, strawberries, and stop signs."},
-        {"term": "blau", "en": "Blue", "icon": "🔵", "desc": "Color of the clear sky and deep ocean."},
-        {"term": "gelb", "en": "Yellow", "icon": "🟡", "desc": "Color of bright sunlight and lemons."},
-        {"term": "grün", "en": "Green", "icon": "🟢", "desc": "Color of spring grass and lush leaves."},
-        {"term": "schwarz", "en": "Black", "icon": "⬛", "desc": "The darkest color."},
-        {"term": "weiß", "en": "White", "icon": "⬜", "desc": "Color of pure snow and clouds."}
-    ],
-    "Wetter & Jahreszeiten (Weather & Seasons)": [
-        {"term": "der Regen", "en": "Rain", "icon": "🌧️", "desc": "Water droplets falling from storm clouds."},
-        {"term": "das Wasser", "en": "Water", "icon": "💧", "desc": "Clear essential liquid we drink."},
-        {"term": "der Sommer", "en": "Summer", "icon": "☀️", "desc": "Warmest season of the year with sunshine."},
-        {"term": "der Winter", "en": "Winter", "icon": "❄️", "desc": "Coldest season with snow and ice."},
-        {"term": "die Sonne", "en": "Sun", "icon": "🌞", "desc": "Star providing daylight and warmth."}
-    ]
-}
 
 # Hören Teil 1 Official Scenarios Bank
 HOREN_TEIL1_SCENARIOS = [
@@ -1740,7 +1683,6 @@ st.sidebar.divider()
 
 nav_choice = st.sidebar.radio("Navigation", [
     "🏠 Study Dashboard", 
-    "🖼️ Visual Learning Space (Essential Words & Objects)",
     "📚 Master Goethe Word Engine",
     "📖 Core Grammar Practice & Exercises",
     "📖 Goethe A1 Lesen (Reading)",
@@ -1759,7 +1701,7 @@ if nav_choice == "🏠 Study Dashboard":
     st.markdown('<div class="accent-card">', unsafe_allow_html=True)
     st.title("Goethe-Zertifikat A1 Prep Studio")
     st.write("📅 **Exam Date:** December 12, 2026")
-    st.write("Complete Goethe A1 curriculum preparation featuring the expanded Visual Learning Space, official 1000-word flashcards, grammar exercises, fully structured 3-part Goethe exam simulators with live countdowns, and enchanted storybooks.")
+    st.write("Complete Goethe A1 curriculum preparation featuring the complete 612-word Goethe vocabulary list, official 1000-word flashcards, grammar exercises, fully structured 3-part Goethe exam simulators with live countdowns, and enchanted storybooks.")
     st.markdown('</div>', unsafe_allow_html=True)
 
     col1, col2 = st.columns(2)
@@ -1792,98 +1734,53 @@ if nav_choice == "🏠 Study Dashboard":
         st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
-# 2. VISUAL LEARNING SPACE (ESSENTIAL WORDS & OBJECTS)
-# ----------------------------------------------------
-elif nav_choice == "🖼️ Visual Learning Space (Essential Words & Objects)":
-    st.markdown('<div class="main-card">', unsafe_allow_html=True)
-    st.subheader("🖼️ Visual Learning Space: Essential Words & Objects")
-    st.write("Explore fundamental everyday German terms across essential categories with visual representations, descriptive details, audio pronunciations, and interactive matching challenges.")
-
-    selected_visual_cat = st.selectbox("📂 Select Visual Category:", list(VISUAL_LEARNING_TOPICS.keys()))
-    items = VISUAL_LEARNING_TOPICS[selected_visual_cat]
-
-    st.markdown("### 🖼️ Visual Flashcards & Audio Playback")
-    cols = st.columns(3)
-    for idx, item in enumerate(items):
-        with cols[idx % 3]:
-            st.markdown(f"""
-            <div style="background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 14px; padding: 20px; text-align: center; margin-bottom: 15px;">
-                <div style="font-size: 3rem; margin-bottom: 8px;">{item['icon']}</div>
-                <h3 style="color: #2563eb; margin: 0px 0px 4px 0px;">{item['term']}</h3>
-                <p style="color: #64748b; font-weight: 600; margin: 0px 0px 8px 0px;">{item['en']}</p>
-                <p style="color: #334155; font-size: 0.85rem; margin: 0px;">{item['desc']}</p>
-            </div>
-            """, unsafe_allow_html=True)
-            if st.button(f"🔊 Listen ({item['term']})", key=f"visual_audio_{selected_visual_cat}_{idx}", use_container_width=True):
-                play_direct_audio(item['term'], f"visual_{idx}")
-
-    st.divider()
-    st.markdown("### 🧩 Interactive Matching Challenge")
-    st.write("Test your visual and vocabulary memory! Match the English meaning or object to the correct German term.")
-
-    if f"match_target_{selected_visual_cat}" not in st.session_state:
-        st.session_state[f"match_target_{selected_visual_cat}"] = random.choice(items)
-
-    target = st.session_state[f"match_target_{selected_visual_cat}"]
-    st.markdown(f"**Target English Meaning / Object:** <span style='font-size: 1.4rem; color: #2563eb; font-weight: 700;'>{target['en']} {target['icon']}</span>", unsafe_allow_html=True)
-
-    options = [i['term'] for i in items]
-    random.shuffle(options)
-    user_match = st.radio("Select the correct German term:", options, key=f"match_rad_{selected_visual_cat}")
-
-    if st.button("Check Match", key=f"check_match_{selected_visual_cat}", type="primary"):
-        if user_match == target['term']:
-            st.success(f"🎉 Richtig! `{target['term']}` means {target['en']}.")
-            play_direct_audio(target['term'], "correct_match")
-            st.session_state[f"match_target_{selected_visual_cat}"] = random.choice(items)
-            st.rerun()
-        else:
-            st.error(f"❌ Falsch. Try again! Listen to pronunciation of options using the visual cards above.")
-
-    st.markdown('</div>', unsafe_allow_html=True)
-
-# ----------------------------------------------------
-# 3. MASTER GOETHE WORD ENGINE
+# 2. MASTER GOETHE WORD ENGINE
 # ----------------------------------------------------
 elif nav_choice == "📚 Master Goethe Word Engine":
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
-    st.subheader("📚 Master Goethe A1 Interactive Flashcard Engine (Top 1000 Vocabulary)")
-    st.write("Browse through official Goethe A1 and CEFR essential vocabulary categorized by official themes. Select 'ALL' to shuffle randomly across the entire deck.")
+    st.subheader("📚 Master Goethe A1 Interactive Flashcard Engine (Complete Vocabulary)")
+    st.write("Browse through the complete 612-word Goethe A1 vocabulary list categorized into your 8 requested thematic groups.")
 
     TOP_1000_VOCAB_CATEGORIES = {
         "1. Person & Alltag (Personal & Daily Life)": {
-            "Angaben zur Person (Personal Info)": ["der Name", "das Alter", "die Herkunft", "die Sprache", "ledig", "verheiratet", "kommen", "wohnen", "heißen", "sprechen"],
-            "Wohnen & Haushalt (Housing & Home)": ["die Wohnung", "das Zimmer", "die Miete", "das Haus", "der Tisch", "der Stuhl", "die Küche", "das Bett", "kosten", "umziehen"],
-            "Familie & Freunde (Family & Friends)": ["die Eltern", "die Mutter", "der Vater", "der Bruder", "die Schwester", "das Kind", "der Freund", "die Familie", "groß", "klein"]
+            "Verben": ["heißen", "heiraten", "wohnen", "leben", "kennen", "kennenlernen", "schlafen", "aufstehen", "baden", "duschen", "sich vorstellen", "anziehen", "ausziehen", "umziehen", "waschen", "auf sein", "zu sein"],
+            "Nomen": ["die Familie", "der Vater", "die Mutter", "der Sohn", "die Tochter", "der Bruder", "die Schwester", "die Großmutter", "der Großvater", "die Oma", "der Opa", "der Mann", "die Frau", "das Kind", "der Junge", "das Mädchen", "das Baby", "der Mensch", "die Eltern", "die Geschwister", "die Verwandten", "der Freund", "die Freundin", "der Partner", "die Partnerin", "der Name", "der Vorname", "der Familienname", "das Geburtsjahr", "der Geburtsort", "das Alter", "der Geburtstag", "der Pass", "der Ausweis", "die Adresse", "die Postleitzahl", "das Haus", "das Wohnung", "das Zimmer", "das Bad", "die Küche", "der Balkon", "der Garten", "das Dorf", "die Stadt", "die Heimat", "das Land", "die Tür", "das Fenster", "das Bett", "der Schrank", "der Tisch", "der Stuhl", "das Sofa", "das Bild", "das Licht", "der Schlüssel", "die Treppe", "der Aufzug", "das Dach", "der Boden", "das Schlafzimmer", "der Flur"],
+            "Adjektive & Adverbien": ["alt", "jung", "groß", "klein", "verheiratet", "ledig", "selbstständig", "allein", "müde", "nett", "freundlich"],
+            "Pronomen & Partikeln": ["ich", "du", "er", "sie", "es", "wir", "ihr", "Sie", "mein", "dein", "sein", "unser", "sich", "wer", "was", "wie", "wo", "woher", "wohin", "wann", "warum", "wie viel"]
         },
         "2. Essen & Trinken (Food & Drink)": {
-            "Lebensmittel (Groceries)": ["der Apfel", "das Wasser", "das Brot", "die Milch", "das Fleisch", "das Obst", "das Gemüse", "der Käse", "das Ei", "der Fisch"],
-            "Im Restaurant & Café (Dining Out)": ["die Speisekarte", "zahlen", "lecker", "das Restaurant", "das Café", "der Kellner", "bestellen", "das Trinkgeld", "hungrig", "durstig"]
+            "Verben": ["essen", "trinken", "kochen", "backen", "frühstücken", "schmecken", "grillen", "bestellen"],
+            "Nomen": ["das Essen", "das Frühstück", "das Mittagessen", "das Abendessen", "das Wasser", "der Kaffee", "der Tee", "das Bier", "der Wein", "der Saft", "die Milch", "das Brot", "das Brötchen", "das Fleisch", "der Fisch", "das Hähnchen", "das Ei", "die Butter", "der Käse", "die Kartoffel", "die Tomate", "der Apfel", "die Banane", "die Birne", "das Obst", "das Gemüse", "der Salat", "die Suppe", "der Kuchen", "das Salz", "das Öl", "die Schokolade", "der Zucker", "die Flasche", "das Glas", "die Tasse", "der Teller", "die Speisekarte", "der Hunger", "der Durst", "der Appetit"],
+            "Adjektive": ["frisch", "bitter", "süß", "sauer", "lecker", "satt"]
         },
         "3. Freizeit & Alltag (Leisure & Routine)": {
-            "Tagesablauf (Daily Routine)": ["aufstehen", "frühstücken", "arbeiten", "schlafen", "spät", "früh", "der Morgen", "der Abend", "die Uhr", "beginnen"],
-            "Hobbys & Sport (Hobbies & Sports)": ["lesen", "Fußball spielen", "fernsehen", "das Buch", "das Kino", "die Musik", "schwimmen", "reisen", "das Hobby", "fotografieren"],
-            "Wetter & Jahreszeiten (Weather & Seasons)": ["das Wetter", "kalt", "warm", "der Sommer", "der Winter", "die Sonne", "der Regen", "schneien", "der Frühling", "der Herbst"]
+            "Verben": ["spielen", "wandern", "schwimmen", "tanzen", "reisen", "feiern", "fernsehen", "lachen", "fotografieren", "hören", "lesen", "schreiben", "malen", "spazieren", "sich treffen"],
+            "Nomen": ["die Freizeit", "das Hobby", "der Sport", "das Spiel", "das Buch", "die Zeitung", "das Lied", "der Film", "das Kino", "die Party", "der Urlaub", "die Reise", "das Reisebüro", "der Reiseführer", "das Schwimmbad", "die Disco", "das Restaurant", "das Café", "der Park", "das Meer", "der See", "der Berg", "das Wetter", "die Sonne", "der Regen", "der Wind", "der Schnee", "das Geschenk", "die Musik", "das Foto", "die Kamera", "der Computer", "das Handy", "das Internet", "die E-Mail", "der Brief", "die Briefmarke"],
+            "Adjektive & Adverbien": ["oft", "manchmal", "nie", "immer", "bald", "gestern", "heute", "morgen", "spät", "früh", "langweilig", "interessant", "wunderbar", "schön", "lustig", "traurig"]
         },
         "4. Einkaufen & Geld (Shopping & Money)": {
-            "Geschäfte & Kleidung (Stores & Clothing)": ["das Geschäft", "die Hose", "das Hemd", "das Kleid", "teuer", "billig", "die Farbe", "kaufen", "die Größe", "der Schuh", "die Jacke"],
-            "Bezahlen & Zahlen (Paying & Numbers)": ["das Geld", "der Euro", "die Kreditkarte", "null", "eins", "hundert", "tausend", "bezahlen", "kostbar", "billig"]
+            "Verben": ["kaufen", "einkaufen", "bezahlen", "kosten", "sparen", "verkaufen", "suchen", "finden", "brauchen", "bekommen"],
+            "Nomen": ["das Geld", "der Euro", "der Cent", "der Preis", "die Rechnung", "die Kasse", "der Laden", "das Geschäft", "der Supermarkt", "die Bäckerei", "das Kaufhaus", "der Markt", "der Kiosk", "die Kleidung", "die Jacke", "die Hose", "das Hemd", "der Schuh", "die Tasche", "das Angebot", "der Rabatt", "die Größe", "die Kreditkarte", "bar"],
+            "Adjektive": ["billig", "teuer", "neu", "alt", "gut", "schlecht", "richtig", "falsch", "passend"]
         },
         "5. Arbeit & Beruf (Work & Profession)": {
-            "Berufe & Arbeitsplatz (Jobs & Workplace)": ["der Arzt", "die Krankenschwester", "der Lehrer", "der Koch", "das Büro", "arbeiten", "der Kollege", "die Chefin", "der Beruf", "die Firma", "der Computer"],
-            "Termine & Bürokommunikation (Appointments & Comm)": ["der Termin", "anrufen", "morgen", "gestern", "die E-Mail", "das Telefon", "die Nachricht", "verschieben", "pünktlich", "absagen"]
+            "Verben": ["arbeiten", "verdienen", "anfangen", "aufhören", "beginnen", "vorbereiten", "telefonieren", "unterschreiben", "vermieten", "mieten", "arbeitslos sein"],
+            "Nomen": ["die Arbeit", "der Beruf", "die Firma", "das Büro", "der Arbeitsplatz", "der Kollege", "die Kollegin", "der Chef", "die Chefin", "der Angestellte", "der Arbeiter", "der Verkäufer", "die Verkäuferin", "der Lehrer", "die Lehrerin", "der Schüler", "die Schülerin", "der Student", "die Studentin", "der Arzt", "die Ärztin", "die Schule", "der Kindergarten", "das Studium", "der Kurs", "der Unterricht", "das Praktikum", "der Termin", "die Aufgabe", "die Hausaufgabe", "die Pause", "der Lohn", "das Gehalt", "der Lebenslauf"],
+            "Adjektive": ["arbeitslos", "beschäftigt", "pünktlich", "fleißig", "fertig"]
         },
         "6. Stadt & Verkehr (City & Transportation)": {
-            "Unterwegs sein (Getting Around)": ["der Bus", "der Zug", "das Fahrrad", "der Bahnhof", "links", "rechts", "das Ticket", "fahren", "fliegen", "das Auto", "die Haltestelle"],
-            "In der Stadt (In the City)": ["das Krankenhaus", "die Post", "die Bank", "die Apotheke", "die Straße", "die Brücke", "der Markt", "das Museum", "die Stadt", "der Park"]
+            "Verben": ["fahren", "fliegen", "ankommen", "abfahren", "aussteigen", "einsteigen", "umsteigen", "abholen", "parken", "gehen", "laufen", "besuchen"],
+            "Nomen": ["die Stadt", "das Dorf", "die Straße", "die Autobahn", "der Bahnhof", "der Flughafen", "das Flugzeug", "der Zug", "die S-Bahn", "U-Bahn", "der Bus", "die Straßenbahn", "das Auto", "das Fahrrad", "das Taxi", "der Lkw", "die Fahrkarte", "das Ticket", "der Bahnsteig", "das Gleis", "die Haltestelle", "die Ampel", "die Kreuzung", "die Brücke", "der Parkplatz", "die Karte", "der Stadtplan", "der Fahrplan", "die Post", "die Bank", "das Hotel", "das Museum", "das Theater", "die Sehenswürdigkeit", "der Eingang", "der Ausgang", "die Info", "der Zoll"],
+            "Präpositionen & Adverbien": ["links", "rechts", "geradeaus", "nah", "weit", "schnell", "langsam"]
         },
         "7. Gesundheit & Körper (Health & Body)": {
-            "Der Körper (The Body)": ["das Haar", "der Kopf", "der Arm", "das Bein", "das Auge", "das Mund", "der Rücken", "die Hand", "der Fuß", "wehtun"],
-            "Beim Arzt (At the Doctor)": ["krank", "der Arzt", "die Apotheke", "das Medikament", "das Rezept", "schmerzen", "helfen", "gesund", "das Fieber", "die Praxis"]
+            "Verben": ["weh tun", "helfen", "untersuchen", "atmen", "liegen", "sitzen", "stehen", "fallen"],
+            "Nomen": ["der Körper", "der Kopf", "das Auge", "das Ohr", "die Nase", "der Mund", "der Zahn", "der Hals", "der Arm", "die Hand", "das Bein", "der Fuß", "der Bauch", "das Haar", "die Gesundheit", "die Krankheit", "das Fieber", "der Schmerz", "die Apotheke", "das Medikament", "das Krankenhaus", "der Unfall", "die Praxis"],
+            "Adjektive": ["gesund", "krank", "schwach", "stark"]
         },
         "8. Allgemein (General & Core Grammar)": {
-            "Grundverben & Pronomen (Core Verbs & Pronouns)": ["sein", "haben", "werden", "können", "müssen", "ich", "du", "er", "sie", "es", "wir", "ihr", "sie", "Sie"],
-            "Präpositionen & Konnektoren (Prepositions & Connectors)": ["und", "aber", "oder", "denn", "in", "auf", "mit", "für", "von", "zu"]
+            "Verben (Modal & Auxiliary)": ["haben", "sein", "werden", "können", "müssen", "wollen", "sollen", "dürfen", "mögen", "möchten", "wissen"],
+            "Grammatik- & Funktionswörter": ["und", "oder", "aber", "denn", "weil", "wenn", "als", "dass", "wie", "so", "auch", "nicht", "nichts", "nur", "noch", "schon", "sehr", "zu", "viel", "wenig", "etwas", "alle", "jeder", "kein", "man", "da", "dort", "hier", "oben", "unten", "draußen", "innen", "jetzt", "dann", "danach", "vor", "nach", "bei", "mit", "ohne", "für", "gegen", "über", "unter", "zwischen", "bis", "aus", "an", "auf", "in", "um"]
         }
     }
 
@@ -2059,7 +1956,7 @@ elif nav_choice == "📚 Master Goethe Word Engine":
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
-# 4. CORE GRAMMAR PRACTICE & EXERCISES
+# 3. CORE GRAMMAR PRACTICE & EXERCISES
 # ----------------------------------------------------
 elif nav_choice == "📖 Core Grammar Practice & Exercises":
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
@@ -2242,7 +2139,7 @@ elif nav_choice == "📖 Core Grammar Practice & Exercises":
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
-# 5. GOETHE A1 LESEN
+# 4. GOETHE A1 LESEN
 # ----------------------------------------------------
 elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
@@ -2255,7 +2152,7 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
     ])
 
     with l_tab1:
-        st.markdown("**Teil 1 (Kurze Mitteilungen):** Select from all 9 official Goethe A1 practice scenarios. Read two short messages/emails and determine if the 5 statements are Richtig or Falsch.")
+        st.markdown("**Teil 1 (Kurze Mitteilungen):** Select from official Goethe A1 practice scenarios or refresh to generate brand-new alternative scenarios.")
         
         if "dyn_lesen_t1" not in st.session_state or not isinstance(st.session_state.dyn_lesen_t1, list):
             st.session_state.dyn_lesen_t1 = list(LESEN_TEIL1_SCENARIOS)
@@ -2271,13 +2168,13 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
         with col_lt1_ref:
             st.markdown("<div style='height: 28px;'></div>", unsafe_allow_html=True)
             if st.button("Refresh Scenarios", key="ref_lesen_t1", use_container_width=True):
-                with st.spinner("Generating fresh scenarios via AI..."):
+                with st.spinner("Generating fresh alternative Lesen Teil 1 scenario via AI..."):
                     try:
-                        prompt = "Generate 3 brand new alternative Goethe A1 Lesen Teil 1 scenario sets (two short texts/messages each with 5 Richtig/Falsch statements and explanations) in strict JSON list format matching LESEN_TEIL1_SCENARIOS schema."
+                        prompt = "Generate a completely new Goethe A1 Lesen Teil 1 scenario set containing a title, desc, text1_label, text1, text2_label, text2, and 5 questions (each with id, statement, options ['richtig', 'falsch'], answer, and explanation). Return strict JSON format as a single object (not a list): {\"title\": \"...\", \"desc\": \"...\", \"text1_label\": \"...\", \"text1\": \"...\", \"text2_label\": \"...\", \"text2\": \"...\", \"questions\": [...]}"
                         res = generate_dynamic_content(prompt, is_json=True)
-                        new_scenarios = json.loads(res)
-                        if isinstance(new_scenarios, list) and len(new_scenarios) > 0:
-                            st.session_state.dyn_lesen_t1 = new_scenarios
+                        new_scen = json.loads(res)
+                        if isinstance(new_scen, dict) and "title" in new_scen:
+                            st.session_state.dyn_lesen_t1.append(new_scen)
                             st.rerun()
                     except Exception as e:
                         st.error(f"Failed to refresh: {str(e)}")
@@ -2322,7 +2219,7 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
             st.metric("Lesen Teil 1 Score", f"{score} / 5")
 
     with l_tab2:
-        st.markdown("**Teil 2 (Zuordnung / Classified Ads):** Select from all 9 official Goethe A1 practice scenarios. Match 5 user situations to website options A or B.")
+        st.markdown("**Teil 2 (Zuordnung / Classified Ads):** Select from official Goethe A1 practice scenarios or refresh to generate brand-new alternative scenarios.")
         
         if "dyn_lesen_t2" not in st.session_state or not isinstance(st.session_state.dyn_lesen_t2, list):
             st.session_state.dyn_lesen_t2 = list(LESEN_TEIL2_SCENARIOS)
@@ -2338,13 +2235,13 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
         with col_lt2_ref:
             st.markdown("<div style='height: 28px;'></div>", unsafe_allow_html=True)
             if st.button("Refresh Scenarios", key="ref_lesen_t2", use_container_width=True):
-                with st.spinner("Generating fresh scenarios via AI..."):
+                with st.spinner("Generating fresh alternative Lesen Teil 2 scenario via AI..."):
                     try:
-                        prompt = "Generate 3 brand new alternative Goethe A1 Lesen Teil 2 scenario sets (user situations matched against Website A and Website B options) in strict JSON list format matching LESEN_TEIL2_SCENARIOS schema."
+                        prompt = "Generate a completely new Goethe A1 Lesen Teil 2 scenario set containing a title, desc, and 5 tasks (each with id, situation, site_a_url, site_a, site_b_url, site_b, answer ['Website A', 'Website B'], and explanation). Return strict JSON format as a single object: {\"title\": \"...\", \"desc\": \"...\", \"tasks\": [...]}"
                         res = generate_dynamic_content(prompt, is_json=True)
-                        new_scenarios = json.loads(res)
-                        if isinstance(new_scenarios, list) and len(new_scenarios) > 0:
-                            st.session_state.dyn_lesen_t2 = new_scenarios
+                        new_scen = json.loads(res)
+                        if isinstance(new_scen, dict) and "title" in new_scen:
+                            st.session_state.dyn_lesen_t2.append(new_scen)
                             st.rerun()
                     except Exception as e:
                         st.error(f"Failed to refresh: {str(e)}")
@@ -2391,7 +2288,7 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
             st.metric("Lesen Teil 2 Score", f"{score} / 5")
 
     with l_tab3:
-        st.markdown("**Teil 3 (Öffentliche Hinweise / Public Signs):** Select from all 9 official Goethe A1 practice scenarios. Read public signs and notices and determine if statements are Richtig or Falsch.")
+        st.markdown("**Teil 3 (Öffentliche Hinweise / Public Signs):** Select from official Goethe A1 practice scenarios or refresh to generate brand-new alternative scenarios.")
         
         if "dyn_lesen_t3" not in st.session_state or not isinstance(st.session_state.dyn_lesen_t3, list):
             st.session_state.dyn_lesen_t3 = list(LESEN_TEIL3_SCENARIOS)
@@ -2407,13 +2304,13 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
         with col_lt3_ref:
             st.markdown("<div style='height: 28px;'></div>", unsafe_allow_html=True)
             if st.button("Refresh Scenarios", key="ref_lesen_t3", use_container_width=True):
-                with st.spinner("Generating fresh scenarios via AI..."):
+                with st.spinner("Generating fresh alternative Lesen Teil 3 scenario via AI..."):
                     try:
-                        prompt = "Generate 3 brand new alternative Goethe A1 Lesen Teil 3 scenario sets (public signs, notices, and corresponding Richtig/Falsch statements) in strict JSON list format matching LESEN_TEIL3_SCENARIOS schema."
+                        prompt = "Generate a completely new Goethe A1 Lesen Teil 3 scenario set containing a title, desc, example (with statement, sign_title, sign_text, answer, explanation), and 5 tasks (each with id, statement, sign_title, sign_text, options ['richtig', 'falsch'], answer, explanation). Return strict JSON format as a single object: {\"title\": \"...\", \"desc\": \"...\", \"example\": {...}, \"tasks\": [...]}"
                         res = generate_dynamic_content(prompt, is_json=True)
-                        new_scenarios = json.loads(res)
-                        if isinstance(new_scenarios, list) and len(new_scenarios) > 0:
-                            st.session_state.dyn_lesen_t3 = new_scenarios
+                        new_scen = json.loads(res)
+                        if isinstance(new_scen, dict) and "title" in new_scen:
+                            st.session_state.dyn_lesen_t3.append(new_scen)
                             st.rerun()
                     except Exception as e:
                         st.error(f"Failed to refresh: {str(e)}")
@@ -2464,7 +2361,7 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
-# 6. GOETHE A1 HÖREN
+# 5. GOETHE A1 HÖREN
 # ----------------------------------------------------
 elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
@@ -2608,7 +2505,7 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
-# 7. GOETHE A1 SCHREIBEN
+# 6. GOETHE A1 SCHREIBEN
 # ----------------------------------------------------
 elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
@@ -2620,7 +2517,7 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
     ])
 
     with s_tab1:
-        st.markdown("**Teil 1 (Formular):** Select from all 9 official Goethe A1 practice scenarios. Fill in the 5 missing information gaps exactly like the official Goethe-Zertifikat A1 exam interface.")
+        st.markdown("**Teil 1 (Formular):** Select from official Goethe A1 practice scenarios or refresh to generate brand-new alternative form-filling scenarios.")
         
         if "dyn_schreiben_t1" not in st.session_state or not isinstance(st.session_state.dyn_schreiben_t1, list):
             st.session_state.dyn_schreiben_t1 = list(SCHREIBEN_TEIL1_SCENARIOS)
@@ -2636,13 +2533,13 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
         with col_st1_ref:
             st.markdown("<div style='height: 28px;'></div>", unsafe_allow_html=True)
             if st.button("Refresh Scenarios", key="ref_schreiben_t1", use_container_width=True):
-                with st.spinner("Generating fresh scenarios via AI..."):
+                with st.spinner("Generating fresh alternative Schreiben Teil 1 scenario via AI..."):
                     try:
-                        prompt = "Generate 3 brand new alternative Goethe A1 Schreiben Teil 1 scenario sets (form filling with 5 missing gaps and scenario description) in strict JSON list format matching SCHREIBEN_TEIL1_SCENARIOS schema."
+                        prompt = "Generate a completely new Goethe A1 Schreiben Teil 1 scenario containing title, desc, aufgabe, form_title, and fields (a list of objects with id, label, default (optional), answer (if is_gap), is_gap (true/false), placeholder, options (optional)). Return strict JSON format as a single object: {\"title\": \"...\", \"desc\": \"...\", \"aufgabe\": \"...\", \"form_title\": \"...\", \"fields\": [...]}"
                         res = generate_dynamic_content(prompt, is_json=True)
-                        new_scenarios = json.loads(res)
-                        if isinstance(new_scenarios, list) and len(new_scenarios) > 0:
-                            st.session_state.dyn_schreiben_t1 = new_scenarios
+                        new_scen = json.loads(res)
+                        if isinstance(new_scen, dict) and "title" in new_scen:
+                            st.session_state.dyn_schreiben_t1.append(new_scen)
                             st.rerun()
                     except Exception as e:
                         st.error(f"Failed to refresh: {str(e)}")
@@ -2660,8 +2557,8 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
         
         user_form_inputs = {}
         for field in selected_schreiben_t1_obj["fields"]:
-            if not field["is_gap"]:
-                st.text_input(field["label"], value=field["default"], disabled=True, key=f"disabled_{selected_schreiben_t1_title}_{field['id']}")
+            if not field.get("is_gap", False):
+                st.text_input(field["label"], value=field.get("default", ""), disabled=True, key=f"disabled_{selected_schreiben_t1_title}_{field['id']}")
             else:
                 if "options" in field:
                     user_form_inputs[field["id"]] = st.radio(field["label"], field["options"], key=f"gap_rad_{selected_schreiben_t1_title}_{field['id']}")
@@ -2683,10 +2580,10 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
 
         if submit_form_btn:
             score = 0
-            total_gaps = sum(1 for f in selected_schreiben_t1_obj["fields"] if f["is_gap"])
+            total_gaps = sum(1 for f in selected_schreiben_t1_obj["fields"] if f.get("is_gap", False))
             st.markdown("### 📊 Evaluation Results")
             for field in selected_schreiben_t1_obj["fields"]:
-                if field["is_gap"]:
+                if field.get("is_gap", False):
                     u_val = str(user_form_inputs.get(field["id"], "")).strip().lower()
                     c_val = str(field["answer"]).strip().lower()
                     if u_val == c_val or c_val in u_val:
@@ -2697,7 +2594,7 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
             st.metric("Formular Score", f"{score} / {total_gaps}")
 
     with s_tab2:
-        st.markdown("**Teil 2 (Mitteilung):** Select from all 9 official Goethe A1 practice scenarios. Write an email (~30 words) hitting all 3 required points.")
+        st.markdown("**Teil 2 (Mitteilung):** Select from official Goethe A1 practice scenarios or refresh to generate brand-new alternative message-writing scenarios.")
         
         if "dyn_schreiben_t2" not in st.session_state or not isinstance(st.session_state.dyn_schreiben_t2, list):
             st.session_state.dyn_schreiben_t2 = list(SCHREIBEN_TEIL2_SCENARIOS)
@@ -2713,13 +2610,13 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
         with col_st2_ref:
             st.markdown("<div style='height: 28px;'></div>", unsafe_allow_html=True)
             if st.button("Refresh Scenarios", key="ref_schreiben_t2", use_container_width=True):
-                with st.spinner("Generating fresh scenarios via AI..."):
+                with st.spinner("Generating fresh alternative Schreiben Teil 2 scenario via AI..."):
                     try:
-                        prompt = "Generate 3 brand new alternative Goethe A1 Schreiben Teil 2 scenario sets (message writing task with 3 required points and sample answer) in strict JSON list format matching SCHREIBEN_TEIL2_SCENARIOS schema."
+                        prompt = "Generate a completely new Goethe A1 Schreiben Teil 2 scenario containing title, desc, aufgabe_text, points (list of 3 strings), and prompt (sample answer). Return strict JSON format as a single object: {\"title\": \"...\", \"desc\": \"...\", \"aufgabe_text\": \"...\", \"points\": [\"...\", \"...\", \"...\"], \"prompt\": \"...\"}"
                         res = generate_dynamic_content(prompt, is_json=True)
-                        new_scenarios = json.loads(res)
-                        if isinstance(new_scenarios, list) and len(new_scenarios) > 0:
-                            st.session_state.dyn_schreiben_t2 = new_scenarios
+                        new_scen = json.loads(res)
+                        if isinstance(new_scen, dict) and "title" in new_scen:
+                            st.session_state.dyn_schreiben_t2.append(new_scen)
                             st.rerun()
                     except Exception as e:
                         st.error(f"Failed to refresh: {str(e)}")
@@ -2804,7 +2701,7 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
-# 8. GOETHE A1 SPRECHEN
+# 7. GOETHE A1 SPRECHEN
 # ----------------------------------------------------
 elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
@@ -2906,7 +2803,7 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
-# 9. GOETHE A1 MOCK EXAMINATION
+# 8. GOETHE A1 MOCK EXAMINATION
 # ----------------------------------------------------
 elif nav_choice == "🏆 Goethe A1 Mock Examination":
     st.markdown('<div class="accent-card">', unsafe_allow_html=True)
@@ -3160,7 +3057,7 @@ elif nav_choice == "🏆 Goethe A1 Mock Examination":
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
-# 10. A1 & A2 SHORT STORIES
+# 9. A1 & A2 SHORT STORIES
 # ----------------------------------------------------
 elif nav_choice == "📖 A1 & A2 Short Stories":
     st.markdown('<div class="accent-card">', unsafe_allow_html=True)
@@ -3296,7 +3193,7 @@ elif nav_choice == "📖 A1 & A2 Short Stories":
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
-# 11. ASK GEM
+# 10. ASK GEM
 # ----------------------------------------------------
 elif nav_choice == "💬 Ask Gem (AI Tutor)":
     st.markdown('<div class="accent-card">', unsafe_allow_html=True)
