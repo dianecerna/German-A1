@@ -120,19 +120,19 @@ st.markdown("""
         font-weight: 700;
     }
 
-    /* FIX: Force all dropdown elements to have white background and black font color */
+    /* Dark Dropdown / Select Elements Styling */
     .stSelectbox div[data-baseweb="select"] {
-        background-color: #ffffff !important;
+        background-color: #1f2937 !important;
         border-radius: 10px !important;
     }
     .stSelectbox div[data-baseweb="select"] > div {
-        background-color: #ffffff !important;
+        background-color: #1f2937 !important;
         border: 1px solid #374151 !important;
         border-radius: 10px !important;
-        color: #000000 !important;
+        color: #f8fafc !important;
     }
     .stSelectbox span, .stSelectbox div[data-baseweb="select"] span {
-        color: #000000 !important;
+        color: #f8fafc !important;
     }
     
     /* Flashcard Front Container */
