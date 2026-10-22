@@ -18,7 +18,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom Styling
+# Custom Styling (Native Streamlit header & collapse arrow preserved)
 st.markdown("""
 <style>
     /* Global Clean Modern Sans-Serif Font & Pastel Blue Background */
@@ -112,38 +112,6 @@ st.markdown("""
         color: #e2e8f0 !important;
     }
     
-    /* Custom Sidebar Nav Link Button Styling: Left justified, pastel frames, black font */
-    .stButton > button.nav-btn {
-        width: 100%;
-        background: #e0f2fe !important;
-        border: 1.5px solid #7dd3fc !important;
-        border-radius: 12px !important;
-        padding: 12px 16px !important;
-        text-align: left !important;
-        font-size: 1.1rem !important;
-        font-weight: 600 !important;
-        color: #0f172a !important;
-        transition: all 0.2s ease !important;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-    .stButton > button.nav-btn:hover {
-        background: #bae6fd !important;
-        border-color: #38bdf8 !important;
-        transform: translateY(-1px);
-    }
-    .stButton > button.nav-btn-active {
-        width: 100%;
-        background: #7dd3fc !important;
-        border: 1.5px solid #0284c7 !important;
-        border-radius: 12px !important;
-        padding: 12px 16px !important;
-        text-align: left !important;
-        font-size: 1.1rem !important;
-        font-weight: 700 !important;
-        color: #0f172a !important;
-        box-shadow: 0 4px 12px rgba(125, 211, 252, 0.4);
-    }
-
     /* Outlined & Framed Dropdown / Select Elements with Pastel Borders */
     .stSelectbox div[data-baseweb="select"] > div {
         background-color: #ffffff !important;
@@ -452,15 +420,9 @@ nav_options = [
     "🐱 Gem AI Tutor"
 ]
 
-# Sidebar Rendering with a Built-in Hide Button
+# Sidebar Rendering (Native Streamlit collapse arrow included automatically)
 with st.sidebar:
-    c_toggle, c_title = st.columns([1, 4])
-    with c_toggle:
-        if st.button("❌", key="sidebar_close_btn", help="Close Navigation Panel", use_container_width=True):
-            st.rerun()
-    with c_title:
-        st.markdown("<h3 style='margin:0; font-size:1.30rem; color:#ffffff;'>German A1</h3>", unsafe_allow_html=True)
-    
+    st.markdown("<h3 style='margin:0; font-size:1.30rem; color:#ffffff;'>German A1</h3>", unsafe_allow_html=True)
     st.markdown("<div style='height: 15px;'></div>", unsafe_allow_html=True)
     st.markdown("<p style='font-size:1.1rem; font-weight:700; color:#e2e8f0; margin-bottom:12px;'>Navigation</p>", unsafe_allow_html=True)
     
