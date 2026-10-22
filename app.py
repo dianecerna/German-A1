@@ -3,7 +3,8 @@ import json
 import io
 import random
 import time
-import pypdf
+import requests
+from bs4 import BeautifulSoup
 import streamlit as st
 from google import genai
 from google.genai import types
@@ -189,6 +190,38 @@ def render_top_back_button():
         st.rerun()
     st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
 
+# Helper function to scrape dict.cc
+def search_dict_cc(query):
+    results = []
+    if not query:
+        return results
+    url = f"https://www.dict.cc/?s={query}"
+    headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
+    try:
+        response = requests.get(url, headers=headers, timeout=5)
+        if response.status_code == 200:
+            soup = BeautifulSoup(response.text, 'html.parser')
+            # dict.cc structures translation rows inside td tags with specific IDs or table rows
+            table = soup.find('table', id='mainTable')
+            if table:
+                rows = table.find_all('tr')
+                for row in rows:
+                    tds = row.find_all('td', recursive=False)
+                    if len(tds) >= 3:
+                        # Usually td[1] is German / source, td[2] is English / target
+                        de_elem = tds[1].find('a')
+                        en_elem = tds[2].find('a')
+                        if de_elem and en_elem:
+                            results.append({
+                                "german": de_elem.get_text(strip=True),
+                                "english": en_elem.get_text(strip=True)
+                            })
+            # Limit to top 15 results
+            results = results[:15]
+    except Exception as e:
+        st.error(f"Error fetching from dict.cc: {e}")
+    return results
+
 # ----------------------------------------------------
 # 1. STUDY DASHBOARD
 # ----------------------------------------------------
@@ -210,6 +243,7 @@ if nav_choice == "🏠 Study Dashboard":
         "✍️ Goethe A1 Schreiben (Writing)",
         "🗣️ Goethe A1 Sprechen (Speaking)",
         "📖 A1 & A2 Short Stories",
+        "📖 dict.cc Live Dictionary",
         "🐱 Gem AI Tutor"
     ]
 
@@ -289,11 +323,62 @@ elif nav_choice == "📖 A1 & A2 Short Stories":
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
-# 9. GEM AI TUTOR
+# 9. DICT.CC LIVE DICTIONARY SECTION
+# ----------------------------------------------------
+elif nav_choice == "📖 dict.cc Live Dictionary":
+    render_top_back_button()
+    st.markdown('<div class="section-header-box">📖 dict.cc Live Dictionary</div>', unsafe_allow_html=True)
+    st.markdown('<div class="main-card">', unsafe_allow_html=True)
+    st.write("Search words directly from **dict.cc** to find German-English translations instantly.")
+    
+    search_query = st.text_input("🔍 Enter German or English word:", placeholder="e.g. Haus, window, lernen...")
+    
+    if st.button("Search Dictionary", type="primary"):
+        if search_query:
+            with st.spinner("Searching dict.cc..."):
+                translation_results = search_dict_cc(search_query)
+                st.session_state.dict_results = translation_results
+                st.session_state.searched_word = search_query
+        else:
+            st.warning("Please enter a word to search.")
+
+    if "dict_results" in st.session_state and st.session_state.get("dict_results"):
+        st.markdown(f"### Results for: `{st.session_state.get('searched_word', '')}`")
+        st.markdown("<hr style='border-color: #374151;'>", unsafe_allow_html=True)
+        
+        col_de, col_en = st.columns(2)
+        col_de.markdown("**🇩🇪 German**")
+        col_en.markdown("**🇬🇧 English**")
+        st.markdown("<hr style='border-color: #374151; margin-top: -10px;'>", unsafe_allow_html=True)
+        
+        for item in st.session_state.dict_results:
+            d_col, e_col = st.columns(2)
+            d_col.write(item["german"])
+            e_col.write(item["english"])
+    elif "dict_results" in st.session_state:
+        st.info("No results found or connection failed. Try another search term.")
+
+    st.markdown('</div>', unsafe_allow_html=True)
+
+# ----------------------------------------------------
+# 10. GEM AI TUTOR
 # ----------------------------------------------------
 elif nav_choice == "🐱 Gem AI Tutor":
     render_top_back_button()
     st.markdown('<div class="section-header-box">🐱 Gem — AI German Tutor</div>', unsafe_allow_html=True)
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
-    st.write("Content removed.")
+    if "gem_chat_messages" not in st.session_state:
+        st.session_state.gem_chat_messages = []
+    for msg in st.session_state.gem_chat_messages:
+        with st.chat_message(msg["role"]):
+            st.write(msg["content"])
+    if user_prompt := st.chat_input("Ask Gem anything about German..."):
+        st.session_state.gem_chat_messages.append({"role": "user", "content": user_prompt})
+        with st.chat_message("user"):
+            st.write(user_prompt)
+        with st.chat_message("assistant"):
+            with st.spinner("Gem is thinking..."):
+                response = generate_dynamic_content(user_prompt)
+                st.write(response)
+                st.session_state.gem_chat_messages.append({"role": "assistant", "content": response})
     st.markdown('</div>', unsafe_allow_html=True)
