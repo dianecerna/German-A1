@@ -144,11 +144,6 @@ st.markdown("""
         box-shadow: 0 4px 12px rgba(125, 211, 252, 0.4);
     }
 
-    /* Hide default messy Streamlit collapsed sidebar text icon completely */
-    [data-testid="collapsedControl"] {
-        display: none !important;
-    }
-
     /* Outlined & Framed Dropdown / Select Elements with Pastel Borders */
     .stSelectbox div[data-baseweb="select"] > div {
         background-color: #ffffff !important;
@@ -459,32 +454,18 @@ nav_options = [
 
 # Sidebar Rendering
 with st.sidebar:
-    # Top Action Row with clean Custom Clickable Arrow Toggle Button to hide/show sidebar
-    c_toggle, c_title = st.columns([1, 4])
-    with c_toggle:
-        if st.button("⬅️", key="sidebar_collapse_arrow", help="Hide Sidebar"):
-            st.rerun()
-    with c_title:
-        st.markdown("<h3 style='margin:0; font-size:1.30rem; color:#ffffff;'>German A1 Learning</h3>", unsafe_allow_html=True)
-    
+    st.markdown("<h3 style='margin:0; font-size:1.30rem; color:#ffffff;'>German A1 Learning</h3>", unsafe_allow_html=True)
     st.markdown("<div style='height: 15px;'></div>", unsafe_allow_html=True)
     st.markdown("<p style='font-size:1.1rem; font-weight:700; color:#e2e8f0; margin-bottom:12px;'>Navigation</p>", unsafe_allow_html=True)
     
     # Custom Framed Left-Justified Navigation Buttons with Pastel Frames & Black Font
     for opt in nav_options:
         is_active = (st.session_state.nav_choice == opt)
-        btn_class = "nav-btn-active" if is_active else "nav-btn"
         if st.button(opt, key=f"nav_btn_{opt}", use_container_width=True):
             st.session_state.nav_choice = opt
             st.rerun()
 
 nav_choice = st.session_state.nav_choice
-
-# Top Main Area Button to Show/Expand Sidebar Navigation if needed
-c_top_nav, _ = st.columns([1, 10])
-with c_top_nav:
-    if st.button("➔ Menu", key="show_sidebar_btn", help="Open navigation panel"):
-        st.rerun()
 
 # ----------------------------------------------------
 # 1. STUDY DASHBOARD
@@ -826,7 +807,7 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
                 if u_ans == t["answer"]:
                     st.success(f"**Task {idx}: Correct!** (`{t['answer']}`) — {t['explanation']}")
                 else:
-                    st.error(f"**Task {idx}: Incorrect.** Your answer: `{u_ans}` | Correct: `{t['answer']}`\n\n💡 **Explanation:** {t['explanation']}")
+                    st.error(f"**Task {idx}: Incorrect.** Your answer: `{u_ans}` | Correct: `{q['answer']}`\n\n💡 **Explanation:** {t['explanation']}")
 
     st.markdown('</div>', unsafe_allow_html=True)
 
@@ -961,7 +942,7 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
         st.markdown("### Teil 3 — Bitten formulieren und darauf reagieren")
         st.markdown("Mit Bildkarten zwei Bitten formulieren und auf die Bitten des Partners reagieren.")
         st.info("🎴 Bildkarte: **Regenschirm leihen**")
-        rec_t3 = mic_recorder(start_prompt="Record Request 🎙️", stop_prompt="Stop Recording 🛑", key="rec_sp_t3")
+        rec_t3 = nag_rec = mic_recorder(start_prompt="Record Request 🎙️", stop_prompt="Stop Recording 🛑", key="rec_sp_t3")
         if rec_t3:
             st.audio(rec_t3['bytes'], format='audio/wav')
 
