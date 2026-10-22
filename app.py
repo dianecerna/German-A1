@@ -17,10 +17,10 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Custom Deep Purple-to-Magenta Gradient Glow Theme with Fully Mirrored Button-Style Dropdown Styling
+# Custom Deep Purple-to-Magenta Gradient Glow Theme with Relaxed Top Spacing & Perfect Dropdown Styling
 st.markdown("""
 <style>
-    /* Global Deep Gradient Dark Void & Compact Spacing */
+    /* Global Deep Gradient Dark Void & Comfortable Spacing */
     .stApp {
         background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #09090b 70%) !important;
         background-color: #09090b !important;
@@ -39,15 +39,15 @@ st.markdown("""
         display: none !important;
     }
 
-    /* Reduce Padding and Margins for Compact Layout */
+    /* Relaxed Top Spacing for Comfort */
     .block-container {
-        padding-top: 1.5rem !important;
-        padding-bottom: 1.5rem !important;
+        padding-top: 2.5rem !important;
+        padding-bottom: 2rem !important;
         max-width: 100% !important;
     }
     
     div[data-testid="stVerticalBlock"] > div {
-        gap: 0.5rem !important;
+        gap: 0.6rem !important;
     }
 
     /* Smooth Gradient Border Custom Button Styling */
@@ -137,7 +137,7 @@ st.markdown("""
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     }
 
-    /* Exactly Mirrored Button-Style Dropdown Box Design */
+    /* Exactly Mirrored Button-Style Dropdown Box Design with Clear High Contrast Text */
     .stSelectbox div[data-baseweb="select"] {
         background: linear-gradient(135deg, rgba(30, 27, 75, 0.6) 0%, rgba(15, 23, 42, 0.8) 100%) !important;
         border-radius: 12px !important;
@@ -146,7 +146,7 @@ st.markdown("""
         background: linear-gradient(135deg, rgba(30, 27, 75, 0.6) 0%, rgba(15, 23, 42, 0.8) 100%) !important;
         border: 1px solid rgba(236, 72, 153, 0.4) !important;
         border-radius: 12px !important;
-        color: #f8fafc !important;
+        color: #ffffff !important;
         padding: 10px 16px !important;
         box-shadow: 0 4px 15px rgba(168, 85, 247, 0.15) !important;
         min-height: 48px !important;
@@ -156,14 +156,14 @@ st.markdown("""
         border-color: #ec4899 !important;
     }
     .stSelectbox span, .stSelectbox div[data-baseweb="select"] span {
-        color: #f8fafc !important;
+        color: #ffffff !important;
         font-weight: 700 !important;
         font-size: 0.95rem !important;
     }
 
     /* Open Dropdown Popup List Container & Options Mirrored to Button Theme */
     div[data-baseweb="menu"] {
-        background: linear-gradient(135deg, rgba(30, 27, 75, 0.95) 0%, rgba(15, 23, 42, 0.95) 100% ) !important;
+        background: linear-gradient(135deg, rgba(30, 27, 75, 0.95) 0%, rgba(15, 23, 42, 0.95) 100%) !important;
         border: 1px solid rgba(236, 72, 153, 0.4) !important;
         border-radius: 12px !important;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6) !important;
@@ -173,12 +173,12 @@ st.markdown("""
     }
     div[data-baseweb="menu"] li, div[data-baseweb="menu"] div {
         background: transparent !important;
-        color: #f8fafc !important;
+        color: #ffffff !important;
         font-weight: 600 !important;
         padding: 10px 16px !important;
     }
     div[data-baseweb="menu"] li span, div[data-baseweb="menu"] div span {
-        color: #f8fafc !important;
+        color: #ffffff !important;
     }
     div[data-baseweb="menu"] li:hover, div[data-baseweb="menu"] div[aria-selected="true"] {
         background: linear-gradient(135deg, rgba(168, 85, 247, 0.3) 0%, rgba(236, 72, 153, 0.3) 100%) !important;
@@ -349,10 +349,11 @@ if "is_card_flipped" not in st.session_state:
 nav_choice = st.session_state.nav_choice
 
 def render_top_back_button():
+    st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
     if st.button("⬅️ Back to Dashboard", key="top_back_dash_btn"):
         st.session_state.nav_choice = "🏠 Study Dashboard"
         st.rerun()
-    st.markdown("<div style='height: 5px;'></div>", unsafe_allow_html=True)
+    st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
 
 # ----------------------------------------------------
 # 1. STUDY DASHBOARD
