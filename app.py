@@ -31,17 +31,9 @@ st.markdown("""
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
     }
 
-    /* Target and hide the raw icon text fallback in the sidebar toggle */
-    [data-testid="collapsedControl"] span {
-        font-size: 0px !important;
-        color: transparent !important;
-    }
-    
-    /* Ensure the button element itself remains clickable to show/hide sidebar */
-    [data-testid="collapsedControl"] {
-        display: flex !important;
-        align-items: center;
-        justify-content: center;
+    /* Completely hide Streamlit's native collapse control bar to remove the raw text */
+    [data-testid="collapsedControl"], button[kind="header"] {
+        display: none !important;
     }
 
     /* Cards Styling with Vibrant Backgrounds & Subtle Hover Micro-Interactions */
@@ -453,6 +445,9 @@ SCHREIBEN_TEIL2_SCENARIOS = [
 if "nav_choice" not in st.session_state:
     st.session_state.nav_choice = "🏠 Study Dashboard"
 
+if "sidebar_visible" not in st.session_state:
+    st.session_state.sidebar_visible = True
+
 nav_options = [
     "🏠 Study Dashboard", 
     "📚 Master Goethe Word Engine",
@@ -466,19 +461,35 @@ nav_options = [
 ]
 
 # Sidebar Rendering
-with st.sidebar:
-    st.markdown("<h3 style='margin:0; font-size:1.30rem; color:#ffffff;'>German A1 Learning</h3>", unsafe_allow_html=True)
-    st.markdown("<div style='height: 15px;'></div>", unsafe_allow_html=True)
-    st.markdown("<p style='font-size:1.1rem; font-weight:700; color:#e2e8f0; margin-bottom:12px;'>Navigation</p>", unsafe_allow_html=True)
-    
-    # Custom Framed Left-Justified Navigation Buttons with Pastel Frames & Black Font
-    for opt in nav_options:
-        is_active = (st.session_state.nav_choice == opt)
-        if st.button(opt, key=f"nav_btn_{opt}", use_container_width=True):
-            st.session_state.nav_choice = opt
-            st.rerun()
+if st.session_state.sidebar_visible:
+    with st.sidebar:
+        # Top Action Row with hide arrow button inside sidebar
+        c_toggle, c_title = st.columns([1, 4])
+        with c_toggle:
+            if st.button("⬅️", key="sidebar_collapse_arrow", help="Hide Sidebar"):
+                st.session_state.sidebar_visible = False
+                st.rerun()
+        with c_title:
+            st.markdown("<h3 style='margin:0; font-size:1.30rem; color:#ffffff;'>German A1 Learning</h3>", unsafe_allow_html=True)
+        
+        st.markdown("<div style='height: 15px;'></div>", unsafe_allow_html=True)
+        st.markdown("<p style='font-size:1.1rem; font-weight:700; color:#e2e8f0; margin-bottom:12px;'>Navigation</p>", unsafe_allow_html=True)
+        
+        for opt in nav_options:
+            is_active = (st.session_state.nav_choice == opt)
+            if st.button(opt, key=f"nav_btn_{opt}", use_container_width=True):
+                st.session_state.nav_choice = opt
+                st.rerun()
 
 nav_choice = st.session_state.nav_choice
+
+# Add a "Menu" button at the top left of the main screen if the sidebar is currently hidden
+if not st.session_state.sidebar_visible:
+    c_menu, _ = st.columns([1, 10])
+    with c_menu:
+        if st.button("📁 Menu", key="show_sidebar_main_btn", use_container_width=True):
+            st.session_state.sidebar_visible = True
+            st.rerun()
 
 # ----------------------------------------------------
 # 1. STUDY DASHBOARD
@@ -820,7 +831,7 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
                 if u_ans == t["answer"]:
                     st.success(f"**Task {idx}: Correct!** (`{t['answer']}`) — {t['explanation']}")
                 else:
-                    st.error(f"**Task {idx}: Incorrect.** Your answer: `{u_ans}` | Correct: `{q['answer']}`\n\n💡 **Explanation:** {t['explanation']}")
+                    st.error(f"**Task {idx}: Incorrect.** Your answer: `{u_ans}` | Correct: `{q['answer']}`\n\n💡 **Explanation:** {q['explanation']}")
 
     st.markdown('</div>', unsafe_allow_html=True)
 
@@ -955,7 +966,7 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
         st.markdown("### Teil 3 — Bitten formulieren und darauf reagieren")
         st.markdown("Mit Bildkarten zwei Bitten formulieren und auf die Bitten des Partners reagieren.")
         st.info("🎴 Bildkarte: **Regenschirm leihen**")
-        rec_t3 = nag_rec = mic_recorder(start_prompt="Record Request 🎙️", stop_prompt="Stop Recording 🛑", key="rec_sp_t3")
+        rec_t3 = mic_recorder(start_prompt="Record Request 🎙️", stop_prompt="Stop Recording 🛑", key="rec_sp_t3")
         if rec_t3:
             st.audio(rec_t3['bytes'], format='audio/wav')
 
