@@ -16,7 +16,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Custom Sunflower Wallpaper & Pastel Theme with Dynamic Flashcard Styling
+# Custom Sunflower Wallpaper & Pastel Theme with Yellow, Pink, and Orange Gradient Accents on Main UI Elements
 st.markdown("""
 <style>
     /* Global Sunflower Wallpaper Background with Soft Light Overlay */
@@ -51,20 +51,20 @@ st.markdown("""
         gap: 0.8rem !important;
     }
 
-    /* Pastel Yellow, Pink & Orange Gradient Custom Button Styling */
+    /* Yellow, Pink, and Orange Pastel Gradient Accents on Main Buttons / UI Elements */
     .stButton > button {
         width: 100% !important;
         background: linear-gradient(135deg, #fef08a 0%, #f472b6 50%, #fb923c 100%) !important;
         border: 1px solid rgba(244, 114, 182, 0.5) !important;
-        border-radius: 10px !important;
-        padding: 10px 16px !important;
+        border-radius: 12px !important;
+        padding: 12px 18px !important;
         text-align: center !important;
         font-size: 0.95rem !important;
         font-weight: 700 !important;
         color: #7c2d12 !important;
         box-shadow: 0 4px 15px rgba(251, 146, 60, 0.2) !important;
         transition: all 0.2s ease !important;
-        margin-bottom: 4px !important;
+        margin-bottom: 6px !important;
     }
     
     .stButton > button:hover {
@@ -75,15 +75,83 @@ st.markdown("""
         color: #ffffff !important;
     }
 
+    /* Yellow, Pink, and Orange Pastel Gradient Accent on Section Header Boxes */
+    .section-header-box {
+        background: linear-gradient(135deg, rgba(254, 240, 138, 0.85) 0%, rgba(244, 114, 182, 0.75) 50%, rgba(251, 146, 60, 0.8) 100%) !important;
+        backdrop-filter: blur(8px);
+        border-left: 6px solid #db2777;
+        border-top: 1px solid rgba(254, 240, 138, 0.9);
+        border-right: 1px solid rgba(251, 146, 60, 0.9);
+        border-bottom: 1px solid rgba(244, 114, 182, 0.9);
+        border-radius: 12px;
+        padding: 14px 20px;
+        margin-bottom: 14px;
+        color: #7c2d12 !important;
+        font-size: 1.25rem;
+        font-weight: 800;
+        box-shadow: 0 4px 18px rgba(244, 114, 182, 0.25);
+    }
+
+    /* Main Content Container Cards with Pastel Gradient Highlights */
+    .main-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(8px);
+        border-radius: 14px;
+        padding: 22px 26px;
+        box-shadow: 0 6px 20px rgba(244, 114, 182, 0.12);
+        margin-bottom: 14px;
+        border: 2px solid rgba(244, 114, 182, 0.4);
+    }
+
+    /* Hero Banner with Yellow, Pink, and Orange Pastel Gradient Glow Border */
+    .hero-banner {
+        background: linear-gradient(135deg, rgba(254, 240, 138, 0.3) 0%, rgba(244, 114, 182, 0.2) 50%, rgba(251, 146, 60, 0.25) 100%);
+        backdrop-filter: blur(8px);
+        border-radius: 14px;
+        padding: 26px;
+        color: #1e293b;
+        margin-bottom: 16px;
+        border: 2px solid #f472b6;
+        box-shadow: 0 8px 25px rgba(244, 114, 182, 0.2);
+    }
+    .hero-badge {
+        display: inline-block;
+        background: linear-gradient(135deg, #fef08a 0%, #f472b6 100%);
+        border: 1px solid #f472b6;
+        padding: 4px 12px;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        margin-bottom: 8px;
+        color: #7c2d12;
+    }
+    .hero-title {
+        font-size: 2rem;
+        font-weight: 800;
+        letter-spacing: -0.025em;
+        margin-bottom: 4px;
+        background: linear-gradient(90deg, #ca8a04 0%, #db2777 50%, #ea580c 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    .hero-subtitle {
+        font-size: 0.95rem;
+        color: #475569;
+        line-height: 1.4;
+        margin-bottom: 0px;
+        font-weight: 500;
+    }
+
     /* Clean Minimalist Dropdown Box Design */
     .stSelectbox div[data-baseweb="select"] {
         background-color: #ffffff !important;
-        border-radius: 8px !important;
+        border-radius: 10px !important;
     }
     .stSelectbox div[data-baseweb="select"] > div {
         background-color: #ffffff !important;
-        border: 1px solid #f472b6 !important;
-        border-radius: 8px !important;
+        border: 2px solid #f472b6 !important;
+        border-radius: 10px !important;
         color: #1e293b !important;
         padding: 8px 14px !important;
         box-shadow: 0 4px 15px rgba(244, 114, 182, 0.15) !important;
@@ -102,7 +170,7 @@ st.markdown("""
     div[data-baseweb="menu"] {
         background-color: #ffffff !important;
         border: 1px solid #f472b6 !important;
-        border-radius: 8px !important;
+        border-radius: 10px !important;
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
     }
     div[data-baseweb="menu"] ul {
@@ -122,7 +190,7 @@ st.markdown("""
         color: #c2410c !important;
     }
 
-    /* DYNAMIC CARD CONTAINER STYLING (Blue for masculine, red for feminine, green for neuter, orange for verbs, purple for rest) */
+    /* DYNAMIC FLASHCARD SECTION (EXACTLY UNTOUCHED COLOR RULES PER INSTRUCTION) */
     .card-masculine-container {
         background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
         border: 2px solid #2563eb;
@@ -193,12 +261,12 @@ st.markdown("""
     /* Clean Card Section Wrapper for Back Details */
     .detail-section-card {
         background: rgba(255, 255, 255, 0.95);
-        border: 1px solid #cbd5e1;
-        border-radius: 10px;
+        border: 1px solid rgba(244, 114, 182, 0.4);
+        border-radius: 12px;
         padding: 14px 18px;
         margin-bottom: 10px;
         color: #1e293b;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        box-shadow: 0 2px 8px rgba(244, 114, 182, 0.08);
     }
 </style>
 """, unsafe_allow_html=True)
@@ -419,7 +487,7 @@ elif nav_choice == "📚 Master Goethe Word Engine":
             "grammar_notes": str(e)
         }
 
-    # Determine Card Color Class based on rules:
+    # Determine Card Color Class based on exact user rules (untouched flashcard section):
     # - blue for masculine ("der")
     # - red for feminine ("die")
     # - green for neuter ("das")
