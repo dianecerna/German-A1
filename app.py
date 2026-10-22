@@ -189,7 +189,7 @@ st.markdown("""
         color: #c2410c !important;
     }
 
-    /* DYNAMIC CARD CONTAINER STYLING WITH HIGH CONTRAST TEXT */
+    /* EMBEDDED CARD CONTAINER STYLING (Guarantees text renders inside the colored card) */
     .card-masculine-container {
         background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
         border: 2px solid #2563eb;
@@ -200,8 +200,7 @@ st.markdown("""
         box-shadow: 0 6px 20px rgba(59, 130, 246, 0.25);
         margin-bottom: 8px;
     }
-    .card-masculine-container h1, .card-masculine-container h2, .card-masculine-container h3, 
-    .card-masculine-container p, .card-masculine-container div { color: #ffffff !important; }
+    .card-masculine-container * { color: #ffffff !important; }
 
     .card-feminine-container {
         background: linear-gradient(135deg, #f87171 0%, #ef4444 100%);
@@ -213,8 +212,7 @@ st.markdown("""
         box-shadow: 0 6px 20px rgba(239, 68, 68, 0.25);
         margin-bottom: 8px;
     }
-    .card-feminine-container h1, .card-feminine-container h2, .card-feminine-container h3, 
-    .card-feminine-container p, .card-feminine-container div { color: #ffffff !important; }
+    .card-feminine-container * { color: #ffffff !important; }
 
     .card-neuter-container {
         background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
@@ -226,8 +224,7 @@ st.markdown("""
         box-shadow: 0 6px 20px rgba(16, 185, 129, 0.25);
         margin-bottom: 8px;
     }
-    .card-neuter-container h1, .card-neuter-container h2, .card-neuter-container h3, 
-    .card-neuter-container p, .card-neuter-container div { color: #ffffff !important; }
+    .card-neuter-container * { color: #ffffff !important; }
 
     .card-verb-container {
         background: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
@@ -239,8 +236,7 @@ st.markdown("""
         box-shadow: 0 6px 20px rgba(249, 115, 22, 0.25);
         margin-bottom: 8px;
     }
-    .card-verb-container h1, .card-verb-container h2, .card-verb-container h3, 
-    .card-verb-container p, .card-verb-container div { color: #ffffff !important; }
+    .card-verb-container * { color: #ffffff !important; }
 
     .card-other-container {
         background: linear-gradient(135deg, #c084fc 0%, #a855f7 100%);
@@ -252,8 +248,7 @@ st.markdown("""
         box-shadow: 0 6px 20px rgba(168, 85, 247, 0.25);
         margin-bottom: 8px;
     }
-    .card-other-container h1, .card-other-container h2, .card-other-container h3, 
-    .card-other-container p, .card-other-container div { color: #ffffff !important; }
+    .card-other-container * { color: #ffffff !important; }
 
     .flashcard-word-title {
         font-size: 2.8rem;
@@ -507,21 +502,24 @@ elif nav_choice == "📚 Master Goethe Word Engine":
     else:
         container_class = "card-other-container"
 
-    # --- STATIC CARD CONTAINER WITH DYNAMIC COLOR-CODING ---
-    st.markdown(f'<div class="{container_class}">', unsafe_allow_html=True)
+    # --- UNIFIED SINGLE CARD CONTAINER (FIXED: EVERYTHING RENDERED INSIDE THE CARD) ---
+    card_html_content = f"""
+    <div class="{container_class}">
+    """
     if not st.session_state.is_card_flipped:
-        st.markdown(f"""
+        card_html_content += f"""
         <div style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; color: #ffffff;">🌻 Category: {data.get('category', '').replace('_', ' ').title()}</div>
         <div class="flashcard-word-title">{data.get('word', active_word)}</div>
         <div style="font-size: 1rem; margin-top: 4px; color: #ffffff;">Gender / Article: <b>{data.get('gender', 'N/A')}</b></div>
-        """, unsafe_allow_html=True)
+        """
     else:
-        st.markdown(f"""
+        card_html_content += f"""
         <div style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; color: #ffffff;">📖 Detailed Breakdown</div>
         <div class="flashcard-word-title" style="font-size: 2.2rem;">{data.get('word', active_word)}</div>
         <div style="font-size: 1.2rem; font-weight: 700; margin-bottom: 0px; color: #ffffff;">Meaning: {data.get('english_meaning', '')}</div>
-        """, unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
+        """
+    card_html_content += "</div>"
+    st.markdown(card_html_content, unsafe_allow_html=True)
 
     # --- BUTTONS BELOW THE CARD (FLIP & PRONOUNCE) ---
     col_btn1, col_btn2 = st.columns([1, 1])
