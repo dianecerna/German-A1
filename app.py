@@ -12,26 +12,25 @@ from streamlit_mic_recorder import mic_recorder
 # Streamlit Page Configuration
 st.set_page_config(
     page_title="German A1 Learning", 
-    page_icon="🚀", 
+    page_icon="🍳", 
     layout="wide",
     initial_sidebar_state="collapsed"
 )
 
-# Custom Silk Teal-to-Bronze Gradient Theme with Fully Aligned Dropdown Styling
+# Custom Warm Minimalist Kitchen Aesthetic Theme matching the Quickbite reference
 st.markdown("""
 <style>
-    /* Global Silk Dark Void & Comfortable Spacing */
+    /* Global Soft Cream Background & Clean Sans-Serif Fonts */
     .stApp {
-        background: radial-gradient(circle at 50% 0%, #0d2122 0%, #060c0e 70%) !important;
-        background-color: #060c0e !important;
-        color: #f8fafc !important;
+        background-color: #fcf9f6 !important; /* Soft warm cream */
+        color: #2d3748 !important;
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
         background-attachment: fixed !important;
     }
     
     *, div, span, p, h1, h2, h3, h4, h5, h6, label {
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
-        color: #f8fafc;
+        color: #2d3748;
     }
 
     /* Hide Sidebar Completely */
@@ -50,73 +49,72 @@ st.markdown("""
         gap: 0.6rem !important;
     }
 
-    /* Custom Teal-Glow Pill Button Styling Matching Reference */
+    /* Clean Warm Minimalist Custom Button Styling */
     .stButton > button {
         width: 100% !important;
-        background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%) !important;
-        border: 1px solid rgba(45, 212, 191, 0.5) !important;
-        border-radius: 9999px !important;
-        padding: 12px 24px !important;
-        text-align: center !important;
+        background-color: #ffffff !important;
+        border: 1px solid #cbd5e1 !important;
+        border-radius: 8px !important;
+        padding: 10px 16px !important;
+        text-align: left !important;
         font-size: 0.95rem !important;
-        font-weight: 700 !important;
-        color: #ffffff !important;
-        box-shadow: 0 4px 20px rgba(13, 148, 136, 0.4) !important;
+        font-weight: 600 !important;
+        color: #334155 !important;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
         transition: all 0.2s ease !important;
         margin-bottom: 6px !important;
     }
     
     .stButton > button:hover {
-        background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%) !important;
-        border-color: #2dd4bf !important;
+        background-color: #f8fafc !important;
+        border-color: #94a3b8 !important;
         transform: translateY(-1px);
-        box-shadow: 0 6px 25px rgba(20, 184, 166, 0.6) !important;
-        color: #ffffff !important;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05) !important;
+        color: #0f172a !important;
     }
 
-    /* Compact Main Content Cards / Containers with Silk Sheen */
+    /* Compact Main Content Cards / Containers */
     .main-card {
-        background: rgba(13, 33, 34, 0.75);
-        backdrop-filter: blur(16px);
-        border-radius: 20px;
+        background: #ffffff;
+        border-radius: 12px;
         padding: 20px 24px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
         margin-bottom: 12px;
-        border: 1px solid rgba(45, 212, 191, 0.2);
+        border: 1px solid #e2e8f0;
     }
     
-    /* Compact Hero Banner */
+    /* Compact Hero Banner / Header Box matching Quickbite style */
     .hero-banner {
-        background: linear-gradient(135deg, rgba(13, 148, 136, 0.3) 0%, rgba(13, 33, 34, 0.8) 60%, rgba(120, 53, 15, 0.3) 100%);
-        border-radius: 20px;
-        padding: 28px;
-        color: #ffffff;
+        background: #ffffff;
+        border-radius: 12px;
+        padding: 24px;
+        color: #2d3748;
         margin-bottom: 16px;
-        border: 1px solid rgba(45, 212, 191, 0.3);
-        box-shadow: 0 10px 30px rgba(13, 148, 136, 0.2);
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
     }
     .hero-badge {
         display: inline-block;
-        background: rgba(45, 212, 191, 0.15);
-        border: 1px solid rgba(45, 212, 191, 0.4);
-        padding: 4px 14px;
-        border-radius: 9999px;
+        background: #f1f5f9;
+        border: 1px solid #cbd5e1;
+        padding: 4px 12px;
+        border-radius: 6px;
         font-size: 0.75rem;
         font-weight: 700;
         letter-spacing: 0.05em;
         margin-bottom: 8px;
-        color: #2dd4bf;
+        color: #475569;
     }
     .hero-title {
         font-size: 2rem;
         font-weight: 800;
         letter-spacing: -0.025em;
         margin-bottom: 4px;
-        color: #ffffff;
+        color: #1e293b;
     }
     .hero-subtitle {
         font-size: 0.95rem;
-        color: #94a3b8;
+        color: #64748b;
         line-height: 1.4;
         margin-bottom: 0px;
         font-weight: 500;
@@ -124,130 +122,130 @@ st.markdown("""
 
     /* Section Header Box */
     .section-header-box {
-        background: rgba(13, 33, 34, 0.85);
-        border: 1px solid rgba(45, 212, 191, 0.3);
-        border-radius: 16px;
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
         padding: 12px 18px;
         margin-bottom: 12px;
-        color: #2dd4bf;
+        color: #1e293b;
         font-size: 1.2rem;
         font-weight: 800;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
     }
 
-    /* Teal-Glow Dropdown Box Design matching the Theme */
+    /* Clean Minimalist Dropdown Box Design matching Warm Aesthetic */
     .stSelectbox div[data-baseweb="select"] {
-        background: rgba(13, 33, 34, 0.95) !important;
-        border-radius: 14px !important;
+        background-color: #ffffff !important;
+        border-radius: 8px !important;
     }
     .stSelectbox div[data-baseweb="select"] > div {
-        background: rgba(13, 33, 34, 0.95) !important;
-        border: 1px solid rgba(45, 212, 191, 0.4) !important;
-        border-radius: 14px !important;
-        color: #ffffff !important;
-        padding: 10px 16px !important;
-        box-shadow: 0 4px 15px rgba(13, 148, 136, 0.2) !important;
-        min-height: 48px !important;
+        background-color: #ffffff !important;
+        border: 1px solid #cbd5e1 !important;
+        border-radius: 8px !important;
+        color: #1e293b !important;
+        padding: 8px 14px !important;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+        min-height: 44px !important;
     }
     .stSelectbox div[data-baseweb="select"] > div:hover {
-        background: rgba(13, 148, 136, 0.2) !important;
-        border-color: #2dd4bf !important;
+        border-color: #94a3b8 !important;
     }
     .stSelectbox span, .stSelectbox div[data-baseweb="select"] span {
-        color: #ffffff !important;
-        font-weight: 700 !important;
+        color: #1e293b !important;
+        font-weight: 600 !important;
         font-size: 0.95rem !important;
     }
 
     /* Open Dropdown Popup List Container & Options */
     div[data-baseweb="menu"] {
-        background: rgba(13, 33, 34, 0.98) !important;
-        border: 1px solid rgba(45, 212, 191, 0.4) !important;
-        border-radius: 14px !important;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7) !important;
+        background-color: #ffffff !important;
+        border: 1px solid #cbd5e1 !important;
+        border-radius: 8px !important;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
     }
     div[data-baseweb="menu"] ul {
-        background: transparent !important;
+        background-color: #ffffff !important;
     }
     div[data-baseweb="menu"] li, div[data-baseweb="menu"] div {
-        background: transparent !important;
-        color: #ffffff !important;
+        background-color: #ffffff !important;
+        color: #1e293b !important;
         font-weight: 600 !important;
         padding: 10px 16px !important;
     }
     div[data-baseweb="menu"] li span, div[data-baseweb="menu"] div span {
-        color: #ffffff !important;
+        color: #1e293b !important;
     }
     div[data-baseweb="menu"] li:hover, div[data-baseweb="menu"] div[aria-selected="true"] {
-        background: rgba(13, 148, 136, 0.35) !important;
-        color: #ffffff !important;
+        background-color: #f1f5f9 !important;
+        color: #0f172a !important;
     }
     div[data-baseweb="menu"] li:hover span, div[data-baseweb="menu"] div[aria-selected="true"] span {
-        color: #ffffff !important;
+        color: #0f172a !important;
     }
 
     /* Detailed Back Card Separated Sections Style */
     .detail-box {
-        background: rgba(13, 33, 34, 0.6);
-        border: 1px solid rgba(45, 212, 191, 0.3);
-        border-radius: 14px;
-        padding: 14px 18px;
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        padding: 12px 16px;
         margin-bottom: 10px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
     }
 
-    /* Gender-based Flashcard Containers */
+    /* Gender-based Flashcard Containers (Warm Minimalist Palette) */
     .flashcard-masculine {
-        background: linear-gradient(135deg, rgba(13, 148, 136, 0.4) 0%, rgba(13, 33, 34, 0.9) 100%);
-        border: 2px solid #2dd4bf;
-        color: #ffffff;
-        border-radius: 18px;
-        padding: 28px 18px;
+        background: #eff6ff;
+        border: 2px solid #3b82f6;
+        color: #1e3a8a;
+        border-radius: 14px;
+        padding: 24px 16px;
         text-align: center;
-        box-shadow: 0 8px 30px rgba(13, 148, 136, 0.3);
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);
         margin-bottom: 12px;
     }
     .flashcard-feminine {
-        background: linear-gradient(135deg, rgba(190, 24, 93, 0.4) 0%, rgba(13, 33, 34, 0.9) 100%);
+        background: #fff1f2;
         border: 2px solid #f43f5e;
-        color: #ffffff;
-        border-radius: 18px;
-        padding: 28px 18px;
+        color: #881337;
+        border-radius: 14px;
+        padding: 24px 16px;
         text-align: center;
-        box-shadow: 0 8px 30px rgba(244, 63, 94, 0.3);
+        box-shadow: 0 4px 12px rgba(244, 63, 94, 0.1);
         margin-bottom: 12px;
     }
     .flashcard-neuter {
-        background: linear-gradient(135deg, rgba(16, 185, 129, 0.4) 0%, rgba(13, 33, 34, 0.9) 100%);
+        background: #f0fdf4;
         border: 2px solid #10b981;
-        color: #ffffff;
-        border-radius: 18px;
-        padding: 28px 18px;
+        color: #064e3b;
+        border-radius: 14px;
+        padding: 24px 16px;
         text-align: center;
-        box-shadow: 0 8px 30px rgba(16, 185, 129, 0.3);
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.1);
         margin-bottom: 12px;
     }
     .flashcard-other {
-        background: linear-gradient(135deg, rgba(217, 119, 6, 0.4) 0%, rgba(13, 33, 34, 0.9) 100%);
+        background: #fffbeb;
         border: 2px solid #f59e0b;
-        color: #ffffff;
-        border-radius: 18px;
-        padding: 28px 18px;
+        color: #78350f;
+        border-radius: 14px;
+        padding: 24px 16px;
         text-align: center;
-        box-shadow: 0 8px 30px rgba(245, 158, 11, 0.3);
+        box-shadow: 0 4px 12px rgba(245, 158, 11, 0.1);
         margin-bottom: 12px;
     }
     .flashcard-word-title {
         font-size: 2.5rem;
         font-weight: 800;
         margin-bottom: 4px;
-        color: #ffffff;
+        color: #1e293b;
     }
 
     /* Metric & Text Uniformity */
     [data-testid="stMetricValue"] {
         font-size: 1.1rem !important;
         font-weight: 700 !important;
-        color: #2dd4bf !important;
+        color: #0f172a !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -355,7 +353,7 @@ def render_top_back_button():
 # 1. STUDY DASHBOARD
 # ----------------------------------------------------
 if nav_choice == "🏠 Study Dashboard":
-    st.markdown('<div class="section-header-box">🚀 Study Dashboard</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-header-box">🍳 Study Dashboard</div>', unsafe_allow_html=True)
     st.markdown("""
     <div class="hero-banner">
         <div class="hero-badge">MY GERMAN STUDY BUDDY</div>
@@ -385,10 +383,10 @@ if nav_choice == "🏠 Study Dashboard":
 # ----------------------------------------------------
 elif nav_choice == "📚 Master Goethe Word Engine":
     render_top_back_button()
-    st.markdown('<div class="section-header-box">🚀 Master Goethe Word Engine</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-header-box">🍳 Master Goethe Word Engine</div>', unsafe_allow_html=True)
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
     
-    st.markdown("##### 🚀 Categories")
+    st.markdown("##### 🍳 Categories")
     categories = list(A1_VOCABULARY_DATABASE.keys())
     
     cat_options = {cat.replace('_', ' ').title(): cat for cat in categories}
@@ -481,10 +479,10 @@ elif nav_choice == "📚 Master Goethe Word Engine":
     if not st.session_state.is_card_flipped:
         st.markdown(f"""
         <div class="{card_class}">
-            <p style="color: #2dd4bf; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">🚀 Category: {data.get("category", "").replace('_', ' ').title()}</p>
+            <p style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">🍳 Category: {data.get("category", "").replace('_', ' ').title()}</p>
             <div class="flashcard-word-title">{data.get("word", active_word)}</div>
-            <p style="color: #cbd5e1; font-size: 1rem; margin-top: 4px;">Gender / Article: <b>{data.get("gender", "N/A")}</b></p>
-            <p style="color: #94a3b8; font-size: 0.85rem; margin-top: 10px;">Click below to listen or flip card for separated detail boxes.</p>
+            <p style="font-size: 1rem; margin-top: 4px;">Gender / Article: <b>{data.get("gender", "N/A")}</b></p>
+            <p style="font-size: 0.85rem; margin-top: 10px; opacity: 0.8;">Click below to listen or flip card for separated detail boxes.</p>
         </div>
         """, unsafe_allow_html=True)
 
@@ -500,9 +498,9 @@ elif nav_choice == "📚 Master Goethe Word Engine":
     else:
         st.markdown(f"""
         <div class="{card_class}">
-            <p style="color: #2dd4bf; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px;">📖 Detailed Breakdown</p>
+            <p style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px;">📖 Detailed Breakdown</p>
             <div class="flashcard-word-title" style="font-size: 2.2rem;">{data.get("word", active_word)}</div>
-            <p style="color: #2dd4bf; font-size: 1.2rem; font-weight: 700; margin-bottom: 0px;">Meaning: {data.get("english_meaning", "")}</p>
+            <p style="font-size: 1.2rem; font-weight: 700; margin-bottom: 0px;">Meaning: {data.get("english_meaning", "")}</p>
         </div>
         """, unsafe_allow_html=True)
 
@@ -535,7 +533,7 @@ elif nav_choice == "📚 Master Goethe Word Engine":
         st.markdown(f"**Auxiliary Verb & Partizip II:** `{aux_verb} ({part_ii})`")
         if aux_sent and aux_sent != "N/A":
             as_col1, as_col2 = st.columns([4, 1])
-            as_col1.markdown(f"Sample: *{aux_sent}* <br><small style='color:#94a3b8;'>({data.get('aux_sentence_en', '')})</small>", unsafe_allow_html=True)
+            as_col1.markdown(f"Sample: *{aux_sent}* <br><small style='color:#64748b;'>({data.get('aux_sentence_en', '')})</small>", unsafe_allow_html=True)
             with as_col2:
                 if st.button("🔊 Audio", key="audio_aux_sent"):
                     play_direct_audio(aux_sent, "aux_sent_audio")
@@ -550,11 +548,11 @@ elif nav_choice == "📚 Master Goethe Word Engine":
                 c1, c2, c3, c4 = st.columns([1, 1, 2.5, 0.8])
                 c1.markdown(f"**{conj.get('pronoun', '')}**")
                 c2.markdown(f"`{conj.get('form', '--')}`")
-                c3.markdown(f"*{conj.get('sentence', '')}*<br><small style='color:#94a3b8;'>({conj.get('english_sentence', '')})</small>", unsafe_allow_html=True)
+                c3.markdown(f"*{conj.get('sentence', '')}*<br><small style='color:#64748b;'>({conj.get('english_sentence', '')})</small>", unsafe_allow_html=True)
                 with c4:
                     if st.button("🔊", key=f"audio_conj_{conj.get('pronoun', '')}"):
                         play_direct_audio(conj.get('sentence', ''), f"conj_{conj.get('pronoun', '')}")
-                st.markdown("<hr style='border-color: rgba(45, 212, 191, 0.15); margin: 4px 0;'>", unsafe_allow_html=True)
+                st.markdown("<hr style='border-color: #e2e8f0; margin: 4px 0;'>", unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
 
         # 5. Colloquial & Daily Phrases Box with Audio
@@ -573,7 +571,7 @@ elif nav_choice == "📚 Master Goethe Word Engine":
             st.markdown('</div>', unsafe_allow_html=True)
 
         # 6. Grammar Notes Box
-        st.markdown(f'<div class="detail-box">🚀 <b>Grammar Notes:</b> {data.get("grammar_notes", "N/A")}</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="detail-box">🍳 <b>Grammar Notes:</b> {data.get("grammar_notes", "N/A")}</div>', unsafe_allow_html=True)
 
         st.markdown("<div style='height: 5px;'></div>", unsafe_allow_html=True)
         if st.button("🔄 Flip back to Front", type="primary", use_container_width=True):
@@ -652,7 +650,7 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
     st.write("Content removed.")
     st.markdown('</div>', unsafe_allow_html=True)
 
-# --------------------------------main--------------------
+# ----------------------------------------------------
 # 8. A1 & A2 SHORT STORIES
 # ----------------------------------------------------
 elif nav_choice == "📖 A1 & A2 Short Stories":
