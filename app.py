@@ -139,42 +139,42 @@ st.markdown("""
 
     /* Light Clean Dropdown Box Design */
     .stSelectbox div[data-baseweb="select"] {
-        background-color: #1A1818 !important;
+        background-color: #385378 !important;
         border-radius: 12px !important;
     }
     .stSelectbox div[data-baseweb="select"] > div {
-        background-color: #1A1818 !important;
-        border: 2px solid #cbd5e1 !important;
+        background-color: #385378 !important;
+        border: 2px solid #0F151C !important;
         border-radius: 12px !important;
-        color: #0f172a !important;
+        color: #1A1818 !important;
         padding: 4px 10px !important;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
     }
     .stSelectbox div[data-baseweb="select"] > div:hover {
-        border-color: #38bdf8 !important;
+        border-color: #0F151C !important;
     }
     .stSelectbox span, .stSelectbox div[data-baseweb="select"] span {
-        color: #0f172a !important;
+        color: #1A1818 !important;
         font-weight: 700 !important;
     }
 
     /* Open Dropdown Popup List Container & Options (Light) */
     div[data-baseweb="menu"] {
-        background-color: #1A1818 !important;
-        border: 1px solid #cbd5e1 !important;
+        background-color: #385378 !important;
+        border: 1px solid #0F151C !important;
         border-radius: 12px !important;
     }
     div[data-baseweb="menu"] ul {
-        background-color: #1A1818 !important;
+        background-color: #385378 !important;
     }
     div[data-baseweb="menu"] li, div[data-baseweb="menu"] div {
-        background-color: #1A1818 !important;
+        background-color: #385378 !important;
         color: #1A1818 !important;
         font-weight: 600 !important;
     }
     div[data-baseweb="menu"] li:hover, div[data-baseweb="menu"] div[aria-selected="true"] {
-        background-color: #e2e8f0 !important;
-        color: #1A1818 !important;
+        background-color: #385378 !important;
+        color: #3BC217 !important;
     }
 
     /* Detailed Back Card Separated Sections Style */
