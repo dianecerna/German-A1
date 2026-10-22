@@ -141,7 +141,7 @@ if not api_key:
 
 client = genai.Client(api_key=api_key.strip())
 
-FALLBACK_MODELS = ["gemini-2.0-flash", "gemini-2.5-flash-lite"]
+FALLBACK_MODELS = ["gemini-2.0-flash", "gemini-3.5-flash-lite"]
 
 SYSTEM_INSTRUCTION = """
 You are Gem, an expert German tutor and official Goethe-Institut examiner evaluating candidates for the Goethe-Zertifikat A1 exam.
@@ -2533,7 +2533,7 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
             for idx, t in enumerate(d["tasks"], start=1):
                 st.markdown(f"#### 🔊 Phone Message {idx} (Played 2x)")
                 st.audio(generate_german_audio_bytes(t["script"]), format="audio/mp3")
-                with st.expander(f"👁️ Transcript {idx}ீரி"): st.write(t["script"])
+                with st.expander(f"👁️ Transcript {idx}"): st.write(t["script"])
                 st.markdown(f"**Task {idx}: {t['question']}**")
                 ans3[t["id"]] = st.radio(f"Select Q{idx}:", t["options"], key=f"rad_ht3_{t['id']}")
             if st.button("Submit Hören Teil 3"):
@@ -3092,7 +3092,7 @@ elif nav_choice == "🏆 Goethe A1 Mock Examination":
             st.session_state.exam_stage = "MENU"
             st.rerun()
 
-    st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown('---')
 
 # ----------------------------------------------------
 # 9. A1 & A2 SHORT STORIES
@@ -3150,7 +3150,7 @@ elif nav_choice == "📖 A1 & A2 Short Stories":
             "Eine Weihnachtsgeschichte (A Christmas Carol)": "Eine Weihnachtsgeschichte",
             "Die drei Musketiere (The Three Musketeers)": "Die drei Musketiere",
             "Tom Sawyers Abenteuer (The Adventures of Tom Sawyer)": "Tom Sawyers Abenteuer",
-            "Don Quijote (Don Quixote)": "Don Quijote"
+            "Don Quijote (Don Quixoke)": "Don Quijote"
         }
         story_choice_de = st.selectbox("Select A2 Story:", list(a2_20_stories.keys()))
         story_choice_en = a2_20_stories[story_choice_de]
@@ -3207,7 +3207,7 @@ elif nav_choice == "📖 A1 & A2 Short Stories":
                 st.markdown(f"**Part {idx}**")
                 col_aud, col_text = st.columns([0.5, 10])
                 with col_aud:
-                    if st.button("🔊", key=f"audio_story_p_{idx}   "):
+                    if st.button("🔊", key=f"audio_story_p_{idx}"):
                         play_direct_audio(p["german"], f"story_p_{idx}")
                 with col_text:
                     st.info(f"**🇩🇪 German:** {p['german']}")
