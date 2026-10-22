@@ -179,54 +179,60 @@ def play_direct_audio(text_to_speak, unique_key):
     b64_audio = io.BytesIO(audio_bytes).read()
     st.audio(b64_audio, format="audio/mp3", autoplay=True)
 
-# Toddler Space Visual Data Bank
-TODDLER_VISUAL_TOPICS = {
-    "Körperteile (Body Parts)": [
-        {"term": "der Kopf", "en": "Head", "icon": "🧠", "desc": "Used for thinking and wearing hats."},
+# Expanded Visual Learning Space Data Bank (Objects, clothing, food, weather, professions, transport, etc.)
+VISUAL_LEARNING_TOPICS = {
+    "Körper & Gesundheit (Body & Health)": [
+        {"term": "das Haar", "en": "Hair", "icon": "💇", "desc": "Grows on top of your head."},
         {"term": "das Auge", "en": "Eye", "icon": "👁️", "desc": "Used for seeing colors and reading."},
+        {"term": "der Kopf", "en": "Head", "icon": "🧠", "desc": "Used for thinking and wearing hats."},
         {"term": "die Nase", "en": "Nose", "icon": "👃", "desc": "Used for smelling flowers and food."},
         {"term": "der Mund", "en": "Mouth", "icon": "👄", "desc": "Used for speaking German and eating."},
         {"term": "das Ohr", "en": "Ear", "icon": "👂", "desc": "Used for listening to German audio."},
         {"term": "die Hand", "en": "Hand", "icon": "✋", "desc": "Used for writing and waving."},
         {"term": "das Bein", "en": "Leg", "icon": "🦵", "desc": "Used for walking and running."}
     ],
+    "Berufe & Personen (Professions)": [
+        {"term": "der Arzt", "en": "Doctor (male)", "icon": "👨‍⚕️", "desc": "Treats sick patients in a clinic."},
+        {"term": "die Krankenschwester", "en": "Nurse (female)", "icon": "👩‍⚕️", "desc": "Cares for patients in hospitals."},
+        {"term": "der Lehrer", "en": "Teacher", "icon": "👨‍🏫", "desc": "Teaches students in school."},
+        {"term": "der Koch", "en": "Cook / Chef", "icon": "👨‍🍳", "desc": "Prepares meals in a restaurant."}
+    ],
+    "Kleidung & Mode (Clothing & Fashion)": [
+        {"term": "das Kleid", "en": "Dress", "icon": "👗", "desc": "One-piece garment worn for special events or daily wear."},
+        {"term": "das Hemd", "en": "Shirt / Button-down", "icon": "👔", "desc": "Formal upper-body garment with buttons and collar."},
+        {"term": "die Hose", "en": "Trousers / Pants", "icon": "👖", "desc": "Garment covering the lower body."},
+        {"term": "die Schuhe", "en": "Shoes", "icon": "👞", "desc": "Footwear worn outside."},
+        {"term": "die Jacke", "en": "Jacket", "icon": "🧥", "desc": "Outerwear for cold weather."}
+    ],
+    "Haus & Küche (House, Kitchen & Objects)": [
+        {"term": "das Haus", "en": "House", "icon": "🏠", "desc": "Building where families live."},
+        {"term": "der Tisch", "en": "Table", "icon": "🪵", "desc": "Furniture with a flat surface for dining or writing."},
+        {"term": "das Messer", "en": "Knife", "icon": "🔪", "desc": "Utensil used for cutting food in the kitchen."},
+        {"term": "der Stuhl", "en": "Chair", "icon": "🪑", "desc": "Seat for one person."},
+        {"term": "das Zimmer", "en": "Room", "icon": "🚪", "desc": "Enclosed space inside a building."},
+        {"term": "das Bett", "en": "Bed", "icon": "🛏️", "desc": "Furniture used for sleeping at night."}
+    ],
     "Verkehrsmittel (Transportation)": [
-        {"term": "das Auto", "en": "Car", "icon": "🚗", "desc": "Four-wheeled motor vehicle for roads."},
-        {"term": "der Bus", "en": "Bus", "icon": "🚌", "desc": "Large public transport vehicle."},
+        {"term": "der Bus", "en": "Bus", "icon": "🚌", "desc": "Large public transport vehicle on roads."},
+        {"term": "das Fahrrad", "en": "Bicycle", "icon": "🚲", "desc": "Two-wheeled pedal vehicle for riding."},
+        {"term": "das Auto", "en": "Car", "icon": "🚗", "desc": "Motor vehicle for driving on streets."},
         {"term": "der Zug", "en": "Train", "icon": "🚆", "desc": "Rail transport connecting cities."},
-        {"term": "das Flugzeug", "en": "Airplane", "icon": "✈️", "desc": "Aircraft for flying across countries."},
-        {"term": "das Fahrrad", "en": "Bicycle", "icon": "🚲", "desc": "Two-wheeled pedal vehicle."},
-        {"term": "das Schiff", "en": "Ship", "icon": "🚢", "desc": "Large watercraft for seas."}
+        {"term": "das Flugzeug", "en": "Airplane", "icon": "✈️", "desc": "Aircraft for flying across the sky."}
     ],
     "Farben (Colors)": [
-        {"term": "rot", "en": "Red", "icon": "🔴", "desc": "Color of apples and stop signs."},
-        {"term": "blau", "en": "Blue", "icon": "🔵", "desc": "Color of the sky and ocean."},
-        {"term": "gelb", "en": "Yellow", "icon": "🟡", "desc": "Color of the sun and lemons."},
-        {"term": "grün", "en": "Green", "icon": "🟢", "desc": "Color of grass and trees."},
-        {"term": "schwarz", "en": "Black", "icon": "⬛", "desc": "Darkest color."},
-        {"term": "weiß", "en": "White", "icon": "⬜", "desc": "Color of snow and clouds."}
+        {"term": "rot", "en": "Red", "icon": "🔴", "desc": "Color of roses, strawberries, and stop signs."},
+        {"term": "blau", "en": "Blue", "icon": "🔵", "desc": "Color of the clear sky and deep ocean."},
+        {"term": "gelb", "en": "Yellow", "icon": "🟡", "desc": "Color of bright sunlight and lemons."},
+        {"term": "grün", "en": "Green", "icon": "🟢", "desc": "Color of spring grass and lush leaves."},
+        {"term": "schwarz", "en": "Black", "icon": "⬛", "desc": "The darkest color."},
+        {"term": "weiß", "en": "White", "icon": "⬜", "desc": "Color of pure snow and clouds."}
     ],
-    "Haus & Möbel (House & Furniture)": [
-        {"term": "das Zimmer", "en": "Room", "icon": "🚪", "desc": "An enclosed space inside a house."},
-        {"term": "die Küche", "en": "Kitchen", "icon": "🍳", "desc": "Where food is prepared and cooked."},
-        {"term": "das Bad", "en": "Bathroom", "icon": "🚿", "desc": "Where you wash and shower."},
-        {"term": "der Tisch", "en": "Table", "icon": "🪵", "desc": "Furniture with a flat top for dining or work."},
-        {"term": "der Stuhl", "en": "Chair", "icon": "🪑", "desc": "Seat for one person."},
-        {"term": "das Bett", "en": "Bed", "icon": "🛏️", "desc": "Piece of furniture for sleeping."}
-    ],
-    "Schulsachen (School Supplies)": [
-        {"term": "das Buch", "en": "Book", "icon": "📖", "desc": "Bound pages for reading and learning."},
-        {"term": "der Stift", "en": "Pen / Pencil", "icon": "✏️", "desc": "Writing instrument."},
-        {"term": "das Heft", "en": "Notebook", "icon": "📓", "desc": "Book for taking notes in class."},
-        {"term": "die Schultasche", "en": "School Bag", "icon": "🎒", "desc": "Bag used by students to carry supplies."},
-        {"term": "der Tisch", "en": "School Desk", "icon": "🪞", "desc": "Desk used in classrooms."}
-    ],
-    "Uhrzeit & Zeit (Telling Time)": [
-        {"term": "die Uhr", "en": "Clock / Watch", "icon": "⏰", "desc": "Device for measuring time."},
-        {"term": "die Stunde", "en": "Hour", "icon": "⌛", "desc": "Sixty minutes of time."},
-        {"term": "die Minute", "en": "Minute", "icon": "⏱️", "desc": "Sixty seconds of time."},
-        {"term": "der Morgen", "en": "Morning", "icon": "🌅", "desc": "Early part of the day."},
-        {"term": "der Abend", "en": "Evening", "icon": "🌆", "desc": "End of the day before night."}
+    "Wetter & Jahreszeiten (Weather & Seasons)": [
+        {"term": "der Regen", "en": "Rain", "icon": "🌧️", "desc": "Water droplets falling from storm clouds."},
+        {"term": "das Wasser", "en": "Water", "icon": "💧", "desc": "Clear essential liquid we drink."},
+        {"term": "der Sommer", "en": "Summer", "icon": "☀️", "desc": "Warmest season of the year with sunshine."},
+        {"term": "der Winter", "en": "Winter", "icon": "❄️", "desc": "Coldest season with snow and ice."},
+        {"term": "die Sonne", "en": "Sun", "icon": "🌞", "desc": "Star providing daylight and warmth."}
     ]
 }
 
@@ -957,7 +963,7 @@ LESEN_TEIL2_SCENARIOS = [
     }
 ]
 
-# Lesen Teil 3 Official Scenarios Bank (All 9 exact scenarios matching screenshots 64-68)
+# Lesen Teil 3 Official Scenarios Bank (All 9 exact scenarios)
 LESEN_TEIL3_SCENARIOS = [
     {
         "title": "Bäckerei, Markt & Parkhaus",
@@ -1734,7 +1740,7 @@ st.sidebar.divider()
 
 nav_choice = st.sidebar.radio("Navigation", [
     "🏠 Study Dashboard", 
-    "🧸 Toddler Visual Space (Interactive Vocab)",
+    "🖼️ Visual Learning Space (Essential Words & Objects)",
     "📚 Master Goethe Word Engine",
     "📖 Core Grammar Practice & Exercises",
     "📖 Goethe A1 Lesen (Reading)",
@@ -1753,7 +1759,7 @@ if nav_choice == "🏠 Study Dashboard":
     st.markdown('<div class="accent-card">', unsafe_allow_html=True)
     st.title("Goethe-Zertifikat A1 Prep Studio")
     st.write("📅 **Exam Date:** December 12, 2026")
-    st.write("Complete Goethe A1 curriculum preparation featuring the Toddler Visual Space, official 1000-word flashcards, grammar exercises, fully structured 3-part Goethe exam simulators with live countdowns, and enchanted storybooks.")
+    st.write("Complete Goethe A1 curriculum preparation featuring the expanded Visual Learning Space, official 1000-word flashcards, grammar exercises, fully structured 3-part Goethe exam simulators with live countdowns, and enchanted storybooks.")
     st.markdown('</div>', unsafe_allow_html=True)
 
     col1, col2 = st.columns(2)
@@ -1786,15 +1792,15 @@ if nav_choice == "🏠 Study Dashboard":
         st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
-# 2. TODDLER VISUAL SPACE (INTERACTIVE VOCAB)
+# 2. VISUAL LEARNING SPACE (ESSENTIAL WORDS & OBJECTS)
 # ----------------------------------------------------
-elif nav_choice == "🧸 Toddler Visual Space (Interactive Vocab)":
+elif nav_choice == "🖼️ Visual Learning Space (Essential Words & Objects)":
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
-    st.subheader("🧸 Toddler Visual Space: Essential A1 Terms & Visual Matching")
-    st.write("Explore fundamental everyday German terms with visual icons, descriptions, audio pronunciation, and interactive matching challenges.")
+    st.subheader("🖼️ Visual Learning Space: Essential Words & Objects")
+    st.write("Explore fundamental everyday German terms across essential categories with visual representations, descriptive details, audio pronunciations, and interactive matching challenges.")
 
-    selected_toddler_cat = st.selectbox("📂 Select Visual Category:", list(TODDLER_VISUAL_TOPICS.keys()))
-    items = TODDLER_VISUAL_TOPICS[selected_toddler_cat]
+    selected_visual_cat = st.selectbox("📂 Select Visual Category:", list(VISUAL_LEARNING_TOPICS.keys()))
+    items = VISUAL_LEARNING_TOPICS[selected_visual_cat]
 
     st.markdown("### 🖼️ Visual Flashcards & Audio Playback")
     cols = st.columns(3)
@@ -1808,31 +1814,31 @@ elif nav_choice == "🧸 Toddler Visual Space (Interactive Vocab)":
                 <p style="color: #334155; font-size: 0.85rem; margin: 0px;">{item['desc']}</p>
             </div>
             """, unsafe_allow_html=True)
-            if st.button(f"🔊 Listen ({item['term']})", key=f"toddler_audio_{selected_toddler_cat}_{idx}", use_container_width=True):
-                play_direct_audio(item['term'], f"toddler_{idx}")
+            if st.button(f"🔊 Listen ({item['term']})", key=f"visual_audio_{selected_visual_cat}_{idx}", use_container_width=True):
+                play_direct_audio(item['term'], f"visual_{idx}")
 
     st.divider()
     st.markdown("### 🧩 Interactive Matching Challenge")
-    st.write("Test your memory! Match the English meaning to the correct German term.")
+    st.write("Test your visual and vocabulary memory! Match the English meaning or object to the correct German term.")
 
-    if f"match_target_{selected_toddler_cat}" not in st.session_state:
-        st.session_state[f"match_target_{selected_toddler_cat}"] = random.choice(items)
+    if f"match_target_{selected_visual_cat}" not in st.session_state:
+        st.session_state[f"match_target_{selected_visual_cat}"] = random.choice(items)
 
-    target = st.session_state[f"match_target_{selected_toddler_cat}"]
-    st.markdown(f"**Target English Meaning:** <span style='font-size: 1.4rem; color: #2563eb; font-weight: 700;'>{target['en']} {target['icon']}</span>", unsafe_allow_html=True)
+    target = st.session_state[f"match_target_{selected_visual_cat}"]
+    st.markdown(f"**Target English Meaning / Object:** <span style='font-size: 1.4rem; color: #2563eb; font-weight: 700;'>{target['en']} {target['icon']}</span>", unsafe_allow_html=True)
 
     options = [i['term'] for i in items]
     random.shuffle(options)
-    user_match = st.radio("Select the correct German term:", options, key=f"match_rad_{selected_toddler_cat}")
+    user_match = st.radio("Select the correct German term:", options, key=f"match_rad_{selected_visual_cat}")
 
-    if st.button("Check Match", key=f"check_match_{selected_toddler_cat}", type="primary"):
+    if st.button("Check Match", key=f"check_match_{selected_visual_cat}", type="primary"):
         if user_match == target['term']:
             st.success(f"🎉 Richtig! `{target['term']}` means {target['en']}.")
             play_direct_audio(target['term'], "correct_match")
-            st.session_state[f"match_target_{selected_toddler_cat}"] = random.choice(items)
+            st.session_state[f"match_target_{selected_visual_cat}"] = random.choice(items)
             st.rerun()
         else:
-            st.error(f"❌ Falsch. Try again! Listen to pronunciation of options using the cards above.")
+            st.error(f"❌ Falsch. Try again! Listen to pronunciation of options using the visual cards above.")
 
     st.markdown('</div>', unsafe_allow_html=True)
 
@@ -1847,7 +1853,7 @@ elif nav_choice == "📚 Master Goethe Word Engine":
     TOP_1000_VOCAB_CATEGORIES = {
         "1. Person & Alltag (Personal & Daily Life)": {
             "Angaben zur Person (Personal Info)": ["der Name", "das Alter", "die Herkunft", "die Sprache", "ledig", "verheiratet", "kommen", "wohnen", "heißen", "sprechen"],
-            "Wohnen & Haushalt (Housing & Home)": ["die Wohnung", "das Zimmer", "die Miete", "die Adresse", "der Tisch", "der Stuhl", "die Küche", "das Bett", "kosten", "umziehen"],
+            "Wohnen & Haushalt (Housing & Home)": ["die Wohnung", "das Zimmer", "die Miete", "das Haus", "der Tisch", "der Stuhl", "die Küche", "das Bett", "kosten", "umziehen"],
             "Familie & Freunde (Family & Friends)": ["die Eltern", "die Mutter", "der Vater", "der Bruder", "die Schwester", "das Kind", "der Freund", "die Familie", "groß", "klein"]
         },
         "2. Essen & Trinken (Food & Drink)": {
@@ -1860,19 +1866,19 @@ elif nav_choice == "📚 Master Goethe Word Engine":
             "Wetter & Jahreszeiten (Weather & Seasons)": ["das Wetter", "kalt", "warm", "der Sommer", "der Winter", "die Sonne", "der Regen", "schneien", "der Frühling", "der Herbst"]
         },
         "4. Einkaufen & Geld (Shopping & Money)": {
-            "Geschäfte & Kleidung (Stores & Clothing)": ["das Geschäft", "die Hose", "das Hemd", "teuer", "billig", "die Farbe", "kaufen", "die Größe", "der Schuh", "die Jacke"],
+            "Geschäfte & Kleidung (Stores & Clothing)": ["das Geschäft", "die Hose", "das Hemd", "das Kleid", "teuer", "billig", "die Farbe", "kaufen", "die Größe", "der Schuh", "die Jacke"],
             "Bezahlen & Zahlen (Paying & Numbers)": ["das Geld", "der Euro", "die Kreditkarte", "null", "eins", "hundert", "tausend", "bezahlen", "kostbar", "billig"]
         },
         "5. Arbeit & Beruf (Work & Profession)": {
-            "Berufe & Arbeitsplatz (Jobs & Workplace)": ["der Arzt", "die Ärztin", "das Büro", "arbeiten", "der Kollege", "die Chefin", "der Beruf", "die Firma", "der Computer", "die Arbeit"],
+            "Berufe & Arbeitsplatz (Jobs & Workplace)": ["der Arzt", "die Krankenschwester", "der Lehrer", "der Koch", "das Büro", "arbeiten", "der Kollege", "die Chefin", "der Beruf", "die Firma", "der Computer"],
             "Termine & Bürokommunikation (Appointments & Comm)": ["der Termin", "anrufen", "morgen", "gestern", "die E-Mail", "das Telefon", "die Nachricht", "verschieben", "pünktlich", "absagen"]
         },
         "6. Stadt & Verkehr (City & Transportation)": {
-            "Unterwegs sein (Getting Around)": ["der Bus", "der Zug", "der Bahnhof", "links", "rechts", "das Ticket", "fahren", "fliegen", "das Auto", "die Haltestelle"],
+            "Unterwegs sein (Getting Around)": ["der Bus", "der Zug", "das Fahrrad", "der Bahnhof", "links", "rechts", "das Ticket", "fahren", "fliegen", "das Auto", "die Haltestelle"],
             "In der Stadt (In the City)": ["das Krankenhaus", "die Post", "die Bank", "die Apotheke", "die Straße", "die Brücke", "der Markt", "das Museum", "die Stadt", "der Park"]
         },
         "7. Gesundheit & Körper (Health & Body)": {
-            "Der Körper (The Body)": ["der Kopf", "der Arm", "das Bein", "das Auge", "das Mund", "das Haar", "der Rücken", "die Hand", "der Fuß", "wehtun"],
+            "Der Körper (The Body)": ["das Haar", "der Kopf", "der Arm", "das Bein", "das Auge", "das Mund", "der Rücken", "die Hand", "der Fuß", "wehtun"],
             "Beim Arzt (At the Doctor)": ["krank", "der Arzt", "die Apotheke", "das Medikament", "das Rezept", "schmerzen", "helfen", "gesund", "das Fieber", "die Praxis"]
         },
         "8. Allgemein (General & Core Grammar)": {
