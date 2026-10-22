@@ -169,12 +169,12 @@ st.markdown("""
     }
     div[data-baseweb="menu"] li, div[data-baseweb="menu"] div {
         background-color: #1A1818 !important;
-        color: #0f172a !important;
+        color: #1A1818 !important;
         font-weight: 600 !important;
     }
     div[data-baseweb="menu"] li:hover, div[data-baseweb="menu"] div[aria-selected="true"] {
         background-color: #e2e8f0 !important;
-        color: #0f172a !important;
+        color: #1A1818 !important;
     }
 
     /* Detailed Back Card Separated Sections Style */
