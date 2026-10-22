@@ -21,11 +21,6 @@ st.set_page_config(
 # Custom Styling: Pastel Blue background, Dark Navy headers, Pastel Framed Elements
 st.markdown("""
 <style>
-    /* Completely remove Streamlit's native header toggle area where the text fallback appears */
-    header[data-testid="stHeader"] {
-        display: none !important;
-    }
-
     /* Global Clean Modern Sans-Serif Font & Pastel Blue Background */
     .stApp {
         background-color: #e0f2fe !important;
@@ -482,13 +477,12 @@ if st.session_state.sidebar_visible:
 
 nav_choice = st.session_state.nav_choice
 
-# Render "Menu" button at top left corner of the main screen when sidebar is hidden
-if not st.session_state.sidebar_visible:
-    col_menu, _ = st.columns([1, 10])
-    with col_menu:
-        if st.button("📁 Menu", key="show_sidebar_main_btn", use_container_width=True):
-            st.session_state.sidebar_visible = True
-            st.rerun()
+# Persistent Top-Bar Menu Button (Always visible at the top left of the page)
+col_menu, _ = st.columns([1, 10])
+with col_menu:
+    if st.button("📁 Menu", key="top_persistent_menu_btn", use_container_width=True, type="secondary"):
+        st.session_state.sidebar_visible = not st.session_state.sidebar_visible
+        st.rerun()
 
 # ----------------------------------------------------
 # 1. STUDY DASHBOARD
