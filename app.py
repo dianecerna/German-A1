@@ -12,7 +12,7 @@ from streamlit_mic_recorder import mic_recorder
 
 # Streamlit Page Configuration
 st.set_page_config(
-    page_title="Goethe A1 Studio", 
+    page_title="German A1 Learning", 
     page_icon="🇩🇪", 
     layout="wide",
     initial_sidebar_state="expanded"
@@ -70,28 +70,28 @@ st.markdown("""
         border: 1px solid rgba(255, 255, 255, 0.3);
         padding: 6px 14px;
         border-radius: 20px;
-        font-size: 0.8rem;
+        font-size: 0.9rem;
         font-weight: 600;
         letter-spacing: 0.05em;
         margin-bottom: 15px;
         color: #60a5fa;
     }
     .hero-title {
-        font-size: 2.2rem;
+        font-size: 2.5rem;
         font-weight: 700;
         letter-spacing: -0.025em;
         margin-bottom: 10px;
         color: #ffffff;
     }
     .hero-subtitle {
-        font-size: 1rem;
+        font-size: 1.15rem;
         color: #e2e8f0;
         line-height: 1.6;
         max-width: 800px;
         margin-bottom: 0px;
     }
 
-    /* Sophisticated Sidebar Navigation Styling with Vibrant Dark Blue */
+    /* Sophisticated Sidebar Navigation Styling with Vibrant Dark Blue & Next Size Fonts */
     [data-testid="stSidebar"] {
         background-color: #0f172a !important;
         border-right: 1px solid #1e293b;
@@ -99,32 +99,57 @@ st.markdown("""
     [data-testid="stSidebar"] * {
         color: #e2e8f0 !important;
     }
-    [data-testid="stSidebarNav"] span, .stRadio label {
-        font-size: 1.05rem !important;
-        font-weight: 500 !important;
-        padding-top: 6px !important;
-        padding-bottom: 6px !important;
-        letter-spacing: 0.02em;
-    }
-    .stRadio div[role="radiogroup"] > label {
-        background: rgba(255, 255, 255, 0.05);
-        border-radius: 12px;
-        padding: 8px 12px;
-        margin-bottom: 6px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        transition: all 0.2s ease;
-    }
-    .stRadio div[role="radiogroup"] > label:hover {
-        background: rgba(30, 58, 138, 0.4);
-        border-color: rgba(96, 165, 250, 0.6);
-    }
     
-    /* Collapse sidebar control button replacement of double arrow text */
+    /* Custom Sidebar Nav Link Button Styling (Framed options replacing radio buttons with light color frames) */
+    .sidebar-nav-container {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-top: 10px;
+    }
+    .stButton > button.nav-btn {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.12) !important;
+        border: 1.5px solid #fef08a !important;
+        border-radius: 12px !important;
+        padding: 12px 16px !important;
+        text-align: left !important;
+        font-size: 1.2rem !important;
+        font-weight: 600 !important;
+        color: #fef08a !important;
+        transition: all 0.2s ease !important;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .stButton > button.nav-btn:hover {
+        background: rgba(254, 240, 138, 0.25) !important;
+        border-color: #fde047 !important;
+        transform: translateY(-1px);
+    }
+    .stButton > button.nav-btn-active {
+        width: 100%;
+        background: #fef08a !important;
+        border: 1.5px solid #ffffff !important;
+        border-radius: 12px !important;
+        padding: 12px 16px !important;
+        text-align: left !important;
+        font-size: 1.2rem !important;
+        font-weight: 700 !important;
+        color: #0f172a !important;
+        box-shadow: 0 4px 12px rgba(254, 240, 138, 0.4);
+    }
+
+    /* Collapse sidebar control button replacement of double arrow text to an actual clickable arrow button */
     [data-testid="collapsedControl"] svg {
         display: inline-block;
     }
     [data-testid="collapsedControl"] span {
         display: none !important;
+    }
+    [data-testid="collapsedControl"]::before {
+        content: "➔";
+        font-size: 1.4rem;
+        font-weight: bold;
+        color: #1e3a8a;
     }
 
     /* Outlined & Framed Dropdown / Select Elements */
@@ -151,7 +176,7 @@ st.markdown("""
         margin-bottom: 15px;
     }
     .flashcard-word-title {
-        font-size: 2.8rem;
+        font-size: 3.2rem;
         font-weight: 700;
         letter-spacing: -0.025em;
         color: #60a5fa;
@@ -166,38 +191,21 @@ st.markdown("""
         margin-bottom: 15px;
     }
     .flashcard-back-title {
-        font-size: 2rem;
+        font-size: 2.3rem;
         font-weight: 700;
         color: #0f172a;
         margin-bottom: 5px;
     }
     .meaning-subtitle {
-        font-size: 1.2rem;
+        font-size: 1.35rem;
         font-weight: 600;
         color: #1e3a8a;
         margin-bottom: 15px;
     }
 
-    /* Floating Cute Bot Widget on Bottom Left */
-    .floating-bot-container {
-        position: fixed;
-        bottom: 25px;
-        left: 25px;
-        z-index: 99999;
-    }
-    .bot-popout-box {
-        background: #ffffff;
-        border-radius: 16px;
-        padding: 18px;
-        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.2);
-        border: 2px solid #1e3a8a;
-        width: 340px;
-        margin-bottom: 12px;
-    }
-
     /* Metric Font Uniformity & Bold Key Items */
     [data-testid="stMetricValue"] {
-        font-size: 1.1rem !important;
+        font-size: 1.25rem !important;
         font-weight: 700 !important;
         color: #0f172a !important;
     }
@@ -1775,7 +1783,7 @@ SCHREIBEN_TEIL2_SCENARIOS = [
         "prompt": "Liebe Mia,\n\nhast du am Samstag Zeit und Lust, zusammen in den Park zu gehen? Wir können dort lecker Eis essen. Melde dich doch kurz, ob es klappt!\n\nLiebe Grüße,\n[Dein Name]"
     },
     {
-        "title": "Termin in der Autowerkstatt",
+        "title": "Tein in der Autowerkstatt",
         "desc": "Email to the auto repair shop about car noises and an appointment – E-mail, approx. 30 words, 20 min.",
         "aufgabe_text": "Ihr Auto macht komische Geräusche. Schreiben Sie an die Autowerkstatt.\n\nSchreiben Sie zu jedem Punkt ein bis zwei Sätze (circa 30 Wörter).\n\nSchreiben Sie auch eine Anrede und einen Gruß.",
         "points": [
@@ -1787,12 +1795,11 @@ SCHREIBEN_TEIL2_SCENARIOS = [
     }
 ]
 
-# Sidebar Navigation
-st.sidebar.title("🇩🇪 Goethe A1 Studio")
-st.sidebar.caption("Target Exam: **Dec 12, 2026**")
-st.sidebar.divider()
+# Sidebar Navigation State Management
+if "nav_choice" not in st.session_state:
+    st.session_state.nav_choice = "🏠 Study Dashboard"
 
-nav_choice = st.sidebar.radio("Navigation", [
+nav_options = [
     "🏠 Study Dashboard", 
     "📚 Master Goethe Word Engine",
     "📖 Core Grammar Practice & Exercises",
@@ -1801,9 +1808,31 @@ nav_choice = st.sidebar.radio("Navigation", [
     "✍️ Goethe A1 Schreiben (Writing)", 
     "🗣️ Goethe A1 Sprechen (Speaking)",
     "🏆 Goethe A1 Mock Examination",
-    "📖 A1 & A2 Short Stories",
-    "💬 Ask Gem (AI Tutor)"
-])
+    "📖 A1 & A2 Short Stories"
+]
+
+# Sidebar Rendering
+with st.sidebar:
+    # Top Action Row with Toggle Button replacing text arrow
+    c_toggle, c_title = st.columns([1, 4])
+    with c_toggle:
+        if st.button("➔", key="sidebar_collapse_arrow", help="Toggle Sidebar"):
+            st.rerun()
+    with c_title:
+        st.markdown("<h3 style='margin:0; font-size:1.35rem; color:#ffffff;'>German A1 Learning</h3>", unsafe_allow_html=True)
+    
+    st.markdown("<div style='height: 15px;'></div>", unsafe_allow_html=True)
+    st.markdown("<p style='font-size:1.2rem; font-weight:700; color:#e2e8f0; margin-bottom:12px;'>Navigation</p>", unsafe_allow_html=True)
+    
+    # Custom Framed Clickable Navigation Buttons replacing radio buttons (light color framed, next size font)
+    for opt in nav_options:
+        is_active = (st.session_state.nav_choice == opt)
+        btn_class = "nav-btn-active" if is_active else "nav-btn"
+        if st.button(opt, key=f"nav_btn_{opt}", use_container_width=True):
+            st.session_state.nav_choice = opt
+            st.rerun()
+
+nav_choice = st.session_state.nav_choice
 
 # ----------------------------------------------------
 # 1. DASHBOARD
@@ -1811,40 +1840,38 @@ nav_choice = st.sidebar.radio("Navigation", [
 if nav_choice == "🏠 Study Dashboard":
     st.markdown("""
     <div class="hero-banner">
-        <div class="hero-badge">✨ GOETHE A1 EXAM PREP STUDIO</div>
-        <div class="hero-title">Goethe-Zertifikat A1 Studio</div>
-        <div class="hero-subtitle">Target Exam: <b>December 12, 2026</b>. Complete Goethe A1 curriculum preparation featuring the complete 612-word Goethe vocabulary list, official flashcards, grammar exercises, fully structured 3-part Goethe exam simulators with live countdowns, and enchanted storybooks.</div>
+        <div class="hero-badge">✨ MY GERMAN STUDY BUDDY</div>
+        <div class="hero-title">German A1 Learning</div>
     </div>
     """, unsafe_allow_html=True)
 
-    col1, col2 = st.columns(2)
-    with col1:
-        st.markdown('<div class="main-card">', unsafe_allow_html=True)
-        st.subheader("📖 Lesen & ✍️ Schreiben")
-        st.markdown("""
-        * **Lesen (25 Mins - 15 Tasks across 3 Parts):**
-          - **Teil 1:** Short Emails (Richtig/Falsch) - *All 9 official exam scenarios fully integrated!*
-          - **Teil 2:** Classified Ads (Option A or B) - *All 9 official exam scenarios fully integrated!*
-          - **Teil 3:** Public Signs (Richtig/Falsch) - *All 9 official exam scenarios fully integrated!*
-        * **Schreiben (20 Mins - 2 Parts):**
-          - **Teil 1:** Fill 5 Missing Gaps on Form with Scenario (All 9 official exam scenarios fully integrated!)
-          - **Teil 2:** Write ~30-Word Message hitting 3 required points (All 9 official exam scenarios fully integrated!)
-        """)
-        st.markdown('</div>', unsafe_allow_html=True)
-    with col2:
-        st.markdown('<div class="main-card">', unsafe_allow_html=True)
-        st.subheader("🎧 Hören & 🗣️ Sprechen")
-        st.markdown("""
-        * **Hören (20 Mins - 15 Tasks across 3 Parts):**
-          - **Teil 1:** 6 Dialogues (A/B/C)
-          - **Teil 2:** 4 Announcements (Richtig/Falsch)
-          - **Teil 3:** 5 Voicemails (A/B/C)
-        * **Sprechen (15 Mins - 3 Parts):**
-          - **Teil 1:** Self-Introduction & Spelling/Numbers
-          - **Teil 2:** W-Questions with Topic Card
-          - **Teil 3:** Imperative Requests with Object Card
-        """)
-        st.markdown('</div>', unsafe_allow_html=True)
+    # Daily Check-In Counter showing 7 days of the week (Sun to Mon) with dates
+    st.markdown("### 📅 Daily Check-In Counter")
+    d_cols = st.columns(7)
+    days_info = [
+        ("Sun", "Oct 18", True),
+        ("Mon", "Oct 19", True),
+        ("Tue", "Oct 20", True),
+        ("Wed", "Oct 21", True),
+        ("Thu", "Oct 22", True),
+        ("Fri", "Oct 23", True),
+        ("Sat", "Oct 24", False)
+    ]
+    for idx, (d_name, d_date, checked) in enumerate(days_info):
+        with d_cols[idx]:
+            bg_color = "#1e3a8a" if checked else "#ffffff"
+            text_color = "#ffffff" if checked else "#0f172a"
+            border_c = "#60a5fa" if checked else "#cbd5e1"
+            icon = "✅" if checked else "⏳"
+            st.markdown(f"""
+            <div style="background: {bg_color}; color: {text_color}; border: 1.5px solid {border_c}; border-radius: 12px; padding: 12px 8px; text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
+                <div style="font-size: 0.85rem; font-weight: 600; opacity: 0.85;">{d_name}</div>
+                <div style="font-size: 1rem; font-weight: 700; margin: 4px 0;">{d_date}</div>
+                <div style="font-size: 1.1rem;">{icon}</div>
+            </div>
+            """, unsafe_allow_html=True)
+
+    st.markdown("<div style='height: 15px;'></div>", unsafe_allow_html=True)
 
 # ----------------------------------------------------
 # 2. MASTER GOETHE WORD ENGINE
@@ -1989,7 +2016,7 @@ elif nav_choice == "📚 Master Goethe Word Engine":
             <div class="flashcard-front-box">
                 <p style="color: #60a5fa; font-weight: 700; letter-spacing: 0.08em; margin-bottom: 8px;">⭐ {selected_main_cat} / {selected_sub_cat} ⭐</p>
                 <div class="flashcard-word-title">{data.get("word", active_word)}</div>
-                <p style="color: #e2e8f0; font-size: 0.9rem; margin-bottom: 0px;">Click speaker icon for instant audio playback, or flip card for details.</p>
+                <p style="color: #e2e8f0; font-size: 1rem; margin-bottom: 0px;">Click speaker icon for instant audio playback, or flip card for details.</p>
             </div>
             """, unsafe_allow_html=True)
             
@@ -2003,7 +2030,7 @@ elif nav_choice == "📚 Master Goethe Word Engine":
         else:
             st.markdown(f"""
             <div class="flashcard-back-box">
-                <p style="color: #1e3a8a; font-weight: 700; font-size: 0.85rem; letter-spacing: 0.05em; margin-bottom: 2px;">⭐ {selected_main_cat} / {selected_sub_cat}</p>
+                <p style="color: #1e3a8a; font-weight: 700; font-size: 0.95rem; letter-spacing: 0.05em; margin-bottom: 2px;">⭐ {selected_main_cat} / {selected_sub_cat}</p>
                 <div class="flashcard-back-title">{data.get("word", active_word)}</div>
                 <div class="meaning-subtitle">Meaning: <b>{data.get("english_meaning", "")}</b></div>
             </div>
@@ -3197,7 +3224,7 @@ elif nav_choice == "📖 A1 & A2 Short Stories":
             "Moby Dick": "Moby Dick",
             "Die Schatzinsel (Treasure Island)": "Treasure Island",
             "Robinson Crusoe": "Robinson Crusoe",
-            "Gullivers Reisen (Gulliver's Travels)": "Gullivers Travels",
+            "Gullivers Reisen (Gulliver's Travels)": "Gulliver's Travels",
             "Der Graf von Monte Christo (Count of Monte Cristo)": "Count of Monte Cristo",
             "Sherlock Holmes": "Sherlock Holmes",
             "Dracula": "Dracula",
@@ -3292,75 +3319,3 @@ elif nav_choice == "📖 A1 & A2 Short Stories":
             st.success(st.session_state.active_story['full_english_text'])
 
     st.markdown('</div>', unsafe_allow_html=True)
-
-# ----------------------------------------------------
-# 10. ASK GEM
-# ----------------------------------------------------
-elif nav_choice == "💬 Ask Gem (AI Tutor)":
-    st.markdown('<div class="accent-card">', unsafe_allow_html=True)
-    st.subheader("💬 Ask Gem — Interactive AI Tutor")
-    if prompt := st.chat_input("Ask Gem a question:"):
-        try:
-            res = generate_dynamic_content(prompt)
-            st.write(res)
-        except Exception as e:
-            st.error(f"Error processing question: {str(e)}")
-    st.markdown('</div>', unsafe_allow_html=True)
-
-# ----------------------------------------------------
-# FLOATING CUTE BOT WIDGET
-# ----------------------------------------------------
-if "bot_open" not in st.session_state:
-    st.session_state.bot_open = False
-if "bot_last_response" not in st.session_state:
-    st.session_state.bot_last_response = ""
-if "bot_knowledge_feedback" not in st.session_state:
-    st.session_state.bot_knowledge_feedback = ""
-
-st.markdown('<div class="floating-bot-container">', unsafe_allow_html=True)
-
-if st.session_state.bot_open:
-    st.markdown("""
-    <div class="bot-popout-box">
-    """, unsafe_allow_html=True)
-    
-    col_b1, col_b2 = st.columns([4, 1])
-    with col_b1:
-        st.markdown("🤖 **Gem (AI Tutor):**")
-    with col_b2:
-        if st.button("✕", key="close_bot_popout"):
-            st.session_state.bot_open = False
-            st.rerun()
-
-    bot_query = st.text_input("Ask me anything (e.g. Dative case):", key="bot_chat_input", placeholder="Type your question here...")
-    if bot_query:
-        try:
-            augmented_prompt = f"{bot_query}\n\n[Instruction: Explain the grammar concept clearly and conclude with an interactive knowledge check question for the user.]"
-            ans = generate_dynamic_content(augmented_prompt)
-            st.session_state.bot_last_response = ans
-            st.session_state.bot_knowledge_feedback = ""
-        except Exception as e:
-            st.session_state.bot_last_response = f"Error: {str(e)}"
-
-    if st.session_state.bot_last_response:
-        st.write(st.session_state.bot_last_response)
-        st.markdown("---")
-        st.markdown("✍️ **Answer Knowledge Check Here:**")
-        user_kc_answer = st.text_input("Answer to Gem's question:", key="bot_kc_input")
-        if st.button("Submit Answer to Gem"):
-            with st.spinner("Gem is grading your answer..."):
-                eval_prompt = f"The user was asked a knowledge check question based on: '{st.session_state.bot_last_response}'. The user answered: '{user_kc_answer}'. Grade this answer, explain why it is correct or incorrect, and provide encouragement."
-                feedback = generate_dynamic_content(eval_prompt)
-                st.session_state.bot_knowledge_feedback = feedback
-        
-        if st.session_state.bot_knowledge_feedback:
-            st.info(st.session_state.bot_knowledge_feedback)
-
-    st.markdown("</div>", unsafe_allow_html=True)
-
-if not st.session_state.bot_open:
-    if st.button("🤖 Chat with Gem", key="open_bot_btn", type="primary"):
-        st.session_state.bot_open = True
-        st.rerun()
-
-st.markdown('</div>', unsafe_allow_html=True)
