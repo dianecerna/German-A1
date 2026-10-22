@@ -3290,4 +3290,4 @@ if st.session_state.bot_open:
                 feedback = generate_dynamic_content(eval_prompt)
                 st.session_state.bot_knowledge_feedback = feedback
         
-        if st.session_state.bot_knowledge_feedback
+        if st.session_state.bot_knowledge_feedback)
