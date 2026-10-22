@@ -18,7 +18,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom Styling: Clean Modern Sans-Serif Font, Vibrant Dark Blue Theme & Background Colors
+# Custom Styling: Enhanced UI/UX with Outlined Dropdowns, Vibrant Navy Accents, Bold Key Elements, & Micro-Interactions
 st.markdown("""
 <style>
     /* Global Clean Modern Sans-Serif Font & Background */
@@ -31,7 +31,7 @@ st.markdown("""
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
     }
 
-    /* Cards Styling with Vibrant Backgrounds */
+    /* Cards Styling with Vibrant Backgrounds & Subtle Hover Micro-Interactions */
     .main-card {
         background: #ffffff;
         border-radius: 20px;
@@ -39,7 +39,12 @@ st.markdown("""
         box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
         margin-bottom: 20px;
         border: 1px solid #cbd5e1;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
+    .main-card:hover {
+        box-shadow: 0 6px 24px rgba(15, 23, 42, 0.09);
+    }
+    
     .accent-card {
         background: #ffffff;
         border-radius: 20px;
@@ -122,6 +127,18 @@ st.markdown("""
         display: none !important;
     }
 
+    /* Outlined & Framed Dropdown / Select Elements */
+    .stSelectbox div[data-baseweb="select"] > div {
+        background-color: #ffffff !important;
+        border: 1.5px solid #cbd5e1 !important;
+        border-radius: 12px !important;
+        box-shadow: 0 2px 6px rgba(15, 23, 42, 0.02);
+        transition: border-color 0.2s ease;
+    }
+    .stSelectbox div[data-baseweb="select"] > div:hover {
+        border-color: #1e3a8a !important;
+    }
+
     /* Interactive Flashcard UI */
     .flashcard-front-box {
         background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
@@ -178,11 +195,15 @@ st.markdown("""
         margin-bottom: 12px;
     }
 
-    /* Metric Font Uniformity */
+    /* Metric Font Uniformity & Bold Key Items */
     [data-testid="stMetricValue"] {
         font-size: 1.1rem !important;
-        font-weight: 600 !important;
+        font-weight: 700 !important;
         color: #0f172a !important;
+    }
+    strong, b {
+        font-weight: 700 !important;
+        color: #0f172a;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -190,7 +211,7 @@ st.markdown("""
 # Secure API Key Retrieval
 api_key = st.secrets.get("GEMINI_API_KEY", os.getenv("GEMINI_API_KEY"))
 if not api_key:
-    st.error("🔑 Missing Gemini API Key! Please configure your secret key in Streamlit settings.")
+    st.error("🔑 **Missing Gemini API Key!** Please configure your secret key in Streamlit settings.")
     st.stop()
 
 client = genai.Client(api_key=api_key.strip())
@@ -1768,7 +1789,7 @@ SCHREIBEN_TEIL2_SCENARIOS = [
 
 # Sidebar Navigation
 st.sidebar.title("🇩🇪 Goethe A1 Studio")
-st.sidebar.caption("Target Exam: Dec 12, 2026")
+st.sidebar.caption("Target Exam: **Dec 12, 2026**")
 st.sidebar.divider()
 
 nav_choice = st.sidebar.radio("Navigation", [
@@ -1792,7 +1813,7 @@ if nav_choice == "🏠 Study Dashboard":
     <div class="hero-banner">
         <div class="hero-badge">✨ GOETHE A1 EXAM PREP STUDIO</div>
         <div class="hero-title">Goethe-Zertifikat A1 Studio</div>
-        <div class="hero-subtitle">Target Exam: December 12, 2026. Complete Goethe A1 curriculum preparation featuring the complete 612-word Goethe vocabulary list, official flashcards, grammar exercises, fully structured 3-part Goethe exam simulators with live countdowns, and enchanted storybooks.</div>
+        <div class="hero-subtitle">Target Exam: <b>December 12, 2026</b>. Complete Goethe A1 curriculum preparation featuring the complete 612-word Goethe vocabulary list, official flashcards, grammar exercises, fully structured 3-part Goethe exam simulators with live countdowns, and enchanted storybooks.</div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -1802,12 +1823,12 @@ if nav_choice == "🏠 Study Dashboard":
         st.subheader("📖 Lesen & ✍️ Schreiben")
         st.markdown("""
         * **Lesen (25 Mins - 15 Tasks across 3 Parts):**
-          - Teil 1: Short Emails (Richtig/Falsch) - *All 9 official exam scenarios fully integrated!*
-          - Teil 2: Classified Ads (Option A or B) - *All 9 official exam scenarios fully integrated!*
-          - Teil 3: Public Signs (Richtig/Falsch) - *All 9 official exam scenarios fully integrated!*
+          - **Teil 1:** Short Emails (Richtig/Falsch) - *All 9 official exam scenarios fully integrated!*
+          - **Teil 2:** Classified Ads (Option A or B) - *All 9 official exam scenarios fully integrated!*
+          - **Teil 3:** Public Signs (Richtig/Falsch) - *All 9 official exam scenarios fully integrated!*
         * **Schreiben (20 Mins - 2 Parts):**
-          - Teil 1: Fill 5 Missing Gaps on Form with Scenario (All 9 official exam scenarios fully integrated!)
-          - Teil 2: Write ~30-Word Message hitting 3 required points (All 9 official exam scenarios fully integrated!)
+          - **Teil 1:** Fill 5 Missing Gaps on Form with Scenario (All 9 official exam scenarios fully integrated!)
+          - **Teil 2:** Write ~30-Word Message hitting 3 required points (All 9 official exam scenarios fully integrated!)
         """)
         st.markdown('</div>', unsafe_allow_html=True)
     with col2:
@@ -1815,13 +1836,13 @@ if nav_choice == "🏠 Study Dashboard":
         st.subheader("🎧 Hören & 🗣️ Sprechen")
         st.markdown("""
         * **Hören (20 Mins - 15 Tasks across 3 Parts):**
-          - Teil 1: 6 Dialogues (A/B/C)
-          - Teil 2: 4 Announcements (Richtig/Falsch)
-          - Teil 3: 5 Voicemails (A/B/C)
+          - **Teil 1:** 6 Dialogues (A/B/C)
+          - **Teil 2:** 4 Announcements (Richtig/Falsch)
+          - **Teil 3:** 5 Voicemails (A/B/C)
         * **Sprechen (15 Mins - 3 Parts):**
-          - Teil 1: Self-Introduction & Spelling/Numbers
-          - Teil 2: W-Questions with Topic Card
-          - Teil 3: Imperative Requests with Object Card
+          - **Teil 1:** Self-Introduction & Spelling/Numbers
+          - **Teil 2:** W-Questions with Topic Card
+          - **Teil 3:** Imperative Requests with Object Card
         """)
         st.markdown('</div>', unsafe_allow_html=True)
 
@@ -1879,7 +1900,7 @@ elif nav_choice == "📚 Master Goethe Word Engine":
     vocab_tree = TOP_1000_VOCAB_CATEGORIES
 
     main_cats = ["ALL"] + list(vocab_tree.keys())
-    selected_main_cat = st.selectbox("📂 Select Main Category:", main_cats)
+    selected_main_cat = st.selectbox("📂 **Select Main Category:**", main_cats)
 
     if selected_main_cat == "ALL":
         sub_cats = ["ALL"]
@@ -1892,7 +1913,7 @@ elif nav_choice == "📚 Master Goethe Word Engine":
     else:
         sub_dict = vocab_tree[selected_main_cat]
         sub_cats = ["ALL"] + list(sub_dict.keys())
-        selected_sub_cat = st.selectbox("📁 Select Subcategory:", sub_cats)
+        selected_sub_cat = st.selectbox("📁 **Select Subcategory:**", sub_cats)
 
         if selected_sub_cat == "ALL":
             all_sub_pool = []
@@ -1902,7 +1923,7 @@ elif nav_choice == "📚 Master Goethe Word Engine":
         else:
             available_words = ["ALL"] + sub_dict[selected_sub_cat]
 
-    selected_word_dropdown = st.selectbox("🔤 Select specific word (or ALL):", available_words)
+    selected_word_dropdown = st.selectbox("🔤 **Select specific word (or ALL):**", available_words)
 
     col_w1, col_w2 = st.columns([3, 1])
     with col_w1:
@@ -1984,7 +2005,7 @@ elif nav_choice == "📚 Master Goethe Word Engine":
             <div class="flashcard-back-box">
                 <p style="color: #1e3a8a; font-weight: 700; font-size: 0.85rem; letter-spacing: 0.05em; margin-bottom: 2px;">⭐ {selected_main_cat} / {selected_sub_cat}</p>
                 <div class="flashcard-back-title">{data.get("word", active_word)}</div>
-                <div class="meaning-subtitle">Meaning: {data.get("english_meaning", "")}</div>
+                <div class="meaning-subtitle">Meaning: <b>{data.get("english_meaning", "")}</b></div>
             </div>
             """, unsafe_allow_html=True)
 
@@ -2199,7 +2220,7 @@ elif nav_choice == "📖 Core Grammar Practice & Exercises":
             for idx, q in enumerate(mod["exercises_mc"], start=1):
                 u_ans = mc_user_answers.get(q['id'])
                 if u_ans == q['correct']:
-                    st.success(f"**Q{idx}: Correct!** ({q['correct']}) — {q['explanation']}")
+                    st.success(f"**Q{idx}: Correct!** (`{q['correct']}`) — {q['explanation']}")
                 else:
                     st.error(f"**Q{idx}: Incorrect.** Your answer: `{u_ans}` | Correct: `{q['correct']}`\n\n💡 **Reason:** {q['explanation']}")
 
@@ -2256,7 +2277,7 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
 
         col_lt1_sel, col_lt1_ref = st.columns([4, 1])
         with col_lt1_sel:
-            selected_lesen_t1_title = st.selectbox("📂 Select Lesen Teil 1 Scenario Set:", [s["title"] for s in valid_lesen_t1], key="lesen_t1_sel")
+            selected_lesen_t1_title = st.selectbox("📂 **Select Lesen Teil 1 Scenario Set:**", [s["title"] for s in valid_lesen_t1], key="lesen_t1_sel")
         with col_lt1_ref:
             st.markdown("<div style='height: 28px;'></div>", unsafe_allow_html=True)
             if st.button("Refresh Scenarios", key="ref_lesen_t1", use_container_width=True):
@@ -2323,7 +2344,7 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
 
         col_lt2_sel, col_lt2_ref = st.columns([4, 1])
         with col_lt2_sel:
-            selected_lesen_t2_title = st.selectbox("📂 Select Lesen Teil 2 Scenario Set:", [s["title"] for s in valid_lesen_t2], key="lesen_t2_sel")
+            selected_lesen_t2_title = st.selectbox("📂 **Select Lesen Teil 2 Scenario Set:**", [s["title"] for s in valid_lesen_t2], key="lesen_t2_sel")
         with col_lt2_ref:
             st.markdown("<div style='height: 28px;'></div>", unsafe_allow_html=True)
             if st.button("Refresh Scenarios", key="ref_lesen_t2", use_container_width=True):
@@ -2392,7 +2413,7 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
 
         col_lt3_sel, col_lt3_ref = st.columns([4, 1])
         with col_lt3_sel:
-            selected_lesen_t3_title = st.selectbox("📂 Select Lesen Teil 3 Scenario Set:", [s["title"] for s in valid_lesen_t3], key="lesen_t3_sel")
+            selected_lesen_t3_title = st.selectbox("📂 **Select Lesen Teil 3 Scenario Set:**", [s["title"] for s in valid_lesen_t3], key="lesen_t3_sel")
         with col_lt3_ref:
             st.markdown("<div style='height: 28px;'></div>", unsafe_allow_html=True)
             if st.button("Refresh Scenarios", key="ref_lesen_t3", use_container_width=True):
@@ -2468,7 +2489,7 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
     with h_tab1:
         st.markdown("**Teil 1:** Select from official practice scenario sets for dialogues.")
         
-        selected_scenario_title = st.selectbox("📂 Select Hören Teil 1 Scenario Set:", [s["title"] for s in HOREN_TEIL1_SCENARIOS])
+        selected_scenario_title = st.selectbox("📂 **Select Hören Teil 1 Scenario Set:**", [s["title"] for s in HOREN_TEIL1_SCENARIOS])
         selected_scenario_obj = next(s for s in HOREN_TEIL1_SCENARIOS if s["title"] == selected_scenario_title)
         
         st.info(f"📌 **Description:** {selected_scenario_obj['desc']}")
@@ -2516,7 +2537,7 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
     with h_tab2:
         st.markdown("**Teil 2:** Select from official practice scenario sets for announcements.")
         
-        selected_scenario_t2 = st.selectbox("📂 Select Hören Teil 2 Scenario Set:", [s["title"] for s in HOREN_TEIL2_SCENARIOS])
+        selected_scenario_t2 = st.selectbox("📂 **Select Hören Teil 2 Scenario Set:**", [s["title"] for s in HOREN_TEIL2_SCENARIOS])
         selected_scenario_t2_obj = next(s for s in HOREN_TEIL2_SCENARIOS if s["title"] == selected_scenario_t2)
         
         st.info(f"📌 **Description:** {selected_scenario_t2_obj['desc']}")
@@ -2560,7 +2581,7 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
                 st.success(f"Teil 2 Score for '{selected_scenario_t2}': {score} / 4")
 
     with h_tab3:
-        st.info("ℹ️ Teil 3: 5 phone voicemails played TWICE. Choose A, B, or C.")
+        st.info("ℹ️ **Teil 3:** 5 phone voicemails played TWICE. Choose A, B, or C.")
         if st.button("🎲 Generate Hören Teil 3 Scenario", type="primary") or st.button("🔄 Generate New Hören Teil 3 Audio & Tasks"):
             with st.spinner("Gem is synthesizing 5 new voicemail messages..."):
                 prompt = """
@@ -2621,7 +2642,7 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
 
         col_st1_sel, col_st1_ref = st.columns([4, 1])
         with col_st1_sel:
-            selected_schreiben_t1_title = st.selectbox("📂 Select Schreiben Teil 1 Scenario Set:", [s["title"] for s in valid_schreiben_t1], key="schreiben_t1_sel")
+            selected_schreiben_t1_title = st.selectbox("📂 **Select Schreiben Teil 1 Scenario Set:**", [s["title"] for s in valid_schreiben_t1], key="schreiben_t1_sel")
         with col_st1_ref:
             st.markdown("<div style='height: 28px;'></div>", unsafe_allow_html=True)
             if st.button("Refresh Scenarios", key="ref_schreiben_t1", use_container_width=True):
@@ -2692,7 +2713,7 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
 
         col_st2_sel, col_st2_ref = st.columns([4, 1])
         with col_st2_sel:
-            selected_schreiben_t2_title = st.selectbox("📂 Select Schreiben Teil 2 Scenario Set:", [s["title"] for s in valid_schreiben_t2], key="schreiben_t2_select")
+            selected_schreiben_t2_title = st.selectbox("📂 **Select Schreiben Teil 2 Scenario Set:**", [s["title"] for s in valid_schreiben_t2], key="schreiben_t2_select")
         with col_st2_ref:
             st.markdown("<div style='height: 28px;'></div>", unsafe_allow_html=True)
             if st.button("Refresh Scenarios", key="ref_schreiben_t2", use_container_width=True):
@@ -2742,7 +2763,7 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
         u_email = st.text_area("Write your text here...", height=160, key=f"email_resp_{selected_schreiben_t2_title}", placeholder="Write your text here...")
         
         word_count = len(u_email.strip().split()) if u_email.strip() else 0
-        st.caption(f"Word Count: {word_count} (Target: ~30 words)")
+        st.caption(f"Word Count: **{word_count}** (Target: ~30 words)")
 
         col_t2_clear, col_t2_analyze = st.columns(2)
         with col_t2_clear:
