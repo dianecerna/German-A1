@@ -18,7 +18,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Custom Dark Theme Styling matching Exifa.net interface
+# Custom Dark Theme & Smooth Button Card Styling
 st.markdown("""
 <style>
     /* Global Dark Theme & Modern Sans-Serif Font */
@@ -38,6 +38,30 @@ st.markdown("""
         display: none !important;
     }
 
+    /* Smooth Custom Button Styling matching reference interface */
+    .stButton > button {
+        width: 100% !important;
+        background-color: #111827 !important;
+        border: 1px solid #374151 !important;
+        border-radius: 12px !important;
+        padding: 14px 20px !important;
+        text-align: left !important;
+        font-size: 1.05rem !important;
+        font-weight: 600 !important;
+        color: #f8fafc !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25) !important;
+        transition: all 0.2s ease !important;
+        margin-bottom: 12px !important;
+    }
+    
+    .stButton > button:hover {
+        background-color: #1f2937 !important;
+        border-color: #60a5fa !important;
+        transform: translateY(-1px);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35) !important;
+        color: #ffffff !important;
+    }
+
     /* Main Content Cards / Containers */
     .main-card {
         background: #111827;
@@ -46,9 +70,6 @@ st.markdown("""
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
         margin-bottom: 20px;
         border: 1px solid #1f2937;
-    }
-    .main-card:hover {
-        border-color: #3b82f6;
     }
     
     /* Hero Banner */
@@ -292,14 +313,12 @@ if nav_choice == "🏠 Study Dashboard":
     <div class="hero-banner">
         <div class="hero-badge">✨ GERMAN A1 LEARNING HUB</div>
         <div class="hero-title">Master Goethe-Zertifikat A1</div>
-        <div class="hero-subtitle">Select a module below to start practicing.</div>
+        <div class="hero-subtitle">Select an option below to start practicing.</div>
     </div>
     """, unsafe_allow_html=True)
 
-    st.markdown("### 🚀 Study Modules")
-    
-    col1, col2 = st.columns(2)
     modules = [
+        "🏠 Study Dashboard",
         "📚 Master Goethe Word Engine",
         "📖 Core Grammar Practice & Exercises",
         "📖 Goethe A1 Lesen (Reading)",
@@ -310,13 +329,10 @@ if nav_choice == "🏠 Study Dashboard":
         "🐱 Gem AI Tutor"
     ]
 
-    for i, mod_title in enumerate(modules):
-        target_col = col1 if i % 2 == 0 else col2
-        with target_col:
-            if st.button(mod_title, key=f"dash_card_{i}", use_container_width=True, type="primary"):
-                st.session_state.nav_choice = mod_title
-                st.rerun()
-            st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+    for mod_title in modules:
+        if st.button(mod_title, key=f"dash_card_{mod_title}", use_container_width=True):
+            st.session_state.nav_choice = mod_title
+            st.rerun()
 
 # ----------------------------------------------------
 # 2. MASTER GOETHE WORD ENGINE
