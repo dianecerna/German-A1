@@ -21,6 +21,10 @@ st.set_page_config(
 # Custom Styling: Pastel Blue background, Dark Navy headers, Pastel Framed Elements
 st.markdown("""
 <style>
+/* Completely remove Streamlit's native header toggle area where the text fallback appears */
+header[data-testid="stHeader"] {
+    display: none !important;
+}
     /* Global Clean Modern Sans-Serif Font & Pastel Blue Background */
     .stApp {
         background-color: #e0f2fe !important;
