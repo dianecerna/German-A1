@@ -192,7 +192,7 @@ st.markdown("""
         color: #fef08a !important;
     }
 
-    /* DYNAMIC FLASHCARD SECTION (EXACTLY UNTOUCHED COLOR RULES PER INSTRUCTION) */
+    /* DYNAMIC FLASHCARD SECTION */
     .card-masculine-container {
         background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
         border: 2px solid #2563eb;
@@ -350,6 +350,30 @@ for cat, w_list in A1_VOCABULARY_DATABASE.items():
         all_words_set.update(w_list)
 A1_VOCABULARY_DATABASE["ALL"] = list(all_words_set)
 
+# Persistent Memorized Word Bank Storage State
+if "memorized_words_dict" not in st.session_state:
+    st.session_state.memorized_words_dict = {}
+
+# Quiz State Management
+if "quiz_active" not in st.session_state:
+    st.session_state.quiz_active = False
+if "quiz_mode" not in st.session_state:
+    st.session_state.quiz_mode = None  # "German to English" or "English to German"
+if "quiz_questions" not in st.session_state:
+    st.session_state.quiz_questions = []
+if "quiz_current_index" not in st.session_state:
+    st.session_state.quiz_current_index = 0
+if "quiz_round_score" not in st.session_state:
+    st.session_state.quiz_round_score = 0
+if "quiz_total_score" not in st.session_state:
+    st.session_state.quiz_total_score = 0
+if "quiz_total_answered" not in st.session_state:
+    st.session_state.quiz_total_answered = 0
+if "quiz_round_complete" not in st.session_state:
+    st.session_state.quiz_round_complete = False
+if "quiz_awaiting_next_round_prompt" not in st.session_state:
+    st.session_state.quiz_awaiting_next_round_prompt = False
+
 # Navigation State Management
 if "nav_choice" not in st.session_state:
     st.session_state.nav_choice = "🏠 Study Dashboard"
@@ -393,6 +417,7 @@ if nav_choice == "🏠 Study Dashboard":
         "✍️ Goethe A1 Schreiben (Writing)",
         "🗣️ Goethe A1 Sprechen (Speaking)",
         "📖 A1 & A2 Short Stories",
+        "📖 Vocabulary",
         "🐱 Gem AI Tutor"
     ]
 
@@ -426,6 +451,20 @@ elif nav_choice == "📚 Master Goethe Word Engine":
     current_word_list = A1_VOCABULARY_DATABASE[st.session_state.vocab_category]
     if not current_word_list:
         current_word_list = ["sein"]
+
+    # --- ALPHABETICALLY SORTED WORD DROPDOWN BELOW CATEGORY DROPDOWN ---
+    sorted_current_words = sorted(current_word_list)
+    active_word = current_word_list[st.session_state.vocab_index]
+    if active_word not in sorted_current_words:
+        active_word = sorted_current_words[0]
+
+    selected_word_dropdown = st.selectbox("Select Word (Sorted Alphabetically):", sorted_current_words, index=sorted_current_words.index(active_word), key="word_alpha_dropdown", label_visibility="collapsed")
+    if selected_word_dropdown != active_word:
+        st.session_state.vocab_index = current_word_list.index(selected_word_dropdown)
+        st.session_state.is_card_flipped = False
+        st.rerun()
+
+    st.markdown("<div style='height: 6px;'></div>", unsafe_allow_html=True)
 
     if st.session_state.vocab_index >= len(current_word_list):
         st.session_state.vocab_index = 0
@@ -634,6 +673,24 @@ elif nav_choice == "📚 Master Goethe Word Engine":
             st.session_state.is_card_flipped = False
             st.rerun()
 
+    st.markdown("<div style='height: 4px;'></div>", unsafe_allow_html=True)
+
+    # --- "MEMORIZED" BUTTON BELOW "NEXT" BUTTON TO TAG WORD ---
+    word_key = active_word.strip()
+    is_already_memorized = word_key in st.session_state.memorized_words_dict
+
+    if not is_already_memorized:
+        if st.button("Memorized", use_container_width=True, key="tag_memorized_btn"):
+            st.session_state.memorized_words_dict[word_key] = data.get("english_meaning", "N/A")
+            st.success(f"Successfully added '{word_key}' to your Vocabulary word bank!")
+            time.sleep(0.6)
+            st.rerun()
+    else:
+        st.markdown('<div style="text-align: center; color: #34d399; font-weight: 700; padding: 8px;">✅ This word is in your Vocabulary Word Bank</div>', unsafe_allow_html=True)
+        if st.button("Remove from Memorized", use_container_width=True, key="remove_memorized_btn"):
+            del st.session_state.memorized_words_dict[word_key]
+            st.rerun()
+
 # ----------------------------------------------------
 # 3. CORE GRAMMAR PRACTICE & EXERCISES
 # ----------------------------------------------------
@@ -695,7 +752,147 @@ elif nav_choice == "📖 A1 & A2 Short Stories":
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
-# 9. GEM AI TUTOR
+# 9. VOCABULARY SECTION (MEMORIZED WORDS & QUIZ ME)
+# ----------------------------------------------------
+elif nav_choice == "📖 Vocabulary":
+    render_top_back_button()
+    st.markdown('<div class="section-header-box">📖 Vocabulary Word Bank</div>', unsafe_allow_html=True)
+    
+    # --- QUIZ ME INTERACTIVE WIDGET AT THE TOP ---
+    st.markdown('<div class="main-card">', unsafe_allow_html=True)
+    st.markdown("### 🧠 Quiz Me Challenge")
+    
+    memorized_items = list(st.session_state.memorized_words_dict.items())
+    
+    if len(memorized_items) < 3:
+        st.info("💡 **Tip:** You need at least 3 words tagged as **Memorized** in the *Master Goethe Word Engine* section to start a meaningful quiz session. Explore words and tag them as memorized to build your vocabulary bank!")
+    else:
+        if not st.session_state.quiz_active and not st.session_state.quiz_awaiting_next_round_prompt:
+            st.markdown("Test your translation and memory retention with an interactive flashcard quiz.")
+            quiz_choice_mode = st.selectbox("Select Quiz Mode:", ["German to English", "English to German"], key="quiz_mode_select")
+            if st.button("🚀 Start Quiz (10 Words)", key="start_quiz_btn"):
+                st.session_state.quiz_mode = quiz_choice_mode
+                selected_sample = random.sample(memorized_items, min(10, len(memorized_items)))
+                st.session_state.quiz_questions = selected_sample
+                st.session_state.quiz_current_index = 0
+                st.session_state.quiz_round_score = 0
+                st.session_state.quiz_round_complete = False
+                st.session_state.quiz_active = True
+                st.rerun()
+
+        # Active Quiz Session Loop
+        elif st.session_state.quiz_active and not st.session_state.quiz_round_complete:
+            q_list = st.session_state.quiz_questions
+            idx = st.session_state.quiz_current_index
+            
+            if idx < len(q_list):
+                german_word, english_meaning = q_list[idx]
+                st.markdown(f"**Question {idx + 1} of {len(q_list)}** (Mode: *{st.session_state.quiz_mode}*)")
+                
+                if st.session_state.quiz_mode == "German to English":
+                    st.markdown(f"Translate this German word to English: **{german_word}**")
+                    user_ans = st.text_input("Your English translation:", key=f"quiz_ans_{idx}")
+                    submit_disabled = not user_ans.strip()
+                    if st.button("Submit Answer", key=f"submit_q_{idx}", disabled=submit_disabled):
+                        correct = english_meaning.strip().lower()
+                        given = user_ans.strip().lower()
+                        if given in correct or correct in given:
+                            st.success(f"✅ Correct! '{german_word}' means '{english_meaning}'.")
+                            st.session_state.quiz_round_score += 1
+                        else:
+                            st.error(f"❌ Incorrect. Correct translation for **{german_word}** is **{english_meaning}**.")
+                        
+                        time.sleep(1.2)
+                        st.session_state.quiz_current_index += 1
+                        st.rerun()
+                else:
+                    st.markdown(f"Translate this English word to German: **{english_meaning}**")
+                    user_ans = st.text_input("Your German translation:", key=f"quiz_ans_{idx}")
+                    submit_disabled = not user_ans.strip()
+                    if st.button("Submit Answer", key=f"submit_q_{idx}", disabled=submit_disabled):
+                        correct = german_word.strip().lower()
+                        given = user_ans.strip().lower()
+                        if given in correct or correct in given:
+                            st.success(f"✅ Correct! '{english_meaning}' in German is '{german_word}'.")
+                            st.session_state.quiz_round_score += 1
+                        else:
+                            st.error(f"❌ Incorrect. Correct German translation for **{english_meaning}** is **{german_word}**.")
+                        
+                        time.sleep(1.2)
+                        st.session_state.quiz_current_index += 1
+                        st.rerun()
+            else:
+                # Round finished
+                r_score = st.session_state.quiz_round_score
+                r_total = len(q_list)
+                st.session_state.quiz_total_score += r_score
+                st.session_state.quiz_total_answered += r_total
+                st.session_state.quiz_round_complete = True
+                st.session_state.quiz_awaiting_next_round_prompt = True
+                st.session_state.quiz_active = False
+                st.rerun()
+
+        # Prompting for another round of 10 words
+        elif st.session_state.quiz_awaiting_next_round_prompt:
+            r_total = len(st.session_state.quiz_questions)
+            r_score = st.session_state.quiz_round_score
+            st.markdown(f"### 📊 Round Complete! Scored {r_score}/{r_total}")
+            st.markdown(f"**Cumulative Score So Far:** {st.session_state.quiz_total_score}/{st.session_state.quiz_total_answered}")
+            st.markdown("Would you like to go for another round of 10 words?")
+            
+            c_yes, c_no = st.columns(2)
+            with c_yes:
+                if st.button("Yes", key="quiz_yes_btn"):
+                    selected_sample = random.sample(memorized_items, min(10, len(memorized_items)))
+                    st.session_state.quiz_questions = selected_sample
+                    st.session_state.quiz_current_index = 0
+                    st.session_state.quiz_round_score = 0
+                    st.session_state.quiz_round_complete = False
+                    st.session_state.quiz_awaiting_next_round_prompt = False
+                    st.session_state.quiz_active = True
+                    st.rerun()
+            with c_no:
+                if st.button("No", key="quiz_no_btn"):
+                    final_score = st.session_state.quiz_total_score
+                    final_total = st.session_state.quiz_total_answered
+                    st.success(f"🎉 Quiz finished! Total score tallied: **Scored {final_score}/{final_total}**.")
+                    # Reset quiz session states
+                    st.session_state.quiz_active = False
+                    st.session_state.quiz_round_complete = False
+                    st.session_state.quiz_awaiting_next_round_prompt = False
+                    st.session_state.quiz_total_score = 0
+                    st.session_state.quiz_total_answered = 0
+                    time.sleep(1.5)
+                    st.rerun()
+
+    st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+
+    # --- MEMORIZED WORDS WORD BANK DISPLAY (ALPHABETICAL SORT) ---
+    st.markdown('<div class="main-card">', unsafe_allow_html=True)
+    st.markdown("### 📚 Memorized Word Bank")
+    st.markdown("Here are all the words you have tagged as **Memorized** in the *Master Goethe Word Engine*, sorted in alphabetical order:")
+    
+    if not st.session_state.memorized_words_dict:
+        st.info("Your word bank is currently empty. Visit **Master Goethe Word Engine**, review flashcards, and click **Memorized** to build your vocabulary list.")
+    else:
+        sorted_memorized = sorted(st.session_state.memorized_words_dict.items(), key=lambda x: x[0].lower())
+        
+        col_h1, col_h2 = st.columns([1, 1])
+        col_h1.markdown("**German Word**")
+        col_h2.markdown("**English Translation**")
+        st.markdown("<hr style='border-color: rgba(244, 114, 182, 0.3); margin: 6px 0;'>", unsafe_allow_html=True)
+        
+        for g_word, e_trans in sorted_memorized:
+            rc1, rc2 = st.columns([1, 1])
+            rc1.markdown(f"**{g_word}**")
+            rc2.markdown(f"{e_trans}")
+            st.markdown("<hr style='border-color: rgba(244, 114, 182, 0.15); margin: 4px 0;'>", unsafe_allow_html=True)
+            
+    st.markdown('</div>', unsafe_allow_html=True)
+
+# ----------------------------------------------------
+# 10. GEM AI TUTOR
 # ----------------------------------------------------
 elif nav_choice == "🐱 Gem AI Tutor":
     render_top_back_button()
