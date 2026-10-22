@@ -2251,15 +2251,20 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
     with l_tab1:
         st.markdown("**Teil 1 (Kurze Mitteilungen):** Select from all 9 official Goethe A1 practice scenarios. Read two short messages/emails and determine if the 5 statements are Richtig or Falsch.")
         
-        if "dyn_lesen_t1" not in st.session_state:
+        if "dyn_lesen_t1" not in st.session_state or not isinstance(st.session_state.dyn_lesen_t1, list):
             st.session_state.dyn_lesen_t1 = list(LESEN_TEIL1_SCENARIOS)
+
+        valid_lesen_t1 = [s for s in st.session_state.dyn_lesen_t1 if isinstance(s, dict) and "title" in s]
+        if not valid_lesen_t1:
+            valid_lesen_t1 = list(LESEN_TEIL1_SCENARIOS)
+            st.session_state.dyn_lesen_t1 = valid_lesen_t1
 
         col_lt1_sel, col_lt1_ref = st.columns([4, 1])
         with col_lt1_sel:
-            selected_lesen_t1_title = st.selectbox("📂 Select Lesen Teil 1 Scenario Set:", [s["title"] for s in st.session_state.dyn_lesen_t1], key="lesen_t1_sel")
+            selected_lesen_t1_title = st.selectbox("📂 Select Lesen Teil 1 Scenario Set:", [s["title"] for s in valid_lesen_t1], key="lesen_t1_sel")
         with col_lt1_ref:
             st.markdown("<div style='height: 28px;'></div>", unsafe_allow_html=True)
-            if st.button("🔄 Refresh Scenarios", key="ref_lesen_t1", use_container_width=True):
+            if st.button("Refresh Scenarios", key="ref_lesen_t1", use_container_width=True):
                 with st.spinner("Generating fresh scenarios via AI..."):
                     try:
                         prompt = "Generate 3 brand new alternative Goethe A1 Lesen Teil 1 scenario sets (two short texts/messages each with 5 Richtig/Falsch statements and explanations) in strict JSON list format matching LESEN_TEIL1_SCENARIOS schema."
@@ -2271,7 +2276,7 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
                     except Exception as e:
                         st.error(f"Failed to refresh: {str(e)}")
 
-        selected_lesen_t1_obj = next(s for s in st.session_state.dyn_lesen_t1 if s["title"] == selected_lesen_t1_title)
+        selected_lesen_t1_obj = next((s for s in valid_lesen_t1 if s["title"] == selected_lesen_t1_title), valid_lesen_t1[0])
         
         st.info(f"📌 **Description:** {selected_lesen_t1_obj['desc']}")
 
@@ -2313,15 +2318,20 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
     with l_tab2:
         st.markdown("**Teil 2 (Zuordnung / Classified Ads):** Select from all 9 official Goethe A1 practice scenarios. Match 5 user situations to website options A or B.")
         
-        if "dyn_lesen_t2" not in st.session_state:
+        if "dyn_lesen_t2" not in st.session_state or not isinstance(st.session_state.dyn_lesen_t2, list):
             st.session_state.dyn_lesen_t2 = list(LESEN_TEIL2_SCENARIOS)
+
+        valid_lesen_t2 = [s for s in st.session_state.dyn_lesen_t2 if isinstance(s, dict) and "title" in s]
+        if not valid_lesen_t2:
+            valid_lesen_t2 = list(LESEN_TEIL2_SCENARIOS)
+            st.session_state.dyn_lesen_t2 = valid_lesen_t2
 
         col_lt2_sel, col_lt2_ref = st.columns([4, 1])
         with col_lt2_sel:
-            selected_lesen_t2_title = st.selectbox("📂 Select Lesen Teil 2 Scenario Set:", [s["title"] for s in st.session_state.dyn_lesen_t2], key="lesen_t2_sel")
+            selected_lesen_t2_title = st.selectbox("📂 Select Lesen Teil 2 Scenario Set:", [s["title"] for s in valid_lesen_t2], key="lesen_t2_sel")
         with col_lt2_ref:
             st.markdown("<div style='height: 28px;'></div>", unsafe_allow_html=True)
-            if st.button("🔄 Refresh Scenarios", key="ref_lesen_t2", use_container_width=True):
+            if st.button("Refresh Scenarios", key="ref_lesen_t2", use_container_width=True):
                 with st.spinner("Generating fresh scenarios via AI..."):
                     try:
                         prompt = "Generate 3 brand new alternative Goethe A1 Lesen Teil 2 scenario sets (user situations matched against Website A and Website B options) in strict JSON list format matching LESEN_TEIL2_SCENARIOS schema."
@@ -2333,7 +2343,7 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
                     except Exception as e:
                         st.error(f"Failed to refresh: {str(e)}")
 
-        selected_lesen_t2_obj = next(s for s in st.session_state.dyn_lesen_t2 if s["title"] == selected_lesen_t2_title)
+        selected_lesen_t2_obj = next((s for s in valid_lesen_t2 if s["title"] == selected_lesen_t2_title), valid_lesen_t2[0])
         
         st.info(f"📌 **Description:** {selected_lesen_t2_obj['desc']}")
 
@@ -2377,15 +2387,20 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
     with l_tab3:
         st.markdown("**Teil 3 (Öffentliche Hinweise / Public Signs):** Select from all 9 official Goethe A1 practice scenarios. Read public signs and notices and determine if statements are Richtig or Falsch.")
         
-        if "dyn_lesen_t3" not in st.session_state:
+        if "dyn_lesen_t3" not in st.session_state or not isinstance(st.session_state.dyn_lesen_t3, list):
             st.session_state.dyn_lesen_t3 = list(LESEN_TEIL3_SCENARIOS)
+
+        valid_lesen_t3 = [s for s in st.session_state.dyn_lesen_t3 if isinstance(s, dict) and "title" in s]
+        if not valid_lesen_t3:
+            valid_lesen_t3 = list(LESEN_TEIL3_SCENARIOS)
+            st.session_state.dyn_lesen_t3 = valid_lesen_t3
 
         col_lt3_sel, col_lt3_ref = st.columns([4, 1])
         with col_lt3_sel:
-            selected_lesen_t3_title = st.selectbox("📂 Select Lesen Teil 3 Scenario Set:", [s["title"] for s in st.session_state.dyn_lesen_t3], key="lesen_t3_sel")
+            selected_lesen_t3_title = st.selectbox("📂 Select Lesen Teil 3 Scenario Set:", [s["title"] for s in valid_lesen_t3], key="lesen_t3_sel")
         with col_lt3_ref:
             st.markdown("<div style='height: 28px;'></div>", unsafe_allow_html=True)
-            if st.button("🔄 Refresh Scenarios", key="ref_lesen_t3", use_container_width=True):
+            if st.button("Refresh Scenarios", key="ref_lesen_t3", use_container_width=True):
                 with st.spinner("Generating fresh scenarios via AI..."):
                     try:
                         prompt = "Generate 3 brand new alternative Goethe A1 Lesen Teil 3 scenario sets (public signs, notices, and corresponding Richtig/Falsch statements) in strict JSON list format matching LESEN_TEIL3_SCENARIOS schema."
@@ -2397,7 +2412,7 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
                     except Exception as e:
                         st.error(f"Failed to refresh: {str(e)}")
 
-        selected_lesen_t3_obj = next(s for s in st.session_state.dyn_lesen_t3 if s["title"] == selected_lesen_t3_title)
+        selected_lesen_t3_obj = next((s for s in valid_lesen_t3 if s["title"] == selected_lesen_t3_title), valid_lesen_t3[0])
         
         st.info(f"📌 **Description:** {selected_lesen_t3_obj['desc']}")
 
@@ -2601,15 +2616,20 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
     with s_tab1:
         st.markdown("**Teil 1 (Formular):** Select from all 9 official Goethe A1 practice scenarios. Fill in the 5 missing information gaps exactly like the official Goethe-Zertifikat A1 exam interface.")
         
-        if "dyn_schreiben_t1" not in st.session_state:
+        if "dyn_schreiben_t1" not in st.session_state or not isinstance(st.session_state.dyn_schreiben_t1, list):
             st.session_state.dyn_schreiben_t1 = list(SCHREIBEN_TEIL1_SCENARIOS)
+
+        valid_schreiben_t1 = [s for s in st.session_state.dyn_schreiben_t1 if isinstance(s, dict) and "title" in s]
+        if not valid_schreiben_t1:
+            valid_schreiben_t1 = list(SCHREIBEN_TEIL1_SCENARIOS)
+            st.session_state.dyn_schreiben_t1 = valid_schreiben_t1
 
         col_st1_sel, col_st1_ref = st.columns([4, 1])
         with col_st1_sel:
-            selected_schreiben_t1_title = st.selectbox("📂 Select Schreiben Teil 1 Scenario Set:", [s["title"] for s in st.session_state.dyn_schreiben_t1])
+            selected_schreiben_t1_title = st.selectbox("📂 Select Schreiben Teil 1 Scenario Set:", [s["title"] for s in valid_schreiben_t1], key="schreiben_t1_sel")
         with col_st1_ref:
             st.markdown("<div style='height: 28px;'></div>", unsafe_allow_html=True)
-            if st.button("🔄 Refresh Scenarios", key="ref_schreiben_t1", use_container_width=True):
+            if st.button("Refresh Scenarios", key="ref_schreiben_t1", use_container_width=True):
                 with st.spinner("Generating fresh scenarios via AI..."):
                     try:
                         prompt = "Generate 3 brand new alternative Goethe A1 Schreiben Teil 1 scenario sets (form filling with 5 missing gaps and scenario description) in strict JSON list format matching SCHREIBEN_TEIL1_SCENARIOS schema."
@@ -2621,7 +2641,7 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
                     except Exception as e:
                         st.error(f"Failed to refresh: {str(e)}")
 
-        selected_schreiben_t1_obj = next(s for s in st.session_state.dyn_schreiben_t1 if s["title"] == selected_schreiben_t1_title)
+        selected_schreiben_t1_obj = next((s for s in valid_schreiben_t1 if s["title"] == selected_schreiben_t1_title), valid_schreiben_t1[0])
         
         st.markdown(f"""
         <div style="background: #f1f5f9; border-left: 5px solid #8b5cf6; padding: 16px; border-radius: 8px; margin-bottom: 20px;">
@@ -2673,15 +2693,20 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
     with s_tab2:
         st.markdown("**Teil 2 (Mitteilung):** Select from all 9 official Goethe A1 practice scenarios. Write an email (~30 words) hitting all 3 required points.")
         
-        if "dyn_schreiben_t2" not in st.session_state:
+        if "dyn_schreiben_t2" not in st.session_state or not isinstance(st.session_state.dyn_schreiben_t2, list):
             st.session_state.dyn_schreiben_t2 = list(SCHREIBEN_TEIL2_SCENARIOS)
+
+        valid_schreiben_t2 = [s for s in st.session_state.dyn_schreiben_t2 if isinstance(s, dict) and "title" in s]
+        if not valid_schreiben_t2:
+            valid_schreiben_t2 = list(SCHREIBEN_TEIL2_SCENARIOS)
+            st.session_state.dyn_schreiben_t2 = valid_schreiben_t2
 
         col_st2_sel, col_st2_ref = st.columns([4, 1])
         with col_st2_sel:
-            selected_schreiben_t2_title = st.selectbox("📂 Select Schreiben Teil 2 Scenario Set:", [s["title"] for s in st.session_state.dyn_schreiben_t2], key="schreiben_t2_select")
+            selected_schreiben_t2_title = st.selectbox("📂 Select Schreiben Teil 2 Scenario Set:", [s["title"] for s in valid_schreiben_t2], key="schreiben_t2_select")
         with col_st2_ref:
             st.markdown("<div style='height: 28px;'></div>", unsafe_allow_html=True)
-            if st.button("🔄 Refresh Scenarios", key="ref_schreiben_t2", use_container_width=True):
+            if st.button("Refresh Scenarios", key="ref_schreiben_t2", use_container_width=True):
                 with st.spinner("Generating fresh scenarios via AI..."):
                     try:
                         prompt = "Generate 3 brand new alternative Goethe A1 Schreiben Teil 2 scenario sets (message writing task with 3 required points and sample answer) in strict JSON list format matching SCHREIBEN_TEIL2_SCENARIOS schema."
@@ -2693,7 +2718,7 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
                     except Exception as e:
                         st.error(f"Failed to refresh: {str(e)}")
 
-        selected_schreiben_t2_obj = next(s for s in st.session_state.dyn_schreiben_t2 if s["title"] == selected_schreiben_t2_title)
+        selected_schreiben_t2_obj = next((s for s in valid_schreiben_t2 if s["title"] == selected_schreiben_t2_title), valid_schreiben_t2[0])
         
         st.markdown(f"""
         <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.02);">
