@@ -17,23 +17,23 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Custom Warm Minimalist Kitchen Aesthetic Theme with Sunflower Wallpaper Background
+# Custom Sunflower Wallpaper & Deep Purple/Magenta Gradient Glow Theme
 st.markdown("""
 <style>
-    /* Global Soft Cream Background & Sunflower Wallpaper Overlay */
+    /* Global Sunflower Wallpaper Background with Dark Warm Overlay */
     .stApp {
-        background: linear-gradient(rgba(252, 249, 246, 0.88), rgba(252, 249, 246, 0.88)), 
+        background: linear-gradient(rgba(248, 250, 252, 0.90), rgba(248, 250, 252, 0.90)), 
                     url("https://images.unsplash.com/photo-1597848212624-a19eb35e2651?auto=format&fit=crop&w=2000&q=80") !important;
         background-size: cover !important;
         background-position: center !important;
         background-attachment: fixed !important;
-        color: #2d3748 !important;
+        color: #1e293b !important;
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
     }
     
     *, div, span, p, h1, h2, h3, h4, h5, h6, label {
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
-        color: #2d3748;
+        color: #1e293b;
     }
 
     /* Hide Sidebar Completely */
@@ -52,28 +52,28 @@ st.markdown("""
         gap: 0.8rem !important;
     }
 
-    /* Clean Warm Minimalist Custom Button Styling */
+    /* Magenta & Deep Purple Gradient Custom Button Styling */
     .stButton > button {
         width: 100% !important;
-        background-color: #ffffff !important;
-        border: 1px solid #cbd5e1 !important;
-        border-radius: 8px !important;
+        background: linear-gradient(135deg, #7e22ce 0%, #db2777 100%) !important;
+        border: 1px solid rgba(219, 39, 119, 0.4) !important;
+        border-radius: 10px !important;
         padding: 10px 16px !important;
         text-align: center !important;
         font-size: 0.95rem !important;
-        font-weight: 600 !important;
-        color: #334155 !important;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+        font-weight: 700 !important;
+        color: #ffffff !important;
+        box-shadow: 0 4px 15px rgba(126, 34, 206, 0.25) !important;
         transition: all 0.2s ease !important;
         margin-bottom: 4px !important;
     }
     
     .stButton > button:hover {
-        background-color: #f8fafc !important;
-        border-color: #94a3b8 !important;
+        background: linear-gradient(135deg, #9333ea 0%, #e11d48 100%) !important;
+        border-color: #f43f5e !important;
         transform: translateY(-1px);
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05) !important;
-        color: #0f172a !important;
+        box-shadow: 0 6px 20px rgba(219, 39, 119, 0.4) !important;
+        color: #ffffff !important;
     }
 
     /* Compact Main Content Cards / Containers */
@@ -84,59 +84,64 @@ st.markdown("""
         padding: 20px 24px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
         margin-bottom: 12px;
-        border: 1px solid #e2e8f0;
+        border: 1px solid rgba(126, 34, 206, 0.2);
     }
     
-    /* Hero Banner */
+    /* Hero Banner with Purple/Magenta Glow Border */
     .hero-banner {
-        background: rgba(255, 255, 255, 0.95);
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(253, 242, 248, 0.95) 100%);
         backdrop-filter: blur(8px);
         border-radius: 12px;
         padding: 24px;
-        color: #2d3748;
+        color: #1e293b;
         margin-bottom: 16px;
-        border: 1px solid #e2e8f0;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+        border: 2px solid #7e22ce;
+        box-shadow: 0 8px 25px rgba(126, 34, 206, 0.15);
     }
     .hero-badge {
         display: inline-block;
-        background: #f1f5f9;
-        border: 1px solid #cbd5e1;
+        background: #fdf2f8;
+        border: 1px solid #f43f5e;
         padding: 4px 12px;
         border-radius: 6px;
         font-size: 0.75rem;
         font-weight: 700;
         letter-spacing: 0.05em;
         margin-bottom: 8px;
-        color: #475569;
+        color: #be185d;
     }
     .hero-title {
         font-size: 2rem;
         font-weight: 800;
         letter-spacing: -0.025em;
         margin-bottom: 4px;
-        color: #1e293b;
+        background: linear-gradient(90deg, #7e22ce 0%, #db2777 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
     }
     .hero-subtitle {
         font-size: 0.95rem;
-        color: #64748b;
+        color: #475569;
         line-height: 1.4;
         margin-bottom: 0px;
         font-weight: 500;
     }
 
-    /* Section Header Box */
+    /* Section Header Box with Purple/Magenta Accent */
     .section-header-box {
         background: rgba(255, 255, 255, 0.95);
         backdrop-filter: blur(8px);
-        border: 1px solid #e2e8f0;
+        border-left: 5px solid #7e22ce;
+        border-top: 1px solid #e2e8f0;
+        border-right: 1px solid #e2e8f0;
+        border-bottom: 1px solid #e2e8f0;
         border-radius: 10px;
         padding: 12px 18px;
         margin-bottom: 12px;
-        color: #1e293b;
+        color: #7e22ce;
         font-size: 1.2rem;
         font-weight: 800;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+        box-shadow: 0 4px 15px rgba(126, 34, 206, 0.1);
     }
 
     /* Clean Minimalist Dropdown Box Design */
@@ -146,15 +151,15 @@ st.markdown("""
     }
     .stSelectbox div[data-baseweb="select"] > div {
         background-color: #ffffff !important;
-        border: 1px solid #cbd5e1 !important;
+        border: 1px solid #7e22ce !important;
         border-radius: 8px !important;
         color: #1e293b !important;
         padding: 8px 14px !important;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+        box-shadow: 0 4px 15px rgba(126, 34, 206, 0.1) !important;
         min-height: 44px !important;
     }
     .stSelectbox div[data-baseweb="select"] > div:hover {
-        border-color: #94a3b8 !important;
+        border-color: #db2777 !important;
     }
     .stSelectbox span, .stSelectbox div[data-baseweb="select"] span {
         color: #1e293b !important;
@@ -165,7 +170,7 @@ st.markdown("""
     /* Open Dropdown Popup List Container & Options */
     div[data-baseweb="menu"] {
         background-color: #ffffff !important;
-        border: 1px solid #cbd5e1 !important;
+        border: 1px solid #7e22ce !important;
         border-radius: 8px !important;
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
     }
@@ -182,14 +187,15 @@ st.markdown("""
         color: #1e293b !important;
     }
     div[data-baseweb="menu"] li:hover, div[data-baseweb="menu"] div[aria-selected="true"] {
-        background-color: #f1f5f9 !important;
-        color: #0f172a !important;
+        background-color: #fdf2f8 !important;
+        color: #7e22ce !important;
     }
 
     /* Clean Grouped Card Section for Back of Flashcard (No extra outer wrapper/white box) */
     .content-group {
         background: #ffffff;
         border: 1px solid #e2e8f0;
+        border-left: 4px solid #db2777;
         border-radius: 10px;
         padding: 16px 20px;
         margin-bottom: 16px;
@@ -198,44 +204,44 @@ st.markdown("""
 
     /* Gender-based Flashcard Containers */
     .flashcard-masculine {
-        background: #eff6ff;
+        background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
         border: 2px solid #3b82f6;
         color: #1e3a8a;
         border-radius: 14px;
         padding: 24px 16px;
         text-align: center;
-        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);
-        margin-bottom: 16px;
+        box-shadow: 0 6px 20px rgba(59, 130, 246, 0.15);
+        margin-bottom: 12px;
     }
     .flashcard-feminine {
-        background: #fff1f2;
+        background: linear-gradient(135deg, #fff1f2 0%, #ffe4e6 100%);
         border: 2px solid #f43f5e;
         color: #881337;
         border-radius: 14px;
         padding: 24px 16px;
         text-align: center;
-        box-shadow: 0 4px 12px rgba(244, 63, 94, 0.1);
-        margin-bottom: 16px;
+        box-shadow: 0 6px 20px rgba(244, 63, 94, 0.15);
+        margin-bottom: 12px;
     }
     .flashcard-neuter {
-        background: #f0fdf4;
+        background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
         border: 2px solid #10b981;
         color: #064e3b;
         border-radius: 14px;
         padding: 24px 16px;
         text-align: center;
-        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.1);
-        margin-bottom: 16px;
+        box-shadow: 0 6px 20px rgba(16, 185, 129, 0.15);
+        margin-bottom: 12px;
     }
     .flashcard-other {
-        background: #fffbeb;
+        background: linear-gradient(135deg, #fffbeb50 0%, #fef3c750 100%);
         border: 2px solid #f59e0b;
         color: #78350f;
         border-radius: 14px;
         padding: 24px 16px;
         text-align: center;
-        box-shadow: 0 4px 12px rgba(245, 158, 11, 0.1);
-        margin-bottom: 16px;
+        box-shadow: 0 6px 20px rgba(245, 158, 11, 0.15);
+        margin-bottom: 12px;
     }
     .flashcard-word-title {
         font-size: 2.5rem;
@@ -248,7 +254,7 @@ st.markdown("""
     [data-testid="stMetricValue"] {
         font-size: 1.1rem !important;
         font-weight: 700 !important;
-        color: #0f172a !important;
+        color: #7e22ce !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -265,7 +271,7 @@ FALLBACK_MODELS = ["gemini-3.8-flash", "gemini-3.5-flash-lite"]
 SYSTEM_INSTRUCTION = """
 You are Gem, an expert German tutor and official Goethe-Institut examiner evaluating candidates for the Goethe-Zertifikat A1 exam.
 Follow standard CEFR A1 learning objectives and exhaustive Goethe-Zertifikat A1 vocabulary standards.
-Provide accurate grammatical breakdowns, exact plurals, case usages, conjugations, and always provide sentences for each pronoun even for nouns or other parts of speech. Never leave fields as blank or N/A in conjugations.
+Provide accurate grammatical breakdowns, exact plurals, case usages, conjugations, komparativ/superlative, and always provide sentences for each pronoun even for nouns or other parts of speech. Never leave fields as blank or N/A in conjugations.
 """
 
 @st.cache_data(show_spinner=False)
@@ -312,7 +318,7 @@ A1_VOCABULARY_DATABASE = {
     "ALL": [],
     "allgemein": ["sein", "haben", "werden", "gut", "ja", "nein", "nicht", "sehr", "und", "oder", "aber", "also", "hier", "da", "was", "wer", "wie", "wo", "woher", "wohin"],
     "arbeit_und_beruf": ["arbeiten", "der Beruf", "die Firma", "das Büro", "der Kollege", "die Kollegin", "der Chef", "die Chefin", "die Arbeit", "der Job", "der Termin", "die Pause", "verdienen", "schreiben", "anrufen", "der Computer", "das Telefon", "die E-Mail", "der Brief", "die Besprechung"],
-    "mensch_und_koerper": ["die Familie", "der Vater", "die Mutter", "der Sohn", "die Tochter", "der Bruder", "die Schwester", "die Eltern", "das Kind", "der Mensch", "der Freund", "die Freundin", "die Person", "der Name", "das Alter", "der Kopf", "das Auge", "das Ohr", "die Hand", "der Fuß"],
+    "mensch_und_koerper": ["die Familie", "der Vater", "die Mutter", "der Sohn", "die Tochter", "der Bruder", "die Schwester", "der Eltern", "das Kind", "der Mensch", "der Freund", "die Freundin", "die Person", "der Name", "das Alter", "der Kopf", "das Auge", "das Ohr", "die Hand", "der Fuß"],
     "wohnen_und_haushalt": ["das Haus", "die Wohnung", "das Zimmer", "das Küche", "das Bad", "das Schlafzimmer", "das Wohnzimmer", "die Tür", "das Fenster", "der Tisch", "der Stuhl", "das Bett", "die Lampe", "wohnen", "mieten", "der Schlüssel", "der Garten", "der Balkon", "die Miete", "umziehen"],
     "essen_und_trinken": ["das Essen", "das Wasser", "der Kaffee", "der Tee", "die Milch", "das Brot", "das Fleisch", "der Fisch", "das Obst", "das Gemüse", "essen", "trinken", "kochen", "backen", "das Restaurant", "der Hunger", "der Durst", "das Frühstück", "das Mittagessen", "das Abendessen"],
     "freizeit_und_hobbys": ["das Hobby", "spielen", "lesen", "schwimmen", "reisen", "fotografieren", "der Sport", "das Buch", "die Musik", "tanzen", "singen", "malen", "der Film", "das Kino", "das Theater", "wandern", "joggen", "treffen", "lachen", "fernsehen"],
@@ -388,9 +394,7 @@ elif nav_choice == "📚 Master Goethe Word Engine":
     render_top_back_button()
     st.markdown('<div class="section-header-box">🌻 Master Goethe Word Engine</div>', unsafe_allow_html=True)
     
-    st.markdown("##### 🌻 Categories")
     categories = list(A1_VOCABULARY_DATABASE.keys())
-    
     cat_options = {cat.replace('_', ' ').title(): cat for cat in categories}
     current_display_name = [k for k, v in cat_options.items() if v == st.session_state.vocab_category][0]
     
@@ -414,10 +418,10 @@ elif nav_choice == "📚 Master Goethe Word Engine":
 
     active_word = current_word_list[st.session_state.vocab_index]
 
-    # Fetch structured flashcard data from Gemini ensuring sample sentences for EVERY pronoun even for nouns/other words
+    # Fetch structured flashcard data from Gemini
     prompt = f"""
     Provide exhaustive Goethe A1 flashcard data for the German word/phrase '{active_word}' in category '{st.session_state.vocab_category}'.
-    CRITICAL REQUIREMENT for conjugations: Always provide 6 items (for pronouns ich, du, er/sie/es, wir, ihr, sie/Sie). Even if the word is a noun, preposition, adjective, or non-conjugatable word, provide a natural sample sentence using that exact word with each pronoun (e.g. for noun 'das Haus': 'ich' -> form: '', sentence: 'Ich baue ein Haus', english: 'I am building a house'). Never leave conjugation form blank if it's a verb, but for nouns/other words leave conjugation form blank or put '--' and always provide a valid sentence for every pronoun.
+    CRITICAL REQUIREMENT for conjugations: Always provide 6 items (for pronouns ich, du, er/sie/es, wir, ihr, sie/Sie). Even if the word is a noun, preposition, adjective, or non-conjugatable word, provide a natural sample sentence using that exact word with each nominative pronoun.
     Return strict JSON with this exact schema:
     {{
         "word": "{active_word}",
@@ -431,6 +435,8 @@ elif nav_choice == "📚 Master Goethe Word Engine":
         "partizip_ii": "Partizip II form or N/A",
         "aux_sentence_de": "Sample sentence using auxiliary verb and Partizip II (or usage sentence)",
         "aux_sentence_en": "English translation of auxiliary sentence",
+        "komparativ": "Komparativ form or N/A",
+        "superlative": "Superlative form or N/A",
         "conjugations": [
             {{"pronoun": "ich", "form": "...", "sentence": "...", "english_sentence": "..."}},
             {{"pronoun": "du", "form": "...", "sentence": "...", "english_sentence": "..."}},
@@ -462,6 +468,8 @@ elif nav_choice == "📚 Master Goethe Word Engine":
             "partizip_ii": "N/A",
             "aux_sentence_de": "N/A",
             "aux_sentence_en": "N/A",
+            "komparativ": "N/A",
+            "superlative": "N/A",
             "conjugations": [],
             "colloquial_phrases": [],
             "grammar_notes": str(e)
@@ -477,37 +485,49 @@ elif nav_choice == "📚 Master Goethe Word Engine":
     else:
         card_class = "flashcard-other"
 
-    # --- FRONT OF CARD ---
+    # --- CARD TAP FLIP MECHANISM & DISPLAY ---
+    # We use a button on the card container that toggles st.session_state.is_card_flipped when tapped
     if not st.session_state.is_card_flipped:
-        st.markdown(f"""
+        # Front of Card View
+        card_html_content = f"""
         <div class="{card_class}">
             <p style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">🌻 Category: {data.get("category", "").replace('_', ' ').title()}</p>
             <div class="flashcard-word-title">{data.get("word", active_word)}</div>
             <p style="font-size: 1rem; margin-top: 4px;">Gender / Article: <b>{data.get("gender", "N/A")}</b></p>
-            <p style="font-size: 0.85rem; margin-top: 10px; opacity: 0.8;">Click below to listen or flip card for details.</p>
+            <p style="font-size: 0.85rem; margin-top: 10px; opacity: 0.8;">💡 Tap below to flip card or listen to pronunciation.</p>
         </div>
-        """, unsafe_allow_html=True)
+        """
+        st.markdown(card_html_content, unsafe_allow_html=True)
 
-        if st.button("🔊 Play Pronunciation", key="audio_front_btn"):
-            play_direct_audio(data.get("word", active_word), "front_audio")
+        col_f1, col_f2 = st.columns([1, 1])
+        with col_f1:
+            if st.button("🔊 Pronounce", key="audio_front_btn"):
+                play_direct_audio(data.get("word", active_word), "front_audio")
+        with col_f2:
+            if st.button("🔄 Tap to Flip (Back)", key="flip_to_back_btn"):
+                st.session_state.is_card_flipped = True
+                st.rerun()
 
-        st.markdown("<div style='height: 5px;'></div>", unsafe_allow_html=True)
-        if st.button("🔄 Flip to Back (Show Details)", type="primary", use_container_width=True):
-            st.session_state.is_card_flipped = True
-            st.rerun()
-
-    # --- BACK OF CARD WITH CLEAN GROUPED SECTIONS & COMFORTABLE SPACING ---
     else:
-        st.markdown(f"""
+        # Back of Card View
+        card_html_content = f"""
         <div class="{card_class}">
             <p style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px;">📖 Detailed Breakdown</p>
             <div class="flashcard-word-title" style="font-size: 2.2rem;">{data.get("word", active_word)}</div>
             <p style="font-size: 1.2rem; font-weight: 700; margin-bottom: 0px;">Meaning: {data.get("english_meaning", "")}</p>
+            <p style="font-size: 0.85rem; margin-top: 8px; opacity: 0.8;">💡 Tap below to flip back to front.</p>
         </div>
-        """, unsafe_allow_html=True)
+        """
+        st.markdown(card_html_content, unsafe_allow_html=True)
 
-        if st.button("🔊 Pronounce Word", key="audio_back_word"):
-            play_direct_audio(data.get("word", active_word), "back_audio")
+        col_b1, col_b2 = st.columns([1, 1])
+        with col_b1:
+            if st.button("🔊 Pronounce Word", key="audio_back_word"):
+                play_direct_audio(data.get("word", active_word), "back_audio")
+        with col_b2:
+            if st.button("🔄 Tap to Flip (Front)", key="flip_to_front_btn"):
+                st.session_state.is_card_flipped = False
+                st.rerun()
 
         st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
 
@@ -516,7 +536,7 @@ elif nav_choice == "📚 Master Goethe Word Engine":
         if plural and plural != "N/A":
             st.markdown('<div class="content-group">', unsafe_allow_html=True)
             col_pl1, col_pl2 = st.columns([4, 1])
-            col_pl1.markdown(f"**Plural Version:** `{plural}`")
+            col_pl1.markdown(f"**Plural Version:** `{plural}`[cite: 8]")
             with col_pl2:
                 if st.button("🔊 Audio", key="audio_plural"):
                     play_direct_audio(plural, "plural_audio")
@@ -525,26 +545,42 @@ elif nav_choice == "📚 Master Goethe Word Engine":
         # 2. Word Type and Case Usage Group
         st.markdown('<div class="content-group">', unsafe_allow_html=True)
         wt_col, cu_col = st.columns(2)
-        wt_col.markdown(f"**Word Type:** `{data.get('word_type', 'N/A')}`")
-        cu_col.markdown(f"**Case Usage:** `{data.get('case_usage', 'N/A')}`")
+        wt_col.markdown(f"**Word Type:** `{data.get('word_type', 'N/A')}`[cite: 8]")
+        cu_col.markdown(f"**Case Usage:** `{data.get('case_usage', 'N/A')}`[cite: 8]")
         st.markdown('</div>', unsafe_allow_html=True)
 
-        # 3. Auxiliary Verb and Sample Sentence Group
+        # 3. Auxiliary Verb & Partizip II Group
         aux_verb = data.get('auxiliary_verb', 'N/A')
         part_ii = data.get('partizip_ii', 'N/A')
-        aux_sent = data.get('aux_sentence_de', '')
         st.markdown('<div class="content-group">', unsafe_allow_html=True)
-        st.markdown(f"**Auxiliary Verb & Partizip II:** `{aux_verb} ({part_ii})`")
+        st.markdown(f"**Auxiliary Verb & Partizip II:** `{aux_verb} ({part_ii})`[cite: 8]")
+        st.markdown('</div>', unsafe_allow_html=True)
+
+        # 4. Auxiliary Verb & Partizip II Sample Sentence Group
+        aux_sent = data.get('aux_sentence_de', '')
         if aux_sent and aux_sent != "N/A":
-            st.markdown("<div style='height: 6px;'></div>", unsafe_allow_html=True)
+            st.markdown('<div class="content-group">', unsafe_allow_html=True)
+            st.markdown(f"**Aux/Partizip II Sample Sentence:**")
             as_col1, as_col2 = st.columns([4, 1])
-            as_col1.markdown(f"Sample: *{aux_sent}* <br><small style='color:#64748b;'>({data.get('aux_sentence_en', '')})</small>", unsafe_allow_html=True)
+            as_col1.markdown(f"*{aux_sent}* <br><small style='color:#64748b;'>({data.get('aux_sentence_en', '')})</small>", unsafe_allow_html=True)
             with as_col2:
                 if st.button("🔊 Audio", key="audio_aux_sent"):
                     play_direct_audio(aux_sent, "aux_sent_audio")
-        st.markdown('</div>', unsafe_allow_html=True)
+            st.markdown('</div>', unsafe_allow_html=True)
 
-        # 4. Conjugation & Sample Sentences Group
+        # 5. Komparativ and Superlative Group
+        komp = data.get('komparativ', 'N/A')
+        sup = data.get('superlative', 'N/A')
+        if komp != "N/A" or sup != "N/A":
+            st.markdown('<div class="content-group">', unsafe_allow_html=True)
+            k_col1, k_col2 = st.columns([4, 1])
+            k_col1.markdown(f"**Komparativ & Superlative:** `{komp}` | `{sup}`[cite: 8]")
+            with k_col2:
+                if st.button("🔊 Audio", key="audio_komp"):
+                    play_direct_audio(f"{komp} {sup}", "komp_audio")
+            st.markdown('</div>', unsafe_allow_html=True)
+
+        # 6. Conjugation and Sample Sentences Group
         st.markdown('<div class="content-group">', unsafe_allow_html=True)
         st.markdown("#### 📝 Conjugation & Sample Sentences")
         st.markdown("<div style='height: 4px;'></div>", unsafe_allow_html=True)
@@ -561,7 +597,7 @@ elif nav_choice == "📚 Master Goethe Word Engine":
                 st.markdown("<hr style='border-color: #e2e8f0; margin: 8px 0;'>", unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
 
-        # 5. Colloquial & Daily Phrases Group
+        # 7. Colloquial & Daily Phrases Group
         phrases = data.get("colloquial_phrases", [])
         if phrases:
             st.markdown('<div class="content-group">', unsafe_allow_html=True)
@@ -571,26 +607,21 @@ elif nav_choice == "📚 Master Goethe Word Engine":
                 p_de = ph.get("phrase_de", "")
                 p_en = ph.get("phrase_en", "")
                 ph_c1, ph_c2 = st.columns([4, 1])
-                ph_c1.markdown(f"• **{p_de}** — *{p_en}*")
+                ph_c1.markdown(f"• **{p_de}** — *{p_en}*[cite: 8]")
                 with ph_c2:
                     if st.button("🔊 Audio", key=f"audio_phrase_{idx}"):
                         play_direct_audio(p_de, f"phrase_audio_{idx}")
             st.markdown('</div>', unsafe_allow_html=True)
 
-        # 6. Grammar Notes Group
-        st.markdown(f'<div class="content-group">🌻 <b>Grammar Notes:</b> {data.get("grammar_notes", "N/A")}</div>', unsafe_allow_html=True)
-
-        st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
-        if st.button("🔄 Flip back to Front", type="primary", use_container_width=True):
-            st.session_state.is_card_flipped = False
-            st.rerun()
+        # 8. Grammar Notes Group
+        st.markdown(f'<div class="content-group">🌻 <b>Grammar Notes:</b> {data.get("grammar_notes", "N/A")}[cite: 8]</div>', unsafe_allow_html=True)
 
     st.markdown("<div style='height: 15px;'></div>", unsafe_allow_html=True)
 
-    # --- COMPACT BUTTON NAVIGATION CONTROLS (CLEAN ICON BUTTONS) ---
+    # --- COMPACT NAVIGATION CONTROLS (BACK, SHUFFLE, NEXT SIDE-BY-SIDE) ---
     col_nav1, col_nav2, col_nav3 = st.columns([1, 1, 1])
     with col_nav1:
-        if st.button("◀ Previous", use_container_width=True):
+        if st.button("◀ Back", use_container_width=True):
             st.session_state.vocab_index = (st.session_state.vocab_index - 1) % len(current_word_list)
             st.session_state.is_card_flipped = False
             st.rerun()
