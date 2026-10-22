@@ -17,7 +17,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Custom Dark Theme, Gender-Based Flashcard Styling & Dropdown Fixes
+# Custom Dark Theme, Gender-Based Flashcard Styling & Custom Clean Rounded Sidebar Buttons
 st.markdown("""
 <style>
     /* Global Dark Theme & Modern Sans-Serif Font */
@@ -117,39 +117,6 @@ st.markdown("""
         color: #f8fafc;
         font-size: 1.4rem;
         font-weight: 700;
-    }
-
-    /* Selectbox Input Box Styling */
-    .stSelectbox div[data-baseweb="select"] {
-        background-color: #1f2937 !important;
-        border-radius: 10px !important;
-    }
-    .stSelectbox div[data-baseweb="select"] > div {
-        background-color: #1f2937 !important;
-        border: 1px solid #374151 !important;
-        border-radius: 10px !important;
-        color: #f8fafc !important;
-    }
-    .stSelectbox span, .stSelectbox div[data-baseweb="select"] span {
-        color: #f8fafc !important;
-    }
-
-    /* Open Dropdown Popup List Container & Options Dark Theme Fix */
-    div[data-baseweb="menu"] {
-        background-color: #111827 !important;
-        border: 1px solid #374151 !important;
-        border-radius: 10px !important;
-    }
-    div[data-baseweb="menu"] ul {
-        background-color: #111827 !important;
-    }
-    div[data-baseweb="menu"] li, div[data-baseweb="menu"] div {
-        background-color: #111827 !important;
-        color: #f8fafc !important;
-    }
-    div[data-baseweb="menu"] li:hover, div[data-baseweb="menu"] div[aria-selected="true"] {
-        background-color: #1f2937 !important;
-        color: #60a5fa !important;
     }
 
     /* Gender-based Flashcard Containers */
@@ -275,7 +242,7 @@ A1_VOCABULARY_DATABASE = {
     "verkehr_und_reisen": ["fahren", "fliegen", "reisen", "der Urlaub", "das Ticket", "der Bahnhof", "der Zug", "das Auto", "das Flugzeug", "das Bus", "die Straßenbahn", "das Fahrrad", "die Haltestelle", "der Flughafen", "das Hotel", "das Zimmer", "die Karte", "die Reise", "ankommen", "abfahren"],
     "gesundheit_und_ernaehrung": ["der Arzt", "die Ärztin", "das Krankenhaus", "die Apotheke", "krank", "gesund", "der Schmerz", "die Medizin", "die Gesundheit", "helfen", "ruhig", "müde", "gut", "schlecht", "die Tablette", "der Notfall", "untersuchen", "das Rezept", "fühlen", "leben"],
     "medien_und_kommunikation": ["sprechen", "sagen", "hören", "lesen", "schreiben", "telefonieren", "das Handy", "der Computer", "das Internet", "die Zeitung", "das Fernsehen", "das Radio", "die Nachricht", "fragen", "antworten", "verstehen", "erklären", "zeigen", "bestellen", "kommunizieren"],
-    "zeit_und_wetter": ["die Zeit", "die Stunde", "die Minute", "der Tag", "die Woche", "der Monat", "das Jahr", "heute", "gestern", "morgen", "jetzt", "immer", "nie", "das Wetter", "die Sonne", "der Regen", "der Schnee", "kalt", "warm", "schön"]
+    "zeit_und_wetter": ["die Zeit", "die Stunde", "die Minute", "der Tag", "die Woche", "der Monat", " das Jahr", "heute", "gestern", "morgen", "jetzt", "immer", "nie", "das Wetter", "die Sonne", "der Regen", "der Schnee", "kalt", "warm", "schön"]
 }
 
 # Populate ALL category dynamically
@@ -342,17 +309,18 @@ elif nav_choice == "📚 Master Goethe Word Engine":
     render_top_back_button()
     st.markdown('<div class="section-header-box">📚 Master Goethe Word Engine</div>', unsafe_allow_html=True)
 
-    # Layout split: Left side category list, Right side flashcard widget
+    # Layout split: Left side clean rounded category list, Right side flashcard widget
     col_sidebar, col_main = st.columns([1, 3])
 
     with col_sidebar:
-        st.markdown("### 📂 Categories")
+        st.markdown("### 📁 Categories")
         st.markdown("<hr style='border-color: #374151; margin-top: -5px;'>", unsafe_allow_html=True)
         categories = list(A1_VOCABULARY_DATABASE.keys())
         for cat in categories:
             is_active = (st.session_state.vocab_category == cat)
+            btn_label = f"👉 {cat.replace('_', ' ').title()}" if is_active else cat.replace('_', ' ').title()
             btn_type = "primary" if is_active else "secondary"
-            if st.button(f"{'👉 ' if is_active else ''}{cat.replace('_', ' ').title()}", key=f"cat_btn_{cat}", use_container_width=True, type=btn_type):
+            if st.button(btn_label, key=f"cat_btn_{cat}", use_container_width=True, type=btn_type):
                 st.session_state.vocab_category = cat
                 st.session_state.vocab_index = 0
                 st.session_state.is_card_flipped = False
