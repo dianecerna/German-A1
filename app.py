@@ -18,7 +18,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Custom Dark Theme & Dropdown Styling
+# Custom Dark Theme & Dropdown Styling (Fixing BaseWeb Popups)
 st.markdown("""
 <style>
     /* Global Dark Theme & Modern Sans-Serif Font */
@@ -120,7 +120,7 @@ st.markdown("""
         font-weight: 700;
     }
 
-    /* Dark Dropdown / Select Elements Styling */
+    /* Selectbox Input Box Styling */
     .stSelectbox div[data-baseweb="select"] {
         background-color: #1f2937 !important;
         border-radius: 10px !important;
@@ -133,6 +133,24 @@ st.markdown("""
     }
     .stSelectbox span, .stSelectbox div[data-baseweb="select"] span {
         color: #f8fafc !important;
+    }
+
+    /* FIX: Force Open Dropdown Popup List Container & Options to Dark Theme */
+    div[data-baseweb="menu"] {
+        background-color: #111827 !important;
+        border: 1px solid #374151 !important;
+        border-radius: 10px !important;
+    }
+    div[data-baseweb="menu"] ul {
+        background-color: #111827 !important;
+    }
+    div[data-baseweb="menu"] li, div[data-baseweb="menu"] div {
+        background-color: #111827 !important;
+        color: #f8fafc !important;
+    }
+    div[data-baseweb="menu"] li:hover, div[data-baseweb="menu"] div[aria-selected="true"] {
+        background-color: #1f2937 !important;
+        color: #60a5fa !important;
     }
     
     /* Flashcard Front Container */
