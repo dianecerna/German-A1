@@ -18,21 +18,46 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom Styling: Storybook aesthetics, mobile side-by-side layout, compact direct audio, bot chat input UI & Super Nice Blue Hero Banner
+# Custom Styling: Unified Century Gothic Theme, Sophisticated Navigation & Seamless Cards
 st.markdown("""
 <style>
-    .stApp { background-color: #f8fafc; font-family: system-ui, -apple-system, sans-serif; }
-    .main-card { background: #ffffff; border-radius: 16px; padding: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); margin-bottom: 20px; border: 1px solid #e2e8f0; }
-    .accent-card { background: #ffffff; border-radius: 16px; padding: 24px; border-left: 6px solid #2563eb; box-shadow: 0 2px 12px rgba(37, 99, 235, 0.06); margin-bottom: 20px; border: 1px solid #e2e8f0; }
+    /* Global Century Gothic Font & Seamless Background */
+    .stApp {
+        background-color: #f8fafc;
+        font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif !important;
+    }
     
-    /* Super Nice Dark Blue Header Banner Style */
+    *, div, span, p, h1, h2, h3, h4, h5, h6, label, button {
+        font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif !important;
+    }
+
+    /* Cards Styling */
+    .main-card {
+        background: #ffffff;
+        border-radius: 20px;
+        padding: 24px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+        margin-bottom: 20px;
+        border: 1px solid #e2e8f0;
+    }
+    .accent-card {
+        background: #ffffff;
+        border-radius: 20px;
+        padding: 24px;
+        border-left: 6px solid #2563eb;
+        box-shadow: 0 4px 20px rgba(37, 99, 235, 0.05);
+        margin-bottom: 20px;
+        border: 1px solid #e2e8f0;
+    }
+    
+    /* Hero Banner */
     .hero-banner {
         background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
-        border-radius: 20px;
-        padding: 40px;
+        border-radius: 24px;
+        padding: 36px;
         color: #ffffff;
         margin-bottom: 25px;
-        box-shadow: 0 10px 25px -5px rgba(30, 58, 138, 0.3);
+        box-shadow: 0 10px 25px -5px rgba(30, 58, 138, 0.25);
     }
     .hero-badge {
         display: inline-block;
@@ -47,26 +72,46 @@ st.markdown("""
         color: #38bdf8;
     }
     .hero-title {
-        font-size: 2.5rem;
-        font-weight: 800;
+        font-size: 2.2rem;
+        font-weight: 700;
         letter-spacing: -0.025em;
         margin-bottom: 10px;
         color: #ffffff;
     }
     .hero-subtitle {
-        font-size: 1.05rem;
+        font-size: 1rem;
         color: #cbd5e1;
         line-height: 1.6;
         max-width: 800px;
         margin-bottom: 0px;
     }
 
-    /* Increase Sidebar Navigation Font Size & Spacing */
+    /* Sophisticated Sidebar Navigation Styling */
+    [data-testid="stSidebar"] {
+        background-color: #0f172a !important;
+        border-right: 1px solid #1e293b;
+    }
+    [data-testid="stSidebar"] * {
+        color: #e2e8f0 !important;
+    }
     [data-testid="stSidebarNav"] span, .stRadio label {
-        font-size: 1.1rem !important;
+        font-size: 1.05rem !important;
         font-weight: 500 !important;
-        padding-top: 4px !important;
-        padding-bottom: 4px !important;
+        padding-top: 6px !important;
+        padding-bottom: 6px !important;
+        letter-spacing: 0.02em;
+    }
+    .stRadio div[role="radiogroup"] > label {
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 12px;
+        padding: 8px 12px;
+        margin-bottom: 6px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        transition: all 0.2s ease;
+    }
+    .stRadio div[role="radiogroup"] > label:hover {
+        background: rgba(37, 99, 235, 0.2);
+        border-color: rgba(56, 189, 248, 0.4);
     }
     
     /* Interactive Flashcard UI */
@@ -76,13 +121,13 @@ st.markdown("""
         border-radius: 20px;
         padding: 40px 20px;
         text-align: center;
-        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.25);
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
         border: 2px solid #38bdf8;
         margin-bottom: 15px;
     }
     .flashcard-word-title {
-        font-size: 3rem;
-        font-weight: 800;
+        font-size: 2.8rem;
+        font-weight: 700;
         letter-spacing: -0.025em;
         color: #38bdf8;
         margin-bottom: 10px;
@@ -92,17 +137,17 @@ st.markdown("""
         border: 2px solid #2563eb;
         border-radius: 20px;
         padding: 25px;
-        box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.12);
+        box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.1);
         margin-bottom: 15px;
     }
     .flashcard-back-title {
-        font-size: 2.2rem;
+        font-size: 2rem;
         font-weight: 700;
         color: #1e293b;
         margin-bottom: 5px;
     }
     .meaning-subtitle {
-        font-size: 1.25rem;
+        font-size: 1.2rem;
         font-weight: 600;
         color: #2563eb;
         margin-bottom: 15px;
@@ -119,7 +164,7 @@ st.markdown("""
         background: #ffffff;
         border-radius: 16px;
         padding: 18px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
         border: 2px solid #2563eb;
         width: 340px;
         margin-bottom: 12px;
@@ -127,7 +172,7 @@ st.markdown("""
 
     /* Metric Font Uniformity */
     [data-testid="stMetricValue"] {
-        font-size: 1rem !important;
+        font-size: 1.1rem !important;
         font-weight: 600 !important;
     }
 </style>
@@ -141,7 +186,7 @@ if not api_key:
 
 client = genai.Client(api_key=api_key.strip())
 
-FALLBACK_MODELS = ["gemini-2.0-flash", "gemini-3.5-flash-lite"]
+FALLBACK_MODELS = ["gemini-3.8-flash", "gemini-3.5-flash-lite"]
 
 SYSTEM_INSTRUCTION = """
 You are Gem, an expert German tutor and official Goethe-Institut examiner evaluating candidates for the Goethe-Zertifikat A1 exam.
@@ -361,7 +406,7 @@ LESEN_TEIL1_SCENARIOS = [
         "title": "Wochenendbesuch & Hochzeitseinladung",
         "desc": "Two short messages: a sister's weekend visit and a wedding invitation — 5 tasks, Richtig/Falsch.",
         "text1_label": "E-Mail von der Schwester",
-        "text1": "Liebe Sandra,\nich komme diesen Samstag mit dem Zug um 10 Uhr an. Holst du mich am Bahnhof ab? Wir können dann zusammen auf den Markt gehen.\nDein Bruder Lukas",
+        "text1": "Liebe Sandra,\nich komme diesen Samstag mit dem Zug um 10 Uhr ab. Holst du mich am Bahnhof ab? Wir können dann zusammen auf den Markt gehen.\nDein Bruder Lukas",
         "text2_label": "Hochzeitskarte",
         "text2": "Liebe Freunde, wir heiraten am 20. August um 14 Uhr in der Stadtkirche. Danach feiern wir im Restaurant 'Zur Linde'. Bitte gebt uns bis zum 1. August Bescheid.",
         "questions": [
@@ -1782,7 +1827,7 @@ elif nav_choice == "📚 Master Goethe Word Engine":
     TOP_1000_VOCAB_CATEGORIES = {
         "1. Person & Alltag (Personal & Daily Life)": {
             "Verben": ["heißen", "heiraten", "wohnen", "leben", "kennen", "kennenlernen", "schlafen", "aufstehen", "baden", "duschen", "sich vorstellen", "anziehen", "ausziehen", "umziehen", "waschen", "auf sein", "zu sein"],
-            "Nomen": ["die Familie", "der Vater", "die Mutter", "der Sohn", "die Tochter", "der Bruder", "die Schwester", "die Großmutter", "der Großvater", "die Oma", "der Opa", "der Mann", "die Frau", "das Kind", "der Junge", "das Mädchen", "das Baby", "der Mensch", "die Eltern", "die Geschwister", "die Verwandten", "der Freund", "die Freundin", "der Partner", "die Partnerin", "der Name", "der Vorname", "der Familienname", "das Geburtsjahr", "der Geburtsort", "das Alter", "der Geburtstag", "der Pass", "der Ausweis", "die Adresse", "die Postleitzahl", "das Haus", "das Wohnung", "das Zimmer", "das Bad", "die Küche", "der Balkon", "der Garten", "das Dorf", "die Stadt", "die Heimat", "das Land", "die Tür", "das Fenster", "das Bett", "der Schrank", "der Tisch", "der Stuhl", "das Sofa", "das Bild", "das Licht", "der Schlüssel", "die Treppe", "der Aufzug", "das Dach", "der Boden", "das Schlafzimmer", "der Flur"],
+            "Nomen": ["die Familie", "der Vater", "die Mutter", "der Sohn", "die Tochter", "der Bruder", "die Schwester", "die Großmutter", "der Großvater", "der Oma", "der Opa", "der Mann", "die Frau", "das Kind", "der Junge", "das Mädchen", "das Baby", "der Mensch", "die Eltern", "die Geschwister", "die Verwandten", "der Freund", "die Freundin", "der Partner", "die Partnerin", "der Name", "der Vorname", "der Familienname", "das Geburtsjahr", "der Geburtsort", "das Alter", "der Geburtstag", "der Pass", "der Ausweis", "die Adresse", "die Postleitzahl", "das Haus", "das Wohnung", "das Zimmer", "das Bad", "die Küche", "der Balkon", "der Garten", "das Dorf", "die Stadt", "die Heimat", "das Land", "die Tür", "das Fenster", "das Bett", "der Schrank", "der Tisch", "der Stuhl", "das Sofa", "das Bild", "das Licht", "der Schlüssel", "die Treppe", "der Aufzug", "das Dach", "der Boden", "das Schlafzimmer", "der Flur"],
             "Adjektive & Adverbien": ["alt", "jung", "groß", "klein", "verheiratet", "ledig", "selbstständig", "allein", "müde", "nett", "freundlich"],
             "Pronomen & Partikeln": ["ich", "du", "er", "sie", "es", "wir", "ihr", "Sie", "mein", "dein", "sein", "unser", "sich", "wer", "was", "wie", "wo", "woher", "wohin", "wann", "warum", "wie viel"]
         },
