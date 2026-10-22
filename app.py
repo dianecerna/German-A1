@@ -143,7 +143,7 @@ st.markdown("""
         border-radius: 12px !important;
     }
     .stSelectbox div[data-baseweb="select"] > div {
-        background-color: #f8fafc !important;
+        background-color: #1A1818 !important;
         border: 2px solid #cbd5e1 !important;
         border-radius: 12px !important;
         color: #0f172a !important;
@@ -160,15 +160,15 @@ st.markdown("""
 
     /* Open Dropdown Popup List Container & Options (Light) */
     div[data-baseweb="menu"] {
-        background-color: #f8fafc !important;
+        background-color: #1A1818 !important;
         border: 1px solid #cbd5e1 !important;
         border-radius: 12px !important;
     }
     div[data-baseweb="menu"] ul {
-        background-color: #f8fafc !important;
+        background-color: #1A1818 !important;
     }
     div[data-baseweb="menu"] li, div[data-baseweb="menu"] div {
-        background-color: #f8fafc !important;
+        background-color: #1A1818 !important;
         color: #0f172a !important;
         font-weight: 600 !important;
     }
