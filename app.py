@@ -304,6 +304,13 @@ if "nav_choice" not in st.session_state:
 
 nav_choice = st.session_state.nav_choice
 
+# Helper function to render a top Back to Dashboard button on sub-pages
+def render_top_back_button():
+    if st.button("⬅️ Back to Dashboard", key="top_back_dash_btn"):
+        st.session_state.nav_choice = "🏠 Study Dashboard"
+        st.rerun()
+    st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+
 # ----------------------------------------------------
 # 1. STUDY DASHBOARD
 # ----------------------------------------------------
@@ -338,6 +345,7 @@ if nav_choice == "🏠 Study Dashboard":
 # 2. MASTER GOETHE WORD ENGINE
 # ----------------------------------------------------
 elif nav_choice == "📚 Master Goethe Word Engine":
+    render_top_back_button()
     st.markdown('<div class="section-header-box">📚 Master Goethe Word Engine</div>', unsafe_allow_html=True)
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
     st.subheader("Interactive Flashcard Engine (Complete Vocabulary)")
@@ -447,21 +455,16 @@ elif nav_choice == "📚 Master Goethe Word Engine":
         st.error(f"Error loading flashcard: {str(e)}")
 
     st.divider()
-    col_f1, col_f2 = st.columns([1, 1])
-    with col_f1:
-        if st.button("🔄 Flip Flashcard", use_container_width=True):
-            st.session_state.show_card_back = not st.session_state.get("show_card_back", False)
-            st.rerun()
-    with col_f2:
-        if st.button("🏠 Back to Dashboard", use_container_width=True):
-            st.session_state.nav_choice = "🏠 Study Dashboard"
-            st.rerun()
+    if st.button("🔄 Flip Flashcard", use_container_width=True):
+        st.session_state.show_card_back = not st.session_state.get("show_card_back", False)
+        st.rerun()
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
 # 3. CORE GRAMMAR PRACTICE & EXERCISES
 # ----------------------------------------------------
 elif nav_choice == "📖 Core Grammar Practice & Exercises":
+    render_top_back_button()
     st.markdown('<div class="section-header-box">📖 Core Grammar Practice & Exercises</div>', unsafe_allow_html=True)
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
     handbook_lessons = [
@@ -481,16 +484,13 @@ elif nav_choice == "📖 Core Grammar Practice & Exercises":
         for idx, q in enumerate(mod.get("exercises_mc", []), start=1):
             st.markdown(f"**Q{idx}. {q['question']}**")
             st.radio("Options:", q['options'], key=f"rad_grammar_{q['id']}")
-    
-    if st.button("🏠 Back to Dashboard"):
-        st.session_state.nav_choice = "🏠 Study Dashboard"
-        st.rerun()
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
 # 4. GOETHE A1 LESEN
 # ----------------------------------------------------
 elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
+    render_top_back_button()
     st.markdown('<div class="section-header-box">📖 Goethe A1 Lesen (Reading)</div>', unsafe_allow_html=True)
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
     scen = LESEN_TEIL1_SCENARIOS[0]
@@ -509,16 +509,13 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
                 st.success(f"Task {idx}: Correct! — {q['explanation']}")
             else:
                 st.error(f"Task {idx}: Incorrect. Correct: `{q['answer']}` — {q['explanation']}")
-    
-    if st.button("🏠 Back to Dashboard"):
-        st.session_state.nav_choice = "🏠 Study Dashboard"
-        st.rerun()
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
 # 5. GOETHE A1 HÖREN
 # ----------------------------------------------------
 elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
+    render_top_back_button()
     st.markdown('<div class="section-header-box">🎧 Goethe A1 Hören (Listening)</div>', unsafe_allow_html=True)
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
     st.write("Listen to sample dialogue and answer questions.")
@@ -530,15 +527,13 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
             st.success("Correct!")
         else:
             st.error("Incorrect. It costs 49 Euro.")
-    if st.button("🏠 Back to Dashboard"):
-        st.session_state.nav_choice = "🏠 Study Dashboard"
-        st.rerun()
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
 # 6. GOETHE A1 SCHREIBEN
 # ----------------------------------------------------
 elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
+    render_top_back_button()
     st.markdown('<div class="section-header-box">✍️ Goethe A1 Schreiben (Writing)</div>', unsafe_allow_html=True)
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
     scen = SCHREIBEN_TEIL1_SCENARIOS[0]
@@ -557,15 +552,13 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
                     st.success(f"{field['label']} Correct!")
                 else:
                     st.error(f"{field['label']} Incorrect. Expected: {field['answer']}")
-    if st.button("🏠 Back to Dashboard"):
-        st.session_state.nav_choice = "🏠 Study Dashboard"
-        st.rerun()
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
 # 7. GOETHE A1 SPRECHEN
 # ----------------------------------------------------
 elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
+    render_top_back_button()
     st.markdown('<div class="section-header-box">🗣️ Goethe A1 Sprechen (Speaking)</div>', unsafe_allow_html=True)
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
     st.markdown("### Teil 1 — Sich vorstellen")
@@ -573,15 +566,13 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
     if rec:
         st.audio(rec['bytes'], format='audio/wav')
         st.success("Recording captured successfully.")
-    if st.button("🏠 Back to Dashboard"):
-        st.session_state.nav_choice = "🏠 Study Dashboard"
-        st.rerun()
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
 # 8. A1 & A2 SHORT STORIES
 # ----------------------------------------------------
 elif nav_choice == "📖 A1 & A2 Short Stories":
+    render_top_back_button()
     st.markdown('<div class="section-header-box">📖 A1 & A2 Short Stories</div>', unsafe_allow_html=True)
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
     st.subheader("Enchanted Storybook Reader")
@@ -589,15 +580,13 @@ elif nav_choice == "📖 A1 & A2 Short Stories":
     st.info(story)
     if st.button("🔊 Read Story Aloud"):
         play_direct_audio(story, "story")
-    if st.button("🏠 Back to Dashboard"):
-        st.session_state.nav_choice = "🏠 Study Dashboard"
-        st.rerun()
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
 # 9. GEM AI TUTOR
 # ----------------------------------------------------
 elif nav_choice == "🐱 Gem AI Tutor":
+    render_top_back_button()
     st.markdown('<div class="section-header-box">🐱 Gem — AI German Tutor</div>', unsafe_allow_html=True)
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
     if "gem_chat_messages" not in st.session_state:
@@ -614,7 +603,4 @@ elif nav_choice == "🐱 Gem AI Tutor":
                 response = generate_dynamic_content(user_prompt)
                 st.write(response)
                 st.session_state.gem_chat_messages.append({"role": "assistant", "content": response})
-    if st.button("🏠 Back to Dashboard"):
-        st.session_state.nav_choice = "🏠 Study Dashboard"
-        st.rerun()
     st.markdown('</div>', unsafe_allow_html=True)
