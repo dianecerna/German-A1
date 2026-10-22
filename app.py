@@ -18,7 +18,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Custom Dark Theme & Dropdown Styling (Fixing BaseWeb Popups)
+# Custom Dark Theme & Dropdown Styling (Fixing BaseWeb Popups & Text Contrast)
 st.markdown("""
 <style>
     /* Global Dark Theme & Modern Sans-Serif Font */
@@ -135,7 +135,7 @@ st.markdown("""
         color: #f8fafc !important;
     }
 
-    /* FIX: Force Open Dropdown Popup List Container & Options to Dark Theme */
+    /* Open Dropdown Popup List Container & Options Dark Theme Fix */
     div[data-baseweb="menu"] {
         background-color: #111827 !important;
         border: 1px solid #374151 !important;
@@ -153,44 +153,6 @@ st.markdown("""
         color: #60a5fa !important;
     }
     
-    /* Flashcard Front Container */
-    .flashcard-front-box {
-        background: linear-gradient(135deg, #1e1b4b 0%, #111827 100%);
-        color: #ffffff;
-        border-radius: 16px;
-        padding: 40px 20px;
-        text-align: center;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
-        border: 1px solid #374151;
-        margin-bottom: 15px;
-    }
-    .flashcard-word-title {
-        font-size: 3rem;
-        font-weight: 700;
-        color: #60a5fa;
-        margin-bottom: 10px;
-    }
-    .flashcard-back-box {
-        background: #111827;
-        border: 1px solid #374151;
-        border-radius: 16px;
-        padding: 24px;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
-        margin-bottom: 15px;
-    }
-    .flashcard-back-title {
-        font-size: 2.2rem;
-        font-weight: 700;
-        color: #f8fafc;
-        margin-bottom: 5px;
-    }
-    .meaning-subtitle {
-        font-size: 1.25rem;
-        font-weight: 600;
-        color: #60a5fa;
-        margin-bottom: 15px;
-    }
-
     /* Metric & Text Uniformity */
     [data-testid="stMetricValue"] {
         font-size: 1.2rem !important;
@@ -212,116 +174,7 @@ FALLBACK_MODELS = ["gemini-3.8-flash", "gemini-3.5-flash-lite"]
 SYSTEM_INSTRUCTION = """
 You are Gem, an expert German tutor and official Goethe-Institut examiner evaluating candidates for the Goethe-Zertifikat A1 exam.
 Follow standard CEFR A1 learning objectives and handbook guidelines.
-Ensure exact correctness, clear explanations, thorough lesson reviews, and strict JSON output formats when requested.
 """
-
-@st.cache_data(show_spinner=False)
-def generate_cached_content(prompt_text: str, is_json: bool = False) -> str:
-    config_args = {"system_instruction": SYSTEM_INSTRUCTION}
-    if is_json:
-        config_args["response_mime_type"] = "application/json"
-    
-    last_error = None
-    for attempt in range(2):
-        for model_name in FALLBACK_MODELS:
-            try:
-                res = client.models.generate_content(
-                    model=model_name,
-                    contents=prompt_text,
-                    config=types.GenerateContentConfig(**config_args)
-                )
-                return res.text
-            except Exception as e:
-                last_error = e
-                err_str = str(e).lower()
-                if any(k in err_str for k in ["429", "503", "resource_exhausted", "unavailable", "quota", "not_found"]):
-                    time.sleep(1)
-                    continue
-                raise e
-        time.sleep(1.5)
-    raise Exception(f"All model quotas are currently exhausted or experiencing high demand. Details: {str(last_error)}")
-
-def generate_dynamic_content(prompt_text: str, is_json: bool = False) -> str:
-    config_args = {"system_instruction": SYSTEM_INSTRUCTION}
-    if is_json:
-        config_args["response_mime_type"] = "application/json"
-    
-    last_error = None
-    for attempt in range(2):
-        for model_name in FALLBACK_MODELS:
-            try:
-                res = client.models.generate_content(
-                    model=model_name,
-                    contents=prompt_text,
-                    config=types.GenerateContentConfig(**config_args)
-                )
-                return res.text
-            except Exception as e:
-                last_error = e
-                err_str = str(e).lower()
-                if any(k in err_str for k in ["429", "503", "resource_exhausted", "unavailable", "quota", "not_found"]):
-                    time.sleep(1)
-                    continue
-                raise e
-        time.sleep(1.5)
-    raise Exception(f"All model quotas are currently exhausted or experiencing high demand. Details: {str(last_error)}")
-
-@st.cache_data(show_spinner=False)
-def generate_german_audio_bytes(text: str) -> bytes:
-    tts = gTTS(text=text, lang='de')
-    fp = io.BytesIO()
-    tts.write_to_fp(fp)
-    fp.seek(0)
-    return fp.getvalue()
-
-def play_direct_audio(text_to_speak, unique_key):
-    audio_bytes = generate_german_audio_bytes(text_to_speak)
-    b64_audio = io.BytesIO(audio_bytes).read()
-    st.audio(b64_audio, format="audio/mp3", autoplay=True)
-
-# Scenarios Banks
-HOREN_TEIL1_SCENARIOS = [
-    {"title": "Jacke, Kino & Apotheke", "desc": "Short everyday dialogues about a jacket's price, the film start and directions to the pharmacy."},
-    {"title": "Zug nach Köln, Markt & Hotel", "desc": "Short everyday dialogues about the train to Köln, market, weather and hotel room."}
-]
-
-LESEN_TEIL1_SCENARIOS = [
-    {
-        "title": "Flughafen & Grillfest",
-        "desc": "Two short messages: airport pickup and garden barbecue — 5 tasks, Richtig/Falsch.",
-        "text1_label": "E-Mail (Lena an Tom)",
-        "text1": "BETREFF: Hallo Tom,\n\nvielen Dank für deine Nachricht! Ich hole dich am Sonntag vom Flughafen ab. Dein Flugzeug landet um 14.20 Uhr. Ich bin schon um 14 Uhr da und warte am Ausgang.\nRuf mich bitte an, wenn dein Flug später kommt.\nBis Sonntag!\nLena",
-        "text2_label": "BRIEF (Einladung zum Grillfest)",
-        "text2": "Liebe Sofia,\n\nnächsten Samstag mache ich ein Grillfest bei mir im Garten. Wir beginnen um 17 Uhr. Kommst du auch? Bitte bring etwas zu trinken mit. Fleisch und Salate habe ich schon genug.\nLiebe Grüße,\nAnna",
-        "questions": [
-            {"id": "lt1_1", "statement": "Lena holt Tom am Samstag vom Flughafen ab.", "options": ["richtig", "falsch"], "answer": "falsch", "explanation": "Im Text steht, dass sie ihn am Sonntag abholt."},
-            {"id": "lt1_2", "statement": "Tom landet um 14.20 Uhr.", "options": ["richtig", "falsch"], "answer": "richtig", "explanation": "Der Text bestätigt: 'Dein Flugzeug landet um 14.20 Uhr.'"},
-            {"id": "lt1_3", "statement": "Lena wartet am Ausgang.", "options": ["richtig", "falsch"], "answer": "richtig", "explanation": "Lena schreibt: '...und warte am Ausgang.'"},
-            {"id": "lt1_4", "statement": "Sofia soll Fleisch und Salate mitbringen.", "options": ["richtig", "falsch"], "answer": "falsch", "explanation": "Fleisch und Salate sind genug da; Sofia soll etwas zu trinken mitbringen."},
-            {"id": "lt1_5", "statement": "Bei Regen findet das Grillfest in der Wohnung statt.", "options": ["richtig", "falsch"], "answer": "richtig", "explanation": "Im Brief steht: 'Wenn es regnet, feiern wir in der Wohnung.'"}
-        ]
-    }
-]
-
-SCHREIBEN_TEIL1_SCENARIOS = [
-    {
-        "title": "Bodensee-Rundfahrt — Anmeldung",
-        "desc": "Registration for a Bodensee tour with Eva Kadavy – Fill out a form, 5 gaps, 10 min.",
-        "aufgabe": "Ihre Freundin, Eva Kadavy, macht mit ihrem Mann und ihren beiden Söhnen (8 und 11 Jahre alt) Urlaub in Seeheim. Sie bucht eine Busfahrt.",
-        "form_title": "BODENSEE-RUNDFAHRT — Anmeldung",
-        "fields": [
-            {"id": "sf1", "label": "Familienname, Vorname:", "default": "Kadavy, Eva", "is_gap": False},
-            {"id": "sf2", "label": "1. Anzahl der Personen:", "answer": "4", "is_gap": True, "placeholder": "z. B. 4"},
-            {"id": "sf3", "label": "2. Davon Kinder:", "answer": "2", "is_gap": True, "placeholder": "z. B. 2"},
-            {"id": "sf4", "label": "Urlaubsadresse:", "default": "Hotel Schönblick", "is_gap": False},
-            {"id": "sf5", "label": "Straße, Hausnummer:", "default": "Burgstraße 34", "is_gap": False},
-            {"id": "sf6", "label": "3. PLZ, Urlaubsort:", "answer": "78014 Seeheim", "is_gap": True, "placeholder": "PLZ und Ort"},
-            {"id": "sf7", "label": "4. Zahlungsweise:", "answer": "Bar", "is_gap": True, "placeholder": "Bar oder Kreditkarte", "options": ["Bar", "Kreditkarte"]},
-            {"id": "sf8", "label": "5. Reisetermin:", "answer": "nächsten Sonntag", "is_gap": True, "placeholder": "z. B. nächsten Sonntag"},
-            {"id": "sf9", "label": "Unterschrift:", "default": "Eva Kadavy", "is_gap": False}
-        ]
-    }
-]
 
 # Navigation State Management
 if "nav_choice" not in st.session_state:
@@ -372,116 +225,7 @@ elif nav_choice == "📚 Master Goethe Word Engine":
     render_top_back_button()
     st.markdown('<div class="section-header-box">📚 Master Goethe Word Engine</div>', unsafe_allow_html=True)
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
-    st.subheader("Interactive Flashcard Engine (Complete Vocabulary)")
-    st.write("Browse through the complete Goethe A1 vocabulary list categorized into thematic groups.")
-
-    TOP_1000_VOCAB_CATEGORIES = {
-        "1. Person & Alltag (Personal & Daily Life)": {
-            "Verben": ["heißen", "heiraten", "wohnen", "leben", "kennen", "kennenlernen", "schlafen", "aufstehen", "baden", "duschen"],
-            "Nomen": ["die Familie", "der Vater", "die Mutter", "der Sohn", "die Tochter", "der Bruder", "die Schwester"]
-        },
-        "2. Essen & Trinken (Food & Drink)": {
-            "Verben": ["essen", "trinken", "kochen", "backen", "frühstücken"],
-            "Nomen": ["das Essen", "das Frühstück", "das Wasser", "der Kaffee", "der Tee", "das Brot"]
-        }
-    }
-
-    vocab_tree = TOP_1000_VOCAB_CATEGORIES
-    main_cats = ["ALL"] + list(vocab_tree.keys())
-    selected_main_cat = st.selectbox("📂 **Select Main Category:**", main_cats, key="vocab_main_cat")
-
-    if selected_main_cat == "ALL":
-        sub_cats = ["ALL"]
-        selected_sub_cat = "ALL"
-        all_pool = []
-        for cat, subdict in vocab_tree.items():
-            for sub, wlist in subdict.items():
-                all_pool.extend(wlist)
-        available_words = ["ALL"] + list(set(all_pool))
-    else:
-        sub_dict = vocab_tree[selected_main_cat]
-        sub_cats = ["ALL"] + list(sub_dict.keys())
-        selected_sub_cat = st.selectbox("📁 **Select Subcategory:**", sub_cats, key="vocab_sub_cat")
-        if selected_sub_cat == "ALL":
-            all_sub_pool = []
-            for sub, wlist in sub_dict.items():
-                all_sub_pool.extend(wlist)
-            available_words = ["ALL"] + list(set(all_sub_pool))
-        else:
-            available_words = ["ALL"] + sub_dict[selected_sub_cat]
-
-    selected_word_dropdown = st.selectbox("🔤 **Select specific word (or ALL):**", available_words, key="vocab_word_sel")
-
-    col_w1, col_w2 = st.columns([3, 1])
-    with col_w1:
-        if selected_word_dropdown == "ALL":
-            actual_pool = [w for w in available_words if w != "ALL"]
-            active_word = random.choice(actual_pool) if actual_pool else "sein"
-        else:
-            active_word = selected_word_dropdown
-    with col_w2:
-        if st.button("🎲 Shuffle Word", use_container_width=True):
-            actual_pool = [w for w in available_words if w != "ALL"]
-            st.session_state.current_flashcard_word = random.choice(actual_pool) if actual_pool else "sein"
-            st.session_state.show_card_back = False
-            st.rerun()
-
-    if "current_flashcard_word" not in st.session_state or st.session_state.current_flashcard_word not in available_words:
-        st.session_state.current_flashcard_word = active_word
-
-    if selected_word_dropdown != "ALL" and selected_word_dropdown != st.session_state.current_flashcard_word:
-        st.session_state.current_flashcard_word = selected_word_dropdown
-        st.session_state.show_card_back = False
-
-    active_word = st.session_state.current_flashcard_word
-
-    prompt = f"""
-    Generate an exhaustive A1 study card JSON for '{active_word}'.
-    Return strict JSON with this exact schema:
-    {{
-        "word": "{active_word}",
-        "is_goethe_word": true,
-        "part_of_speech": "Verb / Noun / Adjective",
-        "english_meaning": "English translation",
-        "gender": "der / die / das / N/A",
-        "plural_form": "Plural form or N/A",
-        "perfekt_tense": {{"formula": "hat/ist + Partizip II"}},
-        "grammar_notes": "Important A1 grammar note"
-    }}
-    """
-    try:
-        raw_json = generate_cached_content(prompt, is_json=True)
-        data = json.loads(raw_json)
-
-        if not st.session_state.get("show_card_back", False):
-            st.markdown(f"""
-            <div class="flashcard-front-box">
-                <p style="color: #60a5fa; font-weight: 700; margin-bottom: 8px;">⭐ {selected_main_cat}</p>
-                <div class="flashcard-word-title">{data.get("word", active_word)}</div>
-                <p style="color: #94a3b8; font-size: 0.95rem; margin-bottom: 0px;">Click speaker icon for audio, or flip card for details.</p>
-            </div>
-            """, unsafe_allow_html=True)
-            if st.button("🔊 Play Pronunciation", key="audio_front_btn"):
-                play_direct_audio(active_word, "front_word")
-        else:
-            st.markdown(f"""
-            <div class="flashcard-back-box">
-                <div class="flashcard-back-title">{data.get("word", active_word)}</div>
-                <div class="meaning-subtitle">Meaning: <b>{data.get("english_meaning", "")}</b></div>
-            </div>
-            """, unsafe_allow_html=True)
-            c1, c2, c3 = st.columns(3)
-            c1.metric("Part of Speech", data.get("part_of_speech", "N/A"))
-            c2.metric("Gender", data.get("gender", "N/A"))
-            c3.metric("Plural Form", data.get("plural_form", "N/A"))
-            st.info(f"💡 **Grammar Notes:** {data.get('grammar_notes', 'N/A')}")
-    except Exception as e:
-        st.error(f"Error loading flashcard: {str(e)}")
-
-    st.divider()
-    if st.button("🔄 Flip Flashcard", use_container_width=True):
-        st.session_state.show_card_back = not st.session_state.get("show_card_back", False)
-        st.rerun()
+    st.write("Content removed.")
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
@@ -491,23 +235,7 @@ elif nav_choice == "📖 Core Grammar Practice & Exercises":
     render_top_back_button()
     st.markdown('<div class="section-header-box">📖 Core Grammar Practice & Exercises</div>', unsafe_allow_html=True)
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
-    handbook_lessons = [
-        "Lesson 1: German Alphabet, Pronunciation, and Article Recognition",
-        "Lesson 2: German Noun Gender and Everyday Word Patterns"
-    ]
-    selected_lesson = st.selectbox("Select Handbook Lesson:", handbook_lessons, key="grammar_lesson_sel")
-    if st.button("📖 Load Review & Practice", type="primary"):
-        with st.spinner("Compiling notes..."):
-            prompt = f"Create a detailed study guide & 3 MC exercises for '{selected_lesson}' in strict JSON: {{\"lesson_title\": \"...\", \"lesson_explanation\": \"...\", \"exercises_mc\": [{{\"id\": \"mc1\", \"question\": \"...\", \"options\": [\"A\",\"B\",\"C\",\"D\"], \"correct\": \"A\", \"explanation\": \"...\"}}]}}"
-            st.session_state.active_grammar_module = json.loads(generate_cached_content(prompt, is_json=True))
-
-    if "active_grammar_module" in st.session_state:
-        mod = st.session_state.active_grammar_module
-        st.markdown(f"### {mod['lesson_title']}")
-        st.markdown(mod["lesson_explanation"])
-        for idx, q in enumerate(mod.get("exercises_mc", []), start=1):
-            st.markdown(f"**Q{idx}. {q['question']}**")
-            st.radio("Options:", q['options'], key=f"rad_grammar_{q['id']}")
+    st.write("Content removed.")
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
@@ -517,22 +245,7 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
     render_top_back_button()
     st.markdown('<div class="section-header-box">📖 Goethe A1 Lesen (Reading)</div>', unsafe_allow_html=True)
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
-    scen = LESEN_TEIL1_SCENARIOS[0]
-    st.info(scen['desc'])
-    st.markdown(f"**{scen['text1_label']}**\n> {scen['text1']}")
-    st.markdown(f"**{scen['text2_label']}**\n> {scen['text2']}")
-    
-    ans_lt1 = {}
-    for idx, q in enumerate(scen["questions"], start=1):
-        st.markdown(f"**Task {idx}: {q['statement']}**")
-        ans_lt1[q["id"]] = st.radio("Wählen Sie:", q["options"], key=f"rad_lt1_{q['id']}")
-    
-    if st.button("✔ Submit Lesen Answers", type="primary"):
-        for idx, q in enumerate(scen["questions"], start=1):
-            if ans_lt1.get(q["id"]) == q["answer"]:
-                st.success(f"Task {idx}: Correct! — {q['explanation']}")
-            else:
-                st.error(f"Task {idx}: Incorrect. Correct: `{q['answer']}` — {q['explanation']}")
+    st.write("Content removed.")
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
@@ -542,15 +255,7 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
     render_top_back_button()
     st.markdown('<div class="section-header-box">🎧 Goethe A1 Hören (Listening)</div>', unsafe_allow_html=True)
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
-    st.write("Listen to sample dialogue and answer questions.")
-    sample_script = "Kunde: Guten Tag, was kostet diese Jacke?\nVerkäuferin: Guten Tag, die Jacke kostet 49 Euro."
-    st.audio(generate_german_audio_bytes(sample_script), format="audio/mp3")
-    ans = st.radio("Was kostet die Jacke?", ["39 Euro", "49 Euro", "59 Euro"])
-    if st.button("Submit Answer", type="primary"):
-        if ans == "49 Euro":
-            st.success("Correct!")
-        else:
-            st.error("Incorrect. It costs 49 Euro.")
+    st.write("Content removed.")
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
@@ -560,22 +265,7 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
     render_top_back_button()
     st.markdown('<div class="section-header-box">✍️ Goethe A1 Schreiben (Writing)</div>', unsafe_allow_html=True)
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
-    scen = SCHREIBEN_TEIL1_SCENARIOS[0]
-    st.info(scen['aufgabe'])
-    user_inputs = {}
-    for field in scen["fields"]:
-        if not field.get("is_gap", False):
-            st.text_input(field["label"], value=field.get("default", ""), disabled=True)
-        else:
-            user_inputs[field["id"]] = st.text_input(field["label"], placeholder=field.get("placeholder", "..."))
-    
-    if st.button("✔ Check Form", type="primary"):
-        for field in scen["fields"]:
-            if field.get("is_gap", False):
-                if field["answer"].lower() in str(user_inputs.get(field["id"], "")).lower():
-                    st.success(f"{field['label']} Correct!")
-                else:
-                    st.error(f"{field['label']} Incorrect. Expected: {field['answer']}")
+    st.write("Content removed.")
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
@@ -585,11 +275,7 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
     render_top_back_button()
     st.markdown('<div class="section-header-box">🗣️ Goethe A1 Sprechen (Speaking)</div>', unsafe_allow_html=True)
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
-    st.markdown("### Teil 1 — Sich vorstellen")
-    rec = mic_recorder(start_prompt="Record Audio 🎙️", stop_prompt="Stop 🛑", key="rec_sp")
-    if rec:
-        st.audio(rec['bytes'], format='audio/wav')
-        st.success("Recording captured successfully.")
+    st.write("Content removed.")
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
@@ -599,11 +285,7 @@ elif nav_choice == "📖 A1 & A2 Short Stories":
     render_top_back_button()
     st.markdown('<div class="section-header-box">📖 A1 & A2 Short Stories</div>', unsafe_allow_html=True)
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
-    st.subheader("Enchanted Storybook Reader")
-    story = "Es war einmal in einer wunderschönen Stadt..."
-    st.info(story)
-    if st.button("🔊 Read Story Aloud"):
-        play_direct_audio(story, "story")
+    st.write("Content removed.")
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------------------------------------------
@@ -613,18 +295,5 @@ elif nav_choice == "🐱 Gem AI Tutor":
     render_top_back_button()
     st.markdown('<div class="section-header-box">🐱 Gem — AI German Tutor</div>', unsafe_allow_html=True)
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
-    if "gem_chat_messages" not in st.session_state:
-        st.session_state.gem_chat_messages = []
-    for msg in st.session_state.gem_chat_messages:
-        with st.chat_message(msg["role"]):
-            st.write(msg["content"])
-    if user_prompt := st.chat_input("Ask Gem anything about German..."):
-        st.session_state.gem_chat_messages.append({"role": "user", "content": user_prompt})
-        with st.chat_message("user"):
-            st.write(user_prompt)
-        with st.chat_message("assistant"):
-            with st.spinner("Gem is thinking..."):
-                response = generate_dynamic_content(user_prompt)
-                st.write(response)
-                st.session_state.gem_chat_messages.append({"role": "assistant", "content": response})
+    st.write("Content removed.")
     st.markdown('</div>', unsafe_allow_html=True)
