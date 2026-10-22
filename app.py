@@ -15,10 +15,10 @@ st.set_page_config(
     page_title="German A1 Learning", 
     page_icon="🇩🇪", 
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="collapsed"
 )
 
-# Custom Styling (Native Streamlit header & collapse arrow preserved)
+# Custom Styling
 st.markdown("""
 <style>
     /* Global Clean Modern Sans-Serif Font & Pastel Blue Background */
@@ -103,15 +103,6 @@ st.markdown("""
         font-weight: 700;
     }
 
-    /* Sophisticated Sidebar Navigation Styling with Vibrant Dark Blue */
-    [data-testid="stSidebar"] {
-        background-color: #0f172a !important;
-        border-right: 1px solid #1e293b;
-    }
-    [data-testid="stSidebar"] * {
-        color: #e2e8f0 !important;
-    }
-    
     /* Outlined & Framed Dropdown / Select Elements with Pastel Borders */
     .stSelectbox div[data-baseweb="select"] > div {
         background-color: #ffffff !important;
@@ -404,35 +395,18 @@ SCHREIBEN_TEIL2_SCENARIOS = [
     }
 ]
 
-# Sidebar Navigation State Management
+# Navigation State Management
 if "nav_choice" not in st.session_state:
     st.session_state.nav_choice = "🏠 Study Dashboard"
 
-nav_options = [
-    "🏠 Study Dashboard", 
-    "📚 Master Goethe Word Engine",
-    "📖 Core Grammar Practice & Exercises",
-    "📖 Goethe A1 Lesen (Reading)",
-    "🎧 Goethe A1 Hören (Listening)",
-    "✍️ Goethe A1 Schreiben (Writing)", 
-    "🗣️ Goethe A1 Sprechen (Speaking)",
-    "📖 A1 & A2 Short Stories",
-    "🐱 Gem AI Tutor"
-]
-
-# Sidebar Rendering (Native Streamlit collapse arrow included automatically)
-with st.sidebar:
-    st.markdown("<h3 style='margin:0; font-size:1.30rem; color:#ffffff;'>German A1</h3>", unsafe_allow_html=True)
-    st.markdown("<div style='height: 15px;'></div>", unsafe_allow_html=True)
-    st.markdown("<p style='font-size:1.1rem; font-weight:700; color:#e2e8f0; margin-bottom:12px;'>Navigation</p>", unsafe_allow_html=True)
-    
-    for opt in nav_options:
-        is_active = (st.session_state.nav_choice == opt)
-        if st.button(opt, key=f"nav_btn_{opt}", use_container_width=True):
-            st.session_state.nav_choice = opt
-            st.rerun()
-
 nav_choice = st.session_state.nav_choice
+
+# Add a back button on all sub-pages so users can easily return to the dashboard
+if nav_choice != "🏠 Study Dashboard":
+    if st.button("⬅️ Back to Study Dashboard", type="secondary", key="back_to_dash_btn"):
+        st.session_state.nav_choice = "🏠 Study Dashboard"
+        st.rerun()
+    st.divider()
 
 # ----------------------------------------------------
 # 1. STUDY DASHBOARD
@@ -443,9 +417,55 @@ if nav_choice == "🏠 Study Dashboard":
     <div class="hero-banner">
         <div class="hero-badge">✨ MY GERMAN STUDY BUDDY</div>
         <div class="hero-title">German A1 Learning Dashboard</div>
-        <div class="hero-subtitle">Explore interactive modules, practice materials, and master the Goethe A1 curriculum.</div>
+        <div class="hero-subtitle">Select a module below to begin your practice.</div>
     </div>
     """, unsafe_allow_html=True)
+
+    st.markdown("### 🚀 Study Modules & Practice Centers")
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        if st.button("📚 Master Goethe Word Engine", use_container_width=True, type="primary"):
+            st.session_state.nav_choice = "📚 Master Goethe Word Engine"
+            st.rerun()
+        st.markdown("<p style='color: #475569; font-size: 0.95rem; margin-bottom: 20px;'>Interactive flashcard engine with Goethe A1 vocabulary categories and audio pronunciation.</p>", unsafe_allow_html=True)
+
+        if st.button("📖 Core Grammar Practice & Exercises", use_container_width=True, type="primary"):
+            st.session_state.nav_choice = "📖 Core Grammar Practice & Exercises"
+            st.rerun()
+        st.markdown("<p style='color: #475569; font-size: 0.95rem; margin-bottom: 20px;'>Handbook review modules with bulleted guides and multiple-choice practice.</p>", unsafe_allow_html=True)
+
+        if st.button("📖 Goethe A1 Lesen (Reading)", use_container_width=True, type="primary"):
+            st.session_state.nav_choice = "📖 Goethe A1 Lesen (Reading)"
+            st.rerun()
+        st.markdown("<p style='color: #475569; font-size: 0.95rem; margin-bottom: 20px;'>Practice Lesen Teil 1, Teil 2, and Teil 3 exam tasks with instant feedback.</p>", unsafe_allow_html=True)
+
+        if st.button("🎧 Goethe A1 Hören (Listening)", use_container_width=True, type="primary"):
+            st.session_state.nav_choice = "🎧 Goethe A1 Hören (Listening)"
+            st.rerun()
+        st.markdown("<p style='color: #475569; font-size: 0.95rem; margin-bottom: 20px;'>Listen to dialogues and station/airport announcements with audio playback.</p>", unsafe_allow_html=True)
+
+    with col2:
+        if st.button("✍️ Goethe A1 Schreiben (Writing)", use_container_width=True, type="primary"):
+            st.session_state.nav_choice = "✍️ Goethe A1 Schreiben (Writing)"
+            st.rerun()
+        st.markdown("<p style='color: #475569; font-size: 0.95rem; margin-bottom: 20px;'>Practice form filling (Teil 1) and short email writing (Teil 2).</p>", unsafe_allow_html=True)
+
+        if st.button("🗣️ Goethe A1 Sprechen (Speaking)", use_container_width=True, type="primary"):
+            st.session_state.nav_choice = "🗣️ Goethe A1 Sprechen (Speaking)"
+            st.rerun()
+        st.markdown("<p style='color: #475569; font-size: 0.95rem; margin-bottom: 20px;'>Record and evaluate your self-introductions, Q&A, and polite requests.</p>", unsafe_allow_html=True)
+
+        if st.button("📖 A1 & A2 Short Stories", use_container_width=True, type="primary"):
+            st.session_state.nav_choice = "📖 A1 & A2 Short Stories"
+            st.rerun()
+        st.markdown("<p style='color: #475569; font-size: 0.95rem; margin-bottom: 20px;'>Immerse yourself in fairy tales and classic fictions with built-in audio narration.</p>", unsafe_allow_html=True)
+
+        if st.button("🐱 Gem AI Tutor", use_container_width=True, type="primary"):
+            st.session_state.nav_choice = "🐱 Gem AI Tutor"
+            st.rerun()
+        st.markdown("<p style='color: #475569; font-size: 0.95rem; margin-bottom: 20px;'>Ask Gem any questions about German grammar, vocabulary, or exam prep.</p>", unsafe_allow_html=True)
 
 # ----------------------------------------------------
 # 2. MASTER GOETHE WORD ENGINE
