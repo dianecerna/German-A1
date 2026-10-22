@@ -361,7 +361,7 @@ LESEN_TEIL1_SCENARIOS = [
         "title": "Wochenendbesuch & Hochzeitseinladung",
         "desc": "Two short messages: a sister's weekend visit and a wedding invitation — 5 tasks, Richtig/Falsch.",
         "text1_label": "E-Mail von der Schwester",
-        "text1": "Liebe Sandra,\nich komme diesen Samstag mit dem Zug um 10 Uhr an. Holst du mich am Bahnhof ab? Wir können dann zusammen auf den Markt gehen.\nDein Bruder Lukas",
+        "text1": "Liebe Sandra,\nich komme diesen Samstag mit dem Zug um 10 Uhr ab. Holst du mich am Bahnhof ab? Wir können dann zusammen auf den Markt gehen.\nDein Bruder Lukas",
         "text2_label": "Hochzeitskarte",
         "text2": "Liebe Freunde, wir heiraten am 20. August um 14 Uhr in der Stadtkirche. Danach feiern wir im Restaurant 'Zur Linde'. Bitte gebt uns bis zum 1. August Bescheid.",
         "questions": [
@@ -3290,4 +3290,14 @@ if st.session_state.bot_open:
                 feedback = generate_dynamic_content(eval_prompt)
                 st.session_state.bot_knowledge_feedback = feedback
         
-        if st.session_state.bot_knowledge_feedback)
+        if st.session_state.bot_knowledge_feedback:
+            st.info(st.session_state.bot_knowledge_feedback)
+
+    st.markdown("</div>", unsafe_allow_html=True)
+
+if not st.session_state.bot_open:
+    if st.button("🤖 Chat with Gem", key="open_bot_btn", type="primary"):
+        st.session_state.bot_open = True
+        st.rerun()
+
+st.markdown('</div>', unsafe_allow_html=True)
