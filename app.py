@@ -17,12 +17,12 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Custom Sunflower Wallpaper & Deep Purple/Magenta Gradient Glow Theme
+# Custom Sunflower Wallpaper & Yellow, Pink, and Orange Pastel Gradient Glow Theme
 st.markdown("""
 <style>
-    /* Global Sunflower Wallpaper Background with Dark Warm Overlay */
+    /* Global Sunflower Wallpaper Background with Soft Light Overlay */
     .stApp {
-        background: linear-gradient(rgba(248, 250, 252, 0.90), rgba(248, 250, 252, 0.90)), 
+        background: linear-gradient(rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.92)), 
                     url("https://images.unsplash.com/photo-1597848212624-a19eb35e2651?auto=format&fit=crop&w=2000&q=80") !important;
         background-size: cover !important;
         background-position: center !important;
@@ -52,70 +52,70 @@ st.markdown("""
         gap: 0.8rem !important;
     }
 
-    /* Magenta & Deep Purple Gradient Custom Button Styling */
+    /* Pastel Yellow, Pink & Orange Gradient Custom Button Styling */
     .stButton > button {
         width: 100% !important;
-        background: linear-gradient(135deg, #7e22ce 0%, #db2777 100%) !important;
-        border: 1px solid rgba(219, 39, 119, 0.4) !important;
+        background: linear-gradient(135deg, #fef08a 0%, #f472b6 50%, #fb923c 100%) !important;
+        border: 1px solid rgba(244, 114, 182, 0.5) !important;
         border-radius: 10px !important;
         padding: 10px 16px !important;
         text-align: center !important;
         font-size: 0.95rem !important;
         font-weight: 700 !important;
-        color: #ffffff !important;
-        box-shadow: 0 4px 15px rgba(126, 34, 206, 0.25) !important;
+        color: #7c2d12 !important;
+        box-shadow: 0 4px 15px rgba(251, 146, 60, 0.2) !important;
         transition: all 0.2s ease !important;
         margin-bottom: 4px !important;
     }
     
     .stButton > button:hover {
-        background: linear-gradient(135deg, #9333ea 0%, #e11d48 100%) !important;
-        border-color: #f43f5e !important;
+        background: linear-gradient(135deg, #fde047 0%, #ec4899 50%, #f97316 100%) !important;
+        border-color: #ec4899 !important;
         transform: translateY(-1px);
-        box-shadow: 0 6px 20px rgba(219, 39, 119, 0.4) !important;
+        box-shadow: 0 6px 20px rgba(244, 63, 94, 0.3) !important;
         color: #ffffff !important;
     }
 
     /* Compact Main Content Cards / Containers */
     .main-card {
-        background: rgba(255, 255, 255, 0.95);
+        background: rgba(255, 255, 255, 0.96);
         backdrop-filter: blur(8px);
         border-radius: 12px;
         padding: 20px 24px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
         margin-bottom: 12px;
-        border: 1px solid rgba(126, 34, 206, 0.2);
+        border: 1px solid rgba(251, 146, 60, 0.3);
     }
     
-    /* Hero Banner with Purple/Magenta Glow Border */
+    /* Hero Banner with Pastel Yellow-Pink-Orange Gradient Glow Border */
     .hero-banner {
-        background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(253, 242, 248, 0.95) 100%);
+        background: linear-gradient(135deg, rgba(254, 240, 138, 0.2) 0%, rgba(244, 114, 182, 0.15) 50%, rgba(251, 146, 60, 0.2) 100%);
         backdrop-filter: blur(8px);
         border-radius: 12px;
         padding: 24px;
         color: #1e293b;
         margin-bottom: 16px;
-        border: 2px solid #7e22ce;
-        box-shadow: 0 8px 25px rgba(126, 34, 206, 0.15);
+        border: 2px solid #f472b6;
+        box-shadow: 0 8px 25px rgba(244, 114, 182, 0.2);
     }
     .hero-badge {
         display: inline-block;
         background: #fdf2f8;
-        border: 1px solid #f43f5e;
+        border: 1px solid #f472b6;
         padding: 4px 12px;
         border-radius: 6px;
         font-size: 0.75rem;
         font-weight: 700;
         letter-spacing: 0.05em;
         margin-bottom: 8px;
-        color: #be185d;
+        color: #db2777;
     }
     .hero-title {
         font-size: 2rem;
         font-weight: 800;
         letter-spacing: -0.025em;
         margin-bottom: 4px;
-        background: linear-gradient(90deg, #7e22ce 0%, #db2777 100%);
+        background: linear-gradient(90deg, #ca8a04 0%, #db2777 50%, #ea580c 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
     }
@@ -127,21 +127,21 @@ st.markdown("""
         font-weight: 500;
     }
 
-    /* Section Header Box with Purple/Magenta Accent */
+    /* Section Header Box with Pastel Yellow/Pink/Orange Accent */
     .section-header-box {
-        background: rgba(255, 255, 255, 0.95);
+        background: rgba(255, 255, 255, 0.96);
         backdrop-filter: blur(8px);
-        border-left: 5px solid #7e22ce;
-        border-top: 1px solid #e2e8f0;
-        border-right: 1px solid #e2e8f0;
-        border-bottom: 1px solid #e2e8f0;
+        border-left: 5px solid #f472b6;
+        border-top: 1px solid #fed7aa;
+        border-right: 1px solid #fed7aa;
+        border-bottom: 1px solid #fed7aa;
         border-radius: 10px;
         padding: 12px 18px;
         margin-bottom: 12px;
-        color: #7e22ce;
+        color: #c2410c;
         font-size: 1.2rem;
         font-weight: 800;
-        box-shadow: 0 4px 15px rgba(126, 34, 206, 0.1);
+        box-shadow: 0 4px 15px rgba(251, 146, 60, 0.15);
     }
 
     /* Clean Minimalist Dropdown Box Design */
@@ -151,15 +151,15 @@ st.markdown("""
     }
     .stSelectbox div[data-baseweb="select"] > div {
         background-color: #ffffff !important;
-        border: 1px solid #7e22ce !important;
+        border: 1px solid #f472b6 !important;
         border-radius: 8px !important;
         color: #1e293b !important;
         padding: 8px 14px !important;
-        box-shadow: 0 4px 15px rgba(126, 34, 206, 0.1) !important;
+        box-shadow: 0 4px 15px rgba(244, 114, 182, 0.15) !important;
         min-height: 44px !important;
     }
     .stSelectbox div[data-baseweb="select"] > div:hover {
-        border-color: #db2777 !important;
+        border-color: #fb923c !important;
     }
     .stSelectbox span, .stSelectbox div[data-baseweb="select"] span {
         color: #1e293b !important;
@@ -170,7 +170,7 @@ st.markdown("""
     /* Open Dropdown Popup List Container & Options */
     div[data-baseweb="menu"] {
         background-color: #ffffff !important;
-        border: 1px solid #7e22ce !important;
+        border: 1px solid #f472b6 !important;
         border-radius: 8px !important;
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
     }
@@ -187,19 +187,8 @@ st.markdown("""
         color: #1e293b !important;
     }
     div[data-baseweb="menu"] li:hover, div[data-baseweb="menu"] div[aria-selected="true"] {
-        background-color: #fdf2f8 !important;
-        color: #7e22ce !important;
-    }
-
-    /* Clean Grouped Card Section for Back of Flashcard (No extra outer wrapper/white box) */
-    .content-group {
-        background: #ffffff;
-        border: 1px solid #e2e8f0;
-        border-left: 4px solid #db2777;
-        border-radius: 10px;
-        padding: 16px 20px;
-        margin-bottom: 16px;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+        background-color: #fef08a40 !important;
+        color: #c2410c !important;
     }
 
     /* Gender-based Flashcard Containers */
@@ -208,43 +197,47 @@ st.markdown("""
         border: 2px solid #3b82f6;
         color: #1e3a8a;
         border-radius: 14px;
-        padding: 24px 16px;
+        padding: 28px 20px;
         text-align: center;
         box-shadow: 0 6px 20px rgba(59, 130, 246, 0.15);
-        margin-bottom: 12px;
+        margin-bottom: 8px;
+        cursor: pointer;
     }
     .flashcard-feminine {
         background: linear-gradient(135deg, #fff1f2 0%, #ffe4e6 100%);
         border: 2px solid #f43f5e;
         color: #881337;
         border-radius: 14px;
-        padding: 24px 16px;
+        padding: 28px 20px;
         text-align: center;
         box-shadow: 0 6px 20px rgba(244, 63, 94, 0.15);
-        margin-bottom: 12px;
+        margin-bottom: 8px;
+        cursor: pointer;
     }
     .flashcard-neuter {
         background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
         border: 2px solid #10b981;
         color: #064e3b;
         border-radius: 14px;
-        padding: 24px 16px;
+        padding: 28px 20px;
         text-align: center;
         box-shadow: 0 6px 20px rgba(16, 185, 129, 0.15);
-        margin-bottom: 12px;
+        margin-bottom: 8px;
+        cursor: pointer;
     }
     .flashcard-other {
-        background: linear-gradient(135deg, #fffbeb50 0%, #fef3c750 100%);
+        background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
         border: 2px solid #f59e0b;
         color: #78350f;
         border-radius: 14px;
-        padding: 24px 16px;
+        padding: 28px 20px;
         text-align: center;
         box-shadow: 0 6px 20px rgba(245, 158, 11, 0.15);
-        margin-bottom: 12px;
+        margin-bottom: 8px;
+        cursor: pointer;
     }
     .flashcard-word-title {
-        font-size: 2.5rem;
+        font-size: 2.8rem;
         font-weight: 800;
         margin-bottom: 4px;
         color: #1e293b;
@@ -254,7 +247,7 @@ st.markdown("""
     [data-testid="stMetricValue"] {
         font-size: 1.1rem !important;
         font-weight: 700 !important;
-        color: #7e22ce !important;
+        color: #db2777 !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -318,7 +311,7 @@ A1_VOCABULARY_DATABASE = {
     "ALL": [],
     "allgemein": ["sein", "haben", "werden", "gut", "ja", "nein", "nicht", "sehr", "und", "oder", "aber", "also", "hier", "da", "was", "wer", "wie", "wo", "woher", "wohin"],
     "arbeit_und_beruf": ["arbeiten", "der Beruf", "die Firma", "das Büro", "der Kollege", "die Kollegin", "der Chef", "die Chefin", "die Arbeit", "der Job", "der Termin", "die Pause", "verdienen", "schreiben", "anrufen", "der Computer", "das Telefon", "die E-Mail", "der Brief", "die Besprechung"],
-    "mensch_und_koerper": ["die Familie", "der Vater", "die Mutter", "der Sohn", "die Tochter", "der Bruder", "die Schwester", "der Eltern", "das Kind", "der Mensch", "der Freund", "die Freundin", "die Person", "der Name", "das Alter", "der Kopf", "das Auge", "das Ohr", "die Hand", "der Fuß"],
+    "mensch_und_koerper": ["die Familie", "der Vater", "die Mutter", "der Sohn", "die Tochter", "der Bruder", "die Schwester", "die Eltern", "das Kind", "der Mensch", "der Freund", "die Freundin", "die Person", "der Name", "das Alter", "der Kopf", "das Auge", "das Ohr", "die Hand", "der Fuß"],
     "wohnen_und_haushalt": ["das Haus", "die Wohnung", "das Zimmer", "das Küche", "das Bad", "das Schlafzimmer", "das Wohnzimmer", "die Tür", "das Fenster", "der Tisch", "der Stuhl", "das Bett", "die Lampe", "wohnen", "mieten", "der Schlüssel", "der Garten", "der Balkon", "die Miete", "umziehen"],
     "essen_und_trinken": ["das Essen", "das Wasser", "der Kaffee", "der Tee", "die Milch", "das Brot", "das Fleisch", "der Fisch", "das Obst", "das Gemüse", "essen", "trinken", "kochen", "backen", "das Restaurant", "der Hunger", "der Durst", "das Frühstück", "das Mittagessen", "das Abendessen"],
     "freizeit_und_hobbys": ["das Hobby", "spielen", "lesen", "schwimmen", "reisen", "fotografieren", "der Sport", "das Buch", "die Musik", "tanzen", "singen", "malen", "der Film", "das Kino", "das Theater", "wandern", "joggen", "treffen", "lachen", "fernsehen"],
@@ -485,103 +478,78 @@ elif nav_choice == "📚 Master Goethe Word Engine":
     else:
         card_class = "flashcard-other"
 
-    # --- CARD TAP FLIP MECHANISM & DISPLAY ---
-    # We use a button on the card container that toggles st.session_state.is_card_flipped when tapped
+    # --- DIRECT CARD TAP FLIP MECHANISM ---
+    # Tapping the actual card button toggles the flip state cleanly without extra boxes
     if not st.session_state.is_card_flipped:
-        # Front of Card View
-        card_html_content = f"""
-        <div class="{card_class}">
-            <p style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">🌻 Category: {data.get("category", "").replace('_', ' ').title()}</p>
-            <div class="flashcard-word-title">{data.get("word", active_word)}</div>
-            <p style="font-size: 1rem; margin-top: 4px;">Gender / Article: <b>{data.get("gender", "N/A")}</b></p>
-            <p style="font-size: 0.85rem; margin-top: 10px; opacity: 0.8;">💡 Tap below to flip card or listen to pronunciation.</p>
-        </div>
-        """
-        st.markdown(card_html_content, unsafe_allow_html=True)
-
-        col_f1, col_f2 = st.columns([1, 1])
-        with col_f1:
-            if st.button("🔊 Pronounce", key="audio_front_btn"):
+        # Front of Card
+        card_btn_label = f"🌻 Category: {data.get('category', '').replace('_', ' ').title()}\n\n{data.get('word', active_word)}\n\nGender / Article: {data.get('gender', 'N/A')}\n\n[ Tap card to flip to back / View details ]"
+        if st.button(card_btn_label, key="actual_card_front_tap"):
+            st.session_state.is_card_flipped = True
+            st.rerun()
+            
+        col_audio1, col_audio2 = st.columns([1, 1])
+        with col_audio1:
+            if st.button("🔊 Pronounce Word", key="audio_front_btn"):
                 play_direct_audio(data.get("word", active_word), "front_audio")
-        with col_f2:
-            if st.button("🔄 Tap to Flip (Back)", key="flip_to_back_btn"):
-                st.session_state.is_card_flipped = True
-                st.rerun()
-
     else:
-        # Back of Card View
-        card_html_content = f"""
-        <div class="{card_class}">
-            <p style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px;">📖 Detailed Breakdown</p>
-            <div class="flashcard-word-title" style="font-size: 2.2rem;">{data.get("word", active_word)}</div>
-            <p style="font-size: 1.2rem; font-weight: 700; margin-bottom: 0px;">Meaning: {data.get("english_meaning", "")}</p>
-            <p style="font-size: 0.85rem; margin-top: 8px; opacity: 0.8;">💡 Tap below to flip back to front.</p>
-        </div>
-        """
-        st.markdown(card_html_content, unsafe_allow_html=True)
+        # Back of Card
+        card_btn_label = f"📖 Detailed Breakdown\n\n{data.get('word', active_word)}\n\nMeaning: {data.get('english_meaning', '')}\n\n[ Tap card to flip back to front ]"
+        if st.button(card_btn_label, key="actual_card_back_tap"):
+            st.session_state.is_card_flipped = False
+            st.rerun()
 
-        col_b1, col_b2 = st.columns([1, 1])
-        with col_b1:
+        col_audio1, col_audio2 = st.columns([1, 1])
+        with col_audio1:
             if st.button("🔊 Pronounce Word", key="audio_back_word"):
                 play_direct_audio(data.get("word", active_word), "back_audio")
-        with col_b2:
-            if st.button("🔄 Tap to Flip (Front)", key="flip_to_front_btn"):
-                st.session_state.is_card_flipped = False
-                st.rerun()
 
         st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
 
-        # 1. Plural Version Group
+        # 1. Plural Version Group (No extra white background box wrapper)
         plural = data.get("plural_form", "N/A")
         if plural and plural != "N/A":
-            st.markdown('<div class="content-group">', unsafe_allow_html=True)
             col_pl1, col_pl2 = st.columns([4, 1])
             col_pl1.markdown(f"**Plural Version:** `{plural}`[cite: 8]")
             with col_pl2:
                 if st.button("🔊 Audio", key="audio_plural"):
                     play_direct_audio(plural, "plural_audio")
-            st.markdown('</div>', unsafe_allow_html=True)
+            st.markdown("<hr style='border-color: #fed7aa; margin: 6px 0;'>", unsafe_allow_html=True)
 
         # 2. Word Type and Case Usage Group
-        st.markdown('<div class="content-group">', unsafe_allow_html=True)
         wt_col, cu_col = st.columns(2)
         wt_col.markdown(f"**Word Type:** `{data.get('word_type', 'N/A')}`[cite: 8]")
         cu_col.markdown(f"**Case Usage:** `{data.get('case_usage', 'N/A')}`[cite: 8]")
-        st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown("<hr style='border-color: #fed7aa; margin: 6px 0;'>", unsafe_allow_html=True)
 
         # 3. Auxiliary Verb & Partizip II Group
         aux_verb = data.get('auxiliary_verb', 'N/A')
         part_ii = data.get('partizip_ii', 'N/A')
-        st.markdown('<div class="content-group">', unsafe_allow_html=True)
         st.markdown(f"**Auxiliary Verb & Partizip II:** `{aux_verb} ({part_ii})`[cite: 8]")
-        st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown("<hr style='border-color: #fed7aa; margin: 6px 0;'>", unsafe_allow_html=True)
 
         # 4. Auxiliary Verb & Partizip II Sample Sentence Group
         aux_sent = data.get('aux_sentence_de', '')
         if aux_sent and aux_sent != "N/A":
-            st.markdown('<div class="content-group">', unsafe_allow_html=True)
             st.markdown(f"**Aux/Partizip II Sample Sentence:**")
             as_col1, as_col2 = st.columns([4, 1])
             as_col1.markdown(f"*{aux_sent}* <br><small style='color:#64748b;'>({data.get('aux_sentence_en', '')})</small>", unsafe_allow_html=True)
             with as_col2:
                 if st.button("🔊 Audio", key="audio_aux_sent"):
                     play_direct_audio(aux_sent, "aux_sent_audio")
-            st.markdown('</div>', unsafe_allow_html=True)
+            st.markdown("<hr style='border-color: #fed7aa; margin: 6px 0;'>", unsafe_allow_html=True)
 
         # 5. Komparativ and Superlative Group
         komp = data.get('komparativ', 'N/A')
         sup = data.get('superlative', 'N/A')
         if komp != "N/A" or sup != "N/A":
-            st.markdown('<div class="content-group">', unsafe_allow_html=True)
             k_col1, k_col2 = st.columns([4, 1])
             k_col1.markdown(f"**Komparativ & Superlative:** `{komp}` | `{sup}`[cite: 8]")
             with k_col2:
                 if st.button("🔊 Audio", key="audio_komp"):
                     play_direct_audio(f"{komp} {sup}", "komp_audio")
-            st.markdown('</div>', unsafe_allow_html=True)
+            st.markdown("<hr style='border-color: #fed7aa; margin: 6px 0;'>", unsafe_allow_html=True)
 
         # 6. Conjugation and Sample Sentences Group
-        st.markdown('<div class="content-group">', unsafe_allow_html=True)
         st.markdown("#### 📝 Conjugation & Sample Sentences")
         st.markdown("<div style='height: 4px;'></div>", unsafe_allow_html=True)
         conjugations = data.get("conjugations", [])
@@ -594,13 +562,11 @@ elif nav_choice == "📚 Master Goethe Word Engine":
                 with c4:
                     if st.button("🔊", key=f"audio_conj_{conj.get('pronoun', '')}"):
                         play_direct_audio(conj.get('sentence', ''), f"conj_{conj.get('pronoun', '')}")
-                st.markdown("<hr style='border-color: #e2e8f0; margin: 8px 0;'>", unsafe_allow_html=True)
-        st.markdown('</div>', unsafe_allow_html=True)
+                st.markdown("<hr style='border-color: #fed7aa; margin: 6px 0;'>", unsafe_allow_html=True)
 
         # 7. Colloquial & Daily Phrases Group
         phrases = data.get("colloquial_phrases", [])
         if phrases:
-            st.markdown('<div class="content-group">', unsafe_allow_html=True)
             st.markdown("#### 💬 Colloquial & Daily Phrases")
             st.markdown("<div style='height: 4px;'></div>", unsafe_allow_html=True)
             for idx, ph in enumerate(phrases):
@@ -611,10 +577,10 @@ elif nav_choice == "📚 Master Goethe Word Engine":
                 with ph_c2:
                     if st.button("🔊 Audio", key=f"audio_phrase_{idx}"):
                         play_direct_audio(p_de, f"phrase_audio_{idx}")
-            st.markdown('</div>', unsafe_allow_html=True)
+            st.markdown("<hr style='border-color: #fed7aa; margin: 6px 0;'>", unsafe_allow_html=True)
 
         # 8. Grammar Notes Group
-        st.markdown(f'<div class="content-group">🌻 <b>Grammar Notes:</b> {data.get("grammar_notes", "N/A")}[cite: 8]</div>', unsafe_allow_html=True)
+        st.markdown(f'🌻 <b>Grammar Notes:</b> {data.get("grammar_notes", "N/A")}[cite: 8]')
 
     st.markdown("<div style='height: 15px;'></div>", unsafe_allow_html=True)
 
