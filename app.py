@@ -169,7 +169,7 @@ st.markdown("""
     }
     div[data-baseweb="menu"] li, div[data-baseweb="menu"] div {
         background-color: #385378 !important;
-        color: #1A1818 !important;
+        color: #FFFFFF !important;
         font-weight: 600 !important;
     }
     div[data-baseweb="menu"] li:hover, div[data-baseweb="menu"] div[aria-selected="true"] {
