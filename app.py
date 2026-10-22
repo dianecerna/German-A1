@@ -18,14 +18,9 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom Styling & Header Removal
+# Custom Styling
 st.markdown("""
 <style>
-    /* Completely remove Streamlit's native header overlay that blocks top-left clicks */
-    header[data-testid="stHeader"], [data-testid="collapsedControl"] {
-        display: none !important;
-    }
-
     /* Global Clean Modern Sans-Serif Font & Pastel Blue Background */
     .stApp {
         background-color: #e0f2fe !important;
@@ -445,9 +440,6 @@ SCHREIBEN_TEIL2_SCENARIOS = [
 if "nav_choice" not in st.session_state:
     st.session_state.nav_choice = "🏠 Study Dashboard"
 
-if "sidebar_visible" not in st.session_state:
-    st.session_state.sidebar_visible = True
-
 nav_options = [
     "🏠 Study Dashboard", 
     "📚 Master Goethe Word Engine",
@@ -460,33 +452,25 @@ nav_options = [
     "🐱 Gem AI Tutor"
 ]
 
-# Sidebar Rendering
-if st.session_state.sidebar_visible:
-    with st.sidebar:
-        c_toggle, c_title = st.columns([1, 4])
-        with c_toggle:
-            if st.button("⬅️", key="sidebar_collapse_arrow", help="Hide Sidebar"):
-                st.session_state.sidebar_visible = False
-                st.rerun()
-        with c_title:
-            st.markdown("<h3 style='margin:0; font-size:1.30rem; color:#ffffff;'>German A1 Learning</h3>", unsafe_allow_html=True)
-        
-        st.markdown("<div style='height: 15px;'></div>", unsafe_allow_html=True)
-        st.markdown("<p style='font-size:1.1rem; font-weight:700; color:#e2e8f0; margin-bottom:12px;'>Navigation</p>", unsafe_allow_html=True)
-        
-        for opt in nav_options:
-            is_active = (st.session_state.nav_choice == opt)
-            if st.button(opt, key=f"nav_btn_{opt}", use_container_width=True):
-                st.session_state.nav_choice = opt
-                st.rerun()
+# Sidebar Rendering with a Built-in Hide Button
+with st.sidebar:
+    c_toggle, c_title = st.columns([1, 4])
+    with c_toggle:
+        if st.button("❌", key="sidebar_close_btn", help="Close Navigation Panel", use_container_width=True):
+            st.rerun()
+    with c_title:
+        st.markdown("<h3 style='margin:0; font-size:1.30rem; color:#ffffff;'>German A1</h3>", unsafe_allow_html=True)
+    
+    st.markdown("<div style='height: 15px;'></div>", unsafe_allow_html=True)
+    st.markdown("<p style='font-size:1.1rem; font-weight:700; color:#e2e8f0; margin-bottom:12px;'>Navigation</p>", unsafe_allow_html=True)
+    
+    for opt in nav_options:
+        is_active = (st.session_state.nav_choice == opt)
+        if st.button(opt, key=f"nav_btn_{opt}", use_container_width=True):
+            st.session_state.nav_choice = opt
+            st.rerun()
 
 nav_choice = st.session_state.nav_choice
-
-# Mobile & Desktop Friendly Navigation Menu Toggle Checkbox
-sidebar_toggle = st.checkbox("📂 Menu / Navigation Panel", value=st.session_state.sidebar_visible, key="mobile_sidebar_toggle")
-if sidebar_toggle != st.session_state.sidebar_visible:
-    st.session_state.sidebar_visible = sidebar_toggle
-    st.rerun()
 
 # ----------------------------------------------------
 # 1. STUDY DASHBOARD
