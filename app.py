@@ -7,7 +7,6 @@ import streamlit as st
 from google import genai
 from google.genai import types
 from gtts import gTTS
-from streamlit_mic_recorder import mic_recorder
 
 # Streamlit Page Configuration
 st.set_page_config(
@@ -17,7 +16,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Custom Sunflower Wallpaper & Pastel Theme with Dynamic Flashcard Styling via Direct CSS Classes
+# Custom Sunflower Wallpaper & Pastel Theme with Dynamic Flashcard Styling
 st.markdown("""
 <style>
     /* Global Sunflower Wallpaper Background with Soft Light Overlay */
@@ -190,7 +189,7 @@ st.markdown("""
         color: #c2410c !important;
     }
 
-    /* DYNAMIC STATIC CARD CONTAINER STYLING (Blue for masculine, red for feminine, green for neuter, orange for verbs, purple for rest) */
+    /* DYNAMIC CARD CONTAINER STYLING WITH HIGH CONTRAST TEXT */
     .card-masculine-container {
         background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
         border: 2px solid #2563eb;
@@ -201,7 +200,8 @@ st.markdown("""
         box-shadow: 0 6px 20px rgba(59, 130, 246, 0.25);
         margin-bottom: 8px;
     }
-    .card-masculine-container * { color: #ffffff !important; }
+    .card-masculine-container h1, .card-masculine-container h2, .card-masculine-container h3, 
+    .card-masculine-container p, .card-masculine-container div { color: #ffffff !important; }
 
     .card-feminine-container {
         background: linear-gradient(135deg, #f87171 0%, #ef4444 100%);
@@ -213,7 +213,8 @@ st.markdown("""
         box-shadow: 0 6px 20px rgba(239, 68, 68, 0.25);
         margin-bottom: 8px;
     }
-    .card-feminine-container * { color: #ffffff !important; }
+    .card-feminine-container h1, .card-feminine-container h2, .card-feminine-container h3, 
+    .card-feminine-container p, .card-feminine-container div { color: #ffffff !important; }
 
     .card-neuter-container {
         background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
@@ -225,7 +226,8 @@ st.markdown("""
         box-shadow: 0 6px 20px rgba(16, 185, 129, 0.25);
         margin-bottom: 8px;
     }
-    .card-neuter-container * { color: #ffffff !important; }
+    .card-neuter-container h1, .card-neuter-container h2, .card-neuter-container h3, 
+    .card-neuter-container p, .card-neuter-container div { color: #ffffff !important; }
 
     .card-verb-container {
         background: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
@@ -237,7 +239,8 @@ st.markdown("""
         box-shadow: 0 6px 20px rgba(249, 115, 22, 0.25);
         margin-bottom: 8px;
     }
-    .card-verb-container * { color: #ffffff !important; }
+    .card-verb-container h1, .card-verb-container h2, .card-verb-container h3, 
+    .card-verb-container p, .card-verb-container div { color: #ffffff !important; }
 
     .card-other-container {
         background: linear-gradient(135deg, #c084fc 0%, #a855f7 100%);
@@ -249,7 +252,8 @@ st.markdown("""
         box-shadow: 0 6px 20px rgba(168, 85, 247, 0.25);
         margin-bottom: 8px;
     }
-    .card-other-container * { color: #ffffff !important; }
+    .card-other-container h1, .card-other-container h2, .card-other-container h3, 
+    .card-other-container p, .card-other-container div { color: #ffffff !important; }
 
     .flashcard-word-title {
         font-size: 2.8rem;
@@ -507,15 +511,15 @@ elif nav_choice == "📚 Master Goethe Word Engine":
     st.markdown(f'<div class="{container_class}">', unsafe_allow_html=True)
     if not st.session_state.is_card_flipped:
         st.markdown(f"""
-        <div style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">🌻 Category: {data.get('category', '').replace('_', ' ').title()}</div>
+        <div style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; color: #ffffff;">🌻 Category: {data.get('category', '').replace('_', ' ').title()}</div>
         <div class="flashcard-word-title">{data.get('word', active_word)}</div>
-        <div style="font-size: 1rem; margin-top: 4px;">Gender / Article: <b>{data.get('gender', 'N/A')}</b></div>
+        <div style="font-size: 1rem; margin-top: 4px; color: #ffffff;">Gender / Article: <b>{data.get('gender', 'N/A')}</b></div>
         """, unsafe_allow_html=True)
     else:
         st.markdown(f"""
-        <div style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px;">📖 Detailed Breakdown</div>
+        <div style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; color: #ffffff;">📖 Detailed Breakdown</div>
         <div class="flashcard-word-title" style="font-size: 2.2rem;">{data.get('word', active_word)}</div>
-        <div style="font-size: 1.2rem; font-weight: 700; margin-bottom: 0px;">Meaning: {data.get('english_meaning', '')}</div>
+        <div style="font-size: 1.2rem; font-weight: 700; margin-bottom: 0px; color: #ffffff;">Meaning: {data.get('english_meaning', '')}</div>
         """, unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
@@ -586,7 +590,7 @@ elif nav_choice == "📚 Master Goethe Word Engine":
                     play_direct_audio(f"{komp} {sup}", "komp_audio")
             st.markdown("<hr style='border-color: #cbd5e1; margin: 6px 0;'>", unsafe_allow_html=True)
 
-        # 6. Conjugation & Sample Sentences (Mirrored font size to Grammar Notes via regular-black-text, no icons, capitalized)
+        # 6. Conjugation & Sample Sentences
         st.markdown('<div class="regular-black-text"><b>Conjugation & Sample Sentences</b></div>', unsafe_allow_html=True)
         st.markdown("<div style='height: 4px;'></div>", unsafe_allow_html=True)
         conjugations = data.get("conjugations", [])
@@ -601,7 +605,7 @@ elif nav_choice == "📚 Master Goethe Word Engine":
                         play_direct_audio(conj.get('sentence', ''), f"conj_{conj.get('pronoun', '')}")
                 st.markdown("<hr style='border-color: #cbd5e1; margin: 6px 0;'>", unsafe_allow_html=True)
 
-        # 7. Colloquial & Daily Phrases (Mirrored font size, no icons, capitalized)
+        # 7. Colloquial & Daily Phrases
         phrases = data.get("colloquial_phrases", [])
         if phrases:
             st.markdown('<div class="regular-black-text"><b>Colloquial & Daily Phrases</b></div>', unsafe_allow_html=True)
@@ -616,7 +620,7 @@ elif nav_choice == "📚 Master Goethe Word Engine":
                         play_direct_audio(p_de, f"phrase_audio_{idx}")
             st.markdown("<hr style='border-color: #cbd5e1; margin: 6px 0;'>", unsafe_allow_html=True)
 
-        # 8. Grammar Notes (Bolded header, regular black text, no icon)
+        # 8. Grammar Notes
         st.markdown(f'<div class="regular-black-text"><b>Grammar Notes:</b> {data.get("grammar_notes", "N/A")}</div>', unsafe_allow_html=True)
 
     st.markdown("<div style='height: 15px;'></div>", unsafe_allow_html=True)
