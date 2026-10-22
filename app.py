@@ -18,58 +18,58 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom Styling: Unified Century Gothic Theme, Sophisticated Navigation & Seamless Cards
+# Custom Styling: Clean Modern Sans-Serif Font, Vibrant Dark Blue Theme & Background Colors
 st.markdown("""
 <style>
-    /* Global Century Gothic Font & Seamless Background */
+    /* Global Clean Modern Sans-Serif Font & Background */
     .stApp {
-        background-color: #f8fafc;
-        font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif !important;
+        background-color: #f0f4f8;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
     }
     
     *, div, span, p, h1, h2, h3, h4, h5, h6, label, button {
-        font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif !important;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
     }
 
-    /* Cards Styling */
+    /* Cards Styling with Vibrant Backgrounds */
     .main-card {
         background: #ffffff;
         border-radius: 20px;
         padding: 24px;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+        box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
         margin-bottom: 20px;
-        border: 1px solid #e2e8f0;
+        border: 1px solid #cbd5e1;
     }
     .accent-card {
         background: #ffffff;
         border-radius: 20px;
         padding: 24px;
-        border-left: 6px solid #2563eb;
-        box-shadow: 0 4px 20px rgba(37, 99, 235, 0.05);
+        border-left: 6px solid #1e3a8a;
+        box-shadow: 0 4px 20px rgba(30, 58, 138, 0.08);
         margin-bottom: 20px;
-        border: 1px solid #e2e8f0;
+        border: 1px solid #cbd5e1;
     }
     
-    /* Hero Banner */
+    /* Hero Banner with Vibrant Dark Blue */
     .hero-banner {
         background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
         border-radius: 24px;
         padding: 36px;
         color: #ffffff;
         margin-bottom: 25px;
-        box-shadow: 0 10px 25px -5px rgba(30, 58, 138, 0.25);
+        box-shadow: 0 10px 25px -5px rgba(30, 58, 138, 0.3);
     }
     .hero-badge {
         display: inline-block;
-        background: rgba(255, 255, 255, 0.1);
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        background: rgba(255, 255, 255, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.3);
         padding: 6px 14px;
         border-radius: 20px;
         font-size: 0.8rem;
         font-weight: 600;
         letter-spacing: 0.05em;
         margin-bottom: 15px;
-        color: #38bdf8;
+        color: #60a5fa;
     }
     .hero-title {
         font-size: 2.2rem;
@@ -80,13 +80,13 @@ st.markdown("""
     }
     .hero-subtitle {
         font-size: 1rem;
-        color: #cbd5e1;
+        color: #e2e8f0;
         line-height: 1.6;
         max-width: 800px;
         margin-bottom: 0px;
     }
 
-    /* Sophisticated Sidebar Navigation Styling */
+    /* Sophisticated Sidebar Navigation Styling with Vibrant Dark Blue */
     [data-testid="stSidebar"] {
         background-color: #0f172a !important;
         border-right: 1px solid #1e293b;
@@ -102,54 +102,62 @@ st.markdown("""
         letter-spacing: 0.02em;
     }
     .stRadio div[role="radiogroup"] > label {
-        background: rgba(255, 255, 255, 0.03);
+        background: rgba(255, 255, 255, 0.05);
         border-radius: 12px;
         padding: 8px 12px;
         margin-bottom: 6px;
-        border: 1px solid rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
         transition: all 0.2s ease;
     }
     .stRadio div[role="radiogroup"] > label:hover {
-        background: rgba(37, 99, 235, 0.2);
-        border-color: rgba(56, 189, 248, 0.4);
+        background: rgba(30, 58, 138, 0.4);
+        border-color: rgba(96, 165, 250, 0.6);
     }
     
+    /* Collapse sidebar control button replacement of double arrow text */
+    [data-testid="collapsedControl"] svg {
+        display: inline-block;
+    }
+    [data-testid="collapsedControl"] span {
+        display: none !important;
+    }
+
     /* Interactive Flashcard UI */
     .flashcard-front-box {
-        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
         color: #ffffff;
         border-radius: 20px;
         padding: 40px 20px;
         text-align: center;
-        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
-        border: 2px solid #38bdf8;
+        box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.25);
+        border: 2px solid #60a5fa;
         margin-bottom: 15px;
     }
     .flashcard-word-title {
         font-size: 2.8rem;
         font-weight: 700;
         letter-spacing: -0.025em;
-        color: #38bdf8;
+        color: #60a5fa;
         margin-bottom: 10px;
     }
     .flashcard-back-box {
         background: #ffffff;
-        border: 2px solid #2563eb;
+        border: 2px solid #1e3a8a;
         border-radius: 20px;
         padding: 25px;
-        box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.1);
+        box-shadow: 0 10px 25px -5px rgba(30, 58, 138, 0.15);
         margin-bottom: 15px;
     }
     .flashcard-back-title {
         font-size: 2rem;
         font-weight: 700;
-        color: #1e293b;
+        color: #0f172a;
         margin-bottom: 5px;
     }
     .meaning-subtitle {
         font-size: 1.2rem;
         font-weight: 600;
-        color: #2563eb;
+        color: #1e3a8a;
         margin-bottom: 15px;
     }
 
@@ -164,8 +172,8 @@ st.markdown("""
         background: #ffffff;
         border-radius: 16px;
         padding: 18px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-        border: 2px solid #2563eb;
+        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.2);
+        border: 2px solid #1e3a8a;
         width: 340px;
         margin-bottom: 12px;
     }
@@ -174,6 +182,7 @@ st.markdown("""
     [data-testid="stMetricValue"] {
         font-size: 1.1rem !important;
         font-weight: 600 !important;
+        color: #0f172a !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -1957,9 +1966,9 @@ elif nav_choice == "📚 Master Goethe Word Engine":
         if not st.session_state.get("show_card_back", False):
             st.markdown(f"""
             <div class="flashcard-front-box">
-                <p style="color: #38bdf8; font-weight: 700; letter-spacing: 0.08em; margin-bottom: 8px;">⭐ {selected_main_cat} / {selected_sub_cat} ⭐</p>
+                <p style="color: #60a5fa; font-weight: 700; letter-spacing: 0.08em; margin-bottom: 8px;">⭐ {selected_main_cat} / {selected_sub_cat} ⭐</p>
                 <div class="flashcard-word-title">{data.get("word", active_word)}</div>
-                <p style="color: #cbd5e1; font-size: 0.9rem; margin-bottom: 0px;">Click speaker icon for instant audio playback, or flip card for details.</p>
+                <p style="color: #e2e8f0; font-size: 0.9rem; margin-bottom: 0px;">Click speaker icon for instant audio playback, or flip card for details.</p>
             </div>
             """, unsafe_allow_html=True)
             
@@ -1973,7 +1982,7 @@ elif nav_choice == "📚 Master Goethe Word Engine":
         else:
             st.markdown(f"""
             <div class="flashcard-back-box">
-                <p style="color: #2563eb; font-weight: 700; font-size: 0.85rem; letter-spacing: 0.05em; margin-bottom: 2px;">⭐ {selected_main_cat} / {selected_sub_cat}</p>
+                <p style="color: #1e3a8a; font-weight: 700; font-size: 0.85rem; letter-spacing: 0.05em; margin-bottom: 2px;">⭐ {selected_main_cat} / {selected_sub_cat}</p>
                 <div class="flashcard-back-title">{data.get("word", active_word)}</div>
                 <div class="meaning-subtitle">Meaning: {data.get("english_meaning", "")}</div>
             </div>
@@ -2267,18 +2276,18 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
         st.info(f"📌 **Description:** {selected_lesen_t1_obj['desc']}")
 
         st.markdown(f"""
-        <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.02);">
+        <div style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03);">
             <div style="display: flex; align-items: center; margin-bottom: 12px;">
-                <span style="font-size: 1.1rem; font-weight: 700; color: #1e293b;">✉️ {selected_lesen_t1_obj.get('text1_label', 'E-Mail')}</span>
+                <span style="font-size: 1.1rem; font-weight: 700; color: #0f172a;">✉️ {selected_lesen_t1_obj.get('text1_label', 'E-Mail')}</span>
             </div>
             <p style="white-space: pre-line; color: #334155; font-size: 0.95rem; line-height: 1.5; margin-bottom: 0px;">{selected_lesen_t1_obj['text1']}</p>
         </div>
         """, unsafe_allow_html=True)
 
         st.markdown(f"""
-        <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.02);">
+        <div style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03);">
             <div style="display: flex; align-items: center; margin-bottom: 12px;">
-                <span style="font-size: 1.1rem; font-weight: 700; color: #1e293b;">📄 {selected_lesen_t1_obj.get('text2_label', 'Brief')}</span>
+                <span style="font-size: 1.1rem; font-weight: 700; color: #0f172a;">📄 {selected_lesen_t1_obj.get('text2_label', 'Brief')}</span>
             </div>
             <p style="white-space: pre-line; color: #334155; font-size: 0.95rem; line-height: 1.5; margin-bottom: 0px;">{selected_lesen_t1_obj['text2']}</p>
         </div>
@@ -2336,22 +2345,22 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
         ans_lt2 = {}
         for idx, task in enumerate(selected_lesen_t2_obj["tasks"], start=1):
             st.markdown(f"""
-            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.02);">
-                <p style="font-weight: 700; color: #1e293b; font-size: 1.05rem; margin-bottom: 12px;">{task['situation']}</p>
+            <div style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03);">
+                <p style="font-weight: 700; color: #0f172a; font-size: 1.05rem; margin-bottom: 12px;">{task['situation']}</p>
             """, unsafe_allow_html=True)
 
             col_a, col_b = st.columns(2)
             with col_a:
                 st.markdown(f"""
                 <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 12px; margin-bottom: 8px;">
-                    <span style="font-weight: 600; color: #2563eb;">🌐 {task['site_a_url']}</span><br>
+                    <span style="font-weight: 600; color: #1e3a8a;">🌐 {task['site_a_url']}</span><br>
                     <p style="white-space: pre-line; color: #334155; font-size: 0.9rem; margin-top: 6px; margin-bottom: 0px;">{task['site_a']}</p>
                 </div>
                 """, unsafe_allow_html=True)
             with col_b:
                 st.markdown(f"""
                 <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 12px; margin-bottom: 8px;">
-                    <span style="font-weight: 600; color: #2563eb;">🌐 {task['site_b_url']}</span><br>
+                    <span style="font-weight: 600; color: #1e3a8a;">🌐 {task['site_b_url']}</span><br>
                     <p style="white-space: pre-line; color: #334155; font-size: 0.9rem; margin-top: 6px; margin-bottom: 0px;">{task['site_b']}</p>
                 </div>
                 """, unsafe_allow_html=True)
@@ -2404,15 +2413,15 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
 
         ex = selected_lesen_t3_obj["example"]
         st.markdown(f"""
-        <div style="background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 12px; padding: 20px; margin-bottom: 20px;">
-            <p style="font-weight: 700; color: #475569; margin-bottom: 4px;">BEISPIEL (0)</p>
-            <p style="font-weight: 600; color: #1e293b; font-size: 1rem; margin-bottom: 12px;">{ex['statement']}</p>
-            <span style="font-size: 0.85rem; font-weight: 700; color: #2563eb;">{ex['sign_title']}</span>
-            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 14px; margin-top: 6px; margin-bottom: 10px;">
+        <div style="background: #e2e8f0; border: 1px solid #cbd5e1; border-radius: 12px; padding: 20px; margin-bottom: 20px;">
+            <p style="font-weight: 700; color: #334155; margin-bottom: 4px;">BEISPIEL (0)</p>
+            <p style="font-weight: 600; color: #0f172a; font-size: 1rem; margin-bottom: 12px;">{ex['statement']}</p>
+            <span style="font-size: 0.85rem; font-weight: 700; color: #1e3a8a;">{ex['sign_title']}</span>
+            <div style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 14px; margin-top: 6px; margin-bottom: 10px;">
                 <p style="white-space: pre-line; color: #334155; font-size: 0.95rem; margin-bottom: 0px;">{ex['sign_text']}</p>
             </div>
             <div style="display: flex; gap: 10px;">
-                <button disabled style="background: #22c55e; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 600;">{ex['answer'].capitalize()}</button>
+                <button disabled style="background: #16a34a; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 600;">{ex['answer'].capitalize()}</button>
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -2420,10 +2429,10 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
         ans_lt3 = {}
         for idx, task in enumerate(selected_lesen_t3_obj["tasks"], start=1):
             st.markdown(f"""
-            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.02);">
-                <p style="font-weight: 700; color: #1e293b; font-size: 1rem; margin-bottom: 12px;">{idx}. {task['statement']}</p>
-                <span style="font-size: 0.85rem; font-weight: 700; color: #2563eb;">{task['sign_title']}</span>
-                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 14px; margin-top: 6px; margin-bottom: 12px;">
+            <div style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03);">
+                <p style="font-weight: 700; color: #0f172a; font-size: 1rem; margin-bottom: 12px;">{idx}. {task['statement']}</p>
+                <span style="font-size: 0.85rem; font-weight: 700; color: #1e3a8a;">{task['sign_title']}</span>
+                <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 14px; margin-top: 6px; margin-bottom: 12px;">
                     <p style="white-space: pre-line; color: #334155; font-size: 0.95rem; margin-bottom: 0px;">{task['sign_text']}</p>
                 </div>
             """, unsafe_allow_html=True)
@@ -2630,9 +2639,9 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
         selected_schreiben_t1_obj = next((s for s in valid_schreiben_t1 if s["title"] == selected_schreiben_t1_title), valid_schreiben_t1[0])
         
         st.markdown(f"""
-        <div style="background: #f1f5f9; border-left: 5px solid #8b5cf6; padding: 16px; border-radius: 8px; margin-bottom: 20px;">
-            <p style="font-weight: 700; color: #6d28d9; margin-bottom: 8px;">📋 Aufgabe</p>
-            <p style="white-space: pre-line; color: #1e293b; margin-bottom: 0px;">{selected_schreiben_t1_obj['aufgabe']}</p>
+        <div style="background: #e2e8f0; border-left: 5px solid #1e3a8a; padding: 16px; border-radius: 8px; margin-bottom: 20px;">
+            <p style="font-weight: 700; color: #1e3a8a; margin-bottom: 8px;">📋 Aufgabe</p>
+            <p style="white-space: pre-line; color: #0f172a; margin-bottom: 0px;">{selected_schreiben_t1_obj['aufgabe']}</p>
         </div>
         """, unsafe_allow_html=True)
 
@@ -2647,12 +2656,6 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
                     user_form_inputs[field["id"]] = st.radio(field["label"], field["options"], key=f"gap_rad_{selected_schreiben_t1_title}_{field['id']}")
                 else:
                     user_form_inputs[field["id"]] = st.text_input(field["label"], placeholder=field.get("placeholder", "..."), key=f"gap_inp_{selected_schreiben_t1_title}_{field['id']}")
-
-        st.markdown("##### ⌨️ Special German Characters")
-        sc_cols = st.columns(7)
-        chars = ["ä", "ö", "ü", "ß", "Ä", "Ö", "Ü"]
-        for idx, ch in enumerate(chars):
-            sc_cols[idx].code(ch)
 
         col_b_clear, col_b_check = st.columns(2)
         with col_b_clear:
@@ -2707,17 +2710,17 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
         selected_schreiben_t2_obj = next((s for s in valid_schreiben_t2 if s["title"] == selected_schreiben_t2_title), valid_schreiben_t2[0])
         
         st.markdown(f"""
-        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.02);">
+        <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03);">
             <div style="display: flex; align-items: center; margin-bottom: 12px;">
                 <span style="font-size: 1.2rem; margin-right: 8px;">📄</span>
-                <span style="font-weight: 700; font-size: 1.1rem; color: #1e293b;">Aufgabe (Task)</span>
+                <span style="font-weight: 700; font-size: 1.1rem; color: #0f172a;">Aufgabe (Task)</span>
             </div>
             <p style="white-space: pre-line; color: #334155; font-size: 0.95rem; line-height: 1.5; margin-bottom: 16px;">{selected_schreiben_t2_obj['aufgabe_text']}</p>
         """, unsafe_allow_html=True)
 
         for pt in selected_schreiben_t2_obj["points"]:
             st.markdown(f"""
-            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px 16px; margin-bottom: 10px; font-weight: 500; color: #1e293b;">
+            <div style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 12px 16px; margin-bottom: 10px; font-weight: 500; color: #0f172a;">
                 {pt}
             </div>
             """, unsafe_allow_html=True)
@@ -2740,12 +2743,6 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
         
         word_count = len(u_email.strip().split()) if u_email.strip() else 0
         st.caption(f"Word Count: {word_count} (Target: ~30 words)")
-
-        st.markdown("##### Special Characters")
-        sc_cols2 = st.columns(7)
-        chars2 = ["ä", "ö", "ü", "ß", "Ä", "Ö", "Ü"]
-        for idx, ch in enumerate(chars2):
-            sc_cols2[idx].code(ch)
 
         col_t2_clear, col_t2_analyze = st.columns(2)
         with col_t2_clear:
@@ -3252,7 +3249,7 @@ elif nav_choice == "📖 A1 & A2 Short Stories":
                 st.markdown(f"**Part {idx}**")
                 col_aud, col_text = st.columns([0.5, 10])
                 with col_aud:
-                    if st.button("🔊", key=f"audio_story_p_{idx}"):
+                    if st.button("🔊", key=f"audio_story_p_{idx}   "):
                         play_direct_audio(p["german"], f"story_p_{idx}")
                 with col_text:
                     st.info(f"**🇩🇪 German:** {p['german']}")
