@@ -17,10 +17,10 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Custom Deep Purple-to-Magenta Gradient Glow Theme
+# Custom Deep Purple-to-Magenta Gradient Glow Theme with Compact Spacing & Light Dropdown Design
 st.markdown("""
 <style>
-    /* Global Deep Gradient Dark Void */
+    /* Global Deep Gradient Dark Void & Compact Spacing */
     .stApp {
         background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #09090b 70%) !important;
         background-color: #09090b !important;
@@ -39,76 +39,87 @@ st.markdown("""
         display: none !important;
     }
 
+    /* Reduce Padding and Margins for Compact Layout */
+    .block-container {
+        padding-top: 1.5rem !important;
+        padding-bottom: 1.5rem !important;
+        max-width: 100% !important;
+    }
+    
+    div[data-testid="stVerticalBlock"] > div {
+        gap: 0.5rem !important;
+    }
+
     /* Smooth Gradient Border Custom Button Styling */
     .stButton > button {
         width: 100% !important;
         background: linear-gradient(135deg, rgba(30, 27, 75, 0.6) 0%, rgba(15, 23, 42, 0.8) 100%) !important;
         border: 1px solid rgba(236, 72, 153, 0.4) !important;
-        border-radius: 14px !important;
-        padding: 14px 20px !important;
+        border-radius: 12px !important;
+        padding: 10px 16px !important;
         text-align: left !important;
-        font-size: 1.05rem !important;
+        font-size: 0.95rem !important;
         font-weight: 700 !important;
         color: #f8fafc !important;
-        box-shadow: 0 4px 20px rgba(168, 85, 247, 0.15) !important;
+        box-shadow: 0 4px 15px rgba(168, 85, 247, 0.15) !important;
         transition: all 0.2s ease !important;
-        margin-bottom: 12px !important;
+        margin-bottom: 6px !important;
     }
     
     .stButton > button:hover {
         background: linear-gradient(135deg, rgba(168, 85, 247, 0.2) 0%, rgba(236, 72, 153, 0.2) 100%) !important;
         border-color: #ec4899 !important;
         transform: translateY(-1px);
-        box-shadow: 0 6px 25px rgba(236, 72, 153, 0.35) !important;
+        box-shadow: 0 6px 20px rgba(236, 72, 153, 0.35) !important;
         color: #ffffff !important;
     }
 
-    /* Main Content Cards / Containers */
+    /* Compact Main Content Cards / Containers */
     .main-card {
         background: rgba(15, 23, 42, 0.75);
         backdrop-filter: blur(12px);
-        border-radius: 20px;
-        padding: 24px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        margin-bottom: 20px;
+        border-radius: 16px;
+        padding: 16px 20px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        margin-bottom: 12px;
         border: 1px solid rgba(168, 85, 247, 0.2);
     }
     
-    /* Hero Banner with Multi-stop Gradient Glow */
+    /* Compact Hero Banner */
     .hero-banner {
         background: linear-gradient(135deg, rgba(76, 29, 149, 0.4) 0%, rgba(15, 23, 42, 0.8) 50%, rgba(131, 24, 66, 0.4) 100%);
-        border-radius: 20px;
-        padding: 36px;
+        border-radius: 16px;
+        padding: 24px;
         color: #ffffff;
-        margin-bottom: 24px;
+        margin-bottom: 16px;
         border: 1px solid rgba(236, 72, 153, 0.3);
-        box-shadow: 0 10px 35px rgba(126, 34, 206, 0.25);
+        box-shadow: 0 8px 25px rgba(126, 34, 206, 0.25);
     }
     .hero-badge {
         display: inline-block;
         background: rgba(168, 85, 247, 0.15);
         border: 1px solid rgba(236, 72, 153, 0.4);
-        padding: 6px 16px;
-        border-radius: 20px;
-        font-size: 0.85rem;
+        padding: 4px 12px;
+        border-radius: 16px;
+        font-size: 0.75rem;
         font-weight: 700;
         letter-spacing: 0.05em;
-        margin-bottom: 12px;
+        margin-bottom: 8px;
         color: #f472b6;
     }
     .hero-title {
-        font-size: 2.5rem;
+        font-size: 2rem;
         font-weight: 800;
         letter-spacing: -0.025em;
-        margin-bottom: 8px;
+        margin-bottom: 4px;
         background: linear-gradient(90deg, #ffffff 30%, #38bdf8 60%, #ec4899 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
     }
     .hero-subtitle {
-        font-size: 1.05rem;
+        font-size: 0.95rem;
         color: #cbd5e1;
-        line-height: 1.5;
+        line-height: 1.4;
         margin-bottom: 0px;
         font-weight: 500;
     }
@@ -117,100 +128,109 @@ st.markdown("""
     .section-header-box {
         background: rgba(15, 23, 42, 0.8);
         border: 1px solid rgba(168, 85, 247, 0.3);
-        border-radius: 14px;
-        padding: 14px 20px;
-        margin-bottom: 20px;
+        border-radius: 12px;
+        padding: 10px 16px;
+        margin-bottom: 12px;
         color: #f472b6;
-        font-size: 1.4rem;
+        font-size: 1.2rem;
         font-weight: 800;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     }
 
-    /* Gradient Glowing Dropdown Box */
+    /* Light Clean Dropdown Box Design */
     .stSelectbox div[data-baseweb="select"] {
-        background-color: rgba(15, 23, 42, 0.9) !important;
-        border-radius: 14px !important;
+        background-color: #f8fafc !important;
+        border-radius: 12px !important;
     }
     .stSelectbox div[data-baseweb="select"] > div {
-        background-color: rgba(15, 23, 42, 0.9) !important;
-        border: 2px solid rgba(168, 85, 247, 0.4) !important;
-        border-radius: 14px !important;
-        color: #f8fafc !important;
-        padding: 6px 12px !important;
-        box-shadow: 0 4px 15px rgba(168, 85, 247, 0.2) !important;
+        background-color: #f8fafc !important;
+        border: 2px solid #cbd5e1 !important;
+        border-radius: 12px !important;
+        color: #0f172a !important;
+        padding: 4px 10px !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
     }
     .stSelectbox div[data-baseweb="select"] > div:hover {
-        border-color: #ec4899 !important;
+        border-color: #38bdf8 !important;
     }
     .stSelectbox span, .stSelectbox div[data-baseweb="select"] span {
-        color: #f8fafc !important;
+        color: #0f172a !important;
         font-weight: 700 !important;
     }
 
-    /* Open Dropdown Popup List Container & Options */
+    /* Open Dropdown Popup List Container & Options (Light) */
     div[data-baseweb="menu"] {
-        background-color: #0f172a !important;
-        border: 1px solid rgba(168, 85, 247, 0.4) !important;
-        border-radius: 14px !important;
+        background-color: #f8fafc !important;
+        border: 1px solid #cbd5e1 !important;
+        border-radius: 12px !important;
     }
     div[data-baseweb="menu"] ul {
-        background-color: #0f172a !important;
+        background-color: #f8fafc !important;
     }
     div[data-baseweb="menu"] li, div[data-baseweb="menu"] div {
-        background-color: #0f172a !important;
-        color: #f8fafc !important;
+        background-color: #f8fafc !important;
+        color: #0f172a !important;
         font-weight: 600 !important;
     }
     div[data-baseweb="menu"] li:hover, div[data-baseweb="menu"] div[aria-selected="true"] {
-        background-color: rgba(168, 85, 247, 0.2) !important;
-        color: #f472b6 !important;
+        background-color: #e2e8f0 !important;
+        color: #0f172a !important;
     }
 
-    /* Gender-based Flashcard Containers (Gradient Glow Palette) */
+    /* Detailed Back Card Separated Sections Style */
+    .detail-box {
+        background: rgba(30, 41, 59, 0.6);
+        border: 1px solid rgba(168, 85, 247, 0.3);
+        border-radius: 12px;
+        padding: 12px 16px;
+        margin-bottom: 10px;
+    }
+
+    /* Gender-based Flashcard Containers */
     .flashcard-masculine {
         background: linear-gradient(135deg, rgba(30, 58, 138, 0.6) 0%, rgba(15, 23, 42, 0.9) 100%);
         border: 2px solid #3b82f6;
         color: #ffffff;
-        border-radius: 20px;
-        padding: 40px 20px;
+        border-radius: 16px;
+        padding: 24px 16px;
         text-align: center;
-        box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
-        margin-bottom: 20px;
+        box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+        margin-bottom: 12px;
     }
     .flashcard-feminine {
         background: linear-gradient(135deg, rgba(136, 19, 55, 0.6) 0%, rgba(15, 23, 42, 0.9) 100%);
         border: 2px solid #ec4899;
         color: #ffffff;
-        border-radius: 20px;
-        padding: 40px 20px;
+        border-radius: 16px;
+        padding: 24px 16px;
         text-align: center;
-        box-shadow: 0 10px 30px rgba(236, 72, 153, 0.3);
-        margin-bottom: 20px;
+        box-shadow: 0 8px 25px rgba(236, 72, 153, 0.3);
+        margin-bottom: 12px;
     }
     .flashcard-neuter {
         background: linear-gradient(135deg, rgba(6, 78, 59, 0.6) 0%, rgba(15, 23, 42, 0.9) 100%);
         border: 2px solid #10b981;
         color: #ffffff;
-        border-radius: 20px;
-        padding: 40px 20px;
+        border-radius: 16px;
+        padding: 24px 16px;
         text-align: center;
-        box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
-        margin-bottom: 20px;
+        box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+        margin-bottom: 12px;
     }
     .flashcard-other {
         background: linear-gradient(135deg, rgba(124, 45, 18, 0.6) 0%, rgba(15, 23, 42, 0.9) 100%);
         border: 2px solid #f97316;
         color: #ffffff;
-        border-radius: 20px;
-        padding: 40px 20px;
+        border-radius: 16px;
+        padding: 24px 16px;
         text-align: center;
-        box-shadow: 0 10px 30px rgba(249, 115, 22, 0.3);
-        margin-bottom: 20px;
+        box-shadow: 0 8px 25px rgba(249, 115, 22, 0.3);
+        margin-bottom: 12px;
     }
     .flashcard-word-title {
-        font-size: 3rem;
+        font-size: 2.5rem;
         font-weight: 800;
-        margin-bottom: 10px;
+        margin-bottom: 4px;
         background: linear-gradient(90deg, #ffffff, #f472b6);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
@@ -218,7 +238,7 @@ st.markdown("""
 
     /* Metric & Text Uniformity */
     [data-testid="stMetricValue"] {
-        font-size: 1.2rem !important;
+        font-size: 1.1rem !important;
         font-weight: 700 !important;
         color: #38bdf8 !important;
     }
@@ -237,7 +257,7 @@ FALLBACK_MODELS = ["gemini-3.8-flash", "gemini-3.5-flash-lite"]
 SYSTEM_INSTRUCTION = """
 You are Gem, an expert German tutor and official Goethe-Institut examiner evaluating candidates for the Goethe-Zertifikat A1 exam.
 Follow standard CEFR A1 learning objectives and exhaustive Goethe-Zertifikat A1 vocabulary standards.
-Provide accurate grammatical breakdowns, exact plurals, case usages, conjugations, and natural sample sentences.
+Provide accurate grammatical breakdowns, exact plurals, case usages, conjugations, and always provide sentences for each pronoun even for nouns or other parts of speech. Never leave fields as blank or N/A in conjugations.
 """
 
 @st.cache_data(show_spinner=False)
@@ -289,7 +309,7 @@ A1_VOCABULARY_DATABASE = {
     "essen_und_trinken": ["das Essen", "das Wasser", "der Kaffee", "der Tee", "die Milch", "das Brot", "das Fleisch", "der Fisch", "das Obst", "das Gemüse", "essen", "trinken", "kochen", "backen", "das Restaurant", "der Hunger", "der Durst", "das Frühstück", "das Mittagessen", "das Abendessen"],
     "freizeit_und_hobbys": ["das Hobby", "spielen", "lesen", "schwimmen", "reisen", "fotografieren", "der Sport", "das Buch", "die Musik", "tanzen", "singen", "malen", "der Film", "das Kino", "das Theater", "wandern", "joggen", "treffen", "lachen", "fernsehen"],
     "einkaufen_und_geld": ["einkaufen", "das Geld", "der Euro", "der Cent", "kosten", "teuer", "billig", "der Laden", "das Geschäft", "der Markt", "der Supermarkt", "kaufen", "verkaufen", "bezahlen", "die Karte", "bar", "der Preis", "das Angebot", "die Kasse", "der Kunde"],
-    "verkehr_und_reisen": ["fahren", "fliegen", "reisen", "der Urlaub", "das Ticket", "der Bahnhof", "der Zug", "das Auto", "das Flugzeug", "das Bus", "die Straßenbahn", "das Fahrrad", "die Haltestelle", "der Flughafen", "das Hotel", "das Zimmer", "die Karte", "das Reise", "ankommen", "abfahren"],
+    "verkehr_und_reisen": ["fahren", "fliegen", "reisen", "der Urlaub", "das Ticket", "der Bahnhof", "der Zug", "das Auto", "das Flugzeug", "das Bus", "die Straßenbahn", "das Fahrrad", "die Haltestelle", "der Flughafen", "das Hotel", "das Zimmer", "die Karte", "die Reise", "ankommen", "abfahren"],
     "gesundheit_und_ernaehrung": ["der Arzt", "die Ärztin", "das Krankenhaus", "die Apotheke", "krank", "gesund", "der Schmerz", "die Medizin", "die Gesundheit", "helfen", "ruhig", "müde", "gut", "schlecht", "die Tablette", "der Notfall", "untersuchen", "das Rezept", "fühlen", "leben"],
     "medien_und_kommunikation": ["sprechen", "sagen", "hören", "lesen", "schreiben", "telefonieren", "das Handy", "der Computer", "das Internet", "die Zeitung", "das Fernsehen", "das Radio", "die Nachricht", "fragen", "antworten", "verstehen", "erklären", "zeigen", "bestellen", "kommunizieren"],
     "zeit_und_wetter": ["die Zeit", "die Stunde", "die Minute", "der Tag", "die Woche", "der Monat", "das Jahr", "heute", "gestern", "morgen", "jetzt", "immer", "nie", "das Wetter", "die Sonne", "der Regen", "der Schnee", "kalt", "warm", "schön"]
@@ -321,7 +341,7 @@ def render_top_back_button():
     if st.button("⬅️ Back to Dashboard", key="top_back_dash_btn"):
         st.session_state.nav_choice = "🏠 Study Dashboard"
         st.rerun()
-    st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+    st.markdown("<div style='height: 5px;'></div>", unsafe_allow_html=True)
 
 # ----------------------------------------------------
 # 1. STUDY DASHBOARD
@@ -330,9 +350,9 @@ if nav_choice == "🏠 Study Dashboard":
     st.markdown('<div class="section-header-box">⚡ Study Dashboard</div>', unsafe_allow_html=True)
     st.markdown("""
     <div class="hero-banner">
-        <div class="hero-badge">⚡ AI POWERED • ATS FRIENDLY</div>
-        <div class="hero-title">Master Any German Word<br>in 30 Seconds</div>
-        <div class="hero-subtitle">Upload your mindset, master Goethe vocabulary, and pass your A1 exam effortlessly.</div>
+        <div class="hero-badge">MY GERMAN STUDY BUDDY</div>
+        <div class="hero-title">German A1 Learning</div>
+        <div class="hero-subtitle">Master Goethe vocabulary effortlessly and build your path to A1 fluency.</div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -360,10 +380,9 @@ elif nav_choice == "📚 Master Goethe Word Engine":
     st.markdown('<div class="section-header-box">⚡ Master Goethe Word Engine</div>', unsafe_allow_html=True)
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
     
-    st.markdown("### ⚡ Categories")
+    st.markdown("##### ⚡ Categories")
     categories = list(A1_VOCABULARY_DATABASE.keys())
     
-    # Map display names to internal keys
     cat_options = {cat.replace('_', ' ').title(): cat for cat in categories}
     current_display_name = [k for k, v in cat_options.items() if v == st.session_state.vocab_category][0]
     
@@ -376,7 +395,7 @@ elif nav_choice == "📚 Master Goethe Word Engine":
         st.session_state.is_card_flipped = False
         st.rerun()
 
-    st.markdown("<div style='height: 15px;'></div>", unsafe_allow_html=True)
+    st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
 
     current_word_list = A1_VOCABULARY_DATABASE[st.session_state.vocab_category]
     if not current_word_list:
@@ -387,9 +406,10 @@ elif nav_choice == "📚 Master Goethe Word Engine":
 
     active_word = current_word_list[st.session_state.vocab_index]
 
-    # Fetch structured flashcard data from Gemini
+    # Fetch structured flashcard data from Gemini ensuring sample sentences for EVERY pronoun even for nouns/other words
     prompt = f"""
     Provide exhaustive Goethe A1 flashcard data for the German word/phrase '{active_word}' in category '{st.session_state.vocab_category}'.
+    CRITICAL REQUIREMENT for conjugations: Always provide 6 items (for pronouns ich, du, er/sie/es, wir, ihr, sie/Sie). Even if the word is a noun, preposition, adjective, or non-conjugatable word, provide a natural sample sentence using that exact word with each pronoun (e.g. for noun 'das Haus': 'ich' -> form: '', sentence: 'Ich baue ein Haus', english: 'I am building a house'). Never leave conjugation form blank if it's a verb, but for nouns/other words leave conjugation form blank or put '--' and always provide a valid sentence for every pronoun.
     Return strict JSON with this exact schema:
     {{
         "word": "{active_word}",
@@ -447,94 +467,107 @@ elif nav_choice == "📚 Master Goethe Word Engine":
     elif gender_val == "das":
         card_class = "flashcard-neuter"
     else:
-        card_class = "flashcard-other" # Gradient Glow for other words
+        card_class = "flashcard-other"
 
     # --- FRONT OF CARD ---
     if not st.session_state.is_card_flipped:
         st.markdown(f"""
         <div class="{card_class}">
-            <p style="color: #38bdf8; font-weight: 700; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px;">⚡ Category: {data.get("category", "").replace('_', ' ').title()}</p>
+            <p style="color: #38bdf8; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">⚡ Category: {data.get("category", "").replace('_', ' ').title()}</p>
             <div class="flashcard-word-title">{data.get("word", active_word)}</div>
-            <p style="color: #cbd5e1; font-size: 1.1rem; margin-top: 5px;">Gender / Article: <b>{data.get("gender", "N/A")}</b></p>
-            <p style="color: #94a3b8; font-size: 0.9rem; margin-top: 15px;">Click button below to listen to pronunciation, or flip card for full details.</p>
+            <p style="color: #cbd5e1; font-size: 1rem; margin-top: 4px;">Gender / Article: <b>{data.get("gender", "N/A")}</b></p>
+            <p style="color: #94a3b8; font-size: 0.85rem; margin-top: 10px;">Click below to listen or flip card for separated detail boxes.</p>
         </div>
         """, unsafe_allow_html=True)
 
         if st.button("🔊 Play Pronunciation", key="audio_front_btn"):
             play_direct_audio(data.get("word", active_word), "front_audio")
 
-        st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+        st.markdown("<div style='height: 5px;'></div>", unsafe_allow_html=True)
         if st.button("🔄 Flip to Back (Show Details)", type="primary", use_container_width=True):
             st.session_state.is_card_flipped = True
             st.rerun()
 
-    # --- BACK OF CARD ---
+    # --- BACK OF CARD WITH SEPARATED BOXES ---
     else:
         st.markdown(f"""
         <div class="{card_class}">
-            <p style="color: #38bdf8; font-weight: 700; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">📖 Detailed Breakdown</p>
-            <div class="flashcard-word-title" style="font-size: 2.4rem;">{data.get("word", active_word)}</div>
-            <p style="color: #f472b6; font-size: 1.3rem; font-weight: 700; margin-bottom: 0px;">Meaning: {data.get("english_meaning", "")}</p>
+            <p style="color: #38bdf8; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px;">📖 Detailed Breakdown</p>
+            <div class="flashcard-word-title" style="font-size: 2.2rem;">{data.get("word", active_word)}</div>
+            <p style="color: #f472b6; font-size: 1.2rem; font-weight: 700; margin-bottom: 0px;">Meaning: {data.get("english_meaning", "")}</p>
         </div>
         """, unsafe_allow_html=True)
 
         if st.button("🔊 Pronounce Word", key="audio_back_word"):
             play_direct_audio(data.get("word", active_word), "back_audio")
 
-        # Plural version if applicable
+        # 1. Plural Version Box
         plural = data.get("plural_form", "N/A")
         if plural and plural != "N/A":
-            col_pl1, col_pl2 = st.columns([3, 1])
-            col_pl1.metric("Plural Version", plural)
+            st.markdown('<div class="detail-box">', unsafe_allow_html=True)
+            col_pl1, col_pl2 = st.columns([4, 1])
+            col_pl1.markdown(f"**Plural Version:** `{plural}`")
             with col_pl2:
-                if st.button("🔊 Plural Audio", key="audio_plural"):
+                if st.button("🔊 Audio", key="audio_plural"):
                     play_direct_audio(plural, "plural_audio")
+            st.markdown('</div>', unsafe_allow_html=True)
 
-        st.divider()
+        # 2. Word Type and Case Usage Box
+        st.markdown('<div class="detail-box">', unsafe_allow_html=True)
+        wt_col, cu_col = st.columns(2)
+        wt_col.markdown(f"**Word Type:** `{data.get('word_type', 'N/A')}`")
+        cu_col.markdown(f"**Case Usage:** `{data.get('case_usage', 'N/A')}`")
+        st.markdown('</div>', unsafe_allow_html=True)
 
-        # Word Type, Case, Auxiliary verb & Partizip II
-        c1, c2, c3 = st.columns(3)
-        c1.metric("Word Type", data.get("word_type", "N/A"))
-        c2.metric("Case Usage", data.get("case_usage", "N/A"))
-        c3.metric("Auxiliary Verb", f"{data.get('auxiliary_verb', 'N/A')} ({data.get('partizip_ii', 'N/A')})")
-
-        # Auxiliary verb sample sentence + audio
-        aux_sent = data.get("aux_sentence_de", "")
+        # 3. Auxiliary Verb and Sample Sentence with Audio Box
+        aux_verb = data.get('auxiliary_verb', 'N/A')
+        part_ii = data.get('partizip_ii', 'N/A')
+        aux_sent = data.get('aux_sentence_de', '')
+        st.markdown('<div class="detail-box">', unsafe_allow_html=True)
+        st.markdown(f"**Auxiliary Verb & Partizip II:** `{aux_verb} ({part_ii})`")
         if aux_sent and aux_sent != "N/A":
-            st.markdown("##### 📌 Auxiliary Verb / Usage Sample Sentence")
-            s_col_a, s_col_b = st.columns([4, 1])
-            s_col_a.markdown(f"`{aux_sent}`<br><small style='color:#94a3b8;'>({data.get('aux_sentence_en', '')})</small>", unsafe_allow_html=True)
-            with s_col_b:
+            as_col1, as_col2 = st.columns([4, 1])
+            as_col1.markdown(f"Sample: *{aux_sent}* <br><small style='color:#94a3b8;'>({data.get('aux_sentence_en', '')})</small>", unsafe_allow_html=True)
+            with as_col2:
                 if st.button("🔊 Audio", key="audio_aux_sent"):
                     play_direct_audio(aux_sent, "aux_sent_audio")
+        st.markdown('</div>', unsafe_allow_html=True)
 
-        st.markdown("### 📝 Conjugation & Sample Sentences")
+        # 4. Conjugation & Sample Sentences Box (4 Columns)
+        st.markdown('<div class="detail-box">', unsafe_allow_html=True)
+        st.markdown("#### 📝 Conjugation & Sample Sentences")
         conjugations = data.get("conjugations", [])
         if conjugations:
             for conj in conjugations:
-                p_col, s_col, a_col = st.columns([1, 3, 1])
-                p_col.markdown(f"**{conj.get('pronoun', '')}**")
-                s_col.markdown(f"`{conj.get('form', '')}` — *{conj.get('sentence', '')}*<br><small style='color:#94a3b8;'>({conj.get('english_sentence', '')})</small>", unsafe_allow_html=True)
-                with a_col:
-                    if st.button("🔊 Audio", key=f"audio_conj_{conj.get('pronoun', '')}"):
+                c1, c2, c3, c4 = st.columns([1, 1, 2.5, 0.8])
+                c1.markdown(f"**{conj.get('pronoun', '')}**")
+                c2.markdown(f"`{conj.get('form', '--')}`")
+                c3.markdown(f"*{conj.get('sentence', '')}*<br><small style='color:#94a3b8;'>({conj.get('english_sentence', '')})</small>", unsafe_allow_html=True)
+                with c4:
+                    if st.button("🔊", key=f"audio_conj_{conj.get('pronoun', '')}"):
                         play_direct_audio(conj.get('sentence', ''), f"conj_{conj.get('pronoun', '')}")
-                st.markdown("<hr style='border-color: rgba(168, 85, 247, 0.2); margin: 5px 0;'>", unsafe_allow_html=True)
+                st.markdown("<hr style='border-color: rgba(168, 85, 247, 0.15); margin: 4px 0;'>", unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
 
-        st.markdown("### 💬 Colloquial & Daily Phrases")
+        # 5. Colloquial & Daily Phrases Box with Audio
         phrases = data.get("colloquial_phrases", [])
         if phrases:
+            st.markdown('<div class="detail-box">', unsafe_allow_html=True)
+            st.markdown("#### 💬 Colloquial & Daily Phrases")
             for idx, ph in enumerate(phrases):
                 p_de = ph.get("phrase_de", "")
                 p_en = ph.get("phrase_en", "")
-                ph_col1, ph_col2 = st.columns([4, 1])
-                ph_col1.markdown(f"• **{p_de}** — *{p_en}*")
-                with ph_col2:
-                    if st.button("🔊 Audio", key=f"audio_phrase_{idx} "):
+                ph_c1, ph_c2 = st.columns([4, 1])
+                ph_c1.markdown(f"• **{p_de}** — *{p_en}*")
+                with ph_c2:
+                    if st.button("🔊 Audio", key=f"audio_phrase_{idx}"):
                         play_direct_audio(p_de, f"phrase_audio_{idx}")
+            st.markdown('</div>', unsafe_allow_html=True)
 
-        st.info(f"⚡ **Grammar Notes:** {data.get('grammar_notes', 'N/A')}")
+        # 6. Grammar Notes Box
+        st.markdown(f'<div class="detail-box">💡 <b>Grammar Notes:</b> {data.get("grammar_notes", "N/A")}</div>', unsafe_allow_html=True)
 
-        st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+        st.markdown("<div style='height: 5px;'></div>", unsafe_allow_html=True)
         if st.button("🔄 Flip back to Front", type="primary", use_container_width=True):
             st.session_state.is_card_flipped = False
             st.rerun()
