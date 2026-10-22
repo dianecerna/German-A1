@@ -12,7 +12,7 @@ from streamlit_mic_recorder import mic_recorder
 # Streamlit Page Configuration
 st.set_page_config(
     page_title="German A1 Learning", 
-    page_icon="⚡", 
+    page_icon="✨", 
     layout="wide",
     initial_sidebar_state="collapsed"
 )
@@ -139,7 +139,7 @@ st.markdown("""
 
     /* Light Clean Dropdown Box Design */
     .stSelectbox div[data-baseweb="select"] {
-        background-color: #f8fafc !important;
+        background-color: #1A1818 !important;
         border-radius: 12px !important;
     }
     .stSelectbox div[data-baseweb="select"] > div {
