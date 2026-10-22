@@ -17,7 +17,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Custom Deep Purple-to-Magenta Gradient Glow Theme with High-Contrast Dropdown Styling
+# Custom Deep Purple-to-Magenta Gradient Glow Theme with Fully Mirrored Button-Style Dropdown Styling
 st.markdown("""
 <style>
     /* Global Deep Gradient Dark Void & Compact Spacing */
@@ -137,46 +137,51 @@ st.markdown("""
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     }
 
-    /* High-Contrast Dark Dropdown Box Design (Fixing White-on-White Issue) */
+    /* Exactly Mirrored Button-Style Dropdown Box Design */
     .stSelectbox div[data-baseweb="select"] {
-        background-color: #0f172a !important;
+        background: linear-gradient(135deg, rgba(30, 27, 75, 0.6) 0%, rgba(15, 23, 42, 0.8) 100%) !important;
         border-radius: 12px !important;
     }
     .stSelectbox div[data-baseweb="select"] > div {
-        background-color: #0f172a !important;
-        border: 2px solid rgba(236, 72, 153, 0.5) !important;
+        background: linear-gradient(135deg, rgba(30, 27, 75, 0.6) 0%, rgba(15, 23, 42, 0.8) 100%) !important;
+        border: 1px solid rgba(236, 72, 153, 0.4) !important;
         border-radius: 12px !important;
-        color: #ffffff !important;
-        padding: 4px 10px !important;
-        box-shadow: 0 4px 15px rgba(168, 85, 247, 0.2) !important;
+        color: #f8fafc !important;
+        padding: 10px 16px !important;
+        box-shadow: 0 4px 15px rgba(168, 85, 247, 0.15) !important;
+        min-height: 48px !important;
     }
     .stSelectbox div[data-baseweb="select"] > div:hover {
+        background: linear-gradient(135deg, rgba(168, 85, 247, 0.2) 0%, rgba(236, 72, 153, 0.2) 100%) !important;
         border-color: #ec4899 !important;
     }
     .stSelectbox span, .stSelectbox div[data-baseweb="select"] span {
-        color: #ffffff !important;
+        color: #f8fafc !important;
         font-weight: 700 !important;
+        font-size: 0.95rem !important;
     }
 
-    /* Open Dropdown Popup List Container & Options (Dark Background with White Text) */
+    /* Open Dropdown Popup List Container & Options Mirrored to Button Theme */
     div[data-baseweb="menu"] {
-        background-color: #0f172a !important;
-        border: 2px solid rgba(236, 72, 153, 0.5) !important;
+        background: linear-gradient(135deg, rgba(30, 27, 75, 0.95) 0%, rgba(15, 23, 42, 0.95) 100% ) !important;
+        border: 1px solid rgba(236, 72, 153, 0.4) !important;
         border-radius: 12px !important;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6) !important;
     }
     div[data-baseweb="menu"] ul {
-        background-color: #0f172a !important;
+        background: transparent !important;
     }
     div[data-baseweb="menu"] li, div[data-baseweb="menu"] div {
-        background-color: #0f172a !important;
+        background: transparent !important;
         color: #f8fafc !important;
         font-weight: 600 !important;
+        padding: 10px 16px !important;
     }
     div[data-baseweb="menu"] li span, div[data-baseweb="menu"] div span {
         color: #f8fafc !important;
     }
     div[data-baseweb="menu"] li:hover, div[data-baseweb="menu"] div[aria-selected="true"] {
-        background: linear-gradient(135deg, rgba(168, 85, 247, 0.4) 0%, rgba(236, 72, 153, 0.4) 100%) !important;
+        background: linear-gradient(135deg, rgba(168, 85, 247, 0.3) 0%, rgba(236, 72, 153, 0.3) 100%) !important;
         color: #ffffff !important;
     }
     div[data-baseweb="menu"] li:hover span, div[data-baseweb="menu"] div[aria-selected="true"] span {
@@ -311,11 +316,11 @@ A1_VOCABULARY_DATABASE = {
     "allgemein": ["sein", "haben", "werden", "gut", "ja", "nein", "nicht", "sehr", "und", "oder", "aber", "also", "hier", "da", "was", "wer", "wie", "wo", "woher", "wohin"],
     "arbeit_und_beruf": ["arbeiten", "der Beruf", "die Firma", "das Büro", "der Kollege", "die Kollegin", "der Chef", "die Chefin", "die Arbeit", "der Job", "der Termin", "die Pause", "verdienen", "schreiben", "anrufen", "der Computer", "das Telefon", "die E-Mail", "der Brief", "die Besprechung"],
     "mensch_und_koerper": ["die Familie", "der Vater", "die Mutter", "der Sohn", "die Tochter", "der Bruder", "die Schwester", "die Eltern", "das Kind", "der Mensch", "der Freund", "die Freundin", "die Person", "der Name", "das Alter", "der Kopf", "das Auge", "das Ohr", "die Hand", "der Fuß"],
-    "wohnen_und_haushalt": ["das Haus", "die Wohnung", "das Zimmer", "das Küche", "das Bad", "das Schlafzimmer", "das Wohnzimmer", "die Tür", "das Fenster", "der Tisch", "der Stuhl", "das Bett", "die Lampe", "wohnen", "mieten", "der Schlüssel", "der Garten", "der Balkon", "die Miete", "umziehen"],
+    "wohnen_und_haushalt": ["das Haus", "die Wohnung", "das Zimmer", "die Küche", "das Bad", "das Schlafzimmer", "das Wohnzimmer", "die Tür", "das Fenster", "der Tisch", "der Stuhl", "das Bett", "die Lampe", "wohnen", "mieten", "der Schlüssel", "der Garten", "der Balkon", "die Miete", "umziehen"],
     "essen_und_trinken": ["das Essen", "das Wasser", "der Kaffee", "der Tee", "die Milch", "das Brot", "das Fleisch", "der Fisch", "das Obst", "das Gemüse", "essen", "trinken", "kochen", "backen", "das Restaurant", "der Hunger", "der Durst", "das Frühstück", "das Mittagessen", "das Abendessen"],
     "freizeit_und_hobbys": ["das Hobby", "spielen", "lesen", "schwimmen", "reisen", "fotografieren", "der Sport", "das Buch", "die Musik", "tanzen", "singen", "malen", "der Film", "das Kino", "das Theater", "wandern", "joggen", "treffen", "lachen", "fernsehen"],
     "einkaufen_und_geld": ["einkaufen", "das Geld", "der Euro", "der Cent", "kosten", "teuer", "billig", "der Laden", "das Geschäft", "der Markt", "der Supermarkt", "kaufen", "verkaufen", "bezahlen", "die Karte", "bar", "der Preis", "das Angebot", "die Kasse", "der Kunde"],
-    "verkehr_und_reisen": ["fahren", "fliegen", "reisen", "der Urlaub", "das Ticket", "der Bahnhof", "der Zug", "das Auto", "das Flugzeug", "das Bus", "die Straßenbahn", "das Fahrrad", "die Haltestelle", "der Flughafen", "das Hotel", "das Zimmer", "die Karte", "die Reise", "ankommen", "abfahren"],
+    "verkehr_und_reisen": ["fahren", "fliegen", "reisen", "der Urlaub", "das Ticket", "der Bahnhof", "der Zug", "das Auto", "das Flugzeug", "das Bus", "die Straßenbahn", "das Fahrrad", "die Haltestelle", "der Flughafen", "das Hotel", "das Zimmer", "das Karte", "das Reise", "ankommen", "abfahren"],
     "gesundheit_und_ernaehrung": ["der Arzt", "die Ärztin", "das Krankenhaus", "die Apotheke", "krank", "gesund", "der Schmerz", "die Medizin", "die Gesundheit", "helfen", "ruhig", "müde", "gut", "schlecht", "die Tablette", "der Notfall", "untersuchen", "das Rezept", "fühlen", "leben"],
     "medien_und_kommunikation": ["sprechen", "sagen", "hören", "lesen", "schreiben", "telefonieren", "das Handy", "der Computer", "das Internet", "die Zeitung", "das Fernsehen", "das Radio", "die Nachricht", "fragen", "antworten", "verstehen", "erklären", "zeigen", "bestellen", "kommunizieren"],
     "zeit_und_wetter": ["die Zeit", "die Stunde", "die Minute", "der Tag", "die Woche", "der Monat", "das Jahr", "heute", "gestern", "morgen", "jetzt", "immer", "nie", "das Wetter", "die Sonne", "der Regen", "der Schnee", "kalt", "warm", "schön"]
