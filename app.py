@@ -31,6 +31,13 @@ st.markdown("""
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
     }
 
+/* Hide raw icon text in the sidebar collapse control while keeping the button clickable */
+[data-testid="collapsedControl"] span, 
+[data-testid="collapsedControl"] p,
+button[kind="header"] span {
+    font-size: 0px !important;
+}
+
     /* Cards Styling with Vibrant Backgrounds & Subtle Hover Micro-Interactions */
     .main-card {
         background: #ffffff;
