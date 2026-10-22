@@ -31,12 +31,18 @@ st.markdown("""
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
     }
 
-/* Hide raw icon text in the sidebar collapse control while keeping the button clickable */
-[data-testid="collapsedControl"] span, 
-[data-testid="collapsedControl"] p,
-button[kind="header"] span {
-    font-size: 0px !important;
-}
+    /* Target and hide the raw icon text fallback in the sidebar toggle */
+    [data-testid="collapsedControl"] span {
+        font-size: 0px !important;
+        color: transparent !important;
+    }
+    
+    /* Ensure the button element itself remains clickable to show/hide sidebar */
+    [data-testid="collapsedControl"] {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+    }
 
     /* Cards Styling with Vibrant Backgrounds & Subtle Hover Micro-Interactions */
     .main-card {
