@@ -935,7 +935,7 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
 
     st.markdown("""
     **Goethe A1 Reading (Lesen) Format:** 25 minutes | 3 parts | 15 questions  
-    *Mirrored directly from the official Start Deutsch 1 exam layouts (featuring authentic email browser frames for Teil 1, dual website source comparison for Teil 2, and framed public sign/notice boxes with Richtig/Falsch statements for Teil 3).*
+    *Mirrored directly from official Start Deutsch 1 exam layouts.*
     """)
 
     if "lesen_part" not in st.session_state:
@@ -966,7 +966,6 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
 
     st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
 
-    # Styling for bright visible fonts and exact exam UI frames mirroring official Goethe test booklets
     st.markdown("""
         <style>
         div.stRadio label, div.stTextInput label, div.stTextInput input, div.stSelectbox label {
@@ -1041,23 +1040,22 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
 
     if "Part 1" in st.session_state.lesen_part:
         st.markdown("""
-        #### 📌 Part 1: Reading Short Emails & Announcements (Richtig / Falsch)[cite: 20]
-        * **Exam Format:** Read authentic email and club announcement frames mirroring the official Goethe test paper, then evaluate statements as Richtig or Falsch[cite: 20].
+        #### 📌 Part 1: Reading Short Emails & Announcements (Richtig / Falsch)
+        * **Exam Format:** Read authentic email and everyday communication frames between friends, family, or colleagues (covering invitations, schedule changes, travel updates, or daily requests), then evaluate statements as Richtig or Falsch.
         """)
     elif "Part 2" in st.session_state.lesen_part:
         st.markdown("""
-        #### 📌 Part 2: Information Sources & Web Links (Choose a or b)[cite: 22]
-        * **Exam Format:** Read a specific information need scenario, examine the two side-by-side browser windows (a and b), and select which website provides the correct information[cite: 22, 23, 24].
+        #### 📌 Part 2: Information Sources & Web Links (Choose a or b)
+        * **Exam Format:** Read a specific information need scenario, examine the two side-by-side browser windows (a and b), and select which website provides the correct information.
         """)
     else:
         st.markdown("""
-        #### 📌 Part 3: Public Information, Signs & Notices (Richtig / Falsch)[cite: 25]
-        * **Exam Format:** Read public notices, vending machine rules, or hotel/station signs presented inside official bordered boxes, and determine if statements are Richtig or Falsch[cite: 25, 26, 27].
+        #### 📌 Part 3: Public Information, Signs & Notices (Richtig / Falsch)
+        * **Exam Format:** Read public notices, vending machine rules, or hotel/station signs presented inside official bordered boxes.
         """)
 
     st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
 
-    # Automatically generate/refresh scenarios when button is clicked or when questions are empty
     if not st.session_state.lesen_active and not st.session_state.lesen_complete:
         if "Part 2" in st.session_state.lesen_part:
             lesen_prompt = f"""
@@ -1070,38 +1068,45 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
             - "content_b": website text content for option b
             - "correct_answer": "a" or "b"
             - "explanation": detailed explanation.
-            Return strict JSON array with 5 items.
+            Return strict JSON array with 5 items. Ensure NO citation brackets or reference markers are included in any strings.
             """
         elif "Part 3" in st.session_state.lesen_part:
             lesen_prompt = f"""
             Generate a completely brand new, randomized official Goethe A1 Start Deutsch 1 Reading (Lesen) Part 3 practice module using seed {st.session_state.lesen_seed}.
             Provide 5 questions (numbered item 11 to 15 format style). Each question must have:
             - "item_num": question number (e.g., 11, 12, 13, 14, 15)
-            - "location_header": location title (e.g., "Am Fahrkartenautomaten", "Im Hotelzimmer", "Eingang Restaurant", "Im Kultur-Verein", "Im Bahnhof")
-            - "sign_text": the text inside the official framed sign box (e.g. rules, prices, schedules)
-            - "statement": the statement to evaluate (e.g. "Am Samstag können Sie mit dem Ticket für 29 Euro fahren.")
+            - "location_header": location title (e.g., "Am Fahrkartenautomaten", "Im Hotelzimmer")
+            - "sign_text": the text inside the official framed sign box
+            - "statement": the statement to evaluate
             - "correct_answer": "Richtig" or "Falsch"
             - "explanation": detailed explanation.
-            Return strict JSON array with 5 items.
+            Return strict JSON array with 5 items. Ensure NO citation brackets or reference markers are included in any strings.
             """
         else:
             lesen_prompt = f"""
             Generate a completely brand new, randomized official Goethe A1 Start Deutsch 1 Reading (Lesen) Part 1 practice module using seed {st.session_state.lesen_seed}.
-            Provide exactly 2 independent texts (Text 1 formatted as an email browser frame with 2 statements numbered 1 and 2; Text 2 formatted as a club/Verein announcement memo block with 3 statements numbered 3, 4, and 5).
-            Return strict JSON array with 5 items total (items 1-2 for text 1, items 3-5 for text 2), matching this exact schema:
+            The texts must be simple everyday communications between friends, family, or colleagues covering diverse topics chosen at random:
+            - Invitations (birthday parties, weekend dinners, meeting up at a café)
+            - Schedule Changes (being late, canceling a meeting, moving an appointment)
+            - Travel / Holidays (brief updates from someone on vacation or a trip)
+            - Daily Requests (asking someone to bring a book, buy groceries, or feed a pet)
+            
+            Provide exactly 2 independent texts (Text 1 formatted as an email browser frame with 2 statements numbered 1 and 2; Text 2 formatted as a personal message memo block with 3 statements numbered 3, 4, and 5).
+            Return strict JSON array with 5 items total, matching this exact schema:
             [
                 {{
                     "q_num": 1,
                     "text_block_id": 1,
                     "layout_type": "email",
-                    "email_subject": "Hallo!",
-                    "text_snippet": "Liebe Nora,\n\nich bin nächste Woche...",
-                    "question_text": "Renate macht in Weimar Urlaub.",
+                    "email_subject": "Einladung zum Essen!",
+                    "text_snippet": "Liebe Anna,\n\nich möchte dich...",
+                    "question_text": "Anna soll am Freitag kommen.",
                     "options": ["Richtig", "Falsch"],
                     "correct_answer": "Falsch",
                     "explanation": "Detailed explanation."
                 }}
             ]
+            Ensure NO citation brackets or reference markers (such as bracketed numbers) are included anywhere in the text or explanations.
             """
 
         with st.spinner("Generating fresh official Goethe Lesen exam questions and UI frames..."):
@@ -1125,7 +1130,6 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
         q_list = st.session_state.lesen_questions
 
         if "Part 2" in st.session_state.lesen_part:
-            # --- LESEN TEIL 2: DUAL BROWSER WINDOW LAYOUT ---
             with st.form(key="lesen_teil2_form"):
                 user_lesen_answers = {}
                 for idx, q in enumerate(q_list):
@@ -1189,7 +1193,6 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
                     st.rerun()
 
         elif "Part 3" in st.session_state.lesen_part:
-            # --- LESEN TEIL 3: PUBLIC SIGNS & NOTICES LAYOUT ---
             with st.form(key="lesen_teil3_form"):
                 user_lesen_answers = {}
                 for idx, q in enumerate(q_list):
@@ -1241,11 +1244,9 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
                     st.rerun()
 
         else:
-            # --- LESEN TEIL 1 LAYOUT: TWO DISTINCT TEXT BLOCKS MIRRORING OFFICIAL EXAM (IMGS 1 & 2) ---
             with st.form(key="lesen_teil1_form"):
                 user_lesen_answers = {}
                 
-                # Split questions into Text Block 1 (items 1-2, Email frame) and Text Block 2 (items 3-5, Verein memo frame)
                 block_1_items = [q for q in q_list if int(q.get("text_block_id", 1)) == 1 or q.get("q_num", 1) <= 2]
                 block_2_items = [q for q in q_list if int(q.get("text_block_id", 1)) == 2 or q.get("q_num", 1) > 2]
                 
@@ -1254,7 +1255,6 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
                 if not block_2_items:
                     block_2_items = q_list[2:]
 
-                # --- TEXT BLOCK 1 (Email browser window) ---
                 t1 = block_1_items[0]
                 st.markdown(f"""
                 <div class="exam-browser-frame">
@@ -1285,7 +1285,6 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
 
                 st.markdown("---")
 
-                # --- TEXT BLOCK 2 (Club announcement memo box) ---
                 t2 = block_2_items[0] if block_2_items else q_list[-1]
                 st.markdown(f"""
                 <div class="exam-memo-box">
