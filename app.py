@@ -934,8 +934,8 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
     st.markdown('<div class="section-header-box">📖 Goethe A1 Lesen (Reading) Exam Practice</div>', unsafe_allow_html=True)
 
     st.markdown("""
-    **Goethe A1 Reading (Lesen) Format:** 25 minutes | 3 parts | 15 questions[cite: 19]  
-    *Mirrored directly from the official Start Deutsch 1 Übungssatz 01 exam format[cite: 4] to prep for December 12.*
+    **Goethe A1 Reading (Lesen) Format:** 25 minutes | 3 parts | 15 questions  
+    *Mirrored directly from official Start Deutsch 1 exam layouts (featuring authentic browser email frames for Teil 1, dual website source comparison for Teil 2, and framed public sign/notice boxes with Richtig/Falsch statements for Teil 3).*
     """)
 
     if "lesen_part" not in st.session_state:
@@ -950,8 +950,8 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
         st.session_state.lesen_complete = False
 
     lesen_parts = [
-        "Part 1: Match Short Texts & Ads (Richtig / Falsch based on short notes/emails)",
-        "Part 2: Multiple Choice Web/Information Selection (Choose a or b source)",
+        "Part 1: Match Short Texts & Ads (Richtig / Falsch based on emails)",
+        "Part 2: Multiple Choice Web/Information Selection (Choose a or b source links)",
         "Part 3: Public Information & Detail Extraction (Richtig / Falsch signs/notices)"
     ]
 
@@ -966,6 +966,7 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
 
     st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
 
+    # Styling for bright visible fonts and exact exam UI frames mirroring official Goethe test booklets
     st.markdown("""
         <style>
         div.stRadio label, div.stTextInput label, div.stTextInput input, div.stSelectbox label {
@@ -975,31 +976,72 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
             color: #F8FAFC !important;
             font-weight: 500;
         }
-        .exam-text-box {
-            background-color: #1E293B;
+        .exam-browser-frame {
+            background-color: #FFFFFF;
+            color: #0F172A;
+            border: 2px solid #64748B;
+            border-radius: 6px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            margin-bottom: 15px;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+        }
+        .browser-top-bar {
+            background-color: #E2E8F0;
+            padding: 6px 10px;
+            border-bottom: 1px solid #CBD5E1;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.8rem;
+            color: #334155;
+        }
+        .browser-address-bar {
+            background-color: #FFFFFF;
+            border: 1px solid #94A3B8;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.8rem;
+            color: #1E293B;
+            width: 100%;
+        }
+        .browser-body {
             padding: 15px;
-            border-radius: 8px;
-            border: 1px solid #334155;
-            color: #F8FAFC;
-            margin-bottom: 12px;
+            background-color: #FFFFFF;
+            color: #0F172A;
+            font-size: 0.95rem;
+            line-height: 1.4;
+            min-height: 120px;
+        }
+        .exam-sign-box {
+            background-color: #FFFFFF;
+            color: #0F172A;
+            border: 3px solid #64748B;
+            padding: 25px;
+            border-radius: 4px;
+            box-shadow: 2px 2px 8px rgba(0,0,0,0.15);
+            margin-bottom: 15px;
+            text-align: center;
+            font-family: Arial, sans-serif;
         }
         </style>
     """, unsafe_allow_html=True)
 
     if "Part 1" in st.session_state.lesen_part:
         st.markdown("""
-        #### 📌 Part 1: Reading Short Emails/Notes (Richtig / Falsch)[cite: 20]
-        * **Exam Format:** Read a short personal message, email, or announcement and evaluate statements as Richtig (True) or Falsch (False)[cite: 20].
+        #### 📌 Part 1: Reading Short Emails & Announcements (Richtig / Falsch)
+        * **Exam Format:** Read authentic email and club announcement frames mirroring the official Goethe test paper, then evaluate statements as Richtig or Falsch.
         """)
     elif "Part 2" in st.session_state.lesen_part:
         st.markdown("""
-        #### 📌 Part 2: Information Sources & Web Links (Choose a or b)[cite: 22]
-        * **Exam Format:** Read a specific information need and select which of two website sources (a or b) contains the correct answer[cite: 22, 23, 24].
+        #### 📌 Part 2: Information Sources & Web Links (Choose a or b)
+        * **Exam Format:** Read a specific information need scenario, examine the two side-by-side browser windows (a and b), and select which website provides the correct information.
         """)
     else:
         st.markdown("""
-        #### 📌 Part 3: Public Notices, Signs & Timetables (Richtig / Falsch)[cite: 25]
-        * **Exam Format:** Read public signs, rules, or announcements and determine if statements are Richtig or Falsch[cite: 25, 26, 27].
+        #### 📌 Part 3: Public Information, Signs & Notices (Richtig / Falsch)
+        * **Exam Format:** Read public notices, vending machine rules, or hotel/station signs presented inside official bordered boxes, and determine if statements are Richtig or Falsch.
         """)
 
     st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
@@ -1015,23 +1057,39 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
 
     if not st.session_state.lesen_active and not st.session_state.lesen_complete:
         if st.button("🚀 Load Official Format Lesen Practice", key="start_lesen_btn"):
-            lesen_prompt = f"""
-            Generate a completely brand new, randomized official Goethe A1 Start Deutsch 1 Reading (Lesen) practice module for '{st.session_state.lesen_part}' using seed {st.session_state.lesen_seed}.
-            Provide 5 unique exam-style questions mirroring the exact official format[cite: 20, 22, 25] (with German text snippets and Richtig/Falsch or a/b options). Make sure content is completely different from standard templates.
-            Return strict JSON array with this exact schema:
-            [
-                {{
-                    "q_num": 1,
-                    "text_snippet": "Unique German reading passage, ad text, or notice here",
-                    "question_text": "Unique exam statement or task here",
-                    "options": ["Richtig", "Falsch"],
-                    "correct_answer": "Exact correct answer",
-                    "explanation": "Detailed explanation why this answer is correct."
-                }}
-            ]
-            Ensure there are exactly 5 items in the array.
-            """
-            with st.spinner("Generating fresh official Goethe Lesen exam questions..."):
+            if "Part 2" in st.session_state.lesen_part:
+                lesen_prompt = f"""
+                Generate a completely brand new, randomized official Goethe A1 Start Deutsch 1 Reading (Lesen) Part 2 practice module using seed {st.session_state.lesen_seed}.
+                Provide 5 questions in total. Each question must have:
+                - "user_goal": A scenario statement describing what the person wants to find.
+                - "url_a": website URL string
+                - "content_a": website text content for option a
+                - "url_b": website URL string
+                - "content_b": website text content for option b
+                - "correct_answer": "a" or "b"
+                - "explanation": detailed explanation.
+                Return strict JSON array with 5 items.
+                """
+            elif "Part 3" in st.session_state.lesen_part:
+                lesen_prompt = f"""
+                Generate a completely brand new, randomized official Goethe A1 Start Deutsch 1 Reading (Lesen) Part 3 practice module using seed {st.session_state.lesen_seed}.
+                Provide 5 questions (numbered item 11 to 15 format style). Each question must have:
+                - "item_num": question number (e.g., 11, 12, 13, 14, 15)
+                - "location_header": location title (e.g., "Am Fahrkartenautomaten", "Im Hotelzimmer", "Eingang Restaurant", "Im Kultur-Verein", "Im Bahnhof")
+                - "sign_text": the text inside the official framed sign box (e.g. rules, prices, schedules)
+                - "statement": the statement to evaluate (e.g. "Am Samstag können Sie mit dem Ticket für 29 Euro fahren.")
+                - "correct_answer": "Richtig" or "Falsch"
+                - "explanation": detailed explanation.
+                Return strict JSON array with 5 items.
+                """
+            else:
+                lesen_prompt = f"""
+                Generate a completely brand new, randomized official Goethe A1 Start Deutsch 1 Reading (Lesen) Part 1 practice module using seed {st.session_state.lesen_seed}.
+                Provide 4 unique exam-style questions mirroring the exact official format (with German text snippets and Richtig/Falsch options).
+                Return strict JSON array with 4 items.
+                """
+
+            with st.spinner("Generating fresh official Goethe Lesen exam questions and UI frames..."):
                 try:
                     lesen_raw = generate_cached_content(lesen_prompt, is_json=True)
                     st.session_state.lesen_questions = json.loads(lesen_raw)
@@ -1042,39 +1100,182 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
 
     elif st.session_state.lesen_active and not st.session_state.lesen_complete:
         q_list = st.session_state.lesen_questions
-        with st.form(key="lesen_quiz_form"):
-            user_lesen_answers = {}
-            for idx, q in enumerate(q_list):
-                st.markdown(f"**Question {idx + 1} of {len(q_list)}**")
-                st.markdown(f'<div class="exam-text-box"><b>Lesetext / Aufgabe:</b><br>{q.get("text_snippet")}</div>', unsafe_allow_html=True)
-                st.markdown(f"<span style='color: #FFFFFF; font-weight: bold;'>{q.get('question_text')}</span>", unsafe_allow_html=True)
 
-                opts = q.get("options", ["Richtig", "Falsch"])
-                user_lesen_answers[idx] = st.radio("Choose your answer:", opts, key=f"lesen_ans_{idx}")
-                st.markdown("---")
-
-            sub_lesen = st.form_submit_button("📥 Submit Lesen Answers")
-            if sub_lesen:
-                score = 0
-                results = []
+        if "Part 2" in st.session_state.lesen_part:
+            # --- LESEN TEIL 2: DUAL BROWSER WINDOW LAYOUT ---
+            with st.form(key="lesen_teil2_form"):
+                user_lesen_answers = {}
                 for idx, q in enumerate(q_list):
-                    given = str(user_lesen_answers.get(idx, "")).strip().lower()
-                    correct = str(q.get("correct_answer", "")).strip().lower()
-                    is_corr = given == correct or correct in given or given in correct
-                    if is_corr:
-                        score += 1
-                    results.append({
-                        "q_num": idx + 1,
-                        "given": user_lesen_answers.get(idx, ""),
-                        "correct": q.get("correct_answer"),
-                        "is_correct": is_corr,
-                        "explanation": q.get("explanation")
-                    })
-                st.session_state.lesen_score = score
-                st.session_state.lesen_results = results
-                st.session_state.lesen_active = False
-                st.session_state.lesen_complete = True
-                st.rerun()
+                    st.markdown(f"**Aufgabe {idx + 1} of {len(q_list)}**")
+                    st.markdown(f"<span style='color: #FFFFFF; font-weight: bold; font-size: 1.05rem;'>{q.get('user_goal')}</span>", unsafe_allow_html=True)
+                    st.markdown("<div style='height: 6px;'></div>", unsafe_allow_html=True)
+
+                    col_browser_a, col_browser_b = st.columns(2)
+                    
+                    with col_browser_a:
+                        st.markdown(f"""
+                        <div class="exam-browser-frame">
+                            <div class="browser-top-bar">
+                                <span>📁</span>
+                                <div class="browser-address-bar">{q.get('url_a', 'www.site-a.de')}</div>
+                            </div>
+                            <div class="browser-body">
+                                <b>Website A</b><br>{q.get('content_a')}
+                            </div>
+                        </div>
+                        """, unsafe_allow_html=True)
+
+                    with col_browser_b:
+                        st.markdown(f"""
+                        <div class="exam-browser-frame">
+                            <div class="browser-top-bar">
+                                <span>📁</span>
+                                <div class="browser-address-bar">{q.get('url_b', 'www.site-b.de')}</div>
+                            </div>
+                            <div class="browser-body">
+                                <b>Website B</b><br>{q.get('content_b')}
+                            </div>
+                        </div>
+                        """, unsafe_allow_html=True)
+
+                    opts = [f"a) {q.get('url_a', 'Website A')}", f"b) {q.get('url_b', 'Website B')}"]
+                    user_lesen_answers[idx] = st.radio(f"Wo finden Sie Informationen für Aufgabe {idx+1}?", opts, key=f"lesen_t2_ans_{idx}")
+                    st.markdown("---")
+
+                sub_t2 = st.form_submit_button("📥 Submit Lesen Teil 2 Answers")
+                if sub_t2:
+                    score = 0
+                    results = []
+                    for idx, q in enumerate(q_list):
+                        given = str(user_lesen_answers.get(idx, "")).strip().lower()
+                        correct_letter = str(q.get("correct_answer", "a")).strip().lower()
+                        is_corr = given.startswith(correct_letter)
+                        if is_corr:
+                            score += 1
+                        results.append({
+                            "q_num": idx + 1,
+                            "given": user_lesen_answers.get(idx, ""),
+                            "correct": f"{correct_letter}) {q.get(f'url_{correct_letter}', '')}",
+                            "is_correct": is_corr,
+                            "explanation": q.get("explanation")
+                        })
+                    st.session_state.lesen_score = score
+                    st.session_state.lesen_results = results
+                    st.session_state.lesen_active = False
+                    st.session_state.lesen_complete = True
+                    st.rerun()
+
+        elif "Part 3" in st.session_state.lesen_part:
+            # --- LESEN TEIL 3: PUBLIC SIGNS & NOTICES LAYOUT ---
+            with st.form(key="lesen_teil3_form"):
+                user_lesen_answers = {}
+                for idx, q in enumerate(q_list):
+                    item_num = q.get("item_num", 11 + idx)
+                    location = q.get("location_header", "Am Fahrkartenautomaten")
+                    sign_content = q.get("sign_text", "")
+                    statement = q.get("statement", "")
+
+                    st.markdown(f"""
+                    <div style="display: flex; align-items: baseline; gap: 12px; margin-bottom: 5px;">
+                        <span style="font-size: 1.6rem; font-weight: bold; color: #38BDF8;">{item_num}</span>
+                        <span style="font-size: 1.1rem; font-style: italic; color: #CBD5E1; font-weight: bold;">{location}</span>
+                    </div>
+                    """, unsafe_allow_html=True)
+
+                    # Official bordered sign box matching user attached images
+                    st.markdown(f"""
+                    <div class="exam-sign-box">
+                        <div style="white-space: pre-wrap; font-size: 1.05rem; font-weight: 500; color: #0F172A;">{sign_content}</div>
+                    </div>
+                    """, unsafe_allow_html=True)
+
+                    st.markdown(f"<span style='color: #FFFFFF; font-weight: bold; font-size: 1.05rem;'>{statement}</span>", unsafe_allow_html=True)
+
+                    opts = ["Richtig", "Falsch"]
+                    user_lesen_answers[idx] = st.radio(f"Antwort {item_num}:", opts, key=f"lesen_t3_ans_{idx}", label_visibility="collapsed")
+                    st.markdown("---")
+
+                sub_t3 = st.form_submit_button("📥 Submit Lesen Teil 3 Answers")
+                if sub_t3:
+                    score = 0
+                    results = []
+                    for idx, q in enumerate(q_list):
+                        given = str(user_lesen_answers.get(idx, "")).strip().lower()
+                        correct = str(q.get("correct_answer", "richtig")).strip().lower()
+                        is_corr = given == correct
+                        if is_corr:
+                            score += 1
+                        results.append({
+                            "q_num": q.get("item_num", 11 + idx),
+                            "given": user_lesen_answers.get(idx, ""),
+                            "correct": q.get("correct_answer"),
+                            "is_correct": is_corr,
+                            "explanation": q.get("explanation")
+                        })
+                    st.session_state.lesen_score = score
+                    st.session_state.lesen_results = results
+                    st.session_state.lesen_active = False
+                    st.session_state.lesen_complete = True
+                    st.rerun()
+
+        else:
+            # --- LESEN TEIL 1 LAYOUT ---
+            current_layout = q_list[0].get("layout_type", "email")
+            
+            if "email" in current_layout or q_list[0].get("email_subject"):
+                st.markdown(f"""
+                <div class="exam-browser-frame">
+                    <div class="browser-top-bar">
+                        <span>📁 Datei</span><span>⚙️ Bearbeiten</span><span>🔍 Ansicht</span>
+                        <div class="browser-address-bar">www.web-mail.de/postfach/nachricht</div>
+                    </div>
+                    <div class="browser-body">
+                        <div style="border-bottom: 1px solid #E2E8F0; padding-bottom: 8px; margin-bottom: 15px; font-weight: bold; color: #334155;">
+                            Betreff: {q_list[0].get('email_subject', 'Hallo!')}
+                        </div>
+                        <div style="white-space: pre-wrap; font-family: sans-serif;">{q_list[0].get('text_snippet')}</div>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+            else:
+                st.markdown(f"""
+                <div class="exam-sign-box">
+                    <div style="white-space: pre-wrap;">{q_list[0].get('text_snippet')}</div>
+                </div>
+                """, unsafe_allow_html=True)
+
+            with st.form(key="lesen_quiz_form"):
+                user_lesen_answers = {}
+                for idx, q in enumerate(q_list):
+                    st.markdown(f"**Aufgabe {idx + 1}**")
+                    st.markdown(f"<span style='color: #FFFFFF; font-weight: bold; font-size: 1.05rem;'>{q.get('question_text')}</span>", unsafe_allow_html=True)
+
+                    opts = q.get("options", ["Richtig", "Falsch"])
+                    user_lesen_answers[idx] = st.radio(f"Antwort Q{idx+1}:", opts, key=f"lesen_ans_{idx}", label_visibility="collapsed")
+                    st.markdown("---")
+
+                sub_lesen = st.form_submit_button("📥 Submit Lesen Answers")
+                if sub_lesen:
+                    score = 0
+                    results = []
+                    for idx, q in enumerate(q_list):
+                        given = str(user_lesen_answers.get(idx, "")).strip().lower()
+                        correct = str(q.get("correct_answer", "")).strip().lower()
+                        is_corr = given == correct or correct in given or given in correct
+                        if is_corr:
+                            score += 1
+                        results.append({
+                            "q_num": idx + 1,
+                            "given": user_lesen_answers.get(idx, ""),
+                            "correct": q.get("correct_answer"),
+                            "is_correct": is_corr,
+                            "explanation": q.get("explanation")
+                        })
+                    st.session_state.lesen_score = score
+                    st.session_state.lesen_results = results
+                    st.session_state.lesen_active = False
+                    st.session_state.lesen_complete = True
+                    st.rerun()
 
     elif st.session_state.lesen_complete:
         score = st.session_state.lesen_score
@@ -1093,7 +1294,6 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
             st.session_state.lesen_active = False
             st.session_state.lesen_questions = []
             st.rerun()
-
 
 # ----------------------------------------------------
 # 5. GOETHE A1 HÖREN (LISTENING) SECTION
