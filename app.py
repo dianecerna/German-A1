@@ -2667,12 +2667,12 @@ elif nav_choice == "📖 Virtual Library":
         st.info("👈 Please select a level and choose a story from the dropdown menu above to begin.")
 
 # ----------------------------------------------------
-# 11. GEM — AI GERMAN TUTOR SECTION (FIXED FORMATTING)
+# 11. GEM — AI GERMAN TUTOR SECTION (FIXED INPUT TEXT COLOR)
 # ----------------------------------------------------
 elif nav_choice == "🐱 Gem AI Tutor":
     render_top_back_button()
     
-    # Custom CSS fix for chat bubbles, avatar alignment, and raw material icon text bugs
+    # Custom CSS fix for chat bubbles, avatar alignment, and chat input typing text color
     st.markdown("""
         <style>
         /* Neutralize conflicting chat avatar/icon element bugs */
@@ -2691,6 +2691,15 @@ elif nav_choice == "🐱 Gem AI Tutor":
         [data-testid="stChatMessage"] div, 
         [data-testid="stChatMessage"] span {
             color: #FFFFFF !important;
+        }
+        
+        /* FIX FOR CHAT INPUT TYPING TEXT COLOR */
+        [data-testid="stChatInput"] textarea {
+            color: #0f172a !important;
+            font-weight: 600 !important;
+        }
+        [data-testid="stChatInput"] textarea::placeholder {
+            color: #64748b !important;
         }
         </style>
     """, unsafe_allow_html=True)
