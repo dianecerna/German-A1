@@ -1744,7 +1744,7 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
 
     st.markdown("""
     **Goethe A1 Writing (Schreiben) Format:** 20 minutes | 2 parts | 6 tasks  
-    *Mirrored directly from official Start Deutsch 1 exam layouts (featuring form-filling data extraction cards for Teil 1 and structured prompt notes with email input boxes for Teil 2).*
+    *Mirrored directly from official Start Deutsch 1 exam layouts (featuring form-filling data extraction cards for Teil 1 with pre-filled fields and 5 blank input fields).*
     """)
 
     if "schreiben_part" not in st.session_state:
@@ -1811,12 +1811,12 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
     if "Part 1" in st.session_state.schreiben_part:
         st.markdown("""
         #### 📌 Part 1: Form Filling (Anmeldung)
-        * **Exam Format:** Read a short text describing a person's background, course wishes, and details, then fill in the 5 missing fields in the official registration form.
+        * **Exam Format:** Read the persona description below, review the pre-filled fields in the registration form, and fill in the 5 blank fields (numbered 1 to 5) correctly based on the text.
         """)
     else:
         st.markdown("""
         #### 📌 Part 2: Short Email Writing
-        * **Exam Format:** Write a short email (approx. 30 words) responding to 3 prompts (such as reason for writing, time/place, and asking a question), including a greeting and sign-off.
+        * **Exam Format:** Write a short email (approx. 30 words) responding to 3 prompts, including a greeting and sign-off.
         """)
 
     st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
@@ -1835,9 +1835,10 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
             schreiben_prompt = f"""
             Generate a completely brand new, randomized official Goethe A1 Start Deutsch 1 Schreiben Part 1 practice module using seed {st.session_state.schreiben_seed}.
             Provide:
-            - "persona_text": A paragraph describing a person (name, birth date, birthplace, native language, languages spoken, German learning duration, desired course dates, and course time).
-            - "form_title": School name (e.g., "Sprachschule LIGA Anmeldung").
-            - "fields": A list of EXACTLY 5 fields to fill (numbered (1) to (5)), such as "Geburtsort", "Andere Sprachen", "Wie lange?", "Kurstermin", "Kurszeit". Each field must contain:
+            - "persona_text": A detailed paragraph describing a person (name, birth date, birthplace, native language, languages spoken, German learning duration, desired course dates, and course time).
+            - "form_title": School name (e.g., "Sprachschule EUROPA Anmeldung").
+            - "prefilled_fields": A list of 3 fields that are pre-filled with correct values (e.g. Familienname, Vorname, Geburtsdatum). Each has "label" and "value".
+            - "fields": A list of EXACTLY 5 blank fields to fill (numbered (1) to (5)), such as "Geburtsort", "Andere Sprachen", "Wie lange?", "Kurstermin", "Kurszeit". Each field must contain:
                 - "field_num": 1 to 5
                 - "field_label": label name
                 - "correct_value": expected correct string answer
@@ -1869,7 +1870,7 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
         data = st.session_state.schreiben_data
 
         if "Part 1" in st.session_state.schreiben_part:
-            # --- SCHREIBEN TEIL 1 (Form Filling) ---
+            # --- SCHREIBEN TEIL 1 (Form Filling with Pre-filled & 5 Blanks) ---
             st.markdown(f"""
             <div style="font-size: 1.05rem; line-height: 1.6; margin-bottom: 20px; background-color: #1E293B; padding: 20px; border-radius: 8px; border-left: 4px solid #38BDF8;">
                 {data.get('persona_text')}
@@ -1880,24 +1881,27 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
                 st.markdown(f"""
                 <div class="exam-form-box">
                     <div style="text-align: center; border-bottom: 2px solid #0F172A; padding-bottom: 12px; margin-bottom: 20px;">
-                        <h3 style="color: #0F172A; margin: 0;">{data.get('form_title', 'Sprachschule LIGA Anmeldung')}</h3>
+                        <h3 style="color: #0F172A; margin: 0;">{data.get('form_title', 'Sprachschule EUROPA Anmeldung')}</h3>
                     </div>
                 """, unsafe_allow_html=True)
 
                 user_form_answers = {}
-                fields = data.get('fields', [])
+                prefilled = data.get('prefilled_fields', [])
                 
-                # Render preset static rows (0) matching official layout
-                st.markdown("""
-                <div style="display: grid; grid-template-columns: 180px 1fr 40px; gap: 10px; align-items: center; margin-bottom: 12px; font-size: 0.95rem;">
-                    <b>Familienname:</b> <div style="background-color: #E2E8F0; padding: 6px 10px; border-radius: 4px; color: #334155;">Legrand</div> <span style="color: #64748B;">(0)</span>
-                </div>
-                """, unsafe_allow_html=True)
+                # Render pre-filled fields (marked with (0))
+                for pf in prefilled:
+                    st.markdown(f"""
+                    <div style="display: grid; grid-template-columns: 180px 1fr 40px; gap: 10px; align-items: center; margin-bottom: 12px; font-size: 0.95rem;">
+                        <b>{pf.get('label')}:</b> <div style="background-color: #E2E8F0; padding: 6px 10px; border-radius: 4px; color: #334155;">{pf.get('value')}</div> <span style="color: #64748B;">(0)</span>
+                    </div>
+                    """, unsafe_allow_html=True)
 
+                # Render the 5 blank input fields to be filled out
+                fields = data.get('fields', [])
                 for f in fields:
                     f_num = f.get('field_num')
                     f_label = f.get('field_label')
-                    user_form_answers[f_num] = st.text_input(f"{f_label} ({f_num})", key=f"sch_f_{f_num}")
+                    user_form_answers[f_num] = st.text_input(f"{f_label} ({f_num})", key=f"sch_f_{f_num}", placeholder="Hier eintragen...")
 
                 st.markdown("</div>", unsafe_allow_html=True)
 
@@ -1940,7 +1944,6 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
             </div>
             """, unsafe_allow_html=True)
 
-            # Styled exam note card matching user attachment
             st.markdown(f"""
             <div style="display: flex; justify-content: center;">
                 <div class="exam-note-card">
@@ -1983,7 +1986,6 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
             st.markdown("**Model Correct Answer (Musterlösung):**")
             st.success(data.get("model_answer"))
 
-            # Evaluate coverage of the 3 points
             st.markdown("**Examiner Feedback & Checklist:**")
             st.markdown(f"""
             * **Point 1 ({data.get('point_1')}):** Checked in your text.
