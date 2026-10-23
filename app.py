@@ -2017,7 +2017,7 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
 
     st.markdown("""
     **Goethe A1 Speaking (Sprechen) Format:** 15 minutes | 3 parts  
-    *Mirrored directly from official Start Deutsch 1 exam card layouts (Teil 1 personal introduction prompt cards, Teil 2 thematic flashcard draw and grid display, and Teil 3 flashcard draw with high-definition object photo cards).*
+    *Mirrored directly from official Start Deutsch 1 exam card layouts (Teil 1 personal introduction prompt cards, Teil 2 thematic flashcard draw and grid display, and Teil 3 flashcard draw with center-aligned high-definition object photo cards).*
     """)
 
     if "sprechen_part" not in st.session_state:
@@ -2295,7 +2295,7 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
                         """, unsafe_allow_html=True)
 
         else:
-            # --- SPRECHEN TEIL 3 (Flashcard Photo Draw + Practice + Full Grid Overview) ---
+            # --- SPRECHEN TEIL 3 (Flashcard Photo Draw + Center-aligned Photo + Practice + Full Grid) ---
             st.markdown("### 📇 Sprechen Teil 3: Visuelle Objektkarte ziehen")
 
             col_draw_p3_1, col_draw_p3_2 = st.columns([1, 1])
@@ -2311,15 +2311,16 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
             if st.session_state.drawn_p3_card:
                 card_data = st.session_state.drawn_p3_card
                 
-                # Render the actual photograph card
-                st.image(card_data.get('img_url'), caption=f"Karte: {card_data.get('title')}", width=350)
-                
-                st.markdown(f"""
-                <div class="exam-visual-card" style="border-color: #0284C7; background-color: #0F172A; color: #F8FAFC;">
-                    <div class="exam-card-header" style="background-color: #0284C7; color: #FFFFFF; width: 100%;">{st.session_state.drawn_p3_category}</div>
-                    <span style="font-size: 1.5rem; color: #38BDF8; font-weight: bold; margin: 5px 0;">{card_data.get('title')}</span>
-                </div>
-                """, unsafe_allow_html=True)
+                # CENTER-JUSTIFY THE PHOTOGRAPH CARD USING COLUMNS
+                c_left, c_center, c_right = st.columns([1, 2, 1])
+                with c_center:
+                    st.image(card_data.get('img_url'), caption=f"Karte: {card_data.get('title')}", use_column_width=True)
+                    st.markdown(f"""
+                    <div class="exam-visual-card" style="border-color: #0284C7; background-color: #0F172A; color: #F8FAFC; margin-top: 10px;">
+                        <div class="exam-card-header" style="background-color: #0284C7; color: #FFFFFF; width: 100%;">{st.session_state.drawn_p3_category}</div>
+                        <span style="font-size: 1.5rem; color: #38BDF8; font-weight: bold; margin: 5px 0;">{card_data.get('title')}</span>
+                    </div>
+                    """, unsafe_allow_html=True)
             else:
                 st.info("Click 'Ziehen Sie eine Bildkarte' above to randomly draw a visual photo card for making and reacting to requests.")
 
