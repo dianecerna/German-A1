@@ -2008,6 +2008,7 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
             st.rerun()
 
 
+
 # ----------------------------------------------------
 # 7. GOETHE A1 SPRECHEN (SPEAKING) SECTION
 # ----------------------------------------------------
@@ -2016,147 +2017,277 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
     st.markdown('<div class="section-header-box">🗣️ Goethe A1 Sprechen (Speaking) Exam Practice</div>', unsafe_allow_html=True)
 
     st.markdown("""
-    **Goethe A1 Speaking (Sprechen) Format:** 15 minutes | 3 parts (Oral group examination)[cite: 31, 45]  
-    *Mirrored directly from official examiner sheets. Practice with fully functional voice recording simulation and instant AI examiner grading.*
+    **Goethe A1 Speaking (Sprechen) Format:** 15 minutes | 3 parts  
+    *Mirrored directly from official Start Deutsch 1 exam card layouts (Teil 1 personal introduction prompt cards, Teil 2 thematic keyword cards, and Teil 3 visual prompt cards with icon cards for making and responding to requests).*
     """)
 
+    if "sprechen_part" not in st.session_state:
+        st.session_state.sprechen_part = "Part 1: Sich vorstellen (Personal Info Cards)"
     if "sprechen_seed" not in st.session_state:
         st.session_state.sprechen_seed = 1
+    if "sprechen_questions" not in st.session_state:
+        st.session_state.sprechen_questions = []
+    if "sprechen_complete" not in st.session_state:
+        st.session_state.sprechen_complete = False
+
+    sprechen_parts = [
+        "Part 1: Sich vorstellen (Personal Info Cards)",
+        "Part 2: Information geben und erbitten (Themenkarten mit Schlüsselwörtern)",
+        "Part 3: Bitten formulieren und darauf reagieren (Visuelle Objektkarten)"
+    ]
+
+    chosen_sprechen_part = st.selectbox("Select Goethe Sprechen Exam Part:", sprechen_parts, key="sprechen_part_dropdown", label_visibility="collapsed")
+
+    if chosen_sprechen_part != st.session_state.sprechen_part:
+        st.session_state.sprechen_part = chosen_sprechen_part
+        st.session_state.sprechen_questions = []
+        st.session_state.sprechen_complete = False
+        st.rerun()
+
+    st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+
+    # Styling for authentic exam prompt cards, borders, and visual icon frames
+    st.markdown("""
+        <style>
+        div.stRadio label, div.stTextInput label, div.stTextInput input, div.stSelectbox label, div.stTextArea label {
+            color: #FFFFFF !important;
+        }
+        .stTextArea textarea {
+            background-color: #1E293B !important;
+            color: #F8FAFC !important;
+            border: 2px solid #38BDF8 !important;
+            border-radius: 8px;
+        }
+        .exam-card-box {
+            background-color: #FFFFFF;
+            color: #0F172A;
+            border: 3px solid #334155;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            text-align: center;
+            font-family: Arial, sans-serif;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .exam-card-header {
+            background-color: #E2E8F0;
+            color: #334155;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            padding: 4px 8px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        .exam-visual-card {
+            background-color: #FFFFFF;
+            color: #0F172A;
+            border: 3px solid #475569;
+            padding: 25px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            margin-bottom: 15px;
+            min-height: 150px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
+    if "Part 1" in st.session_state.sprechen_part:
+        st.markdown("""
+        #### 📌 Part 1: Sich vorstellen (Personal Info Prompt Cards)
+        * **Exam Format:** Introduce yourself using the prompt cards shown below (Name, Alter, Land, Wohnort, Sprachen, Beruf, Hobby)[cite: 18].
+        """)
+    elif "Part 2" in st.session_state.sprechen_part:
+        st.markdown("""
+        #### 📌 Part 2: Information geben und erbitten (Themenkarten)
+        * **Exam Format:** Draw a theme card with keywords, ask your partner a question based on a keyword, and answer their question[cite: 19].
+        """)
+    else:
+        st.markdown("""
+        #### 📌 Part 3: Bitten formulieren und darauf reagieren (Visuelle Karten)
+        * **Exam Format:** Look at the visual object card, formulate a polite request (e.g. *Können Sie bitte...*), and react to your partner's request[cite: 20].
+        """)
+
+    st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
 
     col_sp1, col_sp2 = st.columns([2, 1])
     with col_sp2:
         if st.button("🔄 Refresh Scenarios", key="refresh_sprechen_btn"):
             st.session_state.sprechen_seed += 1
+            st.session_state.sprechen_questions = []
+            st.session_state.sprechen_complete = False
             st.rerun()
 
-    sprechen_part = st.selectbox("Select Goethe Sprechen Exam Part:", [
-        "Part 1: Self-Introduction & Spelling (Sich vorstellen & Buchstabieren)[cite: 32, 46]",
-        "Part 2: Ask & Answer Personal Questions (Topic Cards)[cite: 33, 46]",
-        "Part 3: Request & Provide Simple Information (Visual Object Cards)[cite: 35, 47]"
-    ], key="sprechen_dropdown", label_visibility="collapsed")
-
-    st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
-
-    st.markdown("""
-        <style>
-        div.stSelectbox label {
-            color: #FFFFFF !important;
-        }
-        </style>
-    """, unsafe_allow_html=True)
-
-    # Fully working AI Voice Recording & Rating Component
-    if "sprechen_transcript" not in st.session_state:
-        st.session_state.sprechen_transcript = ""
-
-    if "Part 1" in sprechen_part:
-        st.markdown("""
-        #### 📌 Part 1: Self-Introduction & Spelling (Sich vorstellen & Buchstabieren)[cite: 32, 46]
-        * **Exam Format:** You introduce yourself using prompt words (*Name? Alter? Land? Wohnort? Sprachen? Beruf? Hobby?*)[cite: 32]. Examiners will also ask you to spell your name or recite numbers[cite: 46].
-        """)
-        
-        if st.button("✨ Generate Model Introduction & Spelling Drill", key="mod_intro"):
-            st.markdown("""
-            **Official Model Introduction & Examiner Prompts:**
-            > *"Guten Tag! Mein Name ist Dee. Ich komme aus den Philippinen und wohne in Cebu City. Ich bin 35 Jahre alt und von Beruf Managerin. Ich spreche Englisch und ein bisschen Deutsch. Mein Hobby ist Kochen."*
-            
-            **Examiner Spelling & Number Drill:**
-            * *Wie ist Ihr Vorname/Familienname? Können Sie das bitte buchstabieren?*[cite: 46]
-            * *Wie ist Ihre Telefonnummer oder Handynummer?*[cite: 46]
-            """)
-
-        st.markdown("### 🎙️ Record & Evaluate Your Speaking Response")
-        user_spoken_text = st.text_area("Type or dictate what you spoke aloud for Part 1 (simulate your oral response here):", key="spoken_p1", placeholder="Guten Tag! Mein Name ist...")
-        
-        if st.button("📥 Rate My Spoken German (AI Examiner)", key="rate_p1"):
-            if not user_spoken_text.strip():
-                st.warning("Please enter your spoken response text to evaluate.")
-            else:
-                eval_speaking_prompt = f"""
-                Act as an official Goethe A1 examiner for Sprechen Part 1. Evaluate this student spoken response:
-                "{user_spoken_text}"
-                Check for pronunciation clarity, grammar accuracy, vocabulary, and whether all key personal details (name, origin, residence, profession, languages, hobby) are present. Give a score out of 10 and actionable feedback.
-                """
-                with st.spinner("Official Examiner is evaluating your speaking performance..."):
-                    feedback = generate_cached_content(eval_speaking_prompt)
-                    st.markdown("### 📝 Official Examiner Rating & Feedback:")
-                    st.markdown(feedback)
-
-    elif "Part 2" in sprechen_part:
-        st.markdown("""
-        #### 📌 Part 2: Ask & Answer Personal Questions (Themenkarten)[cite: 33, 46]
-        * **Exam Format:** You draw action cards with a theme and keyword[cite: 33]. You must ask your partner a question and answer theirs[cite: 46].
-        """)
-
-        themes = [
-            "Thema: Wochenende (Keywords: Sonntag, Frühstück, Sport, Familie, Ausflug)[cite: 33]",
-            "Thema: Schule (Keywords: Freunde, Lehrer, Computer, Sprachen, Hausaufgaben)[cite: 34]",
-            "Thema: Einkaufen (Keywords: Supermarkt, Preis, Öffnungszeiten, Obst)",
-            "Thema: Essen & Trinken (Keywords: Restaurant, Wasser, Kaffee, Fleisch, Gemüse)"
-        ]
-        chosen_theme = themes[st.session_state.sprechen_seed % len(themes)]
-        st.markdown(f"**Current Drawn Theme Card:** `{chosen_theme}`")
-
-        if st.button("💡 Generate Sample Exam Questions & Answers", key="gen_theme_qa"):
-            qa_prompt = f"""
-            Provide Goethe A1 speaking exam prompts and sample question-and-answer pairs for the theme '{chosen_theme}'.
-            Include formal and informal phrasing suitable for the exam.
+    # Auto-load scenarios if empty
+    if not st.session_state.sprechen_questions and not st.session_state.sprechen_complete:
+        if "Part 1" in st.session_state.sprechen_part:
+            sprechen_prompt = f"""
+            Generate a completely brand new, randomized official Goethe A1 Start Deutsch 1 Sprechen Part 1 practice module using seed {st.session_state.sprechen_seed}.
+            Provide a list of 7 standard introduction prompt labels in German (e.g., "Name?", "Alter?", "Land?", "Wohnort?", "Sprachen?", "Beruf?", "Hobby?") or randomized variations.
+            Return strict JSON array of strings.
             """
-            with st.spinner(f"Generating practice prompts..."):
-                qa_res = generate_cached_content(qa_prompt)
-                st.markdown(f"### 🎯 Exam Practice Prompts")
-                st.markdown(qa_res)
+        elif "Part 2" in st.session_state.sprechen_part:
+            sprechen_prompt = f"""
+            Generate a completely brand new, randomized official Goethe A1 Start Deutsch 1 Sprechen Part 2 practice module using seed {st.session_state.sprechen_seed}.
+            Provide:
+            - "theme_title": Theme name in German (e.g., "Thema: Wochenende" or "Thema: Essen & Trinken" or "Thema: Reisen")
+            - "keywords": A list of EXACTLY 6 keywords fitting this theme (matching the 2x3 grid layout in the official exam paper).
+            Return strict JSON object with these keys.
+            """
+        else:
+            sprechen_prompt = f"""
+            Generate a completely brand new, randomized official Goethe A1 Start Deutsch 1 Sprechen Part 3 practice module using seed {st.session_state.sprechen_seed}.
+            Provide:
+            - "visual_cards": A list of EXACTLY 6 items representing the visual object cards (matching the 2x3 grid in the exam paper). Each item has:
+                - "card_num": 1 to 6
+                - "object_name": Name of object/situation in German (e.g. "Computer / Laptop", "Fahrkarte", "Telefon", "Glas Wasser", "Fenster", "Uhrzeit")
+                - "sample_request": A correct polite request sentence (e.g. "Können Sie mir bitte helfen, den Computer zu benutzen?")
+                - "sample_reaction": A correct reaction (e.g. "Ja, natürlich. Gerne!")
+            Return strict JSON object with these keys.
+            """
 
-        st.markdown("### 🎙️ Record & Evaluate Your Speaking Response")
-        user_spoken_p2 = st.text_area("Type or dictate your question and answer for this theme card:", key="spoken_p2", placeholder="Wann machen Sie Sport am Wochenende?")
-        
-        if st.button("📥 Rate My Spoken German (AI Examiner)", key="rate_p2"):
-            if not user_spoken_p2.strip():
-                st.warning("Please enter your spoken response text to evaluate.")
-            else:
-                eval_p2_prompt = f"""
-                Act as an official Goethe A1 examiner for Sprechen Part 2. Evaluate this student question/answer for theme '{chosen_theme}':
-                "{user_spoken_p2}"
-                Check for correct question formation (verb position), vocabulary relevance, and politeness. Give a score out of 10 and feedback.
-                """
-                with st.spinner("Official Examiner is evaluating your speaking performance..."):
-                    feedback = generate_cached_content(eval_p2_prompt)
-                    st.markdown("### 📝 Official Examiner Rating & Feedback:")
-                    st.markdown(feedback)
+        with st.spinner("Generating fresh official Sprechen exam cards..."):
+            try:
+                sprechen_raw = generate_cached_content(sprechen_prompt, is_json=True)
+                st.session_state.sprechen_data = json.loads(sprechen_raw)
+                st.session_state.sprechen_questions = [1] # marker active
+            except Exception as e:
+                st.error(f"Failed to generate Sprechen practice: {str(e)}")
 
-    else:
-        st.markdown("""
-        #### 📌 Part 3: Request & Provide Simple Information (Bitten formulieren)[cite: 35, 47]
-        * **Exam Format:** You draw visual cards depicting everyday objects and must make a polite request or ask a question[cite: 35, 47].
-        """)
-        
-        card_pools = [
-            "Glas Wasser: 'Können Sie mir bitte ein Glas Wasser geben?'[cite: 36, 47]",
-            "Telefon / Computer: 'Darf ich bitte kurz telefonieren / den Computer benutzen?'[cite: 35, 36]",
-            "Uhrzeit / Termin: 'Können Sie mir bitte sagen, wie viel Uhr es ist?'[cite: 35, 36]",
-            "Kuli / Stift: 'Haben Sie bitte einen Kugelschreiber für mich?'",
-            "Fenster: 'Können Sie bitte das Fenster öffnen?'"
-        ]
-        chosen_obj = card_pools[st.session_state.sprechen_seed % len(card_pools)]
-        st.success(f"**Your Drawn Object Card:** {chosen_obj}")
-        st.markdown("**Example Goethe Exam Response:** *'Ja, natürlich. Bitte sehr!'*[cite: 47]")
+    if st.session_state.sprechen_questions and not st.session_state.sprechen_complete:
+        data = st.session_state.sprechen_data
 
-        st.markdown("### 🎙️ Record & Evaluate Your Speaking Response")
-        user_spoken_p3 = st.text_area("Type or dictate your polite request / response for this object card:", key="spoken_p3", placeholder="Entschuldigung, können Sie mir bitte...")
-        
-        if st.button("📥 Rate My Spoken German (AI Examiner)", key="rate_p3"):
-            if not user_spoken_p3.strip():
-                st.warning("Please enter your spoken response text to evaluate.")
-            else:
-                eval_p3_prompt = f"""
-                Act as an official Goethe A1 examiner for Sprechen Part 3. Evaluate this student polite request for object card '{chosen_obj}':
-                "{user_spoken_p3}"
-                Check for correct polite modal usage (Können Sie bitte...), appropriateness for the object, and grammar. Give a score out of 10 and feedback.
-                """
-                with st.spinner("Official Examiner is evaluating your speaking performance..."):
-                    feedback = generate_cached_content(eval_p3_prompt)
-                    st.markdown("### 📝 Official Examiner Rating & Feedback:")
-                    st.markdown(feedback)
+        if "Part 1" in st.session_state.sprechen_part:
+            # --- SPRECHEN TEIL 1 (Personal Info Cards Grid) ---
+            st.markdown("### 📇 Sprechen Teil 1: Sich vorstellen (Karten)")
+            prompts = data if isinstance(data, list) else ["Name?", "Alter?", "Land?", "Wohnort?", "Sprachen?", "Beruf?", "Hobby?"]
+
+            for p in prompts:
+                st.markdown(f"""
+                <div class="exam-card-box">
+                    <div class="exam-card-header">Start Deutsch 1 • Sprechen Teil 1</div>
+                    {p}
+                </div>
+                """, unsafe_allow_html=True)
+
+            st.markdown("---")
+            st.markdown("### 🎙️ Practice Your Spoken Response")
+            
+            user_spoken_p1 = st.text_area("Type or dictate your self-introduction covering all cards above:", key="spoken_p1_input", placeholder="Guten Tag! Mein Name ist...")
+
+            if st.button("📥 Rate My Spoken German (AI Examiner)", key="rate_p1_btn"):
+                if not user_spoken_p1.strip():
+                    st.warning("Please enter your spoken response text to evaluate.")
+                else:
+                    eval_p1_prompt = f"""
+                    Act as an official Goethe A1 examiner for Sprechen Part 1. Evaluate this student introduction:
+                    "{user_spoken_p1}"
+                    Check for grammar, vocabulary, and whether all key personal points (name, age, country, residence, languages, profession, hobby) were mentioned. Give a score out of 10 and constructive feedback.
+                    """
+                    with st.spinner("Official Examiner is reviewing your speaking performance..."):
+                        feedback = generate_cached_content(eval_p1_prompt)
+                        st.markdown("### 📝 Official Examiner Rating & Feedback:")
+                        st.markdown(feedback)
+
+        elif "Part 2" in st.session_state.sprechen_part:
+            # --- SPRECHEN TEIL 2 (Themenkarten 2x3 Grid) ---
+            theme_title = data.get("theme_title", "Thema: Wochenende")
+            keywords = data.get("keywords", ["Sonntag", "Frühstück", "Sport", "Familie", "Ausflug", "Bücher"])
+
+            st.markdown(f"### 📇 {theme_title}")
+            st.markdown("<p style='color: #CBD5E1; font-style: italic;'>Wählen Sie eine Karte, stellen Sie eine Frage dazu und beantworten Sie die Frage Ihres Partners.</p>", unsafe_allow_html=True)
+
+            # Render 2x3 grid matching official exam layout
+            col_g1, col_g2 = st.columns(2)
+            for idx, kw in enumerate(keywords):
+                target_col = col_g1 if idx % 2 == 0 else col_g2
+                with target_col:
+                    st.markdown(f"""
+                    <div class="exam-card-box">
+                        <div class="exam-card-header">{theme_title}</div>
+                        {kw}
+                    </div>
+                    """, unsafe_allow_html=True)
+
+            st.markdown("---")
+            st.markdown("### 🎙️ Practice Your Question & Answer")
+            selected_kw = st.selectbox("Choose a keyword to practice asking/answering:", keywords)
+            user_spoken_p2 = st.text_area(f"Type your question and answer for keyword '{selected_kw}':", key="spoken_p2_input", placeholder="Wann machen Sie am Sonntag...")
+
+            if st.button("📥 Rate My Spoken German (AI Examiner)", key="rate_p2_btn"):
+                if not user_spoken_p2.strip():
+                    st.warning("Please enter your response to evaluate.")
+                else:
+                    eval_p2_prompt = f"""
+                    Act as an official Goethe A1 examiner for Sprechen Part 2. Evaluate this student question/answer for theme '{theme_title}' and keyword '{selected_kw}':
+                    "{user_spoken_p2}"
+                    Check for correct interrogative structure (verb position), politeness, and relevance. Give a score out of 10 and feedback.
+                    """
+                    with st.spinner("Official Examiner is reviewing your speaking performance..."):
+                        feedback = generate_cached_content(eval_p2_prompt)
+                        st.markdown("### 📝 Official Examiner Rating & Feedback:")
+                        st.markdown(feedback)
+
+        else:
+            # --- SPRECHEN TEIL 3 (Visual Object Cards 2x3 Grid) ---
+            cards = data.get("visual_cards", [
+                {"card_num": 1, "object_name": "Computer / Laptop", "sample_request": "Können Sie mir bitte helfen, den Computer zu benutzen?"},
+                {"card_num": 2, "object_name": "Fahrkarte / Ticket", "sample_request": "Haben Sie bitte eine Fahrkarte für mich?"},
+                {"card_num": 3, "object_name": "Glas Wasser", "sample_request": "Können Sie mir bitte ein Glas Wasser geben?"},
+                {"card_num": 4, "object_name": "Telefon", "sample_request": "Darf ich bitte kurz telefonieren?"},
+                {"card_num": 5, "object_name": "Fenster", "sample_request": "Können Sie bitte das Fenster öffnen?"},
+                {"card_num": 6, "object_name": "Uhrzeit", "sample_request": "Können Sie mir bitte sagen, wie viel Uhr es ist?"}
+            ])
+
+            st.markdown("### 📇 Sprechen Teil 3: Bitten formulieren und reagieren")
+            st.markdown("<p style='color: #CBD5E1; font-style: italic;'>Formulieren Sie eine Bitte zu einer Karte und reagieren Sie auf die Bitte Ihres Partners.</p>", unsafe_allow_html=True)
+
+            col_v1, col_v2 = st.columns(2)
+            for idx, card in enumerate(cards):
+                target_col = col_v1 if idx % 2 == 0 else col_v2
+                with target_col:
+                    st.markdown(f"""
+                    <div class="exam-visual-card">
+                        <div class="exam-card-header" style="width: 100%;">Karte {card.get('card_num', idx+1)}</div>
+                        <span style="font-size: 1.3rem; font-weight: bold; color: #0F172A;">{card.get('object_name')}</span>
+                    </div>
+                    """, unsafe_allow_html=True)
+
+            st.markdown("---")
+            st.markdown("### 🎙️ Practice Your Polite Request & Reaction")
+            card_choices = [c.get('object_name') for c in cards]
+            chosen_obj = st.selectbox("Choose an object card to practice:", card_choices)
+            user_spoken_p3 = st.text_area(f"Type your polite request and reaction for '{chosen_obj}':", key="spoken_p3_input", placeholder="Entschuldigung, können Sie mir bitte...")
+
+            if st.button("📥 Rate My Spoken German (AI Examiner)", key="rate_p3_btn"):
+                if not user_spoken_p3.strip():
+                    st.warning("Please enter your response to evaluate.")
+                else:
+                    eval_p3_prompt = f"""
+                    Act as an official Goethe A1 examiner for Sprechen Part 3. Evaluate this student polite request for object '{chosen_obj}':
+                    "{user_spoken_p3}"
+                    Check for correct polite modal usage (Können Sie bitte..., Hätten Sie...), appropriateness, and grammar. Give a score out of 10 and feedback.
+                    """
+                    with st.spinner("Official Examiner is reviewing your speaking performance..."):
+                        feedback = generate_cached_content(eval_p3_prompt)
+                        st.markdown("### 📝 Official Examiner Rating & Feedback:")
+                        st.markdown(feedback)
+
+    elif st.session_state.sprechen_complete:
+        st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+        if st.button("🔄 Try Another Sprechen Set", key="retry_sprechen"):
+            st.session_state.sprechen_complete = False
+            st.session_state.sprechen_questions = []
+            st.rerun()
+
 # ----------------------------------------------------
 # 8. A1 & A2 SHORT STORIES
 # ----------------------------------------------------
