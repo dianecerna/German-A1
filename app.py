@@ -2000,7 +2000,6 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
             st.session_state.schreiben_questions = []
             st.rerun()
 
-
 # ----------------------------------------------------
 # 7. GOETHE A1 SPRECHEN (SPEAKING) SECTION
 # ----------------------------------------------------
