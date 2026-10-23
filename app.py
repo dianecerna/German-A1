@@ -2529,7 +2529,7 @@ elif nav_choice == "📖 Virtual Library":
     st.markdown('<div class="section-header-box">📖 Virtual Library</div>', unsafe_allow_html=True)
 
     st.markdown("""
-    **Interactive Reading & Listening Library:** Explore classic fairy tales and short fiction pieces tailored for A1 and A2 learners with audio playback.
+    **Interactive Reading & Listening Library:** Explore classic fairy tales and short fiction pieces tailored for A1 and A2 learners with full English translations and interactive audio player controls.
     """)
 
     # Master list of 30 books categorized by level
@@ -2593,15 +2593,19 @@ elif nav_choice == "📖 Virtual Library":
             st.write(f"*{b_data[3]}*")
             st.markdown("---")
 
-            # Generate or fetch story content securely
-            cache_key = f"simple_story_{selected_book}"
+            # Generate or fetch story content and translation securely
+            cache_key = f"simple_story_full_{selected_book}"
             if cache_key not in st.session_state:
                 prompt = f"""
                 Write the short story '{selected_book}' in German, adapted for {b_data[1]} learners.
-                Keep it between 25 and 40 sentences total. Provide a short English summary at the beginning.
-                Return strict JSON with keys: "english_summary" and "german_story_text".
+                Keep it between 25 and 40 sentences total. 
+                Provide:
+                1. "english_summary": A short summary in English at the beginning.
+                2. "german_story_text": The full story in German.
+                3. "english_translation_text": The complete paragraph-by-paragraph English translation of the German story.
+                Return strict JSON with keys: "english_summary", "german_story_text", "english_translation_text".
                 """
-                with st.spinner(f"Generating story for {selected_book}..."):
+                with st.spinner(f"Generating story and full English translation for {selected_book}..."):
                     try:
                         raw_res = generate_cached_content(prompt, is_json=True)
                         st.session_state[cache_key] = json.loads(raw_res)
@@ -2610,26 +2614,55 @@ elif nav_choice == "📖 Virtual Library":
 
             story_content = st.session_state.get(cache_key, {})
             summary = story_content.get("english_summary", "")
-            text = story_content.get("german_story_text", "")
+            german_text = story_content.get("german_story_text", "")
+            english_text = story_content.get("english_translation_text", "")
 
             if summary:
                 st.info(f"**English Summary:** {summary}")
 
-            if text:
-                safe_text = text.replace('"', "'").replace('\n', ' ' )
-                if st.button("🔊 Play Audio (Read Aloud)", key="play_audio_btn"):
-                    st.components.v1.html(f"""
-                        <script>
-                            const u = new SpeechSynthesisUtterance("{safe_text}");
-                            u.lang = 'de-DE';
-                            u.rate = 0.85;
+            if german_text:
+                safe_text = german_text.replace('"', "'").replace('\n', ' ')
+                
+                # --- INTERACTIVE AUDIO CONTROLS (PLAY, PAUSE, RESUME, STOP) ---
+                st.markdown("### 🎧 Audio Controls")
+                st.components.v1.html(f"""
+                    <div style="display: flex; gap: 10px; margin-bottom: 15px; font-family: sans-serif;">
+                        <button onclick="playAudio()" style="background-color: #10B981; color: white; border: none; padding: 10px 18px; border-radius: 8px; font-weight: bold; cursor: pointer;">▶️ Play</button>
+                        <button onclick="pauseAudio()" style="background-color: #F59E0B; color: white; border: none; padding: 10px 18px; border-radius: 8px; font-weight: bold; cursor: pointer;">⏸️ Pause</button>
+                        <button onclick="resumeAudio()" style="background-color: #3B82F6; color: white; border: none; padding: 10px 18px; border-radius: 8px; font-weight: bold; cursor: pointer;">⏯️ Resume</button>
+                        <button onclick="stopAudio()" style="background-color: #EF4444; color: white; border: none; padding: 10px 18px; border-radius: 8px; font-weight: bold; cursor: pointer;">⏹️ Stop</button>
+                    </div>
+                    <script>
+                        let utterance = null;
+                        function playAudio() {{
                             window.parent.speechSynthesis.cancel();
-                            window.parent.speechSynthesis.speak(u);
-                        </script>
-                    """, height=0)
+                            utterance = new SpeechSynthesisUtterance("{safe_text}");
+                            utterance.lang = 'de-DE';
+                            utterance.rate = 0.85;
+                            window.parent.speechSynthesis.speak(utterance);
+                        }}
+                        function pauseAudio() {{
+                            if (window.parent.speechSynthesis.speaking) {{
+                                window.parent.speechSynthesis.pause();
+                            }}
+                        }}
+                        function resumeAudio() {{
+                            if (window.parent.speechSynthesis.paused) {{
+                                window.parent.speechSynthesis.resume();
+                            }}
+                        }}
+                        function stopAudio() {{
+                            window.parent.speechSynthesis.cancel();
+                        }}
+                    </script>
+                """, height=60)
 
-                st.markdown("### German Text")
-                st.write(text)
+                st.markdown("### 🇩🇪 German Text")
+                st.write(german_text)
+
+                st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+                st.markdown("### 🇬🇧 English Translation")
+                st.markdown(f'<div class="main-card" style="color: #F8FAFC; line-height: 1.6;">{english_text}</div>', unsafe_allow_html=True)
     else:
         st.info("👈 Please select a level and choose a story from the dropdown menu above to begin.")
 
