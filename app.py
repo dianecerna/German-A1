@@ -2682,7 +2682,7 @@ BEGEGNUNGEN_DATA = {
 # ----------------------------------------------------
 # SECTION: BEGEGNUNGEN A1 DIGITAL TEXTBOOK (READING & AUDIO)
 # ----------------------------------------------------
-elif nav_choice == "📖 Begegnungen A1 Digital Textbook":
+if nav_choice == "📖 Begegnungen A1 Digital Textbook":
     render_top_back_button()
     st.markdown('<div class="section-header-box">📖 Begegnungen A1 Digital Textbook & Audio</div>', unsafe_allow_html=True)
 
