@@ -2522,24 +2522,44 @@ elif nav_choice == "📖 Vocabulary":
 
 
 # ----------------------------------------------------
-# 9. GEM AI TUTOR
+# 🐱 GEM — AI GERMAN TUTOR SECTION
 # ----------------------------------------------------
-elif nav_choice == "🐱 Gem AI Tutor":
+elif nav_choice == "Gem AI Tutor":
     render_top_back_button()
     st.markdown('<div class="section-header-box">🐱 Gem — AI German Tutor</div>', unsafe_allow_html=True)
-    st.markdown('<div class="main-card">', unsafe_allow_html=True)
-    if "gem_chat_messages" not in st.session_state:
-        st.session_state.gem_chat_messages = []
-    for msg in st.session_state.gem_chat_messages:
-        with st.chat_message(msg["role"]):
-            st.write(msg["content"])
-    if user_prompt := st.chat_input("Ask Gem anything about German..."):
-        st.session_state.gem_chat_messages.append({"role": "user", "content": user_prompt})
+
+    st.markdown("""
+    **Your Personal German Tutor & Study Buddy:** Ask anything and everything under the sun here. Gem is ready to help you master German, explain complex grammar, practice conversations, or assist with anything else you need.
+    """)
+
+    st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+
+    # Initialize chat history for Gem AI Tutor if not present
+    if "gem_tutor_messages" not in st.session_state:
+        st.session_state.gem_tutor_messages = [
+            {"role": "assistant", "content": "Hallo! I am Gem, your personal German tutor and study buddy. What would you like to practice or learn today? Ask me anything!"}
+        ]
+
+    # Display chat messages from history
+    for message in st.session_state.gem_tutor_messages:
+        with st.chat_message(message["role"]):
+            st.markdown(message["content"])
+
+    # Accept user input
+    if user_prompt := st.chat_input("Ask Gem anything about German or your studies..."):
+        # Add user message to state and display
+        st.session_state.gem_tutor_messages.append({"role": "user", "content": user_prompt})
         with st.chat_message("user"):
-            st.write(user_prompt)
+            st.markdown(user_prompt)
+
+        # Generate response from Gem AI Tutor
         with st.chat_message("assistant"):
             with st.spinner("Gem is thinking..."):
-                response = generate_cached_content(user_prompt)
-                st.write(response)
-                st.session_state.gem_chat_messages.append({"role": "assistant", "content": response})
-    st.markdown('</div>', unsafe_allow_html=True)
+                tutor_prompt = f"""
+                You are Gem, a friendly, encouraging, and expert AI German tutor and study buddy. 
+                The user is learning German (A1-A2 level) and using English as the mode of instruction/explanation.
+                Respond helpfully and engagingly to the user's message: "{user_prompt}"
+                """
+                response_text = generate_cached_content(tutor_prompt)
+                st.markdown(response_text)
+                st.session_state.gem_tutor_messages.append({"role": "assistant", "content": response_text})
