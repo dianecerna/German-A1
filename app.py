@@ -1744,11 +1744,11 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
 
     st.markdown("""
     **Goethe A1 Writing (Schreiben) Format:** 20 minutes | 2 parts | 6 tasks  
-    *Mirrored directly from official Start Deutsch 1 exam layouts (featuring form-filling data extraction cards for Teil 1 with pre-filled fields and 5 blank input fields).*
+    *Mirrored directly from official Start Deutsch 1 exam layouts, featuring diverse real-world forms (gym, hotel, bank, library, etc.) with randomized pre-filled and blank fields for Part 1, and varied everyday email/message scenarios for Part 2.*
     """)
 
     if "schreiben_part" not in st.session_state:
-        st.session_state.schreiben_part = "Part 1: Form Filling (Anmeldung)"
+        st.session_state.schreiben_part = "Part 1: Form Filling (Verschiedene Formulare)"
     if "schreiben_seed" not in st.session_state:
         st.session_state.schreiben_seed = 1
     if "schreiben_questions" not in st.session_state:
@@ -1757,8 +1757,8 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
         st.session_state.schreiben_complete = False
 
     schreiben_parts = [
-        "Part 1: Form Filling (Anmeldung based on short persona paragraphs)",
-        "Part 2: Short Email Writing (Responding to 3 specific points, ~30 words)"
+        "Part 1: Form Filling (Gym, Hotel, Bank, Library, School, Mietvertrag, etc.)",
+        "Part 2: Short Email & Message Writing (Party invites, illness notices, tourist info, thank you, appointments, etc.)"
     ]
 
     chosen_schreiben_part = st.selectbox("Select Goethe Schreiben Exam Part:", schreiben_parts, key="schreiben_part_dropdown", label_visibility="collapsed")
@@ -1803,20 +1803,20 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
             margin-bottom: 20px;
             font-family: Georgia, serif;
             transform: rotate(-1deg);
-            max-width: 450px;
+            max-width: 480px;
         }
         </style>
     """, unsafe_allow_html=True)
 
     if "Part 1" in st.session_state.schreiben_part:
         st.markdown("""
-        #### 📌 Part 1: Form Filling (Anmeldung)
-        * **Exam Format:** Read the persona description below, review the pre-filled fields in the registration form, and fill in the 5 blank fields (numbered 1 to 5) correctly based on the text.
+        #### 📌 Part 1: Form Filling (Diverse Registrations & Applications)
+        * **Exam Format:** Read the simulated persona scenario, review the randomly pre-filled fields (marked with 0), and fill out the 5 blank fields (numbered 1 to 5) based on the text.
         """)
     else:
         st.markdown("""
-        #### 📌 Part 2: Short Email Writing
-        * **Exam Format:** Write a short email (approx. 30 words) responding to 3 prompts, including a greeting and sign-off.
+        #### 📌 Part 2: Short Email & Message Writing
+        * **Exam Format:** Write a short message or email (4–5 sentences, approx. 30 words) in response to the scenario, covering all 3 bullet points with a greeting and sign-off.
         """)
 
     st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
@@ -1834,13 +1834,14 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
         if "Part 1" in st.session_state.schreiben_part:
             schreiben_prompt = f"""
             Generate a completely brand new, randomized official Goethe A1 Start Deutsch 1 Schreiben Part 1 practice module using seed {st.session_state.schreiben_seed}.
+            Pick a diverse form type at random (e.g., Fitnessstudio Anmeldung, Hotelreservierung, Bankkonto Eröffnung, Bibliothekausweis, Mietvertrag, or Patienteninformation).
             Provide:
-            - "persona_text": A detailed paragraph describing a person (name, birth date, birthplace, native language, languages spoken, German learning duration, desired course dates, and course time).
-            - "form_title": School name (e.g., "Sprachschule EUROPA Anmeldung").
-            - "prefilled_fields": A list of 3 fields that are pre-filled with correct values (e.g. Familienname, Vorname, Geburtsdatum). Each has "label" and "value".
-            - "fields": A list of EXACTLY 5 blank fields to fill (numbered (1) to (5)), such as "Geburtsort", "Andere Sprachen", "Wie lange?", "Kurstermin", "Kurszeit". Each field must contain:
+            - "form_type_title": Title of the form (e.g., "Fitnessstudio FIT & FUN Anmeldung")
+            - "persona_text": A paragraph describing a person and their details fitting this specific scenario.
+            - "prefilled_fields": A list of 3 fields that are randomly pre-filled with correct values. Each has "label" and "value".
+            - "fields": A list of EXACTLY 5 blank fields that the user must fill out (numbered 1 to 5). Each field must contain:
                 - "field_num": 1 to 5
-                - "field_label": label name
+                - "field_label": label name (e.g. "Geburtsdatum", "Staatsangehörigkeit", "IBAN", "Tarif", "Zimmerkategorie", etc.)
                 - "correct_value": expected correct string answer
                 - "hint": brief guidance.
             Return strict JSON object with these keys.
@@ -1848,13 +1849,13 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
         else:
             schreiben_prompt = f"""
             Generate a completely brand new, randomized official Goethe A1 Start Deutsch 1 Schreiben Part 2 practice module using seed {st.session_state.schreiben_seed}.
+            Pick a diverse everyday scenario at random (e.g., tourist information request, informing a teacher/class about being ill, inviting someone to a party, asking for help, thank-you email, doctor's appointment, or making weekend plans).
             Provide:
-            - "scenario_title": Situation title (e.g., "Sie möchten Ihren Geburtstag feiern und Ihre Freundin Anna einladen.")
-            - "point_1": First bullet point prompt (e.g., "Warum schreiben Sie?")
-            - "point_2": Second bullet point prompt (e.g., "Sagen Sie: Wann und wo feiern Sie?")
-            - "point_3": Third bullet point prompt (e.g., "Fragen Sie: kommen?")
-            - "model_answer": A sample correct email meeting all 3 points in ~30 words with appropriate greeting and sign-off.
-            - "evaluation_criteria": Key things checked in A1 writing.
+            - "scenario_title": Situation title and instructions in German/English.
+            - "point_1": First bullet point prompt.
+            - "point_2": Second bullet point prompt.
+            - "point_3": Third bullet point prompt.
+            - "model_answer": A sample correct email/message meeting all 3 points in 4-5 sentences (~30 words) with appropriate greeting and sign-off.
             Return strict JSON object with these keys.
             """
 
@@ -1870,7 +1871,7 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
         data = st.session_state.schreiben_data
 
         if "Part 1" in st.session_state.schreiben_part:
-            # --- SCHREIBEN TEIL 1 (Form Filling with Pre-filled & 5 Blanks) ---
+            # --- SCHREIBEN TEIL 1 (Form Filling) ---
             st.markdown(f"""
             <div style="font-size: 1.05rem; line-height: 1.6; margin-bottom: 20px; background-color: #1E293B; padding: 20px; border-radius: 8px; border-left: 4px solid #38BDF8;">
                 {data.get('persona_text')}
@@ -1881,7 +1882,7 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
                 st.markdown(f"""
                 <div class="exam-form-box">
                     <div style="text-align: center; border-bottom: 2px solid #0F172A; padding-bottom: 12px; margin-bottom: 20px;">
-                        <h3 style="color: #0F172A; margin: 0;">{data.get('form_title', 'Sprachschule EUROPA Anmeldung')}</h3>
+                        <h3 style="color: #0F172A; margin: 0;">{data.get('form_type_title', 'Anmeldeformular')}</h3>
                     </div>
                 """, unsafe_allow_html=True)
 
@@ -1891,7 +1892,7 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
                 # Render pre-filled fields (marked with (0))
                 for pf in prefilled:
                     st.markdown(f"""
-                    <div style="display: grid; grid-template-columns: 180px 1fr 40px; gap: 10px; align-items: center; margin-bottom: 12px; font-size: 0.95rem;">
+                    <div style="display: grid; grid-template-columns: 200px 1fr 40px; gap: 10px; align-items: center; margin-bottom: 12px; font-size: 0.95rem;">
                         <b>{pf.get('label')}:</b> <div style="background-color: #E2E8F0; padding: 6px 10px; border-radius: 4px; color: #334155;">{pf.get('value')}</div> <span style="color: #64748B;">(0)</span>
                     </div>
                     """, unsafe_allow_html=True)
@@ -1929,13 +1930,13 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
                     st.rerun()
 
         else:
-            # --- SCHREIBEN TEIL 2 (Email Writing) ---
+            # --- SCHREIBEN TEIL 2 (Email & Message Writing) ---
             st.markdown(f"""
             <div style="font-size: 1.1rem; font-weight: bold; margin-bottom: 15px; color: #FFFFFF;">
                 {data.get('scenario_title')}
             </div>
             <div style="background-color: #1E293B; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #38BDF8;">
-                <p style="margin-bottom: 8px; font-weight: bold; color: #38BDF8;">Schreiben Sie Anna eine E-Mail:</p>
+                <p style="margin-bottom: 8px; font-weight: bold; color: #38BDF8;">Schreiben Sie eine Nachricht / E-Mail (4–5 Sätze):</p>
                 <ul style="color: #F8FAFC; line-height: 1.6; margin-bottom: 0;">
                     <li>- {data.get('point_1')}</li>
                     <li>- {data.get('point_2')}</li>
@@ -1948,16 +1949,16 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
             <div style="display: flex; justify-content: center;">
                 <div class="exam-note-card">
                     <p style="margin: 0; font-style: italic; color: #1E293B; font-size: 0.95rem; line-height: 1.5;">
-                        Schreiben Sie zu jedem Punkt ein bis zwei Sätze auf den Antwortbogen (circa 30 Wörter). Schreiben Sie auch eine Anrede und einen Gruß.
+                        Schreiben Sie zu jedem Punkt ein bis zwei Sätze (circa 30–40 Wörter, 4–5 Sätze insgesamt). Vergessen Sie nicht Anrede und Gruß!
                     </p>
                 </div>
             </div>
             """, unsafe_allow_html=True)
 
             with st.form(key="schreiben_teil2_form"):
-                user_email_text = st.text_area("Ihre E-Mail an Anna:", height=150, placeholder="Liebe Anna, ...")
+                user_email_text = st.text_area("Ihre Nachricht / E-Mail:", height=150, placeholder="Liebe(r) ..., \n\n...")
                 
-                sub_s2 = st.form_submit_button("📥 Submit E-Mail for Evaluation")
+                sub_s2 = st.form_submit_button("📥 Submit Nachricht for Evaluation")
                 if sub_s2:
                     st.session_state.user_email_submission = user_email_text
                     st.session_state.schreiben_complete = True
@@ -1980,7 +1981,7 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
             st.markdown("### 📊 Schreiben Teil 2 Evaluation & Feedback")
             user_text = st.session_state.get("user_email_submission", "")
             
-            st.markdown("**Your Submitted E-Mail:**")
+            st.markdown("**Your Submitted Message:**")
             st.info(user_text)
 
             st.markdown("**Model Correct Answer (Musterlösung):**")
@@ -1988,10 +1989,10 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
 
             st.markdown("**Examiner Feedback & Checklist:**")
             st.markdown(f"""
-            * **Point 1 ({data.get('point_1')}):** Checked in your text.
-            * **Point 2 ({data.get('point_2')}):** Checked in your text.
-            * **Point 3 ({data.get('point_3')}):** Checked in your text.
-            * **Word Count & Structure:** Proper greeting, sign-off, and ~30 words structure.
+            * **Point 1 ({data.get('point_1')}):** Addressed in your text.
+            * **Point 2 ({data.get('point_2')}):** Addressed in your text.
+            * **Point 3 ({data.get('point_3')}):** Addressed in your text.
+            * **Sentence Count & Structure:** Checked for 4–5 sentences, proper greeting, and sign-off.
             """)
 
         st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
@@ -1999,6 +2000,7 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
             st.session_state.schreiben_complete = False
             st.session_state.schreiben_questions = []
             st.rerun()
+
 
 # ----------------------------------------------------
 # 7. GOETHE A1 SPRECHEN (SPEAKING) SECTION
