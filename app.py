@@ -2388,7 +2388,7 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
 
 
 # ----------------------------------------------------
-# 9. VOCABULARY SECTION (MEMORIZED WORDS & QUIZ ME)
+# 8. VOCABULARY SECTION (MEMORIZED WORDS & QUIZ ME)
 # ----------------------------------------------------
 elif nav_choice == "📖 Vocabulary":
     render_top_back_button()
@@ -2521,7 +2521,7 @@ elif nav_choice == "📖 Vocabulary":
             rc2.markdown(f"{e_trans}")
             st.markdown("<hr style='border-color: rgba(244, 114, 182, 0.15); margin: 4px 0;'>", unsafe_allow_html=True)
 # ----------------------------------------------------
-# VIRTUAL LIBRARY SECTION
+# 9. VIRTUAL LIBRARY SECTION
 # ----------------------------------------------------
 elif nav_choice == "Virtual Library":
     render_top_back_button()
