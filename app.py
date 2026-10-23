@@ -950,7 +950,7 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
         st.session_state.lesen_complete = False
 
     lesen_parts = [
-        "Part 1: Match Short Texts & Ads (Richtig / Falsch based on emails)",
+        "Part 1: Match Short Texts & Ads (Richtig / Falsch based on emails & announcements)",
         "Part 2: Multiple Choice Web/Information Selection (Choose a or b source links)",
         "Part 3: Public Information & Detail Extraction (Richtig / Falsch signs/notices)"
     ]
@@ -1040,8 +1040,8 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
 
     if "Part 1" in st.session_state.lesen_part:
         st.markdown("""
-        #### 📌 Part 1: Reading Short Emails & Announcements (Richtig / Falsch)
-        * **Exam Format:** Read authentic email and everyday communication frames between friends, family, or colleagues (covering invitations, schedule changes, travel updates, or daily requests), then evaluate statements as Richtig or Falsch.
+        #### 📌 Part 1: Reading Emails & Announcements (Richtig / Falsch)
+        * **Exam Format:** Read a combination of personal emails/messages and public/workplace announcements, then evaluate statements as Richtig or Falsch.
         """)
     elif "Part 2" in st.session_state.lesen_part:
         st.markdown("""
@@ -1068,7 +1068,7 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
             - "content_b": website text content for option b
             - "correct_answer": "a" or "b"
             - "explanation": detailed explanation.
-            Return strict JSON array with 5 items. Ensure NO citation brackets or reference markers are included in any strings.
+            Return strict JSON array with 5 items.
             """
         elif "Part 3" in st.session_state.lesen_part:
             lesen_prompt = f"""
@@ -1080,33 +1080,28 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
             - "statement": the statement to evaluate
             - "correct_answer": "Richtig" or "Falsch"
             - "explanation": detailed explanation.
-            Return strict JSON array with 5 items. Ensure NO citation brackets or reference markers are included in any strings.
+            Return strict JSON array with 5 items.
             """
         else:
             lesen_prompt = f"""
             Generate a completely brand new, randomized official Goethe A1 Start Deutsch 1 Reading (Lesen) Part 1 practice module using seed {st.session_state.lesen_seed}.
-            The texts must be simple everyday communications between friends, family, or colleagues covering diverse topics chosen at random:
-            - Invitations (birthday parties, weekend dinners, meeting up at a café)
-            - Schedule Changes (being late, canceling a meeting, moving an appointment)
-            - Travel / Holidays (brief updates from someone on vacation or a trip)
-            - Daily Requests (asking someone to bring a book, buy groceries, or feed a pet)
+            Provide exactly 2 distinct text passages:
+            - Text 1 (Questions 1 & 2): A personal email or chat message between friends, family, or colleagues covering invitations, schedule changes, travel updates, or daily requests.
+            - Text 2 (Questions 3, 4 & 5): A public or workplace announcement, bulletin board notice, or classified advertisement (e.g., apartment rental, language course notice, flea market ad, or office announcement).
             
-            Provide exactly 2 independent texts (Text 1 formatted as an email browser frame with 2 statements numbered 1 and 2; Text 2 formatted as a personal message memo block with 3 statements numbered 3, 4, and 5).
             Return strict JSON array with 5 items total, matching this exact schema:
             [
                 {{
                     "q_num": 1,
                     "text_block_id": 1,
                     "layout_type": "email",
-                    "email_subject": "Einladung zum Essen!",
+                    "header_title": "Betreff: Einladung zum Essen!",
                     "text_snippet": "Liebe Anna,\n\nich möchte dich...",
                     "question_text": "Anna soll am Freitag kommen.",
-                    "options": ["Richtig", "Falsch"],
                     "correct_answer": "Falsch",
                     "explanation": "Detailed explanation."
                 }}
             ]
-            Ensure NO citation brackets or reference markers (such as bracketed numbers) are included anywhere in the text or explanations.
             """
 
         with st.spinner("Generating fresh official Goethe Lesen exam questions and UI frames..."):
@@ -1259,12 +1254,12 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
                 st.markdown(f"""
                 <div class="exam-browser-frame">
                     <div class="browser-top-bar">
-                        <span>📁 Datei</span><span>⚙️ Bearbeiten</span><span>🔍 Ansicht</span>
-                        <div class="browser-address-bar">www.web-mail.de/postfach/nachricht</div>
+                        <span>📁 E-Mail</span><span>⚙️ Posteingang</span>
+                        <div class="browser-address-bar">www.web-mail.de/nachricht</div>
                     </div>
                     <div class="browser-body">
                         <div style="border-bottom: 1px solid #E2E8F0; padding-bottom: 8px; margin-bottom: 15px; font-weight: bold; color: #334155;">
-                            Betreff: {t1.get('email_subject', 'Hallo!')}
+                            {t1.get('header_title', 'Betreff: Nachricht')}
                         </div>
                         <div style="white-space: pre-wrap; font-family: sans-serif;">{t1.get('text_snippet')}</div>
                     </div>
@@ -1288,6 +1283,9 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
                 t2 = block_2_items[0] if block_2_items else q_list[-1]
                 st.markdown(f"""
                 <div class="exam-memo-box">
+                    <div style="border-bottom: 1px solid #CBD5E1; padding-bottom: 6px; margin-bottom: 12px; font-weight: bold; color: #334155; font-family: Arial, sans-serif;">
+                        📢 {t2.get('header_title', 'Ankündigung / Aushang')}
+                    </div>
                     <div style="white-space: pre-wrap; font-size: 1.02rem;">{t2.get('text_snippet')}</div>
                 </div>
                 """, unsafe_allow_html=True)
@@ -1344,7 +1342,6 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
             st.session_state.lesen_active = False
             st.session_state.lesen_questions = []
             st.rerun()
-
 # ----------------------------------------------------
 # 5. GOETHE A1 HÖREN (LISTENING) SECTION
 # ----------------------------------------------------
