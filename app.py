@@ -2387,132 +2387,104 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
 # ----------------------------------------------------
 # 8. GOETHE A1-A2 SHORT STORIES VIRTUAL LIBRARY
 # ----------------------------------------------------
+# ----------------------------------------------------
+# 8. GOETHE A1-A2 SHORT STORIES VIRTUAL LIBRARY
+# ----------------------------------------------------
 elif nav_choice == "📚 A1-A2 Short Stories (Virtual Library)":
-    render_top_back_button()
-    st.markdown('<div class="section-header-box">📚 Virtual Library: German Short Stories (A1 & A2)</div>', unsafe_allow_html=True)
-
-    st.markdown("""
-    **Interactive Reading & Listening Library:** 30 classic fairy tales and short fiction pieces tailored for A1 and A2 learners.  
-    *Features adjustable level filtering, interactive text-to-speech audio players, and a 40-sentence maximum length per story.*
-    """)
-
-    if "library_level" not in st.session_state:
-        st.session_state.library_level = "All Levels"
-    if "selected_story_title" not in st.session_state:
-        st.session_state.selected_story_title = None
+    st.title("📚 Virtual Library: German Short Stories (A1 & A2)")
+    st.write("Explore 30 classic fairy tales and short fiction pieces tailored for A1 and A2 learners with audio playback.")
 
     # Master list of 30 books
-    master_library = [
-        {"title": "Rotkäppchen", "author": "Brüder Grimm", "level": "A1", "summary": "Das klassische Märchen über das Mädchen mit der roten Kappe und den Wolf."},
-        {"title": "Hänsel und Gretel", "author": "Brüder Grimm", "level": "A1", "summary": "Zwei Geschwister im Wald und das Knusperhäuschen der Hexe."},
-        {"title": "Aschenputtel", "author": "Brüder Grimm", "level": "A1", "summary": "Das Märchen vom gläsernen Schuh und dem königlichen Ball."},
-        {"title": "Schneewittchen", "author": "Brüder Grimm", "level": "A2", "summary": "Die Prinzessin, die böse Stiefmutter und die sieben Zwerge."},
-        {"title": "Dornröschen", "author": "Brüder Grimm", "level": "A1", "summary": "Die schlafende Prinzessin und der hundertjährige Dornenwald."},
-        {"title": "Rumpelstilzchen", "author": "Brüder Grimm", "level": "A2", "summary": "Das Müllersmädchen, das Stroh zu Gold spinnen muss."},
-        {"title": "Der Froschkönig", "author": "Brüder Grimm", "level": "A1", "summary": "Die goldene Kugel im Brunnen und der verwandelte Frosch."},
-        {"title": "Die Bremer Stadtmusikanten", "author": "Brüder Grimm", "level": "A1", "summary": "Vier Tiere machen sich auf den Weg nach Bremen, um Musiker zu werden."},
-        {"title": "Frau Holle", "author": "Brüder Grimm", "level": "A1", "summary": "Die fleißige und die faule Tochter im Reich von Frau Holle."},
-        {"title": "Rapunzel", "author": "Brüder Grimm", "level": "A2", "summary": "Das Mädchen mit dem langen goldenen Haar im hohen Turm."},
-        {"title": "Der Wolf und die sieben jungen Geißlein", "author": "Brüder Grimm", "level": "A1", "summary": "Der hungrige Wolf und die klugen kleinen Ziegen."},
-        {"title": "Hase und Igel", "author": "Brüder Grimm", "level": "A2", "summary": "Der Wettlauf zwischen dem schnellen Hasen und dem schlauen Igel."},
-        {"title": "Der gestiefelte Kater", "author": "Brüder Grimm", "level": "A2", "summary": "Ein kluger Kater mit Stiefeln verhilft seinem Herrn zu Reichtum."},
-        {"title": "Hans im Glück", "author": "Brüder Grimm", "level": "A1", "summary": "Ein junger Mann tauscht seinen Lohn immer weiter ein und ist am Ende glücklich."},
-        {"title": "Tischlein deck dich", "author": "Brüder Grimm", "level": "A2", "summary": "Drei Brüder und ihre wunderbaren Geschenke: Esel, Tisch und Knüppel."},
-        {"title": "Peter Pan", "author": "J.M. Barrie", "level": "A2", "summary": "Der Junge, der nicht erwachsen werden wollte, reist nach Neverland."},
-        {"title": "Alice im Wunderland", "author": "Lewis Carroll", "level": "A2", "summary": "Alice folgt dem weißen Kaninchen in eine verrückte Welt."},
-        {"title": "Pinocchios Abenteuer", "author": "Carlo Collodi", "level": "A1", "summary": "Die hölzerne Puppe, deren Nase wächst, wenn sie lügt."},
-        {"title": "Der kleine Prinz", "author": "Antoine de Saint-Exupéry", "level": "A2", "summary": "Die Reise des kleinen Prinzen von seinem Asteroiden zur Erde."},
-        {"title": "Heidis Lehr- und Wanderjahre", "author": "Johanna Spyri", "level": "A2", "summary": "Ein Waisenkind erlebt glückliche Jahre in den Schweizer Alpen."},
-        {"title": "Die Schatzinsel", "author": "Robert Louis Stevenson", "level": "A2", "summary": "Jim Hawkins sucht nach dem vergrabenen Gold von Captain Flint."},
-        {"title": "Robinson Crusoe", "author": "Daniel Defoe", "level": "A2", "summary": "Ein Seemann überlebt jahrzehntelang allein auf einer einsamen Insel."},
-        {"title": "Die Reise zum Mittelpunkt der Erde", "author": "Jules Verne", "level": "A2", "summary": "Ein Abenteuer durch unterirdische Höhlen und Vulkane."},
-        {"title": "In 80 Tagen um die Erde", "author": "Jules Verne", "level": "A2", "summary": "Phileas Fogg wettet, dass er die Welt in achtzig Tagen umrunden kann."},
-        {"title": "Dr. Jekyll und Mr. Hyde", "author": "Robert Louis Stevenson", "level": "A2", "summary": "Ein Wissenschaftler experimentiert mit einem Trank, der das Böse entfesselt."},
-        {"title": "Schneeweißchen und Rosenrot", "author": "Brüder Grimm", "level": "A2", "summary": "Zwei gute Schwestern und ein verzauberter Bär im Winterwald."},
-        {"title": "Der standhafte Zinnsoldat", "author": "Hans Christian Andersen", "level": "A1", "summary": "Ein einbeiniger Zinnsoldat verliebt sich in eine Tänzerin."},
-        {"title": "Des Kaisers neue Kleider", "author": "Hans Christian Andersen", "level": "A1", "summary": "Ein eitler Kaiser läuft in angeblich unsichtbaren neuen Kleidern durch die Stadt."},
-        {"title": "Die kleine Meerjungfrau", "author": "Hans Christian Andersen", "level": "A2", "summary": "Eine Nixe wünscht sich Beine und eine menschliche Seele."},
-        {"title": "Das hässliche Entlein", "author": "Hans Christian Andersen", "level": "A1", "summary": "Ein verkanntes Küken wächst zu einem wunderschönen Schwan heran."}
+    library_books = [
+        ("Rotkäppchen", "A1", "Brüder Grimm", "Das klassische Märchen über das Mädchen mit der roten Kappe und den Wolf."),
+        ("Hänsel und Gretel", "A1", "Brüder Grimm", "Zwei Geschwister im Wald und das Knusperhäuschen der Hexe."),
+        ("Aschenputtel", "A1", "Brüder Grimm", "Das Märchen vom gläsernen Schuh und dem königlichen Ball."),
+        ("Schneewittchen", "A2", "Brüder Grimm", "Die Prinzessin, die böse Stiefmutter und die sieben Zwerge."),
+        ("Dornröschen", "A1", "Brüder Grimm", "Die schlafende Prinzessin und der hundertjährige Dornenwald."),
+        ("Rumpelstilzchen", "A2", "Brüder Grimm", "Das Müllersmädchen, das Stroh zu Gold spinnen muss."),
+        ("Der Froschkönig", "A1", "Brüder Grimm", "Die goldene Kugel im Brunnen und der verwandelte Frosch."),
+        ("Die Bremer Stadtmusikanten", "A1", "Brüder Grimm", "Vier Tiere machen sich auf den Weg nach Bremen, um Musiker zu werden."),
+        ("Frau Holle", "A1", "Brüder Grimm", "Die fleißige und die faule Tochter im Reich von Frau Holle."),
+        ("Rapunzel", "A2", "Brüder Grimm", "Das Mädchen mit dem langen goldenen Haar im hohen Turm."),
+        ("Der Wolf und die sieben jungen Geißlein", "A1", "Brüder Grimm", "Der hungrige Wolf und die klugen kleinen Ziegen."),
+        ("Hase und Igel", "A2", "Brüder Grimm", "Der Wettlauf zwischen dem schnellen Hasen und dem schlauen Igel."),
+        ("Der gestiefelte Kater", "A2", "Brüder Grimm", "Ein kluger Kater mit Stiefeln verhilft seinem Herrn zu Reichtum."),
+        ("Hans im Glück", "A1", "Brüder Grimm", "Ein junger Mann tauscht seinen Lohn immer weiter ein und ist am Ende glücklich."),
+        ("Tischlein deck dich", "A2", "Brüder Grimm", "Drei Brüder und ihre wunderbaren Geschenke: Esel, Tisch und Knüppel."),
+        ("Peter Pan", "A2", "J.M. Barrie", "Der Junge, der nicht erwachsen werden wollte, reist nach Neverland."),
+        ("Alice im Wunderland", "A2", "Lewis Carroll", "Alice folgt dem weißen Kaninchen in eine verrückte Welt."),
+        ("Pinocchios Abenteuer", "A1", "Carlo Collodi", "Die hölzerne Puppe, deren Nase wächst, wenn sie lügt."),
+        ("Der kleine Prinz", "A2", "Antoine de Saint-Exupéry", "Die Reise des kleinen Prinzen von seinem Asteroiden zur Erde."),
+        ("Heidis Lehr- und Wanderjahre", "A2", "Johanna Spyri", "Ein Waisenkind erlebt glückliche Jahre in den Schweizer Alpen."),
+        ("Die Schatzinsel", "A2", "Robert Louis Stevenson", "Jim Hawkins sucht nach dem vergrabenen Gold von Captain Flint."),
+        ("Robinson Crusoe", "A2", "Daniel Defoe", "Ein Seemann überlebt jahrzehntelang allein auf einer einsamen Insel."),
+        ("Die Reise zum Mittelpunkt der Erde", "A2", "Jules Verne", "Ein Abenteuer durch unterirdische Höhlen und Vulkane."),
+        ("In 80 Tagen um die Erde", "A2", "Jules Verne", "Phileas Fogg wettet, dass er die Welt in achtzig Tagen umrunden kann."),
+        ("Dr. Jekyll und Mr. Hyde", "A2", "Robert Louis Stevenson", "Ein Wissenschaftler experimentiert mit einem Trank, der das Böse entfesselt."),
+        ("Schneeweißchen und Rosenrot", "A2", "Brüder Grimm", "Zwei gute Schwestern und ein verzauberter Bär im Winterwald."),
+        ("Der standhafte Zinnsoldat", "A1", "Hans Christian Andersen", "Ein einbeiniger Zinnsoldat verliebt sich in eine Tänzerin."),
+        ("Des Kaisers neue Kleider", "A1", "Hans Christian Andersen", "Ein eitler Kaiser läuft in angeblich unsichtbaren neuen Kleidern durch die Stadt."),
+        ("Die kleine Meerjungfrau", "A2", "Hans Christian Andersen", "Eine Nixe wünscht sich Beine und eine menschliche Seele."),
+        ("Das hässliche Entlein", "A1", "Hans Christian Andersen", "Ein verkanntes Küken wächst zu einem wunderschönen Schwan heran.")
     ]
 
-    # Controls: Level Filter & Story Selector Dropdown
-    c_f1, c_f2 = st.columns(2)
-    with c_f1:
-        lib_level = st.selectbox("Filter Level:", ["All Levels", "A1", "A2"], key="lib_lvl_box")
-    with c_f2:
-        # Filter book titles based on level selection
-        if lib_level == "A1":
-            available_books = [b["title"] for b in master_library if b["level"] == "A1"]
-        elif lib_level == "A2":
-            available_books = [b["title"] for b in master_library if b["level"] == "A2"]
-        else:
-            available_books = [b["title"] for b in master_library]
+    # Level selection filter
+    level_choice = st.selectbox("Filter Level:", ["All Levels", "A1", "A2"])
+    
+    if level_choice == "A1":
+        filtered_list = [b[0] for b in library_books if b[1] == "A1"]
+    elif level_choice == "A2":
+        filtered_list = [b[0] for b in library_books if b[1] == "A2"]
+    else:
+        filtered_list = [b[0] for b in library_books]
 
-        chosen_book = st.selectbox("Select a Book from Library:", ["-- Choose a Story --"] + available_books, key="lib_book_dropdown")
+    selected_book = st.selectbox("Choose a story to read:", ["-- Select a Story --"] + filtered_list)
 
-    st.markdown("<div style='height: 15px;'></div>", unsafe_allow_html=True)
-
-    if chosen_book and chosen_book != "-- Choose a Story --":
+    if selected_book != "-- Select a Story --":
         # Find book details
-        book_info = next((b for b in master_library if b["title"] == chosen_book), None)
-        if book_info:
-            st.markdown(f"### 📖 {book_info['title']} ({book_info['level']} - {book_info['author']})")
-            st.markdown(f"<p style='color: #94A3B8; font-style: italic;'>{book_info['summary']}</p>", unsafe_allow_html=True)
+        b_data = next((b for b in library_books if b[0] == selected_book), None)
+        if b_data:
+            st.subheader(f"{b_data[0]} ({b_data[1]}) - by {b_data[2]}")
+            st.write(f"*{b_data[3]}*")
             st.markdown("---")
 
-            story_key = f"story_content_{chosen_book}"
-            if story_key not in st.session_state:
-                story_prompt = f"""
-                Write the short story '{book_info['title']}' in German, perfectly adapted for {book_info['level']} language learners.
-                CRITICAL CONSTRAINT: Provide EXACTLY between 25 to 40 sentences total. Use clear, simple vocabulary and grammar structures appropriate for {book_info['level']}.
-                Also provide a brief English summary at the beginning.
+            # Generate or fetch story content
+            cache_key = f"simple_story_{selected_book}"
+            if cache_key not in st.session_state:
+                prompt = f"""
+                Write the short story '{selected_book}' in German, adapted for {b_data[1]} learners.
+                Keep it between 25 and 40 sentences. Provide a short English summary at the beginning.
                 Return strict JSON with keys: "english_summary" and "german_story_text".
                 """
-                with st.spinner(f"Generating story text and audio scripts for '{chosen_book}'..."):
+                with st.spinner(f"Generating story for {selected_book}..."):
                     try:
-                        raw_res = generate_cached_content(story_prompt, is_json=True)
-                        st.session_state[story_key] = json.loads(raw_res)
+                        raw_res = generate_cached_content(prompt, is_json=True)
+                        st.session_state[cache_key] = json.loads(raw_res)
                     except Exception as e:
-                        st.error(f"Failed to generate story: {str(e)}")
+                        st.error(f"Error generating story: {e}")
 
-            story_data = st.session_state.get(story_key, {})
-            english_summary = story_data.get("english_summary", "Summary unavailable.")
-            german_text = story_data.get("german_story_text", "Story text unavailable.")
+            story_content = st.session_state.get(cache_key, {})
+            summary = story_content.get("english_summary", "")
+            text = story_content.get("german_story_text", "")
 
-            st.markdown(f"""
-            <div style="background-color: #0F172A; border-left: 4px solid #38BDF8; padding: 15px; border-radius: 6px; margin-bottom: 20px;">
-                <b>English Summary:</b> {english_summary}
-            </div>
-            """, unsafe_allow_html=True)
+            if summary:
+                st.info(f"**English Summary:** {summary}")
 
-            # Flashcard Audio Player for Listening Practice
-            story_safe = german_text.replace('"', "'").replace('\n', ' ')
-            st.markdown("""
-            <div class="exam-audio-card" style="margin-bottom: 20px; background-color: #0F172A; border: 2px solid #0284C7; padding: 15px; border-radius: 8px;">
-                <p style="color: #94A3B8; font-size: 0.9rem; margin-bottom: 8px;">Listen to the complete narrated story (Browser Speech Synthesis):</p>
-            </div>
-            """, unsafe_allow_html=True)
+            if text:
+                safe_text = text.replace('"', "'").replace('\n', ' ' )
+                if st.button("🔊 Play Audio (Read Aloud)"):
+                    st.components.v1.html(f"""
+                        <script>
+                            const u = new SpeechSynthesisUtterance("{safe_text}");
+                            u.lang = 'de-DE';
+                            u.rate = 0.85;
+                            window.parent.speechSynthesis.cancel();
+                            window.parent.speechSynthesis.speak(u);
+                        </script>
+                    """, height=0)
 
-            if st.button("🔊 Play / Read Aloud Story (Anhören)", key="play_full_story_btn"):
-                st.components.v1.html(f"""
-                    <script>
-                        const utterance = new SpeechSynthesisUtterance("{story_safe}");
-                        utterance.lang = 'de-DE';
-                        utterance.rate = 0.85;
-                        window.parent.speechSynthesis.cancel();
-                        window.parent.speechSynthesis.speak(utterance);
-                    </script>
-                """, height=0)
-
-            st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
-            st.markdown("### 📄 German Reading Text")
-            st.markdown(f"""
-            <div style="background-color: #1E293B; color: #F8FAFC; padding: 25px; border-radius: 8px; line-height: 1.8; font-size: 1.1rem; border: 1px solid #334155;">
-                {german_text.replace('\n', '<br><br>')}
-            </div>
-            """, unsafe_allow_html=True)
-    else:
-        st.info("👈 Please select a book from the dropdown menu above to start reading and listening.")
+                st.markdown("### German Text")
+                st.write(text)
 
 # ----------------------------------------------------
 # 9. VOCABULARY SECTION (MEMORIZED WORDS & QUIZ ME)
