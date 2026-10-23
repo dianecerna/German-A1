@@ -707,9 +707,218 @@ elif nav_choice == "📚 Master Goethe Word Engine":
 elif nav_choice == "📖 Core Grammar Practice & Exercises":
     render_top_back_button()
     st.markdown('<div class="section-header-box">📖 Core Grammar Practice & Exercises</div>', unsafe_allow_html=True)
+
+    # Handbook Lessons mapped accurately from the Table of Contents of German-A1-Passive-Fluency-Handbook.pdf
+    handbook_lessons = {
+        "Lesson 1": "Understanding German Alphabet, Pronunciation, and Article Recognition",
+        "Lesson 2": "Learning German Noun Gender and Everyday Word Patterns",
+        "Lesson 3": "Recognizing Singular and Plural Forms in Daily German",
+        "Lesson 4": "Reading Personal Introductions and Basic Identity Information",
+        "Lesson 5": "Building Simple German Sentences for Everyday Communication",
+        "Lesson 6": "Recognizing Present Tense Verb Patterns in Practical German",
+        "Lesson 7": "Working with sein and haben in Everyday Situations",
+        "Lesson 8": "Understanding Numbers, Prices, Dates, and Everyday Quantities",
+        "Lesson 9": "Reading Everyday Question Structures and Basic Information Requests",
+        "Lesson 10": "Recognizing Negation and Negative Sentences in Practical German",
+        "Lesson 11": "Exploring Object Sentences and Basic Accusative Structures",
+        "Lesson 12": "Reading Simple Descriptions of People, Places, and Things",
+        "Lesson 13": "Recognizing Possession, Ownership, and Family Relationships",
+        "Lesson 14": "Reading Time Expressions, Appointments, and Schedules",
+        "Lesson 15": "Understanding Daily Routine Patterns and Everyday Activities",
+        "Lesson 16": "Recognizing Commands, Requests, and Basic Instructions",
+        "Lesson 17": "Exploring Abilities, Obligations, and Everyday Modal Verbs",
+        "Lesson 18": "Reading Practical Sentences with Modal Verb Structures",
+        "Lesson 19": "Exploring Everyday Dative Structures and Indirect Objects",
+        "Lesson 20": "Reading Common Dative Expressions in Real-Life Communication",
+        "Lesson 21": "Understanding Location Expressions and Place Descriptions",
+        "Lesson 22": "Reading Movement and Position Patterns in Everyday German",
+        "Lesson 23": "Exploring Two-Way Prepositions and Directional Meaning",
+        "Lesson 24": "Reading Shopping, Money, and Price Communication",
+        "Lesson 25": "Connecting Simple Ideas with Basic German Connectors",
+        "Lesson 26": "Recognizing Reasons, Explanations, and Cause Structures",
+        "Lesson 27": "Reading Future Expressions and Everyday Planning Language",
+        "Lesson 28": "Exploring Past Events with haben and Perfekt Structures",
+        "Lesson 29": "Exploring Movement and Travel Narration with sein",
+        "Lesson 30": "Reading Everyday Past Narration and Simple Storytelling",
+        "Lesson 31": "Recognizing Separable Verb Patterns in Daily Communication",
+        "Lesson 32": "Exploring Comparisons, Preferences, and Basic Opinions",
+        "Lesson 33": "Reading Likes, Preferences, and Personal Interests",
+        "Lesson 34": "Recognizing Simple Subordinate Clauses and Verb-Final Patterns",
+        "Lesson 35": "Reading Simple Emails, Messages, and Digital Communication",
+        "Lesson 36": "Recognizing Everyday Conversation Patterns and Social Interaction",
+        "Lesson 37": "Recognizing and Correcting Common A1 Grammar Mistakes",
+        "Lesson 38": "Recognizing A1 Grammar in Authentic German Texts",
+        "Lesson 39": "Reading Everyday Public Signs, Instructions, and Survival German",
+        "Lesson 40": "CEFR A1 Mock Examination (Written Test)"
+    }
+
+    # Initialize session state for selected lesson if missing
+    if "selected_grammar_lesson" not in st.session_state:
+        st.session_state.selected_grammar_lesson = "Lesson 1"
+
+    # Initialize quiz state per lesson
+    if "grammar_quiz_active" not in st.session_state:
+        st.session_state.grammar_quiz_active = False
+    if "grammar_quiz_questions" not in st.session_state:
+        st.session_state.grammar_quiz_questions = []
+    if "grammar_quiz_index" not in st.session_state:
+        st.session_state.grammar_quiz_index = 0
+    if "grammar_quiz_score" not in st.session_state:
+        st.session_state.grammar_quiz_score = 0
+    if "grammar_quiz_submitted" not in st.session_state:
+        st.session_state.grammar_quiz_submitted = False
+    if "grammar_quiz_complete" not in st.session_state:
+        st.session_state.grammar_quiz_complete = False
+
+    # Dropdown to choose lesson
+    lesson_options = [f"{k}: {v}" for k, v in handbook_lessons.items()]
+    current_selected_str = [opt for opt in lesson_options if opt.startswith(st.session_state.selected_grammar_lesson)][0]
+
+    chosen_dropdown_val = st.selectbox("Select Lesson from Handbook:", lesson_options, index=lesson_options.index(current_selected_str), key="grammar_lesson_dropdown", label_visibility="collapsed")
+    
+    new_lesson_key = chosen_dropdown_val.split(":")[0].strip()
+    if new_lesson_key != st.session_state.selected_grammar_lesson:
+        st.session_state.selected_grammar_lesson = new_lesson_key
+        st.session_state.grammar_quiz_active = False
+        st.session_state.grammar_quiz_complete = False
+        st.rerun()
+
+    st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+
+    # --- TUTOR LESSON EXPLANATION FETCH ---
+    lesson_title = handbook_lessons[st.session_state.selected_grammar_lesson]
+    
+    explain_prompt = f"""
+    Act as an expert German tutor and study buddy inside the German A1 Core Grammar Practice section.
+    Provide a comprehensive, highly engaging explanation for handbook lesson: '{st.session_state.selected_grammar_lesson}: {lesson_title}' based on the provided German A1 Passive Fluency Handbook.
+    Provide more insight, professional study tips, and practical examples on top of what is in the handbook so the student fully masters the concept.
+    Format your response cleanly using Markdown headings, bullet points, and tables where applicable.
+    """
+
+    with st.spinner(f"Gem is preparing comprehensive study materials for {st.session_state.selected_grammar_lesson}..."):
+        try:
+            lesson_explanation = generate_cached_content(explain_prompt)
+        except Exception as e:
+            lesson_explanation = f"Error loading lesson breakdown: {str(e)}"
+
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
-    st.write("Content removed.")
+    st.markdown(f"### 🌻 {st.session_state.selected_grammar_lesson}: {lesson_title}")
+    st.markdown(lesson_explanation, unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
+
+    st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+
+    # --- INTERACTIVE QUIZ SECTION (20 QUESTIONS: Multiple Choice, Fill-in-the-blank, Sentence Building, Translation) ---
+    st.markdown('<div class="section-header-box">🧠 Lesson Quiz & Progress Check (20 Questions)</div>', unsafe_allow_html=True)
+
+    if not st.session_state.grammar_quiz_active and not st.session_state.grammar_quiz_complete:
+        st.markdown("Test your mastery of this lesson with 20 targeted questions (Multiple Choice, Fill-in-the-blank, Sentence Building, and Translation). Detailed explanations will be provided for incorrect answers, and your score will be tracked.")
+        if st.button("🚀 Start Lesson Quiz (20 Questions)", key="start_g_quiz_btn"):
+            # Generate 20 questions via Gemini JSON
+            quiz_prompt = f"""
+            Generate a rigorous 20-question German A1 quiz for handbook lesson '{st.session_state.selected_grammar_lesson}: {lesson_title}'.
+            Include a balanced mix of question types: Multiple Choice, Fill-in-the-blank, Sentence Building, and Translation.
+            Return strict JSON array with this exact schema:
+            [
+                {{
+                    "question_number": 1,
+                    "question_type": "Multiple Choice / Fill-in-the-blank / Sentence Building / Translation",
+                    "question_text": "Question statement here",
+                    "options": ["Option A", "Option B", "Option C", "Option D"] (or empty list if open-ended),
+                    "correct_answer": "Exact correct answer string",
+                    "explanation": "Detailed pedagogical explanation why this is correct and common pitfalls."
+                }}
+            ]
+            Ensure there are exactly 20 items in the array.
+            """
+            with st.spinner("Generating 20 quiz questions tailored to this lesson..."):
+                try:
+                    q_json_raw = generate_cached_content(quiz_prompt, is_json=True)
+                    q_data = json.loads(q_json_raw)
+                    st.session_state.grammar_quiz_questions = q_data
+                    st.session_state.grammar_quiz_index = 0
+                    st.session_state.grammar_quiz_score = 0
+                    st.session_state.grammar_quiz_submitted = False
+                    st.session_state.grammar_quiz_active = True
+                    st.rerun()
+                except Exception as e:
+                    st.error(f"Failed to generate quiz: {str(e)}")
+
+    elif st.session_state.grammar_quiz_active and not st.session_state.grammar_quiz_complete:
+        q_list = st.session_state.grammar_quiz_questions
+        q_idx = st.session_state.grammar_quiz_index
+
+        if q_idx < len(q_list):
+            q_item = q_list[q_idx]
+            st.markdown(f"**Question {q_idx + 1} of {len(q_list)}** | *Type: {q_item.get('question_type', 'Quiz')}*")
+            st.markdown(f"**{q_item.get('question_text')}**")
+
+            q_options = q_item.get("options", [])
+            user_answer_key = f"g_ans_{st.session_state.selected_grammar_lesson}_{q_idx}"
+
+            if q_options and len(q_options) > 1:
+                selected_opt = st.radio("Choose your answer:", q_options, key=user_answer_key)
+                user_input = selected_opt
+            else:
+                user_input = st.text_input("Your answer:", key=user_answer_key)
+
+            st.markdown("<div style='height: 6px;'></div>", unsafe_allow_html=True)
+
+            if not st.session_state.grammar_quiz_submitted:
+                if st.button("Submit Answer", key=f"sub_g_{q_idx}", disabled=not user_input):
+                    st.session_state.grammar_quiz_submitted = True
+                    # Evaluate correctness
+                    correct_ans = str(q_item.get("correct_answer", "")).strip().lower()
+                    given_ans = str(user_input).strip().lower()
+
+                    is_correct = False
+                    if given_ans == correct_ans or correct_ans in given_ans or given_ans in correct_ans:
+                        is_correct = True
+                        st.session_state.grammar_quiz_score += 1
+                        st.success("✅ **Correct! Excellent work.**")
+                    else:
+                        st.error(f"❌ **Incorrect.**\n\n**Correct Answer:** {q_item.get('correct_answer')}\n\n**Explanation:** {q_item.get('explanation')}")
+
+                    st.rerun()
+            else:
+                # Show explanation if already submitted and button to next
+                correct_ans = str(q_item.get("correct_answer", "")).strip().lower()
+                given_ans = str(user_input).strip().lower()
+                if given_ans == correct_ans or correct_ans in given_ans or given_ans in correct_ans:
+                    st.success("✅ **Correct!**")
+                else:
+                    st.error(f"❌ **Incorrect.**\n\n**Correct Answer:** {q_item.get('correct_answer')}\n\n**Explanation:** {q_item.get('explanation')}")
+
+                if st.button("Next Question ➡️", key=f"next_g_{q_idx}"):
+                    st.session_state.grammar_quiz_submitted = False
+                    st.session_state.grammar_quiz_index += 1
+                    st.rerun()
+        else:
+            st.session_state.grammar_quiz_active = False
+            st.session_state.grammar_quiz_complete = True
+            st.rerun()
+
+    elif st.session_state.grammar_quiz_complete:
+        final_score = st.session_state.grammar_quiz_score
+        total_q = len(st.session_state.grammar_quiz_questions)
+        percentage = (final_score / total_q) * 100 if total_q > 0 else 0
+
+        st.markdown(f"### 🎉 Quiz Complete for {st.session_state.selected_grammar_lesson}!")
+        st.markdown(f"**Your Progress Score:** Scored **{final_score}/{total_q}** ({percentage:.1f}%)")
+
+        if percentage >= 80:
+            st.success("🌟 **Outstanding mastery!** You have thoroughly grasped this handbook lesson.")
+        elif percentage >= 50:
+            st.info("👍 **Good effort!** Review the handbook lesson explanations above to solidify the remaining concepts.")
+        else:
+            st.warning("💡 **Keep practicing!** Re-read the comprehensive explanation above and try the quiz again.")
+
+        if st.button("🔄 Retake Lesson Quiz", key="retake_g_quiz_btn"):
+            st.session_state.grammar_quiz_complete = False
+            st.session_state.grammar_quiz_active = False
+            st.session_state.grammar_quiz_score = 0
+            st.session_state.grammar_quiz_index = 0
+            st.rerun()
 
 # ----------------------------------------------------
 # 4. GOETHE A1 LESEN
