@@ -2018,7 +2018,7 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
 
     st.markdown("""
     **Goethe A1 Speaking (Sprechen) Format:** 15 minutes | 3 parts  
-    *Mirrored directly from official Start Deutsch 1 exam card layouts (Teil 1 personal introduction prompt cards, Teil 2 thematic flashcard draw and 4-row grid display, and Teil 3 visual prompt cards).*
+    *Mirrored directly from official Start Deutsch 1 exam card layouts (Teil 1 personal introduction prompt cards, Teil 2 thematic flashcard draw and 4-row grid display, and Teil 3 flashcard draw with visual photo cards and grid overview).*
     """)
 
     if "sprechen_part" not in st.session_state:
@@ -2033,6 +2033,11 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
         st.session_state.drawn_card = None
     if "drawn_theme" not in st.session_state:
         st.session_state.drawn_theme = ""
+    # State for Part 3 flashcard draw
+    if "drawn_p3_card" not in st.session_state:
+        st.session_state.drawn_p3_card = None
+    if "drawn_p3_category" not in st.session_state:
+        st.session_state.drawn_p3_category = ""
 
     sprechen_parts = [
         "Part 1: Sich vorstellen (Personal Info Cards)",
@@ -2090,12 +2095,12 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
             background-color: #FFFFFF;
             color: #0F172A;
             border: 3px solid #475569;
-            padding: 25px;
+            padding: 20px;
             border-radius: 8px;
             text-align: center;
             box-shadow: 0 4px 8px rgba(0,0,0,0.2);
             margin-bottom: 15px;
-            min-height: 150px;
+            min-height: 140px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -2112,12 +2117,12 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
     elif "Part 2" in st.session_state.sprechen_part:
         st.markdown("""
         #### 📌 Part 2: Information geben und erbitten (Themenkarten)
-        * **Exam Format:** Draw a random flashcard, formulate questions/answers based on the keyword, and review the full official thematic grid below[cite: 19].
+        * **Exam Format:** Draw a random flashcard, formulate questions/answers based on the keyword, and review the full official thematic grid below.
         """)
     else:
         st.markdown("""
-        #### 📌 Part 3: Bitten formulieren und darauf reagieren (Visuelle Karten)
-        * **Exam Format:** Look at the visual object card, formulate a polite request (e.g. *Können Sie bitte...*), and react to your partner's request[cite: 20].
+        #### 📌 Part 3: Bitten formulieren und darauf reagieren (Visuelle Objektkarten)
+        * **Exam Format:** Draw a random visual photo card, formulate a polite request (e.g. *Können Sie mir bitte...*), and react to your partner's request.
         """)
 
     st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
@@ -2130,9 +2135,11 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
             st.session_state.sprechen_complete = False
             st.session_state.drawn_card = None
             st.session_state.drawn_theme = ""
+            st.session_state.drawn_p3_card = None
+            st.session_state.drawn_p3_category = ""
             st.rerun()
 
-    # Master dictionary for Sprechen Part 2 themes and corresponding words
+    # Master dictionaries for Sprechen Part 2 and Part 3
     sprechen_themes = {
         "Thema: Essen & Trinken": ["Frühstück", "Lieblingsessen", "Restaurant", "Bier / Wein / Kaffee", "Sonntag", "Fleisch / Fisch"],
         "Thema: Einkaufen": ["Supermarkt", "Obst / Gemüse", "Buch", "Kasse", "Kleidung / Schuhe", "Stadtmitte"],
@@ -2142,6 +2149,37 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
         "Thema: Arbeit / Beruf": ["Arbeitsplatz", "Kollegen", "Arbeitszeit", "Beruf", "Computer", "Pause"],
         "Thema: Schule / Lernen / Deutschkurs": ["Lehrer", "Hausaufgabe", "Deutschkurs", "Pause", "Buch", "Sprachen"],
         "Thema: Gesundheit": ["Arzt", "Medikament", "Sport", "Krankenhaus", "Apotheke", "Fieber / Schmerzen"]
+    }
+
+    sprechen_p3_items = {
+        "Essen & Trinken (Food & Drink)": [
+            {"title": "Wasser / Glas Wasser", "img_prompt": "A clear glass filled with pure clean water on a table, clean black and white line-art exam icon style"},
+            {"title": "Kaffee / Tasse Kaffee", "img_prompt": "A warm cup of coffee with steam rising, clean black and white line-art exam icon style"},
+            {"title": "Apfel / Banane", "img_prompt": "An apple and a banana side by side, clean black and white line-art exam icon style"},
+            {"title": "Brötchen / Brot", "img_prompt": "A freshly baked bread roll and sliced bread, clean black and white line-art exam icon style"},
+            {"title": "Fasche Cola / Saft", "img_prompt": "A bottle of juice or cola with a glass, clean black and white line-art exam icon style"}
+        ],
+        "Kursraum & Büro (Classroom & Office)": [
+            {"title": "Bleistift / Kuli", "img_prompt": "A wooden pencil and a ballpoint pen, clean black and white line-art exam icon style"},
+            {"title": "Wörterbuch / Buch", "img_prompt": "A thick dictionary and a book labeled Deutsch, clean black and white line-art exam icon style"},
+            {"title": "Papier / Heft", "img_prompt": "A notebook and sheets of paper, clean black and white line-art exam icon style"},
+            {"title": "Computer / Laptop", "img_prompt": "A desktop computer and keyboard on a desk, clean black and white line-art exam icon style"},
+            {"title": "Taschenrechner", "img_prompt": "A digital pocket calculator, clean black and white line-art exam icon style"}
+        ],
+        "Alltag & Reisen (Everyday Life & Travel)": [
+            {"title": "Schlüssel", "img_prompt": "A metal house door key on a ring, clean black and white line-art exam icon style"},
+            {"title": "Handy / Smartphone", "img_prompt": "A modern smartphone device, clean black and white line-art exam icon style"},
+            {"title": "Fahrkarte / Ticket", "img_prompt": "A train ticket or transport pass, clean black and white line-art exam icon style"},
+            {"title": "Uhr", "img_prompt": "A wall clock showing time, clean black and white line-art exam icon style"},
+            {"title": "Tasche / Rucksack", "img_prompt": "A travel backpack and shoulder bag, clean black and white line-art exam icon style"},
+            {"title": "Zeitung", "img_prompt": "A folded daily newspaper, clean black and white line-art exam icon style"}
+        ],
+        "Gesundheit & Sonstiges (Health & Miscellaneous)": [
+            {"title": "Tablette / Aspirin", "img_prompt": "Medical pills and blister pack, clean black and white line-art exam icon style"},
+            {"title": "Taschentuch", "img_prompt": "A pack of facial tissues, clean black and white line-art exam icon style"},
+            {"title": "Regenschirm", "img_prompt": "An open rain umbrella, clean black and white line-art exam icon style"},
+            {"title": "Geld / Kreditkarte", "img_prompt": "Euro banknotes and a credit card, clean black and white line-art exam icon style"}
+        ]
     }
 
     # Auto-load scenarios if empty
@@ -2233,11 +2271,9 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
             st.markdown("### 📚 Alle Themenkarten (Übersicht)")
             
             theme_items = list(sprechen_themes.items())
-            # Render themes in 4 rows (2 themes per row)
             for i in range(0, len(theme_items), 2):
                 row_col1, row_col2 = st.columns(2)
                 
-                # First theme in row
                 t1_name, t1_words = theme_items[i]
                 with row_col1:
                     words_html = "".join([f"<li style='margin-bottom: 4px;'>{w}</li>" for w in t1_words])
@@ -2250,7 +2286,6 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
                     </div>
                     """, unsafe_allow_html=True)
 
-                # Second theme in row (if available)
                 if i + 1 < len(theme_items):
                     t2_name, t2_words = theme_items[i+1]
                     with row_col2:
@@ -2265,49 +2300,86 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
                         """, unsafe_allow_html=True)
 
         else:
-            # --- SPRECHEN TEIL 3 (Visual Object Cards 2x3 Grid) ---
-            cards = [
-                {"card_num": 1, "object_name": "Computer / Laptop", "sample_request": "Können Sie mir bitte helfen, den Computer zu benutzen?"},
-                {"card_num": 2, "object_name": "Fahrkarte / Ticket", "sample_request": "Haben Sie bitte eine Fahrkarte für mich?"},
-                {"card_num": 3, "object_name": "Glas Wasser", "sample_request": "Können Sie mir bitte ein Glas Wasser geben?"},
-                {"card_num": 4, "object_name": "Telefon", "sample_request": "Darf ich bitte kurz telefonieren?"},
-                {"card_num": 5, "object_name": "Fenster", "sample_request": "Können Sie bitte das Fenster öffnen?"},
-                {"card_num": 6, "object_name": "Uhrzeit", "sample_request": "Können Sie mir bitte sagen, wie viel Uhr es ist?"}
-            ]
+            # --- SPRECHEN TEIL 3 (Flashcard Photo Draw + Practice + Full Grid Overview) ---
+            st.markdown("### 📇 Sprechen Teil 3: Visuelle Objektkarte ziehen")
 
-            st.markdown("### 📇 Sprechen Teil 3: Bitten formulieren und reagieren")
-            st.markdown("<p style='color: #CBD5E1; font-style: italic;'>Formulieren Sie eine Bitte zu einer Karte und reagieren Sie auf die Bitte Ihres Partners.</p>", unsafe_allow_html=True)
+            # TOP PART: Flashcard Draw Component for Photo Cards
+            col_draw_p3_1, col_draw_p3_2 = st.columns([1, 1])
+            with col_draw_p3_1:
+                if st.button("🃏 Ziehen Sie eine Bildkarte (Draw Photo Card)", key="draw_p3_card_btn"):
+                    import random
+                    chosen_cat = random.choice(list(sprechen_p3_items.keys()))
+                    chosen_item = random.choice(sprechen_p3_items[chosen_cat])
+                    st.session_state.drawn_p3_category = chosen_cat
+                    st.session_state.drawn_p3_card = chosen_item
+                    st.rerun()
 
-            col_v1, col_v2 = st.columns(2)
-            for idx, card in enumerate(cards):
-                target_col = col_v1 if idx % 2 == 0 else col_v2
-                with target_col:
-                    st.markdown(f"""
-                    <div class="exam-visual-card">
-                        <div class="exam-card-header" style="width: 100%;">Karte {card.get('card_num', idx+1)}</div>
-                        <span style="font-size: 1.3rem; font-weight: bold; color: #0F172A;">{card.get('object_name')}</span>
-                    </div>
-                    """, unsafe_allow_html=True)
+            if st.session_state.drawn_p3_card:
+                card_data = st.session_state.drawn_p3_card
+                st.markdown(f"""
+                <div class="exam-visual-card" style="border-color: #0284C7; background-color: #0F172A; color: #F8FAFC;">
+                    <div class="exam-card-header" style="background-color: #0284C7; color: #FFFFFF; width: 100%;">{st.session_state.drawn_p3_category}</div>
+                    <span style="font-size: 1.8rem; color: #38BDF8; font-weight: bold; margin: 15px 0;">📷 {card_data.get('title')}</span>
+                    <p style="color: #94A3B8; font-size: 0.9rem; font-style: italic; margin: 0;">(Examiner Photo Simulation)</p>
+                </div>
+                """, unsafe_allow_html=True)
+            else:
+                st.info("Click 'Ziehen Sie eine Bildkarte' above to randomly draw a visual photo card for making and reacting to requests.")
 
             st.markdown("---")
+
+            # MIDDLE PART: Practice Your Polite Request & Reaction
             st.markdown("### 🎙️ Practice Your Polite Request & Reaction")
-            card_choices = [c.get('object_name') for c in cards]
-            chosen_obj = st.selectbox("Choose an object card to practice:", card_choices)
-            user_spoken_p3 = st.text_area(f"Type your polite request and reaction for '{chosen_obj}':", key="spoken_p3_input", placeholder="Entschuldigung, können Sie mir bitte...")
+            active_p3_title = st.session_state.drawn_p3_card.get('title') if st.session_state.drawn_p3_card else "Glas Wasser"
+            user_spoken_p3 = st.text_area(f"Type your polite request and reaction for photo card '{active_p3_title}':", key="spoken_p3_input", placeholder="Entschuldigung, könnten Sie mir bitte ein Glas Wasser geben?")
 
             if st.button("📥 Rate My Spoken German (AI Examiner)", key="rate_p3_btn"):
                 if not user_spoken_p3.strip():
                     st.warning("Please enter your response to evaluate.")
                 else:
                     eval_p3_prompt = f"""
-                    Act as an official Goethe A1 examiner for Sprechen Part 3. Evaluate this student polite request for object '{chosen_obj}':
+                    Act as an official Goethe A1 examiner for Sprechen Part 3. Evaluate this student polite request for photo card item '{active_p3_title}':
                     "{user_spoken_p3}"
-                    Check for correct polite modal usage (Können Sie bitte..., Hätten Sie...), appropriateness, and grammar. Give a score out of 10 and feedback.
+                    Check for correct polite modal usage (Könnten Sie bitte..., Hätten Sie...), appropriateness, and grammar. Give a score out of 10 and feedback.
                     """
                     with st.spinner("Official Examiner is reviewing your speaking performance..."):
                         feedback = generate_cached_content(eval_p3_prompt)
                         st.markdown("### 📝 Official Examiner Rating & Feedback:")
                         st.markdown(feedback)
+
+            st.markdown("---")
+
+            # BOTTOM PART: All photo items arranged in 4 rows / category boxes
+            st.markdown("### 📚 Alle Bildkarten (Übersicht)")
+            
+            p3_items = list(sprechen_p3_items.items())
+            for i in range(0, len(p3_items), 2):
+                row_c1, row_c2 = st.columns(2)
+                
+                cat1_name, cat1_list = p3_items[i]
+                with row_c1:
+                    items_html1 = "".join([f"<li style='margin-bottom: 4px;'>📷 {item['title']}</li>" for item in cat1_list])
+                    st.markdown(f"""
+                    <div style="background-color: #1E293B; border: 2px solid #475569; padding: 15px; border-radius: 8px; margin-bottom: 15px; color: #F8FAFC;">
+                        <div style="font-weight: bold; color: #38BDF8; border-bottom: 1px solid #475569; padding-bottom: 5px; margin-bottom: 8px;">{cat1_name}</div>
+                        <ul style="padding-left: 20px; margin: 0; font-size: 0.95rem; color: #CBD5E1;">
+                            {items_html1}
+                        </ul>
+                    </div>
+                    """, unsafe_allow_html=True)
+
+                if i + 1 < len(p3_items):
+                    cat2_name, cat2_list = p3_items[i+1]
+                    with row_c2:
+                        items_html2 = "".join([f"<li style='margin-bottom: 4px;'>📷 {item['title']}</li>" for item in cat2_list])
+                        st.markdown(f"""
+                        <div style="background-color: #1E293B; border: 2px solid #475569; padding: 15px; border-radius: 8px; margin-bottom: 15px; color: #F8FAFC;">
+                            <div style="font-weight: bold; color: #38BDF8; border-bottom: 1px solid #475569; padding-bottom: 5px; margin-bottom: 8px;">{cat2_name}</div>
+                            <ul style="padding-left: 20px; margin: 0; font-size: 0.95rem; color: #CBD5E1;">
+                                {items_html2}
+                            </ul>
+                        </div>
+                        """, unsafe_allow_html=True)
 
     elif st.session_state.sprechen_complete:
         st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
