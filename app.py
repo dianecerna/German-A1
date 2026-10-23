@@ -422,7 +422,7 @@ if nav_choice == "🏠 Study Dashboard":
         "📖 Begegnungen A1 Digital Textbook",
         "✍️ Begegnungen A1 Exercises",
         "📘 A-Grammatik Companion",
-        "📗 Grammatik aktiv Companion"
+        "📗 Grammatik aktiv Companion",
         "🐱 Gem AI Tutor"
     ]
 
