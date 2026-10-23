@@ -780,7 +780,7 @@ elif nav_choice == "📖 Core Grammar Practice & Exercises":
 
     st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
 
-    # --- TUTOR LESSON EXPLANATION FETCH (Displayed directly without an extra wrapper box) ---
+    # --- TUTOR LESSON EXPLANATION FETCH ---
     lesson_title = handbook_lessons[st.session_state.selected_grammar_lesson]
     
     explain_prompt = f"""
@@ -800,6 +800,21 @@ elif nav_choice == "📖 Core Grammar Practice & Exercises":
     st.markdown(lesson_explanation, unsafe_allow_html=True)
 
     st.markdown("<div style='height: 15px;'></div>", unsafe_allow_html=True)
+
+    # --- CSS STYLING TO MAKE RADIO LABELS & INPUT LABELS BRIGHT & VISIBLE ---
+    st.markdown("""
+        <style>
+        /* Target Streamlit radio labels and text input labels/text for high visibility on dark backgrounds */
+        div.stRadio label, div.stTextInput label, div.stTextInput input {
+            color: #FFFFFF !important;
+        }
+        /* Ensure radio button option text is clearly visible */
+        .stRadio p {
+            color: #F8FAFC !important;
+            font-weight: 500;
+        }
+        </style>
+    """, unsafe_allow_html=True)
 
     # --- INTERACTIVE QUIZ SECTION (ALL 20 QUESTIONS ON ONE PAGE) ---
     st.markdown('<div class="section-header-box">🧠 Lesson Quiz & Progress Check (20 Questions)</div>', unsafe_allow_html=True)
