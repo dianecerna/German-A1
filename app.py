@@ -2522,7 +2522,7 @@ elif nav_choice == "📖 Vocabulary":
 
 
 # ----------------------------------------------------
-# 🐱 GEM — AI GERMAN TUTOR SECTION
+# 10. GEM — AI GERMAN TUTOR SECTION
 # ----------------------------------------------------
 elif nav_choice == "Gem AI Tutor":
     render_top_back_button()
