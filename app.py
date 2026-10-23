@@ -2667,23 +2667,30 @@ elif nav_choice == "📖 Virtual Library":
         st.info("👈 Please select a level and choose a story from the dropdown menu above to begin.")
 
 # ----------------------------------------------------
-# 11. GEM — AI GERMAN TUTOR SECTION
+# 11. GEM — AI GERMAN TUTOR SECTION (FIXED FORMATTING)
 # ----------------------------------------------------
 elif nav_choice == "🐱 Gem AI Tutor":
     render_top_back_button()
     
-    # Fix chat text readability against dark background
+    # Custom CSS fix for chat bubbles, avatar alignment, and raw material icon text bugs
     st.markdown("""
         <style>
-        /* Force chat message text to be bright and legible */
+        /* Neutralize conflicting chat avatar/icon element bugs */
+        [data-testid="stChatMessageAvatarAssistant"], [data-testid="stChatMessageAvatarUser"] {
+            display: none !important;
+        }
+        [data-testid="stChatMessage"] {
+            background: rgba(30, 41, 59, 0.75) !important;
+            border: 1px solid rgba(244, 114, 182, 0.25) !important;
+            border-radius: 12px !important;
+            padding: 12px 16px !important;
+            margin-bottom: 10px !important;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3) !important;
+        }
         [data-testid="stChatMessage"] p, 
         [data-testid="stChatMessage"] div, 
         [data-testid="stChatMessage"] span {
             color: #FFFFFF !important;
-        }
-        /* Style the chat avatar icon */
-        [data-testid="stChatMessageAvatarAssistant"] {
-            background-color: #ff4b4b;
         }
         </style>
     """, unsafe_allow_html=True)
@@ -2696,7 +2703,6 @@ elif nav_choice == "🐱 Gem AI Tutor":
 
     st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
 
-    # Initialize chat history and archive states
     if "gem_tutor_messages" not in st.session_state:
         st.session_state.gem_tutor_messages = [
             {"role": "assistant", "content": "Hallo! I am Gem, your personal German tutor and study buddy. What would you like to practice or learn today? Ask me anything!"}
@@ -2704,14 +2710,11 @@ elif nav_choice == "🐱 Gem AI Tutor":
     if "gem_chat_archive" not in st.session_state:
         st.session_state.gem_chat_archive = []
 
-    # Action buttons row: Clear & Archive
     col1, col2 = st.columns([1, 4])
     with col1:
         if st.button("🗑️ Clear & Archive"):
             if len(st.session_state.gem_tutor_messages) > 1:
-                # Store the current conversation into the archive list before resetting
                 st.session_state.gem_chat_archive.append(st.session_state.gem_tutor_messages.copy())
-            # Reset current chat to initial greeting
             st.session_state.gem_tutor_messages = [
                 {"role": "assistant", "content": "Hallo! Chat history cleared. What would you like to explore next?"}
             ]
@@ -2719,20 +2722,17 @@ elif nav_choice == "🐱 Gem AI Tutor":
 
     st.markdown("<div style='height: 5px;'></div>", unsafe_allow_html=True)
 
-    # Display chat messages from history
     for message in st.session_state.gem_tutor_messages:
-        with st.chat_message(message["role"]):
+        avatar_icon = "🐱" if message["role"] == "assistant" else "👤"
+        with st.chat_message(message["role"], avatar=avatar_icon):
             st.markdown(message["content"])
 
-    # Accept user input
     if user_prompt := st.chat_input("Ask Gem anything about German or your studies..."):
-        # Add user message to state and display
         st.session_state.gem_tutor_messages.append({"role": "user", "content": user_prompt})
-        with st.chat_message("user"):
+        with st.chat_message("user", avatar="👤"):
             st.markdown(user_prompt)
 
-        # Generate response from Gem AI Tutor
-        with st.chat_message("assistant"):
+        with st.chat_message("assistant", avatar="🐱"):
             with st.spinner("Gem is thinking..."):
                 tutor_prompt = f"""
                 You are Gem, a friendly, encouraging, and expert AI German tutor and study buddy. 
