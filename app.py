@@ -2632,8 +2632,55 @@ elif nav_choice == "📖 Virtual Library":
         st.info("👈 Please select a level and choose a story from the dropdown menu above to begin.")
 
 
+BEGEGNUNGEN_DATA = {
+  "title": "Begegnungen A1+ Digital",
+  "language": "de",
+  "modules": [
+    {
+      "chapter": 1,
+      "title": "Guten Tag",
+      "topics": ["Sich vorstellen", "Das Alphabet", "Zahlen", "Personen und Hobbys"]
+    },
+    {
+      "chapter": 2,
+      "title": "Erste Kontakte am Arbeitsplatz",
+      "topics": ["Büro", "Universität", "Freizeit", "Wochentage", "Grammatik", "Verben", "Negation", "Lokale Präpositionen"]
+    },
+    {
+      "chapter": 3,
+      "title": "Unterwegs in München",
+      "topics": ["Im Hotel", "Der Stadtplan", "Sehenswürdigkeiten", "Uhrzeit", "E-Mail schreiben", "Verben mit Akkusativ", "Präpositionen"]
+    },
+    {
+      "chapter": 4,
+      "title": "Essen und Trinken",
+      "topics": ["Frühstück im Hotel", "Geschirr & Besteck", "Supermarkt einkaufen", "Rezepte", "Esskultur", "Restaurant", "Präteritum von sein/haben"]
+    },
+    {
+      "chapter": 5,
+      "title": "Alltag",
+      "topics": ["Tagesablauf", "Stress im Büro", "Computerfunktionen", "Terminvereinbarung", "Datum & Uhrzeit", "Perfekt", "Trennbare/nicht trennbare Verben"]
+    },
+    {
+      "chapter": 6,
+      "title": "Reisen",
+      "topics": ["Jahreszeiten & Wetter", "Reiseziele", "Kleidung einkaufen", "Fahrkarten", "Konjunktionen", "Imperativ"]
+    },
+    {
+      "chapter": 7,
+      "title": "Wohnen",
+      "topics": ["Wohnung in der Stadt", "Einrichtung", "Hausordnung", "Wegbeschreibung", "Wechselpräpositionen"]
+    },
+    {
+      "chapter": 8,
+      "title": "Begegnungen und Ereignisse",
+      "topics": ["Wünsche & Geschenke", "Gesundheit & Körperteile", "Arztbesuch", "Entschuldigungen", "Weihnachtsfeier"]
+    }
+  ]
+}
+
 # ----------------------------------------------------
-# SECTION 1: BEGEGNUNGEN A1 DIGITAL TEXTBOOK (READING & AUDIO)
+# SECTION: BEGEGNUNGEN A1 DIGITAL TEXTBOOK (READING & AUDIO)
 # ----------------------------------------------------
 elif nav_choice == "📖 Begegnungen A1 Digital Textbook":
     render_top_back_button()
@@ -2644,14 +2691,8 @@ elif nav_choice == "📖 Begegnungen A1 Digital Textbook":
     """)
 
     begegnungen_chapters = {
-        "Kapitel 1": "Guten Tag – Sich vorstellen, Herkunft, Sprachen, Zahlen, Alphabet",
-        "Kapitel 2": "Erste Kontakte am Arbeitsplatz – Büro, Kollegen, Preise, Freizeit",
-        "Kapitel 3": "Unterwegs in München – Im Hotel, Stadtplan, Sehenswürdigkeiten",
-        "Kapitel 4": "Essen und Trinken – Frühstück, Lebensmittel, Im Restaurant, Akkusativ",
-        "Kapitel 5": "Alltag – Tagesablauf, Büro-Stress, Computer, Termine vereinbaren",
-        "Kapitel 6": "Reisen – Wetter, Jahreszeiten, Reiseziele, Kleidung, Verkehrsmittel",
-        "Kapitel 7": "Wohnen – Wohnung in der Stadt, Einrichtung, Hausordnung, Dativ",
-        "Kapitel 8": "Begegnungen und Ereignisse – Wünsche, Gesundheit, Arztbesuch, Entschuldigungen"
+        f"Kapitel {m['chapter']}": f"{m['title']} – Topics: {', '.join(m['topics'])}"
+        for m in BEGEGNUNGEN_DATA["modules"]
     }
 
     if "sel_bk" not in st.session_state:
