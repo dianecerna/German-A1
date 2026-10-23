@@ -2402,17 +2402,6 @@ elif nav_choice == "📚 A1-A2 Short Stories (Virtual Library)":
     if "selected_story_title" not in st.session_state:
         st.session_state.selected_story_title = None
 
-    # Library Level Filter
-    lvl_cols = st.columns([2, 2, 4])
-    with lvl_cols[0]:
-        level_filter = st.selectbox("Filter by Level:", ["All Levels", "A1 (Beginner)", "A2 (Elementary)"], key="lib_level_select")
-        if level_filter != st.session_state.library_level:
-            st.session_state.library_level = level_filter
-            st.session_state.selected_story_title = None
-            st.rerun()
-
-    st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
-
     # Master list of 30 books
     master_library = [
         {"title": "Rotkäppchen", "author": "Brüder Grimm", "level": "A1", "summary": "Das klassische Märchen über das Mädchen mit der roten Kappe und den Wolf."},
@@ -2447,105 +2436,84 @@ elif nav_choice == "📚 A1-A2 Short Stories (Virtual Library)":
         {"title": "Das hässliche Entlein", "author": "Hans Christian Andersen", "level": "A1", "summary": "Ein verkanntes Küken wächst zu einem wunderschönen Schwan heran."}
     ]
 
-    # Filter books based on dropdown selection
-    filtered_books = master_library
-    if st.session_state.library_level == "A1 (Beginner)":
-        filtered_books = [b for b in master_library if b["level"] == "A1"]
-    elif st.session_state.library_level == "A2 (Elementary)":
-        filtered_books = [b for b in master_library if b["level"] == "A2"]
+    # Controls: Level Filter & Story Selector Dropdown
+    c_f1, c_f2 = st.columns(2)
+    with c_f1:
+        lib_level = st.selectbox("Filter Level:", ["All Levels", "A1", "A2"], key="lib_lvl_box")
+    with c_f2:
+        # Filter book titles based on level selection
+        if lib_level == "A1":
+            available_books = [b["title"] for b in master_library if b["level"] == "A1"]
+        elif lib_level == "A2":
+            available_books = [b["title"] for b in master_library if b["level"] == "A2"]
+        else:
+            available_books = [b["title"] for b in master_library]
 
-    if not st.session_state.selected_story_title:
-        st.markdown(f"### 📖 Available Books ({len(filtered_books)} titles)")
-        st.markdown("<p style='color: #94A3B8;'>Click on any book card below to open the reader and audio player.</p>", unsafe_allow_html=True)
+        chosen_book = st.selectbox("Select a Book from Library:", ["-- Choose a Story --"] + available_books, key="lib_book_dropdown")
 
-        # Render books in a clean grid (3 columns)
-        cols = st.columns(3)
-        for idx, book in enumerate(filtered_books):
-            target_col = cols[idx % 3]
-            with target_col:
-                lvl_badge = "🟢 A1" if book["level"] == "A1" else "🟡 A2"
-                st.markdown(f"""
-                <div style="background-color: #1E293B; border: 2px solid #334155; padding: 18px; border-radius: 8px; margin-bottom: 15px; min-height: 190px; display: flex; flex-direction: column; justify-content: space-between;">
-                    <div>
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                            <span style="background-color: #0F172A; color: #38BDF8; font-size: 0.75rem; padding: 2px 8px; border-radius: 4px; font-weight: bold;">{lvl_badge}</span>
-                            <span style="color: #94A3B8; font-size: 0.8rem;">{book['author']}</span>
-                        </div>
-                        <h4 style="color: #F8FAFC; margin: 0 0 8px 0; font-size: 1.1rem;">{book['title']}</h4>
-                        <p style="color: #94A3B8; font-size: 0.85rem; margin: 0; line-height: 1.4;">{book['summary']}</p>
-                    </div>
-                </div>
-                """, unsafe_allow_html=True)
-                
-                if st.button(f"📖 Read / Listen", key=f"book_btn_{idx}"):
-                    st.session_state.selected_story_title = book['title']
-                    st.session_state.selected_story_level = book['level']
-                    st.rerun()
+    st.markdown("<div style='height: 15px;'></div>", unsafe_allow_html=True)
 
+    if chosen_book and chosen_book != "-- Choose a Story --":
+        # Find book details
+        book_info = next((b for b in master_library if b["title"] == chosen_book), None)
+        if book_info:
+            st.markdown(f"### 📖 {book_info['title']} ({book_info['level']} - {book_info['author']})")
+            st.markdown(f"<p style='color: #94A3B8; font-style: italic;'>{book_info['summary']}</p>", unsafe_allow_html=True)
+            st.markdown("---")
+
+            story_key = f"story_content_{chosen_book}"
+            if story_key not in st.session_state:
+                story_prompt = f"""
+                Write the short story '{book_info['title']}' in German, perfectly adapted for {book_info['level']} language learners.
+                CRITICAL CONSTRAINT: Provide EXACTLY between 25 to 40 sentences total. Use clear, simple vocabulary and grammar structures appropriate for {book_info['level']}.
+                Also provide a brief English summary at the beginning.
+                Return strict JSON with keys: "english_summary" and "german_story_text".
+                """
+                with st.spinner(f"Generating story text and audio scripts for '{chosen_book}'..."):
+                    try:
+                        raw_res = generate_cached_content(story_prompt, is_json=True)
+                        st.session_state[story_key] = json.loads(raw_res)
+                    except Exception as e:
+                        st.error(f"Failed to generate story: {str(e)}")
+
+            story_data = st.session_state.get(story_key, {})
+            english_summary = story_data.get("english_summary", "Summary unavailable.")
+            german_text = story_data.get("german_story_text", "Story text unavailable.")
+
+            st.markdown(f"""
+            <div style="background-color: #0F172A; border-left: 4px solid #38BDF8; padding: 15px; border-radius: 6px; margin-bottom: 20px;">
+                <b>English Summary:</b> {english_summary}
+            </div>
+            """, unsafe_allow_html=True)
+
+            # Flashcard Audio Player for Listening Practice
+            story_safe = german_text.replace('"', "'").replace('\n', ' ')
+            st.markdown("""
+            <div class="exam-audio-card" style="margin-bottom: 20px; background-color: #0F172A; border: 2px solid #0284C7; padding: 15px; border-radius: 8px;">
+                <p style="color: #94A3B8; font-size: 0.9rem; margin-bottom: 8px;">Listen to the complete narrated story (Browser Speech Synthesis):</p>
+            </div>
+            """, unsafe_allow_html=True)
+
+            if st.button("🔊 Play / Read Aloud Story (Anhören)", key="play_full_story_btn"):
+                st.components.v1.html(f"""
+                    <script>
+                        const utterance = new SpeechSynthesisUtterance("{story_safe}");
+                        utterance.lang = 'de-DE';
+                        utterance.rate = 0.85;
+                        window.parent.speechSynthesis.cancel();
+                        window.parent.speechSynthesis.speak(utterance);
+                    </script>
+                """, height=0)
+
+            st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+            st.markdown("### 📄 German Reading Text")
+            st.markdown(f"""
+            <div style="background-color: #1E293B; color: #F8FAFC; padding: 25px; border-radius: 8px; line-height: 1.8; font-size: 1.1rem; border: 1px solid #334155;">
+                {german_text.replace('\n', '<br><br>')}
+            </div>
+            """, unsafe_allow_html=True)
     else:
-        # --- READER & AUDIO VIEW FOR SELECTED STORY ---
-        active_title = st.session_state.selected_story_title
-        active_lvl = st.session_state.selected_story_level
-
-        col_back, col_title = st.columns([1, 5])
-        with col_back:
-            if st.button("⬅️ Back to Library"):
-                st.session_state.selected_story_title = None
-                st.rerun()
-        with col_title:
-            st.markdown(f"## 📖 {active_title} ({active_lvl})")
-
-        story_key = f"story_content_{active_title}"
-        if story_key not in st.session_state:
-            story_prompt = f"""
-            Write the short story '{active_title}' in German, perfectly adapted for {active_lvl} language learners.
-            CRITICAL CONSTRAINT: Provide EXACTLY between 25 to 40 sentences total. Use clear, simple vocabulary and grammar structures appropriate for {active_lvl}.
-            Also provide a brief English summary at the beginning.
-            Return strict JSON with keys: "english_summary" and "german_story_text".
-            """
-            with st.spinner(f"Generating story text and audio scripts for '{active_title}'..."):
-                try:
-                    raw_res = generate_cached_content(story_prompt, is_json=True)
-                    st.session_state[story_key] = json.loads(raw_res)
-                except Exception as e:
-                    st.error(f"Failed to generate story: {str(e)}")
-
-        story_data = st.session_state.get(story_key, {})
-        english_summary = story_data.get("english_summary", "Summary unavailable.")
-        german_text = story_data.get("german_story_text", "Story text unavailable.")
-
-        st.markdown(f"""
-        <div style="background-color: #0F172A; border-left: 4px solid #38BDF8; padding: 15px; border-radius: 6px; margin-bottom: 20px;">
-            <b>English Summary:</b> {english_summary}
-        </div>
-        """, unsafe_allow_html=True)
-
-        # Flashcard Audio Player for Listening Practice
-        story_safe = german_text.replace('"', "'").replace('\n', ' ')
-        st.markdown("""
-        <div class="exam-audio-card" style="margin-bottom: 20px;">
-            <p style="color: #94A3B8; font-size: 0.9rem; margin-bottom: 8px;">Listen to the complete narrated story (Browser Speech Synthesis):</p>
-        </div>
-        """, unsafe_allow_html=True)
-
-        if st.button("🔊 Play / Read Aloud Story (Anhören)", key="play_full_story_btn"):
-            st.components.v1.html(f"""
-                <script>
-                    const utterance = new SpeechSynthesisUtterance("{story_safe}");
-                    utterance.lang = 'de-DE';
-                    utterance.rate = 0.85;
-                    window.parent.speechSynthesis.cancel();
-                    window.parent.speechSynthesis.speak(utterance);
-                </script>
-            """, height=0)
-
-        st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
-        st.markdown("### 📄 German Reading Text")
-        st.markdown(f"""
-        <div style="background-color: #1E293B; color: #F8FAFC; padding: 25px; border-radius: 8px; line-height: 1.8; font-size: 1.1rem; border: 1px solid #334155;">
-            {german_text.replace('\n', '<br><br>')}
-        </div>
-        """, unsafe_allow_html=True)
+        st.info("👈 Please select a book from the dropdown menu above to start reading and listening.")
 
 # ----------------------------------------------------
 # 9. VOCABULARY SECTION (MEMORIZED WORDS & QUIZ ME)
