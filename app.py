@@ -2385,9 +2385,8 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
             st.rerun()
 
 # ----------------------------------------------------
-# 8. A1 & A2 SHORT STORIES
+# 8. GOETHE A1-A2 SHORT STORIES VIRTUAL LIBRARY
 # ----------------------------------------------------
-
 elif nav_choice == "📚 A1-A2 Short Stories (Virtual Library)":
     render_top_back_button()
     st.markdown('<div class="section-header-box">📚 Virtual Library: German Short Stories (A1 & A2)</div>', unsafe_allow_html=True)
