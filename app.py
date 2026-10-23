@@ -418,6 +418,7 @@ if nav_choice == "🏠 Study Dashboard":
         "✍️ Goethe A1 Schreiben (Writing)",
         "🗣️ Goethe A1 Sprechen (Speaking)",
         "📖 Vocabulary",
+        "📖 Virtual Library",
         "🐱 Gem AI Tutor"
     ]
 
@@ -2520,12 +2521,140 @@ elif nav_choice == "📖 Vocabulary":
             rc2.markdown(f"{e_trans}")
             st.markdown("<hr style='border-color: rgba(244, 114, 182, 0.15); margin: 4px 0;'>", unsafe_allow_html=True)
 
+# ----------------------------------------------------
+# 10. VIRTUAL LIBRARY SECTION
+# ----------------------------------------------------
+elif nav_choice == "📖 Virtual Library":
+    render_top_back_button()
+    st.markdown('<div class="section-header-box">📖 Virtual Library</div>', unsafe_allow_html=True)
+
+    st.markdown("""
+    **Interactive Reading & Listening Library:** Explore classic fairy tales and short fiction pieces tailored for A1 and A2 learners with audio playback.
+    """)
+
+    # Master list of 30 books categorized by level
+    library_books = [
+        ("Rotkäppchen", "A1", "Brüder Grimm", "Das klassische Märchen über das Mädchen mit der roten Kappe und den Wolf."),
+        ("Hänsel und Gretel", "A1", "Brüder Grimm", "Zwei Geschwister im Wald und das Knusperhäuschen der Hexe."),
+        ("Aschenputtel", "A1", "Brüder Grimm", "Das Märchen vom gläsernen Schuh und dem königlichen Ball."),
+        ("Schneewittchen", "A2", "Brüder Grimm", "Die Prinzessin, die böse Stiefmutter und die sieben Zwerge."),
+        ("Dornröschen", "A1", "Brüder Grimm", "Die schlafende Prinzessin und der hundertjährige Dornenwald."),
+        ("Rumpelstilzchen", "A2", "Brüder Grimm", "Das Müllersmädchen, das Stroh zu Gold spinnen muss."),
+        ("Der Froschkönig", "A1", "Brüder Grimm", "Die goldene Kugel im Brunnen und der verwandelte Frosch."),
+        ("Die Bremer Stadtmusikanten", "A1", "Brüder Grimm", "Vier Tiere machen sich auf den Weg nach Bremen, um Musiker zu werden."),
+        ("Frau Holle", "A1", "Brüder Grimm", "Die fleißige und die faule Tochter im Reich von Frau Holle."),
+        ("Rapunzel", "A2", "Brüder Grimm", "Das Mädchen mit dem langen goldenen Haar im hohen Turm."),
+        ("Der Wolf und die sieben jungen Geißlein", "A1", "Brüder Grimm", "Der hungrige Wolf und die klugen kleinen Ziegen."),
+        ("Hase und Igel", "A2", "Brüder Grimm", "Der Wettlauf zwischen dem schnellen Hasen und dem schlauen Igel."),
+        ("Der gestiefelte Kater", "A2", "Brüder Grimm", "Ein kluger Kater mit Stiefeln verhilft seinem Herrn zu Reichtum."),
+        ("Hans im Glück", "A1", "Brüder Grimm", "Ein junger Mann tauscht seinen Lohn immer weiter ein und ist am Ende glücklich."),
+        ("Tischlein deck dich", "A2", "Brüder Grimm", "Drei Brüder und ihre wunderbaren Geschenke: Esel, Tisch und Knüppel."),
+        ("Peter Pan", "A2", "J.M. Barrie", "Der Junge, der nicht erwachsen werden wollte, reist nach Neverland."),
+        ("Alice im Wunderland", "A2", "Lewis Carroll", "Alice folgt dem weißen Kaninchen in eine verrückte Welt."),
+        ("Pinocchios Abenteuer", "A1", "Carlo Collodi", "Die hölzerne Puppe, deren Nase wächst, wenn sie lügt."),
+        ("Der kleine Prinz", "A2", "Antoine de Saint-Exupéry", "Die Reise des kleinen Prinzen von seinem Asteroiden zur Erde."),
+        ("Heidis Lehr- und Wanderjahre", "A2", "Johanna Spyri", "Ein Waisenkind erlebt glückliche Jahre in den Schweizer Alpen."),
+        ("Die Schatzinsel", "A2", "Robert Louis Stevenson", "Jim Hawkins sucht nach dem vergrabenen Gold von Captain Flint."),
+        ("Robinson Crusoe", "A2", "Daniel Defoe", "Ein Seemann überlebt jahrzehntelang allein auf einer einsamen Insel."),
+        ("Die Reise zum Mittelpunkt der Erde", "A2", "Jules Verne", "Ein Abenteuer durch unterirdische Höhlen und Vulkane."),
+        ("In 80 Tagen um die Erde", "A2", "Jules Verne", "Phileas Fogg wettet, dass er die Welt in achtzig Tagen umrunden kann."),
+        ("Dr. Jekyll und Mr. Hyde", "A2", "Robert Louis Stevenson", "Ein Wissenschaftler experimentiert mit einem Trank, der das Böse entfesselt."),
+        ("Schneeweißchen und Rosenrot", "A2", "Brüder Grimm", "Zwei gute Schwestern und ein verzauberter Bär im Winterwald."),
+        ("Der standhafte Zinnsoldat", "A1", "Hans Christian Andersen", "Ein einbeiniger Zinnsoldat verliebt sich in eine Tänzerin."),
+        ("Des Kaisers neue Kleider", "A1", "Hans Christian Andersen", "Ein eitler Kaiser läuft in angeblich unsichtbaren neuen Kleidern durch die Stadt."),
+        ("Die kleine Meerjungfrau", "A2", "Hans Christian Andersen", "Eine Nixe wünscht sich Beine und eine menschliche Seele."),
+        ("Das hässliche Entlein", "A1", "Hans Christian Andersen", "Ein verkanntes Küken wächst zu einem wunderschönen Schwan heran.")
+    ]
+
+    st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+
+    # Level filter dropdown
+    level_choice = st.selectbox("Select Reading/Listening Level:", ["All Levels", "A1", "A2"], key="lib_level_dropdown")
+
+    # Filter book titles based on level selection
+    if level_choice == "A1":
+        filtered_books = [b[0] for b in library_books if b[1] == "A1"]
+    elif level_choice == "A2":
+        filtered_books = [b[0] for b in library_books if b[1] == "A2"]
+    else:
+        filtered_books = [b[0] for b in library_books]
+
+    # Book selection dropdown list
+    selected_book = st.selectbox("Select a Book from Virtual Library:", ["-- Choose a Story --"] + filtered_books, key="lib_book_dropdown")
+
+    st.markdown("---")
+
+    if selected_book != "-- Choose a Story --":
+        # Find matching book details
+        b_data = next((b for b in library_books if b[0] == selected_book), None)
+        if b_data:
+            st.subheader(f"📖 {b_data[0]} ({b_data[1]})")
+            st.write(f"**Author:** {b_data[2]}")
+            st.write(f"*{b_data[3]}*")
+            st.markdown("---")
+
+            # Generate or fetch story content securely
+            cache_key = f"simple_story_{selected_book}"
+            if cache_key not in st.session_state:
+                prompt = f"""
+                Write the short story '{selected_book}' in German, adapted for {b_data[1]} learners.
+                Keep it between 25 and 40 sentences total. Provide a short English summary at the beginning.
+                Return strict JSON with keys: "english_summary" and "german_story_text".
+                """
+                with st.spinner(f"Generating story for {selected_book}..."):
+                    try:
+                        raw_res = generate_cached_content(prompt, is_json=True)
+                        st.session_state[cache_key] = json.loads(raw_res)
+                    except Exception as e:
+                        st.error(f"Error generating story: {e}")
+
+            story_content = st.session_state.get(cache_key, {})
+            summary = story_content.get("english_summary", "")
+            text = story_content.get("german_story_text", "")
+
+            if summary:
+                st.info(f"**English Summary:** {summary}")
+
+            if text:
+                safe_text = text.replace('"', "'").replace('\n', ' ' )
+                if st.button("🔊 Play Audio (Read Aloud)", key="play_audio_btn"):
+                    st.components.v1.html(f"""
+                        <script>
+                            const u = new SpeechSynthesisUtterance("{safe_text}");
+                            u.lang = 'de-DE';
+                            u.rate = 0.85;
+                            window.parent.speechSynthesis.cancel();
+                            window.parent.speechSynthesis.speak(u);
+                        </script>
+                    """, height=0)
+
+                st.markdown("### German Text")
+                st.write(text)
+    else:
+        st.info("👈 Please select a level and choose a story from the dropdown menu above to begin.")
 
 # ----------------------------------------------------
-# 10. GEM — AI GERMAN TUTOR SECTION
+# 11. GEM — AI GERMAN TUTOR SECTION
 # ----------------------------------------------------
 elif nav_choice == "🐱 Gem AI Tutor":
     render_top_back_button()
+    
+    # Fix chat text readability against dark background
+    st.markdown("""
+        <style>
+        /* Force chat message text to be bright and legible */
+        [data-testid="stChatMessage"] p, 
+        [data-testid="stChatMessage"] div, 
+        [data-testid="stChatMessage"] span {
+            color: #FFFFFF !important;
+        }
+        /* Style the chat avatar icon */
+        [data-testid="stChatMessageAvatarAssistant"] {
+            background-color: #ff4b4b;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
     st.markdown('<div class="section-header-box">🐱 Gem — AI German Tutor</div>', unsafe_allow_html=True)
 
     st.markdown("""
@@ -2534,11 +2663,28 @@ elif nav_choice == "🐱 Gem AI Tutor":
 
     st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
 
-    # Initialize chat history for Gem AI Tutor if not present
+    # Initialize chat history and archive states
     if "gem_tutor_messages" not in st.session_state:
         st.session_state.gem_tutor_messages = [
             {"role": "assistant", "content": "Hallo! I am Gem, your personal German tutor and study buddy. What would you like to practice or learn today? Ask me anything!"}
         ]
+    if "gem_chat_archive" not in st.session_state:
+        st.session_state.gem_chat_archive = []
+
+    # Action buttons row: Clear & Archive
+    col1, col2 = st.columns([1, 4])
+    with col1:
+        if st.button("🗑️ Clear & Archive"):
+            if len(st.session_state.gem_tutor_messages) > 1:
+                # Store the current conversation into the archive list before resetting
+                st.session_state.gem_chat_archive.append(st.session_state.gem_tutor_messages.copy())
+            # Reset current chat to initial greeting
+            st.session_state.gem_tutor_messages = [
+                {"role": "assistant", "content": "Hallo! Chat history cleared. What would you like to explore next?"}
+            ]
+            st.rerun()
+
+    st.markdown("<div style='height: 5px;'></div>", unsafe_allow_html=True)
 
     # Display chat messages from history
     for message in st.session_state.gem_tutor_messages:
