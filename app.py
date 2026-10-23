@@ -2521,8 +2521,9 @@ elif nav_choice == "📖 Vocabulary":
             rc2.markdown(f"{e_trans}")
             st.markdown("<hr style='border-color: rgba(244, 114, 182, 0.15); margin: 4px 0;'>", unsafe_allow_html=True)
 
+
 # ----------------------------------------------------
-# 9. VIRTUAL LIBRARY SECTION
+# VIRTUAL LIBRARY SECTION
 # ----------------------------------------------------
 elif nav_choice == "Virtual Library":
     render_top_back_button()
@@ -2532,7 +2533,7 @@ elif nav_choice == "Virtual Library":
     **Interactive Reading & Listening Library:** Explore classic fairy tales and short fiction pieces tailored for A1 and A2 learners with audio playback.
     """)
 
-    # Master list of 30 books
+    # Master list of 30 books categorized by level
     library_books = [
         ("Rotkäppchen", "A1", "Brüder Grimm", "Das klassische Märchen über das Mädchen mit der roten Kappe und den Wolf."),
         ("Hänsel und Gretel", "A1", "Brüder Grimm", "Zwei Geschwister im Wald und das Knusperhäuschen der Hexe."),
@@ -2565,6 +2566,8 @@ elif nav_choice == "Virtual Library":
         ("Die kleine Meerjungfrau", "A2", "Hans Christian Andersen", "Eine Nixe wünscht sich Beine und eine menschliche Seele."),
         ("Das hässliche Entlein", "A1", "Hans Christian Andersen", "Ein verkanntes Küken wächst zu einem wunderschönen Schwan heran.")
     ]
+
+    st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
 
     # Level filter dropdown
     level_choice = st.selectbox("Select Reading/Listening Level:", ["All Levels", "A1", "A2"], key="lib_level_dropdown")
