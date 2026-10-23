@@ -2524,7 +2524,7 @@ elif nav_choice == "📖 Vocabulary":
 # ----------------------------------------------------
 # 10. GEM — AI GERMAN TUTOR SECTION
 # ----------------------------------------------------
-elif nav_choice == "Gem AI Tutor":
+elif nav_choice == "🐱 Gem AI Tutor":
     render_top_back_button()
     st.markdown('<div class="section-header-box">🐱 Gem — AI German Tutor</div>', unsafe_allow_html=True)
 
