@@ -417,8 +417,8 @@ if nav_choice == "🏠 Study Dashboard":
         "🎧 Goethe A1 Hören (Listening)",
         "✍️ Goethe A1 Schreiben (Writing)",
         "🗣️ Goethe A1 Sprechen (Speaking)",
-        "📖 A1 & A2 Short Stories",
         "📖 Vocabulary",
+        "📖 Virtual Library",
         "🐱 Gem AI Tutor"
     ]
 
