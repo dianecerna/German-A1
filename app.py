@@ -1354,7 +1354,7 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
 
     st.markdown("""
     **Goethe A1 Listening (Hören) Format:** 20 minutes | 3 parts | 15 questions  
-    *Mirrored exactly from official Start Deutsch 1 exam layouts with working audio players, auto-loading scenarios, and dynamically generated pictures for Part 1.*
+    *Mirrored directly from official Start Deutsch 1 exam layouts with working audio players, auto-loading scenarios, and structured visual option cards for Part 1.*
     """)
 
     if "horen_part" not in st.session_state:
@@ -1365,9 +1365,6 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
         st.session_state.horen_questions = []
     if "horen_complete" not in st.session_state:
         st.session_state.horen_complete = False
-    # State for generated images
-    if "horen_images" not in st.session_state:
-        st.session_state.horen_images = {}
 
     horen_parts = [
         "Part 1: Picture-based Multiple Choice (6 conversations, options a/b/c)",
@@ -1381,12 +1378,11 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
         st.session_state.horen_part = chosen_horen_part
         st.session_state.horen_questions = []
         st.session_state.horen_complete = False
-        st.session_state.horen_images = {} # Clear images on part change
         st.rerun()
 
     st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
 
-    # Styling for bright visible fonts, audio cards, and picture option grids
+    # Styling for bright visible fonts, audio cards, and exam picture option frames
     st.markdown("""
         <style>
         div.stRadio label, div.stTextInput label, div.stTextInput input, div.stSelectbox label {
@@ -1403,31 +1399,38 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
             border-radius: 8px;
             margin-bottom: 15px;
         }
-        .exam-pic-option {
+        .exam-pic-card {
             background-color: #1E293B;
             border: 2px solid #38BDF8;
-            padding: 10px;
+            padding: 20px;
             border-radius: 8px;
-            margin-bottom: 10px;
             text-align: center;
+            color: #F8FAFC;
+            font-weight: 500;
+            min-height: 110px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
         }
         </style>
     """, unsafe_allow_html=True)
 
     if "Part 1" in st.session_state.horen_part:
         st.markdown("""
-        #### 📌 Part 1: Six Short Conversations (3 Picture-based Options a, b, c)
-        * **Exam Format:** Listen to 6 brief everyday dialogues twice. Choose the correct visual option (Bild a, b, or c) matching what is heard.
+        #### 📌 Part 1: Six Short Conversations (3 Picture-based Options a, b, c)[cite: 8, 9, 10, 11]
+        * **Exam Format:** Listen to 6 brief everyday dialogues twice[cite: 8, 9, 10, 11]. Choose the correct visual option (Bild a, b, or c) matching what is heard[cite: 9, 10, 11].
         """)
     elif "Part 2" in st.session_state.horen_part:
         st.markdown("""
-        #### 📌 Part 2: Four Announcements (Richtig / Falsch)
-        * **Exam Format:** Listen to 4 public announcements once. Focus heavily on numbers, platform numbers, times, and prices.
+        #### 📌 Part 2: Four Announcements (Richtig / Falsch)[cite: 12]
+        * **Exam Format:** Listen to 4 public announcements once[cite: 12]. Focus heavily on numbers, platform numbers, times, and prices[cite: 6].
         """)
     else:
         st.markdown("""
-        #### 📌 Part 3: Five Telephone Messages (Options a, b, c)
-        * **Exam Format:** Listen to 5 answering machine messages twice and answer multiple-choice questions regarding meeting times, homework, or callbacks.
+        #### 📌 Part 3: Five Telephone Messages (Options a, b, c)[cite: 13, 14]
+        * **Exam Format:** Listen to 5 answering machine messages twice and answer multiple-choice questions regarding meeting times, homework, or callbacks[cite: 13, 14].
         """)
 
     st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
@@ -1438,7 +1441,6 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
             st.session_state.horen_seed += 1
             st.session_state.horen_questions = []
             st.session_state.horen_complete = False
-            st.session_state.horen_images = {}
             st.rerun()
 
     # Auto-load exact required counts: Part 1 = 6 items, Part 2 = 4 items, Part 3 = 5 items
@@ -1448,11 +1450,11 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
             Generate a completely brand new, randomized official Goethe A1 Start Deutsch 1 Hören Part 1 practice module using seed {st.session_state.horen_seed}.
             Provide EXACTLY 6 items. Each item must have:
             - "item_num": question number (1 to 6)
-            - "question_text": The question (e.g., "Wo gibt es Kleidung für Kinder?")
+            - "question_text": The question (e.g., "Wann kommt der Zug aus Berlin an?"[cite: 10] or "Wo gibt es Kleidung für Kinder?")
             - "audio_transcript": German spoken dialogue script for the audio track.
-            - "image_generation_prompt_a": A detailed DALL-E prompt to generate a line-art illustration for option A. (e.g., "A black and white line-art illustration of a price tag showing 1.50 Euro.")
-            - "image_generation_prompt_b": A detailed DALL-E prompt to generate a line-art illustration for option B.
-            - "image_generation_prompt_c": A detailed DALL-E prompt to generate a line-art illustration for option C.
+            - "pic_a_desc": visual description/label for picture option a (e.g., "12:15 Uhr")
+            - "pic_b_desc": visual description/label for picture option b (e.g., "12:45 Uhr")
+            - "pic_c_desc": visual description/label for picture option c (e.g., "13:10 Uhr")
             - "correct_answer": "a", "b", or "c"
             - "explanation": detailed explanation.
             Return strict JSON array with 6 items.
@@ -1460,21 +1462,21 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
         elif "Part 2" in st.session_state.horen_part:
             horen_prompt = f"""
             Generate a completely brand new, randomized official Goethe A1 Start Deutsch 1 Hören Part 2 practice module using seed {st.session_state.horen_seed}.
-            Provide EXACTLY 4 items (numbered 7, 8, 9, 10). Each item must have:
-            - "item_num": question number (7, 8, 9, 10)
-            - "statement": the statement to evaluate (e.g., "Die Fahrgäste sollen im Zug bleiben.")
-            - "audio_transcript": German spoken announcement script.
-            - "correct_answer": "Richtig" or "Falsch"
+            Provide EXACTLY 4 items (numbered 7, 8, 9, 10)[cite: 12]. Each item must have:
+            - "item_num": question number (7, 8, 9, 10)[cite: 12]
+            - "statement": the statement to evaluate (e.g., "Die Fahrgäste sollen im Zug bleiben."[cite: 12])
+            - "audio_transcript": German spoken announcement script[cite: 12].
+            - "correct_answer": "Richtig" or "Falsch"[cite: 12]
             - "explanation": detailed explanation.
             Return strict JSON array with 4 items.
             """
         else:
             horen_prompt = f"""
             Generate a completely brand new, randomized official Goethe A1 Start Deutsch 1 Hören Part 3 practice module using seed {st.session_state.horen_seed}.
-            Provide EXACTLY 5 items (numbered 11, 12, 13, 14, 15). Each item must have:
-            - "item_num": question number (11, 12, 13, 14, 15)
-            - "question_text": question text (e.g., "Wann soll Frau Krause anrufen?")
-            - "audio_transcript": German spoken message script.
+            Provide EXACTLY 5 items (numbered 11, 12, 13, 14, 15)[cite: 13, 14]. Each item must have:
+            - "item_num": question number (11, 12, 13, 14, 15)[cite: 13, 14]
+            - "question_text": question text (e.g., "Wann soll Frau Krause anrufen?"[cite: 13])
+            - "audio_transcript": German spoken message script[cite: 13, 14].
             - "option_a": text for option a
             - "option_b": text for option b
             - "option_c": text for option c
@@ -1498,8 +1500,8 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
             st.markdown("""
             <div style="background-color: #1E293B; padding: 12px; border-radius: 6px; margin-bottom: 15px; border-left: 4px solid #38BDF8;">
                 <b>Teil 1</b><br>
-                Was ist richtig? Kreuzen Sie an: <b>a</b>, <b>b</b> oder <b>c</b>.<br>
-                Sie hören jeden Text <b>zweimal</b>.
+                Was ist richtig? Kreuzen Sie an: <b>a</b>, <b>b</b> oder <b>c</b>[cite: 9, 10, 11].<br>
+                Sie hören jeden Text <b>zweimal</b>[cite: 9, 10, 11].
             </div>
             """, unsafe_allow_html=True)
 
@@ -1510,17 +1512,16 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
                     transcript_text = q.get('audio_transcript', '')
                     transcript_safe = transcript_text.replace('"', "'").replace('\n', ' ')
 
-                    # Flashcard-style audio player component using Streamlit native button
+                    # Audio Card & Flashcard Audio Player Button
                     st.markdown(f"""
                     <div class="exam-audio-card">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                             <span style="font-size: 1.4rem; font-weight: bold; color: #38BDF8;">Aufgabe {item_num}</span>
                         </div>
-                        <p style="color: #94A3B8; font-size: 0.9rem; margin-bottom: 8px;">Listen to the official audio recording (Flashcard Audio Player):</p>
+                        <p style="color: #94A3B8; font-size: 0.9rem; margin-bottom: 8px;">Listen to the official audio recording:</p>
                     </div>
                     """, unsafe_allow_html=True)
                     
-                    # Native Streamlit audio play button using flashcard speech mechanism
                     if st.form_submit_button(f"🔊 Play Audio Track {item_num} (Anhören)", key=f"play_audio_{item_num}"):
                         st.components.v1.html(f"""
                             <script>
@@ -1539,31 +1540,14 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
                     </div>
                     """, unsafe_allow_html=True)
 
-                    # --- DYNAMIC IMAGE GENERATION FOR PART 1 ---
-                    if item_num not in st.session_state.horen_images:
-                        with st.spinner(f"Generating Bild options for Aufgabe {item_num}..."):
-                            try:
-                                # Generate 3 images in parallel (this function needs to handle multiple calls)
-                                img_a = generate_cached_image(q.get("image_generation_prompt_a"))
-                                img_b = generate_cached_image(q.get("image_generation_prompt_b"))
-                                img_c = generate_cached_image(q.get("image_generation_prompt_c"))
-                                st.session_state.horen_images[item_num] = [img_a, img_b, img_c]
-                            except Exception:
-                                # Fallback if generation fails
-                                st.session_state.horen_images[item_num] = ["(Image Gen Failed)", "(Image Gen Failed)", "(Image Gen Failed)"]
-
-                    # Render the generated images in clean option boxes
-                    img_list = st.session_state.horen_images[item_num]
+                    # Render 3 structured visual picture option cards side-by-side
                     col_p1, col_p2, col_p3 = st.columns(3)
                     with col_p1:
-                        st.markdown('<div class="exam-pic-option">Bild a</div>', unsafe_allow_html=True)
-                        st.image(img_list[0], use_column_width=True)
+                        st.markdown(f'<div class="exam-pic-card"><span style="color: #38BDF8; font-weight: bold; font-size: 1.1rem; margin-bottom: 6px;">[ Bild a ]</span><span style="font-size: 0.95rem;">{q.get("pic_a_desc", "Option A")}</span></div>', unsafe_allow_html=True)
                     with col_p2:
-                        st.markdown('<div class="exam-pic-option">Bild b</div>', unsafe_allow_html=True)
-                        st.image(img_list[1], use_column_width=True)
+                        st.markdown(f'<div class="exam-pic-card"><span style="color: #38BDF8; font-weight: bold; font-size: 1.1rem; margin-bottom: 6px;">[ Bild b ]</span><span style="font-size: 0.95rem;">{q.get("pic_b_desc", "Option B")}</span></div>', unsafe_allow_html=True)
                     with col_p3:
-                        st.markdown('<div class="exam-pic-option">Bild c</div>', unsafe_allow_html=True)
-                        st.image(img_list[2], use_column_width=True)
+                        st.markdown(f'<div class="exam-pic-card"><span style="color: #38BDF8; font-weight: bold; font-size: 1.1rem; margin-bottom: 6px;">[ Bild c ]</span><span style="font-size: 0.95rem;">{q.get("pic_c_desc", "Option C")}</span></div>', unsafe_allow_html=True)
 
                     user_horen_answers[idx] = st.radio(f"Wählen Sie das richtige Bild für Aufgabe {item_num}:", ["a", "b", "c"], key=f"horen_t1_ans_{idx}", horizontal=True)
                     st.markdown("---")
@@ -1591,12 +1575,12 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
                     st.rerun()
 
         elif "Part 2" in st.session_state.horen_part:
-            # --- HÖREN TEIL 2 (4 items, Richtig / Falsch) ---
+            # --- HÖREN TEIL 2 (4 items, Richtig / Falsch)[cite: 12] ---
             st.markdown("""
             <div style="background-color: #1E293B; padding: 12px; border-radius: 6px; margin-bottom: 15px; border-left: 4px solid #38BDF8;">
-                <b>Teil 2</b><br>
-                Kreuzen Sie an: <b>Richtig</b> oder <b>Falsch</b>.<br>
-                Sie hören jeden Text <b>einmal</b>.
+                <b>Teil 2</b>[cite: 12]<br>
+                Kreuzen Sie an: <b>Richtig</b> oder <b>Falsch</b>[cite: 12].<br>
+                Sie hören jeden Text <b>einmal</b>[cite: 12].
             </div>
             """, unsafe_allow_html=True)
 
@@ -1660,12 +1644,12 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
                     st.rerun()
 
         else:
-            # --- HÖREN TEIL 3 (5 items, Multiple Choice a, b, c) ---
+            # --- HÖREN TEIL 3 (5 items, Multiple Choice a, b, c)[cite: 13, 14] ---
             st.markdown("""
             <div style="background-color: #1E293B; padding: 12px; border-radius: 6px; margin-bottom: 15px; border-left: 4px solid #38BDF8;">
-                <b>Teil 3</b><br>
-                Was ist richtig? Kreuzen Sie an: <b>a</b>, <b>b</b> oder <b>c</b>.<br>
-                Sie hören jeden Text <b>zweimal</b>.
+                <b>Teil 3</b>[cite: 13, 14]<br>
+                Was ist richtig? Kreuzen Sie an: <b>a</b>, <b>b</b> oder <b>c</b>[cite: 13, 14].<br>
+                Sie hören jeden Text <b>zweimal</b>[cite: 13, 14].
             </div>
             """, unsafe_allow_html=True)
 
@@ -1707,7 +1691,9 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
                     opt_b = q.get('option_b', 'Option B')
                     opt_c = q.get('option_c', 'Option C')
 
-                    opts_list = [f"a) {opt_a}", f"b) {opt_b}", f"c) {opt_c}"]
+> Hören Sie jeden Text zweimal.
+
+opts_list = [f"a) {opt_a}", f"b) {opt_b}", f"c) {opt_c}"]
                     user_horen_answers[idx] = st.radio(f"Antwort {item_num}:", opts_list, key=f"horen_t3_ans_{idx}", label_visibility="collapsed")
                     st.markdown("---")
 
@@ -1750,7 +1736,6 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
         if st.button("🔄 Try Another Hören Set", key="retry_horen"):
             st.session_state.horen_complete = False
             st.session_state.horen_questions = []
-            st.session_state.horen_images = {}
             st.rerun()
 # ----------------------------------------------------
 # 6. GOETHE A1 SCHREIBEN (WRITING) SECTION
