@@ -2008,7 +2008,6 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
             st.rerun()
 
 
-
 # ----------------------------------------------------
 # 7. GOETHE A1 SPRECHEN (SPEAKING) SECTION
 # ----------------------------------------------------
@@ -2316,11 +2315,23 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
 
             if st.session_state.drawn_p3_card:
                 card_data = st.session_state.drawn_p3_card
+                
+                # GENERATE THE ACTUAL PHOTO CARD
+                photo_prompt = f"A realistic photograph of a single object: {card_data.get('title')}. The image should be clean, centered, and professional, suitable for a language exam card. Shot on a simple white background."
+                with st.spinner(f"Generating photo for '{card_data.get('title')}'..."):
+                    try:
+                        # Replace with your actual photo generation call
+                        photo_url = generate_single_image(photo_prompt)
+                        st.image(photo_url, caption=f"Karte: {card_data.get('title')}", width=300)
+                    except:
+                        # Fallback if generation fails
+                        st.error("Failed to generate photo. Displaying icon prompt instead.")
+                        st.code(card_data.get('img_prompt'))
+                
                 st.markdown(f"""
                 <div class="exam-visual-card" style="border-color: #0284C7; background-color: #0F172A; color: #F8FAFC;">
                     <div class="exam-card-header" style="background-color: #0284C7; color: #FFFFFF; width: 100%;">{st.session_state.drawn_p3_category}</div>
-                    <span style="font-size: 1.8rem; color: #38BDF8; font-weight: bold; margin: 15px 0;">📷 {card_data.get('title')}</span>
-                    <p style="color: #94A3B8; font-size: 0.9rem; font-style: italic; margin: 0;">(Examiner Photo Simulation)</p>
+                    <span style="font-size: 1.5rem; color: #38BDF8; font-weight: bold; margin: 5px 0;">{card_data.get('title')}</span>
                 </div>
                 """, unsafe_allow_html=True)
             else:
