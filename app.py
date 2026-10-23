@@ -2413,7 +2413,7 @@ elif nav_choice == "📚 A1-A2 Short Stories (Virtual Library)":
 
     st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
 
-    # Master list of 30 books (Fairy tales & Classic Fiction with A1/A2 grading)
+    # Master list of 30 books
     master_library = [
         {"title": "Rotkäppchen", "author": "Brüder Grimm", "level": "A1", "summary": "Das klassische Märchen über das Mädchen mit der roten Kappe und den Wolf."},
         {"title": "Hänsel und Gretel", "author": "Brüder Grimm", "level": "A1", "summary": "Zwei Geschwister im Wald und das Knusperhäuschen der Hexe."},
@@ -2433,16 +2433,16 @@ elif nav_choice == "📚 A1-A2 Short Stories (Virtual Library)":
         {"title": "Peter Pan", "author": "J.M. Barrie", "level": "A2", "summary": "Der Junge, der nicht erwachsen werden wollte, reist nach Neverland."},
         {"title": "Alice im Wunderland", "author": "Lewis Carroll", "level": "A2", "summary": "Alice folgt dem weißen Kaninchen in eine verrückte Welt."},
         {"title": "Pinocchios Abenteuer", "author": "Carlo Collodi", "level": "A1", "summary": "Die hölzerne Puppe, deren Nase wächst, wenn sie lügt."},
-        {"title": "Der kleine Prinz", "author": "Antoine de Saint-Exupéry", "level": "A2", "summary": "Die reise des kleinen Prinzen von seinem Asteroiden zur Erde."},
+        {"title": "Der kleine Prinz", "author": "Antoine de Saint-Exupéry", "level": "A2", "summary": "Die Reise des kleinen Prinzen von seinem Asteroiden zur Erde."},
         {"title": "Heidis Lehr- und Wanderjahre", "author": "Johanna Spyri", "level": "A2", "summary": "Ein Waisenkind erlebt glückliche Jahre in den Schweizer Alpen."},
         {"title": "Die Schatzinsel", "author": "Robert Louis Stevenson", "level": "A2", "summary": "Jim Hawkins sucht nach dem vergrabenen Gold von Captain Flint."},
         {"title": "Robinson Crusoe", "author": "Daniel Defoe", "level": "A2", "summary": "Ein Seemann überlebt jahrzehntelang allein auf einer einsamen Insel."},
         {"title": "Die Reise zum Mittelpunkt der Erde", "author": "Jules Verne", "level": "A2", "summary": "Ein Abenteuer durch unterirdische Höhlen und Vulkane."},
-        {"title": "Um die Erde in 80 Tagen", "author": "Jules Verne", "level": "A2", "summary": "Phileas Fogg wettet, dass er die Welt in achtzig Tagen umrunden kann."},
-        {"title": "Dr. Jekyll und Mr. Hyde", "author": "Robert Louis Stevenson", "level": "A2", "summary": "Ein Wissenschaftler experimentiert mit einem trank, der das Böse entfesselt."},
+        {"title": "In 80 Tagen um die Erde", "author": "Jules Verne", "level": "A2", "summary": "Phileas Fogg wettet, dass er die Welt in achtzig Tagen umrunden kann."},
+        {"title": "Dr. Jekyll und Mr. Hyde", "author": "Robert Louis Stevenson", "level": "A2", "summary": "Ein Wissenschaftler experimentiert mit einem Trank, der das Böse entfesselt."},
         {"title": "Schneeweißchen und Rosenrot", "author": "Brüder Grimm", "level": "A2", "summary": "Zwei gute Schwestern und ein verzauberter Bär im Winterwald."},
         {"title": "Der standhafte Zinnsoldat", "author": "Hans Christian Andersen", "level": "A1", "summary": "Ein einbeiniger Zinnsoldat verliebt sich in eine Tänzerin."},
-        {"title": "Des Kaisers neue Kleider", "author": "Hans Christian Andersen", "level": "A1", "summary": "Ein Eitler Kaiser läuft in angeblich unsichtbaren neuen Kleidern durch die Stadt."},
+        {"title": "Des Kaisers neue Kleider", "author": "Hans Christian Andersen", "level": "A1", "summary": "Ein eitler Kaiser läuft in angeblich unsichtbaren neuen Kleidern durch die Stadt."},
         {"title": "Die kleine Meerjungfrau", "author": "Hans Christian Andersen", "level": "A2", "summary": "Eine Nixe wünscht sich Beine und eine menschliche Seele."},
         {"title": "Das hässliche Entlein", "author": "Hans Christian Andersen", "level": "A1", "summary": "Ein verkanntes Küken wächst zu einem wunderschönen Schwan heran."}
     ]
@@ -2463,9 +2463,9 @@ elif nav_choice == "📚 A1-A2 Short Stories (Virtual Library)":
         for idx, book in enumerate(filtered_books):
             target_col = cols[idx % 3]
             with target_col:
-                lvl_badge = "🟢 A1" if book["level"] == "1" or book["level"] == "A1" else "🟡 A2"
+                lvl_badge = "🟢 A1" if book["level"] == "A1" else "🟡 A2"
                 st.markdown(f"""
-                <div style="background-color: #1E293B; border: 2px solid #334155; padding: 18px; border-radius: 8px; margin-bottom: 15px; min-height: 170px; display: flex; flex-direction: column; justify-content: space-between;">
+                <div style="background-color: #1E293B; border: 2px solid #334155; padding: 18px; border-radius: 8px; margin-bottom: 15px; min-height: 190px; display: flex; flex-direction: column; justify-content: space-between;">
                     <div>
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                             <span style="background-color: #0F172A; color: #38BDF8; font-size: 0.75rem; padding: 2px 8px; border-radius: 4px; font-weight: bold;">{lvl_badge}</span>
@@ -2477,10 +2477,9 @@ elif nav_choice == "📚 A1-A2 Short Stories (Virtual Library)":
                 </div>
                 """, unsafe_allow_html=True)
                 
-                if st.button(f"📖 Read / Listen ({book['title']})", key=f"book_btn_{idx}"):
+                if st.button(f"📖 Read / Listen", key=f"book_btn_{idx}"):
                     st.session_state.selected_story_title = book['title']
                     st.session_state.selected_story_level = book['level']
-                    st.session_state.story_text_content = None # trigger generator
                     st.rerun()
 
     else:
@@ -2496,22 +2495,22 @@ elif nav_choice == "📚 A1-A2 Short Stories (Virtual Library)":
         with col_title:
             st.markdown(f"## 📖 {active_title} ({active_lvl})")
 
-        # Generate story text if not already loaded in session state
-        if f"story_content_{active_title}" not in st.session_state:
+        story_key = f"story_content_{active_title}"
+        if story_key not in st.session_state:
             story_prompt = f"""
             Write the short story '{active_title}' in German, perfectly adapted for {active_lvl} language learners.
             CRITICAL CONSTRAINT: Provide EXACTLY between 25 to 40 sentences total. Use clear, simple vocabulary and grammar structures appropriate for {active_lvl}.
             Also provide a brief English summary at the beginning.
-            Return strict JSON with keys: "english_summary" and "german_story_text" (a single string with paragraphs/sentences).
+            Return strict JSON with keys: "english_summary" and "german_story_text".
             """
             with st.spinner(f"Generating story text and audio scripts for '{active_title}'..."):
                 try:
                     raw_res = generate_cached_content(story_prompt, is_json=True)
-                    st.session_state[f"story_content_{active_title}"] = json.loads(raw_res)
+                    st.session_state[story_key] = json.loads(raw_res)
                 except Exception as e:
                     st.error(f"Failed to generate story: {str(e)}")
 
-        story_data = st.session_state.get(f"story_content_{active_title}", {})
+        story_data = st.session_state.get(story_key, {})
         english_summary = story_data.get("english_summary", "Summary unavailable.")
         german_text = story_data.get("german_story_text", "Story text unavailable.")
 
