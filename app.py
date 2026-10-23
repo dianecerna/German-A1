@@ -1354,38 +1354,36 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
     st.markdown('<div class="section-header-box">🎧 Goethe A1 Hören (Listening) Exam Practice</div>', unsafe_allow_html=True)
 
     st.markdown("""
-    **Goethe A1 Listening (Hören) Format:** 20 minutes | 3 parts | 15 questions[cite: 11]  
-    *Embedded actual audio simulation players with native browser synthesis so you can listen to authentic dialogues and announcements[cite: 32, 34].*
+    **Goethe A1 Listening (Hören) Format:** 20 minutes | 3 parts | 15 questions  
+    *Mirrored directly from official Start Deutsch 1 exam layouts with working interactive audio players and auto-loading scenarios.*
     """)
 
     if "horen_part" not in st.session_state:
         st.session_state.horen_part = "Part 1: Picture-based Multiple Choice"
     if "horen_seed" not in st.session_state:
         st.session_state.horen_seed = 1
-    if "horen_active" not in st.session_state:
-        st.session_state.horen_active = False
     if "horen_questions" not in st.session_state:
         st.session_state.horen_questions = []
     if "horen_complete" not in st.session_state:
         st.session_state.horen_complete = False
 
     horen_parts = [
-        "Part 1: Picture-based Multiple Choice (6 conversations, options a/b/c)[cite: 11, 13]",
-        "Part 2: Announcements True/False - Focus on Numbers (4 announcements)[cite: 15]",
-        "Part 3: Telephone Messages & Detail Extraction (5 messages, options a/b/c)[cite: 16]"
+        "Part 1: Picture-based Multiple Choice (6 conversations, options a/b/c)",
+        "Part 2: Announcements True/False - Focus on Numbers (4 announcements)",
+        "Part 3: Telephone Messages & Detail Extraction (5 messages, options a/b/c)"
     ]
 
     chosen_horen_part = st.selectbox("Select Goethe Hören Exam Part:", horen_parts, key="horen_part_dropdown", label_visibility="collapsed")
 
     if chosen_horen_part != st.session_state.horen_part:
         st.session_state.horen_part = chosen_horen_part
-        st.session_state.horen_active = False
-        st.session_state.horen_complete = False
         st.session_state.horen_questions = []
+        st.session_state.horen_complete = False
         st.rerun()
 
     st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
 
+    # Styling for bright visible fonts, exam boxes, and option boxes matching official exam layouts
     st.markdown("""
         <style>
         div.stRadio label, div.stTextInput label, div.stTextInput input, div.stSelectbox label {
@@ -1395,23 +1393,39 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
             color: #F8FAFC !important;
             font-weight: 500;
         }
+        .exam-option-box {
+            background-color: #1E293B;
+            border: 2px solid #475569;
+            padding: 12px 15px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            color: #F8FAFC;
+            font-size: 1rem;
+        }
+        .exam-audio-card {
+            background-color: #0F172A;
+            border: 2px solid #0284C7;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
         </style>
     """, unsafe_allow_html=True)
 
     if "Part 1" in st.session_state.horen_part:
         st.markdown("""
-        #### 📌 Part 1: Six Short Conversations (3 Options a, b, c)[cite: 11, 13]
-        * **Exam Format:** Listen to brief everyday dialogues twice[cite: 11] and select the correct option matching room numbers, times, food, or activities[cite: 13].
+        #### 📌 Part 1: Six Short Conversations (3 Options a, b, c)
+        * **Exam Format:** Listen to brief everyday dialogues twice and select the correct option matching room numbers, times, food, or activities.
         """)
     elif "Part 2" in st.session_state.horen_part:
         st.markdown("""
-        #### 📌 Part 2: Four Announcements (Richtig / Falsch)[cite: 15]
-        * **Exam Format:** Listen to public announcements once[cite: 15]. **Focus heavily on numbers, platform numbers, times, and prices[cite: 15].**
+        #### 📌 Part 2: Four Announcements (Richtig / Falsch)
+        * **Exam Format:** Listen to public announcements once. Focus heavily on numbers, platform numbers, times, and prices.
         """)
     else:
         st.markdown("""
-        #### 📌 Part 3: Five Telephone Messages (Options a, b, c)[cite: 16]
-        * **Exam Format:** Listen to answering machine messages twice[cite: 16] and answer multiple-choice questions regarding meeting times, homework, or callbacks.
+        #### 📌 Part 3: Five Telephone Messages (Options a, b, c)
+        * **Exam Format:** Listen to answering machine messages twice and answer multiple-choice questions regarding meeting times, homework, or callbacks.
         """)
 
     st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
@@ -1420,98 +1434,211 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
     with col_bh2:
         if st.button("🔄 Refresh Scenarios", key="refresh_horen_btn"):
             st.session_state.horen_seed += 1
-            st.session_state.horen_active = False
-            st.session_state.horen_complete = False
             st.session_state.horen_questions = []
+            st.session_state.horen_complete = False
             st.rerun()
 
-    if not st.session_state.horen_active and not st.session_state.horen_complete:
-        if st.button("🚀 Load Hören Practice & Audio Tracks", key="start_horen_btn"):
+    # Auto-load scenarios if empty
+    if not st.session_state.horen_questions and not st.session_state.horen_complete:
+        if "Part 1" in st.session_state.horen_part:
             horen_prompt = f"""
-            Generate a completely unique, randomized Goethe A1 Start Deutsch 1 Listening (Hören) simulation set for '{st.session_state.horen_part}' using seed {st.session_state.horen_seed}.
-            Provide 4-5 exam items with exact audio scripts (transcripts in German) and questions (with options a/b/c or Richtig/Falsch). Make sure scenarios are brand new.
-            Return strict JSON array with this exact schema:
-            [
-                {{
-                    "q_num": 1,
-                    "audio_transcript": "Unique German spoken script simulating the recording",
-                    "question_text": "Exam question based on audio",
-                    "options": ["a", "b", "c"],
-                    "correct_answer": "Exact correct answer",
-                    "explanation": "Detailed explanation citing numbers, times, or keywords from the script."
-                }}
-            ]
+            Generate a completely brand new, randomized official Goethe A1 Start Deutsch 1 Hören Part 1 practice module using seed {st.session_state.horen_seed}.
+            Provide 3 items. Each item must have:
+            - "item_num": question number (1, 2, 3...)
+            - "instruction_header": "Was ist richtig? Kreuzen Sie an: a, b oder c. Sie hören jeden Text zweimal."
+            - "question_text": The question (e.g., "Welche Zimmernummer hat Herr Schneider?" or "Wo gibt es Kleidung für Kinder?")
+            - "audio_transcript": German spoken script for the audio track.
+            - "option_a": text for option a
+            - "option_b": text for option b
+            - "option_c": text for option c
+            - "correct_answer": "a", "b", or "c"
+            - "explanation": detailed explanation.
+            Return strict JSON array with 3 items.
             """
-            with st.spinner("Generating fresh Goethe Hören exam simulations and audio scripts..."):
-                try:
-                    horen_raw = generate_cached_content(horen_prompt, is_json=True)
-                    st.session_state.horen_questions = json.loads(horen_raw)
-                    st.session_state.horen_active = True
-                    st.rerun()
-                except Exception as e:
-                    st.error(f"Failed to generate Hören practice: {str(e)}")
+        elif "Part 2" in st.session_state.horen_part:
+            horen_prompt = f"""
+            Generate a completely brand new, randomized official Goethe A1 Start Deutsch 1 Hören Part 2 practice module using seed {st.session_state.horen_seed}.
+            Provide 4 items (numbered 7, 8, 9, 10). Each item must have:
+            - "item_num": question number (7, 8, 9, 10)
+            - "instruction_header": "Kreuzen Sie an: Richtig oder Falsch. Sie hören jeden Text einmal."
+            - "statement": the statement to evaluate (e.g., "Die Fahrgäste sollen im Zug bleiben.")
+            - "audio_transcript": German spoken announcement script.
+            - "correct_answer": "Richtig" or "Falsch"
+            - "explanation": detailed explanation.
+            Return strict JSON array with 4 items.
+            """
+        else:
+            horen_prompt = f"""
+            Generate a completely brand new, randomized official Goethe A1 Start Deutsch 1 Hören Part 3 practice module using seed {st.session_state.horen_seed}.
+            Provide 3 items (numbered 11, 12, 13). Each item must have:
+            - "item_num": question number (11, 12, 13)
+            - "instruction_header": "Was ist richtig? Kreuzen Sie an: a, b oder c. Sie hören jeden Text zweimal."
+            - "question_text": question text (e.g., "Wann soll Frau Krause anrufen?")
+            - "audio_transcript": German spoken message script.
+            - "option_a": text for option a
+            - "option_b": text for option b
+            - "option_c": text for option c
+            - "correct_answer": "a", "b", or "c"
+            - "explanation": detailed explanation.
+            Return strict JSON array with 3 items.
+            """
 
-    elif st.session_state.horen_active and not st.session_state.horen_complete:
+        with st.spinner("Generating fresh official Goethe Hören exam scenarios and audio scripts..."):
+            try:
+                horen_raw = generate_cached_content(horen_prompt, is_json=True)
+                st.session_state.horen_questions = json.loads(horen_raw)
+            except Exception as e:
+                st.error(f"Failed to generate Hören practice: {str(e)}")
+
+    if st.session_state.horen_questions and not st.session_state.horen_complete:
         q_list = st.session_state.horen_questions
-        with st.form(key="horen_quiz_form"):
-            user_horen_answers = {}
-            for idx, q in enumerate(q_list):
-                st.markdown(f"**Item {idx + 1} of {len(q_list)}**")
-                
-                transcript_text = q.get('audio_transcript', '')
-                transcript_safe = transcript_text.replace('"', "'").replace('\n', ' ')
-                
-                # Fully functional HTML5 Web Speech API audio player button that actually speaks German aloud!
-                audio_player_component = f"""
-                <div style="background-color: #1E293B; padding: 15px; border-radius: 8px; border: 1px solid #334155; margin-bottom: 12px;">
-                    <p style="color: #38BDF8; font-weight: bold; margin-bottom: 8px;">🔊 Official Audio Track (Hörtext):</p>
-                    <button type="button" onclick="
-                        if ('speechSynthesis' in window) {{
-                            window.speechSynthesis.cancel();
-                            const utterance = new SpeechSynthesisUtterance(\"{transcript_safe}\");
-                            utterance.lang = 'de-DE';
-                            utterance.rate = 0.85;
-                            window.speechSynthesis.speak(utterance);
-                        }} else {{
-                            alert('Text-to-speech not supported in this browser.');
-                        }}
-                    " style="background-color: #0284C7; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 1rem;">▶ Play Audio Recording (Anhören)</button>
-                    <p style="color: #94A3B8; font-size: 0.85rem; margin-top: 8px; font-style: italic;">(Click to play German speech audio. Transcript hidden for exam realism; click below if needed)</p>
-                    <details style="margin-top: 8px;">
-                        <summary style="color: #CBD5E1; cursor: pointer; font-size: 0.9rem;">Show Transcript (Hilfe)</summary>
-                        <p style="color: #F8FAFC; margin-top: 5px; font-style: italic;">{transcript_text}</p>
-                    </details>
-                </div>
-                """
-                st.markdown(audio_player_component, unsafe_allow_html=True)
-                st.markdown(f"<span style='color: #FFFFFF; font-weight: bold;'>{q.get('question_text')}</span>", unsafe_allow_html=True)
 
-                opts = q.get("options", ["a", "b", "c"])
-                user_horen_answers[idx] = st.radio("Choose your answer:", opts, key=f"horen_ans_{idx}")
-                st.markdown("---")
+        if "Part 2" in st.session_state.horen_part:
+            # --- HÖREN TEIL 2 (Richtig / Falsch) ---
+            st.markdown("""
+            <div style="background-color: #1E293B; padding: 12px; border-radius: 6px; margin-bottom: 15px; border-left: 4px solid #38BDF8;">
+                <b>Teil 2</b><br>
+                Kreuzen Sie an: <b>Richtig</b> oder <b>Falsch</b>.<br>
+                Sie hören jeden Text <b>einmal</b>.
+            </div>
+            """, unsafe_allow_html=True)
 
-            sub_horen = st.form_submit_button("📥 Submit Hören Answers")
-            if sub_horen:
-                score = 0
-                results = []
+            with st.form(key="horen_teil2_form"):
+                user_horen_answers = {}
                 for idx, q in enumerate(q_list):
-                    given = str(user_horen_answers.get(idx, "")).strip().lower()
-                    correct = str(q.get("correct_answer", "")).strip().lower()
-                    is_corr = given == correct or correct in given or given in correct
-                    if is_corr:
-                        score += 1
-                    results.append({
-                        "q_num": idx + 1,
-                        "given": user_horen_answers.get(idx, ""),
-                        "correct": q.get("correct_answer"),
-                        "is_correct": is_corr,
-                        "explanation": q.get("explanation")
-                    })
-                st.session_state.horen_score = score
-                st.session_state.horen_results = results
-                st.session_state.horen_active = False
-                st.session_state.horen_complete = True
-                st.rerun()
+                    item_num = q.get("item_num", 7 + idx)
+                    transcript_text = q.get('audio_transcript', '')
+                    transcript_safe = transcript_text.replace('"', "'").replace('\n', ' ')
+
+                    st.markdown(f"""
+                    <div class="exam-audio-card">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                            <span style="font-size: 1.4rem; font-weight: bold; color: #38BDF8;">Aufgabe {item_num}</span>
+                        </div>
+                        <p style="color: #94A3B8; font-size: 0.9rem; margin-bottom: 8px;">Click below to play the official audio recording simulation:</p>
+                        <button type="button" onclick="
+                            if ('speechSynthesis' in window) {{
+                                window.speechSynthesis.cancel();
+                                const utterance = new SpeechSynthesisUtterance(\"{transcript_safe}\");
+                                utterance.lang = 'de-DE';
+                                utterance.rate = 0.85;
+                                window.speechSynthesis.speak(utterance);
+                            }} else {{
+                                alert('Speech synthesis not supported.');
+                            }}
+                        " style="background-color: #0284C7; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: bold;">▶ Play Audio Recording (Anhören)</button>
+                    </div>
+                    """, unsafe_allow_html=True)
+
+                    st.markdown(f"""
+                    <div style="display: flex; align-items: baseline; gap: 15px; margin-bottom: 5px;">
+                        <span style="font-size: 1.5rem; font-weight: bold; color: #38BDF8;">{item_num}</span>
+                        <span style="font-size: 1.05rem; font-weight: bold; color: #FFFFFF;">{q.get('statement')}</span>
+                    </div>
+                    """, unsafe_allow_html=True)
+
+                    user_horen_answers[idx] = st.radio(f"Antwort {item_num}:", ["Richtig", "Falsch"], key=f"horen_t2_ans_{idx}", label_visibility="collapsed")
+                    st.markdown("---")
+
+                sub_h2 = st.form_submit_button("📥 Submit Hören Teil 2 Answers")
+                if sub_h2:
+                    score = 0
+                    results = []
+                    for idx, q in enumerate(q_list):
+                        given = str(user_horen_answers.get(idx, "")).strip().lower()
+                        correct = str(q.get("correct_answer", "richtig")).strip().lower()
+                        is_corr = given == correct
+                        if is_corr:
+                            score += 1
+                        results.append({
+                            "q_num": q.get("item_num", 7 + idx),
+                            "given": user_horen_answers.get(idx, ""),
+                            "correct": q.get("correct_answer"),
+                            "is_correct": is_corr,
+                            "explanation": q.get("explanation")
+                        })
+                    st.session_state.horen_score = score
+                    st.session_state.horen_results = results
+                    st.session_state.horen_active = False
+                    st.session_state.horen_complete = True
+                    st.rerun()
+
+        else:
+            # --- HÖREN TEIL 1 & 3 (Multiple Choice a, b, c) ---
+            part_title = "Teil 1" if "Part 1" in st.session_state.horen_part else "Teil 3"
+            st.markdown(f"""
+            <div style="background-color: #1E293B; padding: 12px; border-radius: 6px; margin-bottom: 15px; border-left: 4px solid #38BDF8;">
+                <b>{part_title}</b><br>
+                Was ist richtig? Kreuzen Sie an: <b>a</b>, <b>b</b> oder <b>c</b>.<br>
+                Sie hören jeden Text <b>zweimal</b>.
+            </div>
+            """, unsafe_allow_html=True)
+
+            with st.form(key="horen_teil13_form"):
+                user_horen_answers = {}
+                for idx, q in enumerate(q_list):
+                    item_num = q.get("item_num", idx + 1)
+                    transcript_text = q.get('audio_transcript', '')
+                    transcript_safe = transcript_text.replace('"', "'").replace('\n', ' ')
+
+                    st.markdown(f"""
+                    <div class="exam-audio-card">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                            <span style="font-size: 1.4rem; font-weight: bold; color: #38BDF8;">Aufgabe {item_num}</span>
+                        </div>
+                        <p style="color: #94A3B8; font-size: 0.9rem; margin-bottom: 8px;">Click below to play the official audio recording simulation:</p>
+                        <button type="button" onclick="
+                            if ('speechSynthesis' in window) {{
+                                window.speechSynthesis.cancel();
+                                const utterance = new SpeechSynthesisUtterance(\"{transcript_safe}\");
+                                utterance.lang = 'de-DE';
+                                utterance.rate = 0.85;
+                                window.speechSynthesis.speak(utterance);
+                            }} else {{
+                                alert('Speech synthesis not supported.');
+                            }}
+                        " style="background-color: #0284C7; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: bold;">▶ Play Audio Recording (Anhören)</button>
+                    </div>
+                    """, unsafe_allow_html=True)
+
+                    st.markdown(f"""
+                    <div style="display: flex; align-items: baseline; gap: 15px; margin-bottom: 8px;">
+                        <span style="font-size: 1.5rem; font-weight: bold; color: #38BDF8;">{item_num}</span>
+                        <span style="font-size: 1.05rem; font-weight: bold; color: #FFFFFF;">{q.get('question_text')}</span>
+                    </div>
+                    """, unsafe_allow_html=True)
+
+                    opt_a = q.get('option_a', 'Option A')
+                    opt_b = q.get('option_b', 'Option B')
+                    opt_c = q.get('option_c', 'Option C')
+
+                    opts_list = [f"a) {opt_a}", f"b) {opt_b}", f"c) {opt_c}"]
+                    user_horen_answers[idx] = st.radio(f"Antwort {item_num}:", opts_list, key=f"horen_t13_ans_{idx}", label_visibility="collapsed")
+                    st.markdown("---")
+
+                sub_h13 = st.form_submit_button(f"📥 Submit Hören {part_title} Answers")
+                if sub_h13:
+                    score = 0
+                    results = []
+                    for idx, q in enumerate(q_list):
+                        given = str(user_horen_answers.get(idx, "")).strip().lower()
+                        correct_letter = str(q.get("correct_answer", "a")).strip().lower()
+                        is_corr = given.startswith(correct_letter)
+                        if is_corr:
+                            score += 1
+                        
+                        target_opt_text = q.get(f"option_{correct_letter}", "")
+                        results.append({
+                            "q_num": q.get("item_num", idx + 1),
+                            "given": user_horen_answers.get(idx, ""),
+                            "correct": f"{correct_letter}) {target_opt_text}",
+                            "is_correct": is_corr,
+                            "explanation": q.get("explanation")
+                        })
+                    st.session_state.horen_score = score
+                    st.session_state.horen_results = results
+                    st.session_state.horen_complete = True
+                    st.rerun()
 
     elif st.session_state.horen_complete:
         score = st.session_state.horen_score
@@ -1527,7 +1654,6 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
         st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
         if st.button("🔄 Try Another Hören Set", key="retry_horen"):
             st.session_state.horen_complete = False
-            st.session_state.horen_active = False
             st.session_state.horen_questions = []
             st.rerun()
 
