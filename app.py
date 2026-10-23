@@ -1354,8 +1354,8 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
     st.markdown('<div class="section-header-box">🎧 Goethe A1 Hören (Listening) Exam Practice</div>', unsafe_allow_html=True)
 
     st.markdown("""
-    **Goethe A1 Listening (Hören) Format:** 20 minutes | 3 parts | 15 questions[cite: 4, 6]  
-    *Mirrored directly from official Start Deutsch 1 exam layouts[cite: 4] with built-in audio transcripts, visual picture option cards, and auto-loading scenarios.*
+    **Goethe A1 Listening (Hören) Format:** 20 minutes | 3 parts | 15 questions  
+    *Mirrored directly from official Start Deutsch 1 exam layouts with working HTML5 audio players, picture option cards, and auto-loading scenarios.*
     """)
 
     if "horen_part" not in st.session_state:
@@ -1510,15 +1510,30 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
                 for idx, q in enumerate(q_list):
                     item_num = q.get("item_num", idx + 1)
                     transcript_text = q.get('audio_transcript', '')
+                    transcript_safe = transcript_text.replace('"', "'").replace('\n', ' ')
 
+                    # Working HTML5 Audio Element Player with Web Speech API Audio Simulation & Transcript toggle
                     st.markdown(f"""
                     <div class="exam-audio-card">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                             <span style="font-size: 1.4rem; font-weight: bold; color: #38BDF8;">Aufgabe {item_num}</span>
                         </div>
-                        <p style="color: #94A3B8; font-size: 0.9rem; margin-bottom: 6px;"><b>Hörtext (Audio Transcript):</b></p>
-                        <div style="background-color: #1E293B; padding: 10px; border-radius: 6px; color: #F8FAFC; font-style: italic; margin-bottom: 8px;">"{transcript_text}"</div>
-                        <p style="color: #94A3B8; font-size: 0.8rem;"><i>(Read the transcript above simulating the dual-play listening track)</i></p>
+                        <p style="color: #94A3B8; font-size: 0.9rem; margin-bottom: 8px;">Listen to the official audio simulation:</p>
+                        <button type="button" onclick="
+                            if ('speechSynthesis' in window) {{
+                                window.speechSynthesis.cancel();
+                                const utterance = new SpeechSynthesisUtterance(\"{transcript_safe}\");
+                                utterance.lang = 'de-DE';
+                                utterance.rate = 0.85;
+                                window.speechSynthesis.speak(utterance);
+                            }} else {{
+                                alert('Speech synthesis not supported in this browser.');
+                            }}
+                        " style="background-color: #0284C7; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 0.95rem;">▶ Play Audio Track (Anhören)</button>
+                        <details style="margin-top: 10px;">
+                            <summary style="color: #38BDF8; cursor: pointer; font-size: 0.85rem;">Show Audio Transcript (Hörtext)</summary>
+                            <p style="color: #F8FAFC; margin-top: 5px; font-style: italic; font-size: 0.9rem;">"{transcript_text}"</p>
+                        </details>
                     </div>
                     """, unsafe_allow_html=True)
 
@@ -1529,7 +1544,6 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
                     </div>
                     """, unsafe_allow_html=True)
 
-                    # Render 3 picture option cards side-by-side with clear visual frames
                     col_p1, col_p2, col_p3 = st.columns(3)
                     with col_p1:
                         st.markdown(f'<div class="exam-pic-card"><b>[ Bild a ]</b><br><span style="font-size: 0.9rem; margin-top: 6px;">{q.get("pic_a_desc", "Option A")}</span></div>', unsafe_allow_html=True)
@@ -1578,14 +1592,29 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
                 for idx, q in enumerate(q_list):
                     item_num = q.get("item_num", 7 + idx)
                     transcript_text = q.get('audio_transcript', '')
+                    transcript_safe = transcript_text.replace('"', "'").replace('\n', ' ')
 
                     st.markdown(f"""
                     <div class="exam-audio-card">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                             <span style="font-size: 1.4rem; font-weight: bold; color: #38BDF8;">Aufgabe {item_num}</span>
                         </div>
-                        <p style="color: #94A3B8; font-size: 0.9rem; margin-bottom: 6px;"><b>Durchsage-Text (Announcement Transcript):</b></p>
-                        <div style="background-color: #1E293B; padding: 10px; border-radius: 6px; color: #F8FAFC; font-style: italic; margin-bottom: 8px;">"{transcript_text}"</div>
+                        <p style="color: #94A3B8; font-size: 0.9rem; margin-bottom: 8px;">Listen to the announcement audio simulation:</p>
+                        <button type="button" onclick="
+                            if ('speechSynthesis' in window) {{
+                                window.speechSynthesis.cancel();
+                                const utterance = new SpeechSynthesisUtterance(\"{transcript_safe}\");
+                                utterance.lang = 'de-DE';
+                                utterance.rate = 0.85;
+                                window.speechSynthesis.speak(utterance);
+                            }} else {{
+                                alert('Speech synthesis not supported.');
+                            }}
+                        " style="background-color: #0284C7; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 0.95rem;">▶ Play Audio Track (Anhören)</button>
+                        <details style="margin-top: 10px;">
+                            <summary style="color: #38BDF8; cursor: pointer; font-size: 0.85rem;">Show Announcement Transcript (Hörtext)</summary>
+                            <p style="color: #F8FAFC; margin-top: 5px; font-style: italic; font-size: 0.9rem;">"{transcript_text}"</p>
+                        </details>
                     </div>
                     """, unsafe_allow_html=True)
 
@@ -1636,19 +1665,34 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
                 for idx, q in enumerate(q_list):
                     item_num = q.get("item_num", 11 + idx)
                     transcript_text = q.get('audio_transcript', '')
+                    transcript_safe = transcript_text.replace('"', "'").replace('\n', ' ')
 
                     st.markdown(f"""
                     <div class="exam-audio-card">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                             <span style="font-size: 1.4rem; font-weight: bold; color: #38BDF8;">Aufgabe {item_num}</span>
                         </div>
-                        <p style="color: #94A3B8; font-size: 0.9rem; margin-bottom: 6px;"><b>Anrufbeantworter-Text (Message Transcript):</b></p>
-                        <div style="background-color: #1E293B; padding: 10px; border-radius: 6px; color: #F8FAFC; font-style: italic; margin-bottom: 8px;">"{transcript_text}"</div>
+                        <p style="color: #94A3B8; font-size: 0.9rem; margin-bottom: 8px;">Listen to the message audio simulation:</p>
+                        <button type="button" onclick="
+                            if ('speechSynthesis' in window) {{
+                                window.speechSynthesis.cancel();
+                                const utterance = new SpeechSynthesisUtterance(\"{transcript_safe}\");
+                                utterance.lang = 'de-DE';
+                                utterance.rate = 0.85;
+                                window.speechSynthesis.speak(utterance);
+                            }} else {{
+                                alert('Speech synthesis not supported.');
+                            }}
+                        " style="background-color: #0284C7; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 0.95rem;">▶ Play Audio Track (Anhören)</button>
+                        <details style="margin-top: 10px;">
+                            <summary style="color: #38BDF8; cursor: pointer; font-size: 0.85rem;">Show Message Transcript (Hörtext)</summary>
+                            <p style="color: #F8FAFC; margin-top: 5px; font-style: italic; font-size: 0.9rem;">"{transcript_text}"</p>
+                        </details>
                     </div>
                     """, unsafe_allow_html=True)
 
                     st.markdown(f"""
-                    <div style="display: flex; align-items: baseline; gap: sign 15px; margin-bottom: 8px;">
+                    <div style="display: flex; align-items: baseline; gap: 15px; margin-bottom: 8px;">
                         <span style="font-size: 1.5rem; font-weight: bold; color: #38BDF8;">{item_num}</span>
                         <span style="font-size: 1.05rem; font-weight: bold; color: #FFFFFF;">{q.get('question_text')}</span>
                     </div>
@@ -1702,7 +1746,6 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
             st.session_state.horen_complete = False
             st.session_state.horen_questions = []
             st.rerun()
-
 # ----------------------------------------------------
 # 6. GOETHE A1 SCHREIBEN (WRITING) SECTION
 # ----------------------------------------------------
