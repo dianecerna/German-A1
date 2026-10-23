@@ -2017,7 +2017,7 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
 
     st.markdown("""
     **Goethe A1 Speaking (Sprechen) Format:** 15 minutes | 3 parts  
-    *Mirrored directly from official Start Deutsch 1 exam card layouts (Teil 1 personal introduction prompt cards, Teil 2 thematic flashcard draw and 4-row grid display, and Teil 3 flashcard draw with visual photo cards and grid overview).*
+    *Mirrored directly from official Start Deutsch 1 exam card layouts (Teil 1 personal introduction prompt cards, Teil 2 thematic flashcard draw and grid display, and Teil 3 flashcard draw with high-definition object photo cards).*
     """)
 
     if "sprechen_part" not in st.session_state:
@@ -2032,7 +2032,6 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
         st.session_state.drawn_card = None
     if "drawn_theme" not in st.session_state:
         st.session_state.drawn_theme = ""
-    # State for Part 3 flashcard draw
     if "drawn_p3_card" not in st.session_state:
         st.session_state.drawn_p3_card = None
     if "drawn_p3_category" not in st.session_state:
@@ -2054,7 +2053,7 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
 
     st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
 
-    # Styling for authentic exam prompt cards, borders, and visual icon frames
+    # Styling for authentic exam prompt cards, borders, and visual frames
     st.markdown("""
         <style>
         div.stRadio label, div.stTextInput label, div.stTextInput input, div.stSelectbox label, div.stTextArea label {
@@ -2111,7 +2110,7 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
     if "Part 1" in st.session_state.sprechen_part:
         st.markdown("""
         #### 📌 Part 1: Sich vorstellen (Personal Info Prompt Cards)
-        * **Exam Format:** Introduce yourself using the prompt cards shown below (Name, Alter, Land, Wohnort, Sprachen, Beruf, Hobby)[cite: 18].
+        * **Exam Format:** Introduce yourself using the prompt cards shown below (Name, Alter, Land, Wohnort, Sprachen, Beruf, Hobby).
         """)
     elif "Part 2" in st.session_state.sprechen_part:
         st.markdown("""
@@ -2138,7 +2137,7 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
             st.session_state.drawn_p3_category = ""
             st.rerun()
 
-    # Master dictionaries for Sprechen Part 2 and Part 3
+    # Master dictionaries for Sprechen Part 2 and Part 3 with reliable photo URLs
     sprechen_themes = {
         "Thema: Essen & Trinken": ["Frühstück", "Lieblingsessen", "Restaurant", "Bier / Wein / Kaffee", "Sonntag", "Fleisch / Fisch"],
         "Thema: Einkaufen": ["Supermarkt", "Obst / Gemüse", "Buch", "Kasse", "Kleidung / Schuhe", "Stadtmitte"],
@@ -2152,32 +2151,32 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
 
     sprechen_p3_items = {
         "Essen & Trinken (Food & Drink)": [
-            {"title": "Wasser / Glas Wasser", "img_prompt": "A clear glass filled with pure clean water on a table, clean black and white line-art exam icon style"},
-            {"title": "Kaffee / Tasse Kaffee", "img_prompt": "A warm cup of coffee with steam rising, clean black and white line-art exam icon style"},
-            {"title": "Apfel / Banane", "img_prompt": "An apple and a banana side by side, clean black and white line-art exam icon style"},
-            {"title": "Brötchen / Brot", "img_prompt": "A freshly baked bread roll and sliced bread, clean black and white line-art exam icon style"},
-            {"title": "Fasche Cola / Saft", "img_prompt": "A bottle of juice or cola with a glass, clean black and white line-art exam icon style"}
+            {"title": "Wasser / Glas Wasser", "img_url": "https://images.unsplash.com/photo-1548839140-29a749e1cf4d?w=500&auto=format&fit=crop&q=60"},
+            {"title": "Kaffee / Tasse Kaffee", "img_url": "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=500&auto=format&fit=crop&q=60"},
+            {"title": "Apfel / Banane", "img_url": "https://images.unsplash.com/photo-1619546813926-a78fa6370cd2?w=500&auto=format&fit=crop&q=60"},
+            {"title": "Brötchen / Brot", "img_url": "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=500&auto=format&fit=crop&q=60"},
+            {"title": "Flasche Cola / Saft", "img_url": "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=500&auto=format&fit=crop&q=60"}
         ],
         "Kursraum & Büro (Classroom & Office)": [
-            {"title": "Bleistift / Kuli", "img_prompt": "A wooden pencil and a ballpoint pen, clean black and white line-art exam icon style"},
-            {"title": "Wörterbuch / Buch", "img_prompt": "A thick dictionary and a book labeled Deutsch, clean black and white line-art exam icon style"},
-            {"title": "Papier / Heft", "img_prompt": "A notebook and sheets of paper, clean black and white line-art exam icon style"},
-            {"title": "Computer / Laptop", "img_prompt": "A desktop computer and keyboard on a desk, clean black and white line-art exam icon style"},
-            {"title": "Taschenrechner", "img_prompt": "A digital pocket calculator, clean black and white line-art exam icon style"}
+            {"title": "Bleistift / Kuli", "img_url": "https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?w=500&auto=format&fit=crop&q=60"},
+            {"title": "Wörterbuch / Buch", "img_url": "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=500&auto=format&fit=crop&q=60"},
+            {"title": "Papier / Heft", "img_url": "https://images.unsplash.com/photo-1517842645767-c639042777db?w=500&auto=format&fit=crop&q=60"},
+            {"title": "Computer / Laptop", "img_url": "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=500&auto=format&fit=crop&q=60"},
+            {"title": "Taschenrechner", "img_url": "https://images.unsplash.com/photo-1594980593470-76c257321033?w=500&auto=format&fit=crop&q=60"}
         ],
         "Alltag & Reisen (Everyday Life & Travel)": [
-            {"title": "Schlüssel", "img_prompt": "A metal house door key on a ring, clean black and white line-art exam icon style"},
-            {"title": "Handy / Smartphone", "img_prompt": "A modern smartphone device, clean black and white line-art exam icon style"},
-            {"title": "Fahrkarte / Ticket", "img_prompt": "A train ticket or transport pass, clean black and white line-art exam icon style"},
-            {"title": "Uhr", "img_prompt": "A wall clock showing time, clean black and white line-art exam icon style"},
-            {"title": "Tasche / Rucksack", "img_prompt": "A travel backpack and shoulder bag, clean black and white line-art exam icon style"},
-            {"title": "Zeitung", "img_prompt": "A folded daily newspaper, clean black and white line-art exam icon style"}
+            {"title": "Schlüssel", "img_url": "https://images.unsplash.com/photo-1582139329536-e7284fece509?w=500&auto=format&fit=crop&q=60"},
+            {"title": "Handy / Smartphone", "img_url": "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500&auto=format&fit=crop&q=60"},
+            {"title": "Fahrkarte / Ticket", "img_url": "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=500&auto=format&fit=crop&q=60"},
+            {"title": "Uhr", "img_url": "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=500&auto=format&fit=crop&q=60"},
+            {"title": "Tasche / Rucksack", "img_url": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500&auto=format&fit=crop&q=60"},
+            {"title": "Zeitung", "img_url": "https://images.unsplash.com/photo-1585829365295-ab7cd400c167?w=500&auto=format&fit=crop&q=60"}
         ],
         "Gesundheit & Sonstiges (Health & Miscellaneous)": [
-            {"title": "Tablette / Aspirin", "img_prompt": "Medical pills and blister pack, clean black and white line-art exam icon style"},
-            {"title": "Taschentuch", "img_prompt": "A pack of facial tissues, clean black and white line-art exam icon style"},
-            {"title": "Regenschirm", "img_prompt": "An open rain umbrella, clean black and white line-art exam icon style"},
-            {"title": "Geld / Kreditkarte", "img_prompt": "Euro banknotes and a credit card, clean black and white line-art exam icon style"}
+            {"title": "Tablette / Aspirin", "img_url": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=500&auto=format&fit=crop&q=60"},
+            {"title": "Taschentuch", "img_url": "https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?w=500&auto=format&fit=crop&q=60"},
+            {"title": "Regenschirm", "img_url": "https://images.unsplash.com/photo-1534274988757-a28bf1a57c17?w=500&auto=format&fit=crop&q=60"},
+            {"title": "Geld / Kreditkarte", "img_url": "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=500&auto=format&fit=crop&q=60"}
         ]
     }
 
@@ -2222,7 +2221,6 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
             # --- SPRECHEN TEIL 2 (Flashcard Draw + Practice + 4-Row Grid) ---
             st.markdown("### 📇 Sprechen Teil 2: Themenkarten ziehen")
 
-            # TOP PART: Flashcard Draw Component
             col_draw1, col_draw2 = st.columns([1, 1])
             with col_draw1:
                 if st.button("🃏 Ziehen Sie eine Karte (Draw Card)", key="draw_flashcard_btn"):
@@ -2245,7 +2243,6 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
 
             st.markdown("---")
 
-            # MIDDLE PART: Practice Your Question and Answer
             st.markdown("### 🎙️ Practice Your Question & Answer")
             active_keyword = st.session_state.drawn_card if st.session_state.drawn_card else "Frühstück"
             user_spoken_p2 = st.text_area(f"Type your question and answer for keyword '{active_keyword}':", key="spoken_p2_input", placeholder="Wann frühstücken Sie am Wochenende?")
@@ -2266,7 +2263,6 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
 
             st.markdown("---")
 
-            # BOTTOM PART: All words inside boxes arranged in 4 rows (2 items per row)
             st.markdown("### 📚 Alle Themenkarten (Übersicht)")
             
             theme_items = list(sprechen_themes.items())
@@ -2302,7 +2298,6 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
             # --- SPRECHEN TEIL 3 (Flashcard Photo Draw + Practice + Full Grid Overview) ---
             st.markdown("### 📇 Sprechen Teil 3: Visuelle Objektkarte ziehen")
 
-            # TOP PART: Flashcard Draw Component for Photo Cards
             col_draw_p3_1, col_draw_p3_2 = st.columns([1, 1])
             with col_draw_p3_1:
                 if st.button("🃏 Ziehen Sie eine Bildkarte (Draw Photo Card)", key="draw_p3_card_btn"):
@@ -2316,17 +2311,8 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
             if st.session_state.drawn_p3_card:
                 card_data = st.session_state.drawn_p3_card
                 
-                # GENERATE THE ACTUAL PHOTO CARD
-                photo_prompt = f"A realistic photograph of a single object: {card_data.get('title')}. The image should be clean, centered, and professional, suitable for a language exam card. Shot on a simple white background."
-                with st.spinner(f"Generating photo for '{card_data.get('title')}'..."):
-                    try:
-                        # Replace with your actual photo generation call
-                        photo_url = generate_single_image(photo_prompt)
-                        st.image(photo_url, caption=f"Karte: {card_data.get('title')}", width=300)
-                    except:
-                        # Fallback if generation fails
-                        st.error("Failed to generate photo. Displaying icon prompt instead.")
-                        st.code(card_data.get('img_prompt'))
+                # Render the actual photograph card
+                st.image(card_data.get('img_url'), caption=f"Karte: {card_data.get('title')}", width=350)
                 
                 st.markdown(f"""
                 <div class="exam-visual-card" style="border-color: #0284C7; background-color: #0F172A; color: #F8FAFC;">
@@ -2339,7 +2325,6 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
 
             st.markdown("---")
 
-            # MIDDLE PART: Practice Your Polite Request & Reaction
             st.markdown("### 🎙️ Practice Your Polite Request & Reaction")
             active_p3_title = st.session_state.drawn_p3_card.get('title') if st.session_state.drawn_p3_card else "Glas Wasser"
             user_spoken_p3 = st.text_area(f"Type your polite request and reaction for photo card '{active_p3_title}':", key="spoken_p3_input", placeholder="Entschuldigung, könnten Sie mir bitte ein Glas Wasser geben?")
@@ -2360,7 +2345,6 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
 
             st.markdown("---")
 
-            # BOTTOM PART: All photo items arranged in 4 rows / category boxes
             st.markdown("### 📚 Alle Bildkarten (Übersicht)")
             
             p3_items = list(sprechen_p3_items.items())
@@ -2398,7 +2382,6 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
             st.session_state.sprechen_complete = False
             st.session_state.sprechen_questions = []
             st.rerun()
-
 
 # ----------------------------------------------------
 # 8. A1 & A2 SHORT STORIES
