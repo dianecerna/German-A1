@@ -2523,7 +2523,7 @@ elif nav_choice == "📖 Vocabulary":
 
 
 # ----------------------------------------------------
-# VIRTUAL LIBRARY SECTION
+# 9. VIRTUAL LIBRARY SECTION
 # ----------------------------------------------------
 elif nav_choice == "Virtual Library":
     render_top_back_button()
