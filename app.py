@@ -927,44 +927,430 @@ elif nav_choice == "📖 Core Grammar Practice & Exercises":
             st.rerun()
 
 # ----------------------------------------------------
-# 4. GOETHE A1 LESEN
+# 4. GOETHE A1 LESEN (READING)
 # ----------------------------------------------------
 elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
     render_top_back_button()
-    st.markdown('<div class="section-header-box">📖 Goethe A1 Lesen (Reading)</div>', unsafe_allow_html=True)
-    st.markdown('<div class="main-card">', unsafe_allow_html=True)
-    st.write("Content removed.")
-    st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-header-box">📖 Goethe A1 Lesen (Reading) Exam Practice</div>', unsafe_allow_html=True)
+
+    st.markdown("""
+    **Goethe A1 Reading (Lesen) Format:** 25 minutes | 3 parts | 15 questions  
+    *Prepare specifically for your December 12 exam with authentic task structures.*
+    """)
+
+    # Initialize session state for Lesen
+    if "lesen_part" not in st.session_state:
+        st.session_state.lesen_part = "Part 1: Match Short Texts & Ads"
+    if "lesen_active" not in st.session_state:
+        st.session_state.lesen_active = False
+    if "lesen_questions" not in st.session_state:
+        st.session_state.lesen_questions = []
+    if "lesen_complete" not in st.session_state:
+        st.session_state.lesen_complete = False
+
+    lesen_parts = [
+        "Part 1: Match Short Texts & Ads (5 questions)",
+        "Part 2: Emails & Multiple Choice Selection (5 questions)",
+        "Part 3: Public Information & Detail Extraction (5 questions)"
+    ]
+
+    chosen_lesen_part = st.selectbox("Select Goethe Lesen Exam Part:", lesen_parts, key="lesen_part_dropdown", label_visibility="collapsed")
+
+    if chosen_lesen_part != st.session_state.lesen_part:
+        st.session_state.lesen_part = chosen_lesen_part
+        st.session_state.lesen_active = False
+        st.session_state.lesen_complete = False
+        st.session_state.lesen_questions = []
+        st.rerun()
+
+    st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+
+    # Part Descriptions & Practice launcher
+    if "Part 1" in st.session_state.lesen_part:
+        st.markdown("""
+        #### 📌 Part 1: Match five short texts / advertisements
+        * **Task Description:** Read five short situations or needs and match them with corresponding advertisements, notices, or classifieds. One ad is a distractor.
+        """)
+    elif "Part 2" in st.session_state.lesen_part:
+        st.markdown("""
+        #### 📌 Part 2: Read emails or notes & choose correct options
+        * **Task Description:** Read short personal messages, notes, or emails and select the correct option (out of 2 choices per question) testing general content and specific details.
+        """)
+    else:
+        st.markdown("""
+        #### 📌 Part 3: Public information, signs, and timetables
+        * **Task Description:** Read short public notices, signs, schedules, or announcements and answer True/False or Multiple Choice questions based on specific data extraction.
+        """)
+
+    st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+
+    if not st.session_state.lesen_active and not st.session_state.lesen_complete:
+        if st.button("🚀 Start Lesen Practice Session", key="start_lesen_btn"):
+            lesen_prompt = f"""
+            Generate an authentic Goethe A1 Reading (Lesen) practice module for '{st.session_state.lesen_part}'.
+            Provide 5 rigorous exam-style questions mirroring the exact official format.
+            Return strict JSON array with this exact schema:
+            [
+                {{
+                    "q_num": 1,
+                    "text_prompt": "Reading text, notice, or email scenario here in German with English context",
+                    "question_text": "Question or matching prompt here",
+                    "options": ["Option A", "Option B"],
+                    "correct_answer": "Exact correct answer",
+                    "explanation": "Detailed explanation of why this answer is correct."
+                }}
+            ]
+            Ensure there are exactly 5 items in the array.
+            """
+            with st.spinner("Generating Goethe A1 Reading practice set..."):
+                try:
+                    lesen_raw = generate_cached_content(lesen_prompt, is_json=True)
+                    st.session_state.lesen_questions = json.loads(lesen_raw)
+                    st.session_state.lesen_active = True
+                    st.rerun()
+                except Exception as e:
+                    st.error(f"Failed to generate Lesen practice: {str(e)}")
+
+    elif st.session_state.lesen_active and not st.session_state.lesen_complete:
+        q_list = st.session_state.lesen_questions
+        with st.form(key="lesen_quiz_form"):
+            user_lesen_answers = {}
+            for idx, q in enumerate(q_list):
+                st.markdown(f"**Question {idx + 1} of {len(q_list)}**")
+                st.markdown(f"> *{q.get('text_prompt')}*")
+                st.markdown(f"**{q.get('question_text')}**")
+
+                opts = q.get("options", ["A", "B"])
+                user_lesen_answers[idx] = st.radio("Choose your answer:", opts, key=f"lesen_ans_{idx}")
+                st.markdown("---")
+
+            sub_lesen = st.form_submit_button("📥 Submit Lesen Answers")
+            if sub_lesen:
+                score = 0
+                results = []
+                for idx, q in enumerate(q_list):
+                    given = str(user_lesen_answers.get(idx, "")).strip().lower()
+                    correct = str(q.get("correct_answer", "")).strip().lower()
+                    is_corr = given == correct or correct in given or given in correct
+                    if is_corr:
+                        score += 1
+                    results.append({
+                        "q_num": idx + 1,
+                        "given": user_lesen_answers.get(idx, ""),
+                        "correct": q.get("correct_answer"),
+                        "is_correct": is_corr,
+                        "explanation": q.get("explanation"),
+                        "text": q.get("text_prompt")
+                    })
+                st.session_state.lesen_score = score
+                st.session_state.lesen_results = results
+                st.session_state.lesen_active = False
+                st.session_state.lesen_complete = True
+                st.rerun()
+
+    elif st.session_state.lesen_complete:
+        score = st.session_state.lesen_score
+        total = len(st.session_state.lesen_questions)
+        st.markdown(f"### 📊 Lesen Practice Results: {score}/{total}")
+        
+        for res in st.session_state.get("lesen_results", []):
+            if res["is_correct"]:
+                st.success(f"**Q{res['q_num']} Correct!** Your answer: {res['given']}")
+            else:
+                st.error(f"**Q{res['q_num']} Incorrect.**\n- **Your Answer:** {res['given']}\n- **Correct Answer:** {res['correct']}\n- **Explanation:** {res['explanation']}")
+
+        st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+        if st.button("🔄 Try Another Lesen Set", key="retry_lesen"):
+            st.session_state.lesen_complete = False
+            st.session_state.lesen_active = False
+            st.session_state.lesen_questions = []
+            st.rerun()
+
 
 # ----------------------------------------------------
-# 5. GOETHE A1 HÖREN
+# 5. GOETHE A1 HÖREN (LISTENING)
 # ----------------------------------------------------
 elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
     render_top_back_button()
-    st.markdown('<div class="section-header-box">🎧 Goethe A1 Hören (Listening)</div>', unsafe_allow_html=True)
-    st.markdown('<div class="main-card">', unsafe_allow_html=True)
-    st.write("Content removed.")
-    st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-header-box">🎧 Goethe A1 Hören (Listening) Exam Practice</div>', unsafe_allow_html=True)
+
+    st.markdown("""
+    **Goethe A1 Listening (Hören) Format:** 20 minutes | 3 parts | 15 questions  
+    *Note: Part 2 requires close attention to numbers and announcements.*
+    """)
+
+    if "horen_part" not in st.session_state:
+        st.session_state.horen_part = "Part 1: Picture-based Multiple Choice"
+    if "horen_active" not in st.session_state:
+        st.session_state.horen_active = False
+    if "horen_questions" not in st.session_state:
+        st.session_state.horen_questions = []
+    if "horen_complete" not in st.session_state:
+        st.session_state.horen_complete = False
+
+    horen_parts = [
+        "Part 1: Picture-based Multiple Choice (6 conversations, played twice)",
+        "Part 2: Announcements True/False - Focus on Numbers (4 announcements)",
+        "Part 3: Messages & Detail Extraction (5 messages, a/b/c options)"
+    ]
+
+    chosen_horen_part = st.selectbox("Select Goethe Hören Exam Part:", horen_parts, key="horen_part_dropdown", label_visibility="collapsed")
+
+    if chosen_horen_part != st.session_state.horen_part:
+        st.session_state.horen_part = chosen_horen_part
+        st.session_state.horen_active = False
+        st.session_state.horen_complete = False
+        st.session_state.horen_questions = []
+        st.rerun()
+
+    st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+
+    if "Part 1" in st.session_state.horen_part:
+        st.markdown("""
+        #### 📌 Part 1: Six short conversations with 3 picture-based options
+        * **Exam Strategy:** Listen for key objects, times, or activities. Select the corresponding visual scenario description.
+        """)
+    elif "Part 2" in st.session_state.horen_part:
+        st.markdown("""
+        #### 📌 Part 2: Four announcements (True / False)
+        * **Exam Strategy:** Highly challenging part. Pay meticulous attention to numbers, platform numbers, times, prices, and flight/train gates.
+        """)
+    else:
+        st.markdown("""
+        #### 📌 Part 3: Five telephone or public audio messages (a, b, c)
+        * **Exam Strategy:** Extract specific reasons for calling or appointments from answering machine messages.
+        """)
+
+    st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+
+    if not st.session_state.horen_active and not st.session_state.horen_complete:
+        if st.button("🚀 Start Hören Practice Simulation", key="start_horen_btn"):
+            horen_prompt = f"""
+            Generate an authentic Goethe A1 Listening (Hören) simulation script and questions for '{st.session_state.horen_part}'.
+            Provide simulation transcripts (audio scripts) and exam questions (4-5 questions).
+            Return strict JSON array with this exact schema:
+            [
+                {{
+                    "q_num": 1,
+                    "audio_script": "German dialogue or announcement transcript simulating the audio track",
+                    "question_text": "Exam question based on the audio",
+                    "options": ["Option A", "Option B", "Option C"],
+                    "correct_answer": "Exact correct answer",
+                    "explanation": "Detailed explanation citing numbers or keywords from the script."
+                }}
+            ]
+            """
+            with st.spinner("Generating Goethe A1 Listening simulation..."):
+                try:
+                    horen_raw = generate_cached_content(horen_prompt, is_json=True)
+                    st.session_state.horen_questions = json.loads(horen_raw)
+                    st.session_state.horen_active = True
+                    st.rerun()
+                except Exception as e:
+                    st.error(f"Failed to generate Hören practice: {str(e)}")
+
+    elif st.session_state.horen_active and not st.session_state.horen_complete:
+        q_list = st.session_state.horen_questions
+        with st.form(key="horen_quiz_form"):
+            user_horen_answers = {}
+            for idx, q in enumerate(q_list):
+                st.markdown(f"**Item {idx + 1} of {len(q_list)}**")
+                st.markdown(f"> 🔊 **Audio Simulation Transcript:** *{q.get('audio_script')}*")
+                st.markdown(f"**{q.get('question_text')}**")
+
+                opts = q.get("options", ["A", "B", "C"])
+                user_horen_answers[idx] = st.radio("Choose your answer:", opts, key=f"horen_ans_{idx}")
+                st.markdown("---")
+
+            sub_horen = st.form_submit_button("📥 Submit Hören Answers")
+            if sub_horen:
+                score = 0
+                results = []
+                for idx, q in enumerate(q_list):
+                    given = str(user_horen_answers.get(idx, "")).strip().lower()
+                    correct = str(q.get("correct_answer", "")).strip().lower()
+                    is_corr = given == correct or correct in given or given in correct
+                    if is_corr:
+                        score += 1
+                    results.append({
+                        "q_num": idx + 1,
+                        "given": user_horen_answers.get(idx, ""),
+                        "correct": q.get("correct_answer"),
+                        "is_correct": is_corr,
+                        "explanation": q.get("explanation"),
+                        "script": q.get("audio_script")
+                    })
+                st.session_state.horen_score = score
+                st.session_state.horen_results = results
+                st.session_state.horen_active = False
+                st.session_state.horen_complete = True
+                st.rerun()
+
+    elif st.session_state.horen_complete:
+        score = st.session_state.horen_score
+        total = len(st.session_state.horen_questions)
+        st.markdown(f"### 📊 Hören Simulation Results: {score}/{total}")
+
+        for res in st.session_state.get("horen_results", []):
+            if res["is_correct"]:
+                st.success(f"**Item {res['q_num']} Correct!** Your answer: {res['given']}")
+            else:
+                st.error(f"**Item {res['q_num']} Incorrect.**\n- **Your Answer:** {res['given']}\n- **Correct Answer:** {res['correct']}\n- **Explanation:** {res['explanation']}")
+
+        st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+        if st.button("🔄 Try Another Hören Set", key="retry_horen"):
+            st.session_state.horen_complete = False
+            st.session_state.horen_active = False
+            st.session_state.horen_questions = []
+            st.rerun()
+
 
 # ----------------------------------------------------
-# 6. GOETHE A1 SCHREIBEN
+# 6. GOETHE A1 SCHREIBEN (WRITING)
 # ----------------------------------------------------
 elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
     render_top_back_button()
-    st.markdown('<div class="section-header-box">✍️ Goethe A1 Schreiben (Writing)</div>', unsafe_allow_html=True)
-    st.markdown('<div class="main-card">', unsafe_allow_html=True)
-    st.write("Content removed.")
-    st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-header-box">✍️ Goethe A1 Schreiben (Writing) Exam Practice</div>', unsafe_allow_html=True)
+
+    st.markdown("""
+    **Goethe A1 Writing (Schreiben) Format:** 20 minutes | 2 tasks  
+    *Practice form filling and short 4-5 sentence email scenarios.*
+    """)
+
+    schreiben_task = st.selectbox("Select Goethe Schreiben Task:", [
+        "Task 1: Fill out a personal information form",
+        "Task 2: Write a short message / email (4-5 sentences)"
+    ], key="schreiben_dropdown", label_visibility="collapsed")
+
+    st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+
+    if "Task 1" in schreiben_task:
+        st.markdown("""
+        #### 📌 Task 1: Personal Data Form Filling
+        * **Instructions:** Fill out name, address, date of birth, nationality, and reason for stay accurately based on standard Goethe prompts.
+        """)
+        
+        with st.form("schreiben_task1_form"):
+            f_name = st.text_input("Vorname (First Name):")
+            l_name = st.text_input("Nachname (Last Name):")
+            dob = st.text_input("Geburtsdatum (Date of Birth - DD.MM.YYYY):")
+            country = st.text_input("Land (Country / Nationality):")
+            address = st.text_input("Adresse (Street & City):")
+            
+            sub_f1 = st.form_submit_button("📥 Evaluate Form")
+            if sub_f1:
+                eval_prompt = f"""
+                Evaluate the student's Goethe A1 Form filling task:
+                - First Name: {f_name}
+                - Last Name: {l_name}
+                - DOB: {dob}
+                - Country: {country}
+                - Address: {address}
+                Provide detailed feedback on spelling, capitalization of German nouns, and completeness for the exam.
+                """
+                with st.spinner("Evaluating your form..."):
+                    feedback = generate_cached_content(eval_prompt)
+                    st.markdown("### 📋 Evaluator Feedback:")
+                    st.markdown(feedback)
+
+    else:
+        st.markdown("""
+        #### 📌 Task 2: Short Message or Email (4–5 Sentences)
+        * **Scenario:** Write a short message to a friend or colleague (e.g., inviting them to dinner, cancelling an appointment, or asking for information).
+        """)
+        
+        scenario_prompt = "Schreiben Sie eine E-Mail an Ihre Freundin Anna. Sie möchten am Wochenende zusammen kochen. Schreiben Sie 4-5 Sätze (Einladung, wann, was mitbringen)."
+        st.markdown(f"> **Exam Scenario:** {scenario_prompt}")
+
+        user_email = st.text_area("Your German Message (4-5 sentences):", height=150, key="user_schreiben_email")
+
+        if st.button("📥 Evaluate Written Message", key="eval_email_btn"):
+            if not user_email.strip():
+                st.warning("Please write your response before evaluating.")
+            else:
+                eval_email_prompt = f"""
+                Act as an official Goethe A1 examiner. Evaluate this student response for Task 2:
+                Scenario: {scenario_prompt}
+                Student Response: {user_email}
+                Check for:
+                1. Fulfillment of all 3 prompt points.
+                2. Sentence structure (Verb position in main and subordinate clauses).
+                3. Vocabulary and spelling accuracy.
+                Provide constructive score estimation out of 10 and specific corrections.
+                """
+                with st.spinner("Examiner is reviewing your writing..."):
+                    email_feedback = generate_cached_content(eval_email_prompt)
+                    st.markdown("### 📝 Official Examiner Feedback:")
+                    st.markdown(email_feedback)
+
 
 # ----------------------------------------------------
-# 7. GOETHE A1 SPRECHEN
+# 7. GOETHE A1 SPRECHEN (SPEAKING)
 # ----------------------------------------------------
 elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
     render_top_back_button()
-    st.markdown('<div class="section-header-box">🗣️ Goethe A1 Sprechen (Speaking)</div>', unsafe_allow_html=True)
-    st.markdown('<div class="main-card">', unsafe_allow_html=True)
-    st.write("Content removed.")
-    st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-header-box">🗣️ Goethe A1 Sprechen (Speaking) Exam Practice</div>', unsafe_allow_html=True)
+
+    st.markdown("""
+    **Goethe A1 Speaking (Sprechen) Format:** 15 minutes | 3 parts  
+    *Ace your December 12 exam with guided practice across all 10 official frequent topics.*
+    """)
+
+    sprechen_part = st.selectbox("Select Goethe Sprechen Exam Part:", [
+        "Part 1: Self-Introduction (Name, Country, Occupation, Languages)",
+        "Part 2: Ask & Answer Personal Questions (Topic Cards)",
+        "Part 3: Request & Provide Simple Information (Visual Objects Prompts)"
+    ], key="sprechen_dropdown", label_visibility="collapsed")
+
+    st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+
+    if "Part 1" in sprechen_part:
+        st.markdown("""
+        #### 📌 Part 1: Self-Introduction (Die Vorstellung)
+        * **Exam Tip:** This is the easiest part because you can prepare and memorize your story in advance. Mention your name, age, where you live, languages you speak, and profession.
+        """)
+        
+        if st.button("✨ Generate Model Self-Introduction Script", key="mod_intro"):
+            st.markdown("""
+            **Model Introduction:**
+            > "Hallo! Mein Name ist Dee. Ich komme aus den Philippinen und wohne in Cebu City. Ich bin von Beruf Managerin. Ich spreche Englisch und ein bisschen Deutsch. Meine Hobbys sind Kochen und Lesen."
+            """)
+
+    elif "Part 2" in sprechen_part:
+        st.markdown("""
+        #### 📌 Part 2: Ask & Answer Personal Questions (Fragen und Antworten)
+        * **Instructions:** You receive a card with a keyword (e.g., *FAMILIE*, *HOBBYS*, *WOHNEN*, *ESSEN*). You must formulate a question to the examiner/partner and answer theirs.
+        """)
+
+        topics_list = [
+            "FAMILIE (Family)", "HOBBYS (Hobbies)", "WOHNEN (Housing)", 
+            "BERUF / ARBEIT (Work)", "EINKAUFEN (Shopping)", "ESSEN & TRINKEN (Food & Drinks)",
+            "URLAUB & REISEN (Travel)", "SPRACHEN (Languages)", "TAGESABLAUF (Daily Routine)", "WETTER (Weather)"
+        ]
+        
+        selected_topic = st.selectbox("Choose a Goethe Speaking Topic Card:", topics_list, key="sprechen_topic_card")
+
+        if st.button("💡 Generate Sample Questions & Answers for Topic", key="gen_topic_qa"):
+            qa_prompt = f"""
+            Provide Goethe A1 speaking prompts and sample question-and-answer pairs for the topic card '{selected_topic}'.
+            Include formal and informal phrasing suitable for the exam.
+            """
+            with st.spinner(f"Generating practice prompts for {selected_topic}..."):
+                qa_res = generate_cached_content(qa_prompt)
+                st.markdown(f"### 🎯 Practice Cards for {selected_topic}")
+                st.markdown(qa_res)
+
+    else:
+        st.markdown("""
+        #### 📌 Part 3: Request & Provide Simple Information (Bitten formulieren und reagieren)
+        * **Instructions:** You receive a card depicting an object (e.g., *ein Glas Wasser*, *eine Lampe*, *ein Telefon*, *eine Fahrkarte*). You must politely ask your partner for something or make a request.
+        """)
+        
+        if st.button("🎲 Draw Random Visual Object Card", key="draw_card"):
+            object_cards = ["Können Sie mir bitte helfen?", "Haben Sie Wasser?", "Wo ist die Toilette?", "Können Sie das bitte wiederholen?", "Wie viel kostet das?"]
+            chosen_obj = random.choice(object_cards)
+            st.success(f"**Your Prompt Card:** {chosen_obj}")
+            st.markdown("**Example Goethe Response:** *'Entschuldigung, können Sie mir bitte helfen?'*")
 
 # ----------------------------------------------------
 # 8. A1 & A2 SHORT STORIES
