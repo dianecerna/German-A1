@@ -2384,15 +2384,13 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
             st.session_state.sprechen_questions = []
             st.rerun()
 
-# ----------------------------------------------------
-# 8. GOETHE A1-A2 SHORT STORIES VIRTUAL LIBRARY
-# ----------------------------------------------------
+
 # ----------------------------------------------------
 # 8. GOETHE A1-A2 SHORT STORIES VIRTUAL LIBRARY
 # ----------------------------------------------------
 elif nav_choice == "📚 A1-A2 Short Stories (Virtual Library)":
     st.title("📚 Virtual Library: German Short Stories (A1 & A2)")
-    st.write("Explore 30 classic fairy tales and short fiction pieces tailored for A1 and A2 learners with audio playback.")
+    st.write("Explore classic fairy tales and short fiction pieces tailored for A1 and A2 learners with audio playback.")
 
     # Master list of 30 books
     library_books = [
@@ -2428,32 +2426,37 @@ elif nav_choice == "📚 A1-A2 Short Stories (Virtual Library)":
         ("Das hässliche Entlein", "A1", "Hans Christian Andersen", "Ein verkanntes Küken wächst zu einem wunderschönen Schwan heran.")
     ]
 
-    # Level selection filter
-    level_choice = st.selectbox("Filter Level:", ["All Levels", "A1", "A2"])
-    
+    # Level filter dropdown
+    level_choice = st.selectbox("Select Reading/Listening Level:", ["All Levels", "A1", "A2"], key="lib_level_dropdown")
+
+    # Filter book titles based on level selection
     if level_choice == "A1":
-        filtered_list = [b[0] for b in library_books if b[1] == "A1"]
+        filtered_books = [b[0] for b in library_books if b[1] == "A1"]
     elif level_choice == "A2":
-        filtered_list = [b[0] for b in library_books if b[1] == "A2"]
+        filtered_books = [b[0] for b in library_books if b[1] == "A2"]
     else:
-        filtered_list = [b[0] for b in library_books]
+        filtered_books = [b[0] for b in library_books]
 
-    selected_book = st.selectbox("Choose a story to read:", ["-- Select a Story --"] + filtered_list)
+    # Book selection dropdown list
+    selected_book = st.selectbox("Select a Book from Library:", ["-- Choose a Story --"] + filtered_books, key="lib_book_dropdown")
 
-    if selected_book != "-- Select a Story --":
-        # Find book details
+    st.markdown("---")
+
+    if selected_book != "-- Choose a Story --":
+        # Find matching book details
         b_data = next((b for b in library_books if b[0] == selected_book), None)
         if b_data:
-            st.subheader(f"{b_data[0]} ({b_data[1]}) - by {b_data[2]}")
+            st.subheader(f"📖 {b_data[0]} ({b_data[1]})")
+            st.write(f"**Author:** {b_data[2]}")
             st.write(f"*{b_data[3]}*")
             st.markdown("---")
 
-            # Generate or fetch story content
+            # Generate or fetch story content securely
             cache_key = f"simple_story_{selected_book}"
             if cache_key not in st.session_state:
                 prompt = f"""
                 Write the short story '{selected_book}' in German, adapted for {b_data[1]} learners.
-                Keep it between 25 and 40 sentences. Provide a short English summary at the beginning.
+                Keep it between 25 and 40 sentences total. Provide a short English summary at the beginning.
                 Return strict JSON with keys: "english_summary" and "german_story_text".
                 """
                 with st.spinner(f"Generating story for {selected_book}..."):
@@ -2472,7 +2475,7 @@ elif nav_choice == "📚 A1-A2 Short Stories (Virtual Library)":
 
             if text:
                 safe_text = text.replace('"', "'").replace('\n', ' ' )
-                if st.button("🔊 Play Audio (Read Aloud)"):
+                if st.button("🔊 Play Audio (Read Aloud)", key="play_audio_btn"):
                     st.components.v1.html(f"""
                         <script>
                             const u = new SpeechSynthesisUtterance("{safe_text}");
@@ -2485,6 +2488,8 @@ elif nav_choice == "📚 A1-A2 Short Stories (Virtual Library)":
 
                 st.markdown("### German Text")
                 st.write(text)
+    else:
+        st.info("👈 Please select a level and choose a story from the dropdown menu above to begin.")
 
 # ----------------------------------------------------
 # 9. VOCABULARY SECTION (MEMORIZED WORDS & QUIZ ME)
