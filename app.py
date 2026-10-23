@@ -1354,8 +1354,8 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
     st.markdown('<div class="section-header-box">🎧 Goethe A1 Hören (Listening) Exam Practice</div>', unsafe_allow_html=True)
 
     st.markdown("""
-    **Goethe A1 Listening (Hören) Format:** 20 minutes | 3 parts | 15 questions  
-    *Mirrored directly from official Start Deutsch 1 exam layouts with working audio playback, picture option placeholders for Part 1, and auto-loading scenarios.*
+    **Goethe A1 Listening (Hören) Format:** 20 minutes | 3 parts | 15 questions[cite: 4, 6]  
+    *Mirrored directly from official Start Deutsch 1 exam layouts[cite: 4] with built-in audio transcripts, visual picture option cards, and auto-loading scenarios.*
     """)
 
     if "horen_part" not in st.session_state:
@@ -1369,7 +1369,7 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
 
     horen_parts = [
         "Part 1: Picture-based Multiple Choice (6 conversations, options a/b/c)",
-        "Part 2: Announcements True/False - Focus on Numbers (4 announcements)",
+        "Part 2: Announcements True/False - Focus on Numbers (4 announcements)[cite: 6]",
         "Part 3: Telephone Messages & Detail Extraction (5 messages, options a/b/c)"
     ]
 
@@ -1402,30 +1402,35 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
         }
         .exam-pic-card {
             background-color: #1E293B;
-            border: 2px solid #475569;
-            padding: 12px;
+            border: 2px solid #38BDF8;
+            padding: 15px;
             border-radius: 8px;
             text-align: center;
             color: #F8FAFC;
-            font-weight: bold;
+            font-weight: 500;
+            min-height: 90px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
         </style>
     """, unsafe_allow_html=True)
 
     if "Part 1" in st.session_state.horen_part:
         st.markdown("""
-        #### 📌 Part 1: Six Short Conversations (3 Picture-based Options a, b, c)
-        * **Exam Format:** Listen to 6 brief everyday dialogues twice. Choose the correct visual scenario / picture option (a, b, or c) matching what is heard.
+        #### 📌 Part 1: Six Short Conversations (3 Picture-based Options a, b, c)[cite: 8, 9, 10, 11]
+        * **Exam Format:** Listen to 6 brief everyday dialogues twice[cite: 8, 9, 10, 11]. Choose the correct visual scenario / picture option (a, b, or c) matching what is heard[cite: 9, 10, 11].
         """)
     elif "Part 2" in st.session_state.horen_part:
         st.markdown("""
-        #### 📌 Part 2: Four Announcements (Richtig / Falsch)
-        * **Exam Format:** Listen to 4 public announcements once. Focus heavily on numbers, platform numbers, times, and prices.
+        #### 📌 Part 2: Four Announcements (Richtig / Falsch)[cite: 12]
+        * **Exam Format:** Listen to 4 public announcements once[cite: 12]. Focus heavily on numbers, platform numbers, times, and prices[cite: 6].
         """)
     else:
         st.markdown("""
-        #### 📌 Part 3: Five Telephone Messages (Options a, b, c)
-        * **Exam Format:** Listen to 5 answering machine messages twice and answer multiple-choice questions regarding meeting times, homework, or callbacks.
+        #### 📌 Part 3: Five Telephone Messages (Options a, b, c)[cite: 13, 14]
+        * **Exam Format:** Listen to 5 answering machine messages twice and answer multiple-choice questions regarding meeting times, homework, or callbacks[cite: 13, 14].
         """)
 
     st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
@@ -1445,8 +1450,8 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
             Generate a completely brand new, randomized official Goethe A1 Start Deutsch 1 Hören Part 1 practice module using seed {st.session_state.horen_seed}.
             Provide EXACTLY 6 items. Each item must have:
             - "item_num": question number (1 to 6)
-            - "question_text": The question (e.g., "Wo gibt es Kleidung für Kinder?")
-            - "audio_transcript": German spoken script for the audio track simulating the dialogue.
+            - "question_text": The question (e.g., "Wo gibt es Kleidung für Kinder?"[cite: 10] or "Was kostet der Apfelkuchen?")
+            - "audio_transcript": German spoken dialogue script for the audio track.
             - "pic_a_desc": visual description for picture option a
             - "pic_b_desc": visual description for picture option b
             - "pic_c_desc": visual description for picture option c
@@ -1457,21 +1462,21 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
         elif "Part 2" in st.session_state.horen_part:
             horen_prompt = f"""
             Generate a completely brand new, randomized official Goethe A1 Start Deutsch 1 Hören Part 2 practice module using seed {st.session_state.horen_seed}.
-            Provide EXACTLY 4 items (numbered 7, 8, 9, 10). Each item must have:
-            - "item_num": question number (7, 8, 9, 10)
-            - "statement": the statement to evaluate (e.g., "Die Fahrgäste sollen im Zug bleiben.")
-            - "audio_transcript": German spoken announcement script.
-            - "correct_answer": "Richtig" or "Falsch"
+            Provide EXACTLY 4 items (numbered 7, 8, 9, 10)[cite: 12]. Each item must have:
+            - "item_num": question number (7, 8, 9, 10)[cite: 12]
+            - "statement": the statement to evaluate (e.g., "Die Fahrgäste sollen im Zug bleiben."[cite: 12])
+            - "audio_transcript": German spoken announcement script[cite: 12].
+            - "correct_answer": "Richtig" or "Falsch"[cite: 12]
             - "explanation": detailed explanation.
             Return strict JSON array with 4 items.
             """
         else:
             horen_prompt = f"""
             Generate a completely brand new, randomized official Goethe A1 Start Deutsch 1 Hören Part 3 practice module using seed {st.session_state.horen_seed}.
-            Provide EXACTLY 5 items (numbered 11, 12, 13, 14, 15). Each item must have:
-            - "item_num": question number (11, 12, 13, 14, 15)
-            - "question_text": question text (e.g., "Wann soll Frau Krause anrufen?")
-            - "audio_transcript": German spoken message script.
+            Provide EXACTLY 5 items (numbered 11, 12, 13, 14, 15)[cite: 13, 14]. Each item must have:
+            - "item_num": question number (11, 12, 13, 14, 15)[cite: 13, 14]
+            - "question_text": question text (e.g., "Wann soll Frau Krause anrufen?"[cite: 13])
+            - "audio_transcript": German spoken message script[cite: 13, 14].
             - "option_a": text for option a
             - "option_b": text for option b
             - "option_c": text for option c
@@ -1495,8 +1500,8 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
             st.markdown("""
             <div style="background-color: #1E293B; padding: 12px; border-radius: 6px; margin-bottom: 15px; border-left: 4px solid #38BDF8;">
                 <b>Teil 1</b><br>
-                Was ist richtig? Kreuzen Sie an: <b>a</b>, <b>b</b> oder <b>c</b>.<br>
-                Sie hören jeden Text <b>zweimal</b>.
+                Was ist richtig? Kreuzen Sie an: <b>a</b>, <b>b</b> oder <b>c</b>[cite: 9, 10, 11].<br>
+                Sie hören jeden Text <b>zweimal</b>[cite: 9, 10, 11].
             </div>
             """, unsafe_allow_html=True)
 
@@ -1505,25 +1510,15 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
                 for idx, q in enumerate(q_list):
                     item_num = q.get("item_num", idx + 1)
                     transcript_text = q.get('audio_transcript', '')
-                    transcript_safe = transcript_text.replace('"', "'").replace('\n', ' ')
 
                     st.markdown(f"""
                     <div class="exam-audio-card">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                             <span style="font-size: 1.4rem; font-weight: bold; color: #38BDF8;">Aufgabe {item_num}</span>
                         </div>
-                        <p style="color: #94A3B8; font-size: 0.9rem; margin-bottom: 8px;">Click below to play the official audio recording simulation:</p>
-                        <button type="button" onclick="
-                            if ('speechSynthesis' in window) {{
-                                window.speechSynthesis.cancel();
-                                const utterance = new SpeechSynthesisUtterance(\"{transcript_safe}\");
-                                utterance.lang = 'de-DE';
-                                utterance.rate = 0.85;
-                                window.speechSynthesis.speak(utterance);
-                            }} else {{
-                                alert('Speech synthesis not supported.');
-                            }}
-                        " style="background-color: #0284C7; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: bold;">▶ Play Audio Recording (Anhören)</button>
+                        <p style="color: #94A3B8; font-size: 0.9rem; margin-bottom: 6px;"><b>Hörtext (Audio Transcript):</b></p>
+                        <div style="background-color: #1E293B; padding: 10px; border-radius: 6px; color: #F8FAFC; font-style: italic; margin-bottom: 8px;">"{transcript_text}"</div>
+                        <p style="color: #94A3B8; font-size: 0.8rem;"><i>(Read the transcript above simulating the dual-play listening track)</i></p>
                     </div>
                     """, unsafe_allow_html=True)
 
@@ -1534,14 +1529,14 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
                     </div>
                     """, unsafe_allow_html=True)
 
-                    # Render 3 picture option cards side-by-side
+                    # Render 3 picture option cards side-by-side with clear visual frames
                     col_p1, col_p2, col_p3 = st.columns(3)
                     with col_p1:
-                        st.markdown(f'<div class="exam-pic-card"><b>[ Bild a ]</b><br>{q.get("pic_a_desc", "Option A")}</div>', unsafe_allow_html=True)
+                        st.markdown(f'<div class="exam-pic-card"><b>[ Bild a ]</b><br><span style="font-size: 0.9rem; margin-top: 6px;">{q.get("pic_a_desc", "Option A")}</span></div>', unsafe_allow_html=True)
                     with col_p2:
-                        st.markdown(f'<div class="exam-pic-card"><b>[ Bild b ]</b><br>{q.get("pic_b_desc", "Option B")}</div>', unsafe_allow_html=True)
+                        st.markdown(f'<div class="exam-pic-card"><b>[ Bild b ]</b><br><span style="font-size: 0.9rem; margin-top: 6px;">{q.get("pic_b_desc", "Option B")}</span></div>', unsafe_allow_html=True)
                     with col_p3:
-                        st.markdown(f'<div class="exam-pic-card"><b>[ Bild c ]</b><br>{q.get("pic_c_desc", "Option C")}</div>', unsafe_allow_html=True)
+                        st.markdown(f'<div class="exam-pic-card"><b>[ Bild c ]</b><br><span style="font-size: 0.9rem; margin-top: 6px;">{q.get("pic_c_desc", "Option C")}</span></div>', unsafe_allow_html=True)
 
                     user_horen_answers[idx] = st.radio(f"Wählen Sie das richtige Bild für Aufgabe {item_num}:", ["a", "b", "c"], key=f"horen_t1_ans_{idx}", horizontal=True)
                     st.markdown("---")
@@ -1569,12 +1564,12 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
                     st.rerun()
 
         elif "Part 2" in st.session_state.horen_part:
-            # --- HÖREN TEIL 2 (4 items, Richtig / Falsch) ---
+            # --- HÖREN TEIL 2 (4 items, Richtig / Falsch)[cite: 12] ---
             st.markdown("""
             <div style="background-color: #1E293B; padding: 12px; border-radius: 6px; margin-bottom: 15px; border-left: 4px solid #38BDF8;">
-                <b>Teil 2</b><br>
-                Kreuzen Sie an: <b>Richtig</b> oder <b>Falsch</b>.<br>
-                Sie hören jeden Text <b>einmal</b>.
+                <b>Teil 2</b>[cite: 12]<br>
+                Kreuzen Sie an: <b>Richtig</b> oder <b>Falsch</b>[cite: 12].<br>
+                Sie hören jeden Text <b>einmal</b>[cite: 12].
             </div>
             """, unsafe_allow_html=True)
 
@@ -1583,25 +1578,14 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
                 for idx, q in enumerate(q_list):
                     item_num = q.get("item_num", 7 + idx)
                     transcript_text = q.get('audio_transcript', '')
-                    transcript_safe = transcript_text.replace('"', "'").replace('\n', ' ')
 
                     st.markdown(f"""
                     <div class="exam-audio-card">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                             <span style="font-size: 1.4rem; font-weight: bold; color: #38BDF8;">Aufgabe {item_num}</span>
                         </div>
-                        <p style="color: #94A3B8; font-size: 0.9rem; margin-bottom: 8px;">Click below to play the official audio recording simulation:</p>
-                        <button type="button" onclick="
-                            if ('speechSynthesis' in window) {{
-                                window.speechSynthesis.cancel();
-                                const utterance = new SpeechSynthesisUtterance(\"{transcript_safe}\");
-                                utterance.lang = 'de-DE';
-                                utterance.rate = 0.85;
-                                window.speechSynthesis.speak(utterance);
-                            }} else {{
-                                alert('Speech synthesis not supported.');
-                            }}
-                        " style="background-color: #0284C7; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: bold;">▶ Play Audio Recording (Anhören)</button>
+                        <p style="color: #94A3B8; font-size: 0.9rem; margin-bottom: 6px;"><b>Durchsage-Text (Announcement Transcript):</b></p>
+                        <div style="background-color: #1E293B; padding: 10px; border-radius: 6px; color: #F8FAFC; font-style: italic; margin-bottom: 8px;">"{transcript_text}"</div>
                     </div>
                     """, unsafe_allow_html=True)
 
@@ -1638,12 +1622,12 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
                     st.rerun()
 
         else:
-            # --- HÖREN TEIL 3 (5 items, Multiple Choice a, b, c) ---
+            # --- HÖREN TEIL 3 (5 items, Multiple Choice a, b, c)[cite: 13, 14] ---
             st.markdown("""
             <div style="background-color: #1E293B; padding: 12px; border-radius: 6px; margin-bottom: 15px; border-left: 4px solid #38BDF8;">
-                <b>Teil 3</b><br>
-                Was ist richtig? Kreuzen Sie an: <b>a</b>, <b>b</b> oder <b>c</b>.<br>
-                Sie hören jeden Text <b>zweimal</b>.
+                <b>Teil 3</b>[cite: 13, 14]<br>
+                Was ist richtig? Kreuzen Sie an: <b>a</b>, <b>b</b> oder <b>c</b>[cite: 13, 14].<br>
+                Sie hören jeden Text <b>zweimal</b>[cite: 13, 14].
             </div>
             """, unsafe_allow_html=True)
 
@@ -1652,30 +1636,19 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
                 for idx, q in enumerate(q_list):
                     item_num = q.get("item_num", 11 + idx)
                     transcript_text = q.get('audio_transcript', '')
-                    transcript_safe = transcript_text.replace('"', "'").replace('\n', ' ')
 
                     st.markdown(f"""
                     <div class="exam-audio-card">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                             <span style="font-size: 1.4rem; font-weight: bold; color: #38BDF8;">Aufgabe {item_num}</span>
                         </div>
-                        <p style="color: #94A3B8; font-size: 0.9rem; margin-bottom: 8px;">Click below to play the official audio recording simulation:</p>
-                        <button type="button" onclick="
-                            if ('speechSynthesis' in window) {{
-                                window.speechSynthesis.cancel();
-                                const utterance = new SpeechSynthesisUtterance(\"{transcript_safe}\");
-                                utterance.lang = 'de-DE';
-                                utterance.rate = 0.85;
-                                window.speechSynthesis.speak(utterance);
-                            }} else {{
-                                alert('Speech synthesis not supported.');
-                            }}
-                        " style="background-color: #0284C7; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: bold;">▶ Play Audio Recording (Anhören)</button>
+                        <p style="color: #94A3B8; font-size: 0.9rem; margin-bottom: 6px;"><b>Anrufbeantworter-Text (Message Transcript):</b></p>
+                        <div style="background-color: #1E293B; padding: 10px; border-radius: 6px; color: #F8FAFC; font-style: italic; margin-bottom: 8px;">"{transcript_text}"</div>
                     </div>
                     """, unsafe_allow_html=True)
 
                     st.markdown(f"""
-                    <div style="display: flex; align-items: baseline; gap: 15px; margin-bottom: 8px;">
+                    <div style="display: flex; align-items: baseline; gap: sign 15px; margin-bottom: 8px;">
                         <span style="font-size: 1.5rem; font-weight: bold; color: #38BDF8;">{item_num}</span>
                         <span style="font-size: 1.05rem; font-weight: bold; color: #FFFFFF;">{q.get('question_text')}</span>
                     </div>
