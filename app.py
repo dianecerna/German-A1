@@ -2520,6 +2520,7 @@ elif nav_choice == "📖 Vocabulary":
             rc1.markdown(f"**{g_word}**")
             rc2.markdown(f"{e_trans}")
             st.markdown("<hr style='border-color: rgba(244, 114, 182, 0.15); margin: 4px 0;'>", unsafe_allow_html=True)
+
 # ----------------------------------------------------
 # 9. VIRTUAL LIBRARY SECTION
 # ----------------------------------------------------
@@ -2629,6 +2630,8 @@ elif nav_choice == "Virtual Library":
                 st.write(text)
     else:
         st.info("👈 Please select a level and choose a story from the dropdown menu above to begin.")
+
+
 # ----------------------------------------------------
 # 10. GEM AI TUTOR
 # ----------------------------------------------------
