@@ -934,11 +934,10 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
     st.markdown('<div class="section-header-box">📖 Goethe A1 Lesen (Reading) Exam Practice</div>', unsafe_allow_html=True)
 
     st.markdown("""
-    **Goethe A1 Reading (Lesen) Format:** 25 minutes | 3 parts | 15 questions  
-    *Prepare specifically for your December 12 exam with authentic task structures.*
+    **Goethe A1 Reading (Lesen) Format:** 25 minutes | 3 parts | 15 questions[cite: 19]  
+    *Mirrored directly from the official Start Deutsch 1 Übungssatz 01 exam format to prep for December 12.*
     """)
 
-    # Initialize session state for Lesen
     if "lesen_part" not in st.session_state:
         st.session_state.lesen_part = "Part 1: Match Short Texts & Ads"
     if "lesen_active" not in st.session_state:
@@ -949,9 +948,9 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
         st.session_state.lesen_complete = False
 
     lesen_parts = [
-        "Part 1: Match Short Texts & Ads (5 questions)",
-        "Part 2: Emails & Multiple Choice Selection (5 questions)",
-        "Part 3: Public Information & Detail Extraction (5 questions)"
+        "Part 1: Match Short Texts & Ads (Richtig / Falsch based on short notes/emails)",
+        "Part 2: Multiple Choice Web/Information Selection (Choose a or b source)",
+        "Part 3: Public Information & Detail Extraction (Richtig / Falsch signs/notices)"
     ]
 
     chosen_lesen_part = st.selectbox("Select Goethe Lesen Exam Part:", lesen_parts, key="lesen_part_dropdown", label_visibility="collapsed")
@@ -965,44 +964,64 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
 
     st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
 
-    # Part Descriptions & Practice launcher
+    # Styling for bright visible fonts on dark background
+    st.markdown("""
+        <style>
+        div.stRadio label, div.stTextInput label, div.stTextInput input, div.stSelectbox label {
+            color: #FFFFFF !important;
+        }
+        .stRadio p {
+            color: #F8FAFC !important;
+            font-weight: 500;
+        }
+        .exam-text-box {
+            background-color: #1E293B;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #334155;
+            color: #F8FAFC;
+            margin-bottom: 12px;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
     if "Part 1" in st.session_state.lesen_part:
         st.markdown("""
-        #### 📌 Part 1: Match five short texts / advertisements
-        * **Task Description:** Read five short situations or needs and match them with corresponding advertisements, notices, or classifieds. One ad is a distractor.
+        #### 📌 Part 1: Reading Short Emails/Notes (Richtig / Falsch)[cite: 20]
+        * **Exam Format (Übungssatz 01 Style):** Read a short personal message, email, or announcement and evaluate statements as Richtig (True) or Falsch (False)[cite: 20].
         """)
     elif "Part 2" in st.session_state.lesen_part:
         st.markdown("""
-        #### 📌 Part 2: Read emails or notes & choose correct options
-        * **Task Description:** Read short personal messages, notes, or emails and select the correct option (out of 2 choices per question) testing general content and specific details.
+        #### 📌 Part 2: Information Sources & Web Links (Choose a or b)[cite: 22]
+        * **Exam Format (Übungssatz 01 Style):** Read a specific information need (e.g., finding an apartment, checking weather, or planning a trip) and select which of two website sources (a or b) contains the correct answer[cite: 22, 23, 24].
         """)
     else:
         st.markdown("""
-        #### 📌 Part 3: Public information, signs, and timetables
-        * **Task Description:** Read short public notices, signs, schedules, or announcements and answer True/False or Multiple Choice questions based on specific data extraction.
+        #### 📌 Part 3: Public Notices, Signs & Timetables (Richtig / Falsch)[cite: 25]
+        * **Exam Format (Übungssatz 01 Style):** Read public signs, rules, or announcements (e.g., at a train station, school door, or hotel) and determine if statements are Richtig or Falsch[cite: 25, 26, 27].
         """)
 
     st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
 
     if not st.session_state.lesen_active and not st.session_state.lesen_complete:
-        if st.button("🚀 Start Lesen Practice Session", key="start_lesen_btn"):
+        if st.button("🚀 Load Official Format Lesen Practice", key="start_lesen_btn"):
             lesen_prompt = f"""
-            Generate an authentic Goethe A1 Reading (Lesen) practice module for '{st.session_state.lesen_part}'.
-            Provide 5 rigorous exam-style questions mirroring the exact official format.
+            Generate an authentic Goethe A1 Start Deutsch 1 Reading (Lesen) practice module for '{st.session_state.lesen_part}' based strictly on the official Übungssatz 01 format.
+            Provide 5 exam-style questions mirroring the exact official format (with German text snippets and Richtig/Falsch or a/b options).
             Return strict JSON array with this exact schema:
             [
                 {{
                     "q_num": 1,
-                    "text_prompt": "Reading text, notice, or email scenario here in German with English context",
-                    "question_text": "Question or matching prompt here",
-                    "options": ["Option A", "Option B"],
+                    "text_snippet": "German reading passage, ad text, or notice here",
+                    "question_text": "Exam statement or task here",
+                    "options": ["Richtig", "Falsch"] (or ["Option A web link", "Option B web link"]),
                     "correct_answer": "Exact correct answer",
-                    "explanation": "Detailed explanation of why this answer is correct."
+                    "explanation": "Detailed explanation why this answer is correct."
                 }}
             ]
             Ensure there are exactly 5 items in the array.
             """
-            with st.spinner("Generating Goethe A1 Reading practice set..."):
+            with st.spinner("Generating official Goethe Lesen exam questions..."):
                 try:
                     lesen_raw = generate_cached_content(lesen_prompt, is_json=True)
                     st.session_state.lesen_questions = json.loads(lesen_raw)
@@ -1017,10 +1036,10 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
             user_lesen_answers = {}
             for idx, q in enumerate(q_list):
                 st.markdown(f"**Question {idx + 1} of {len(q_list)}**")
-                st.markdown(f"> *{q.get('text_prompt')}*")
-                st.markdown(f"**{q.get('question_text')}**")
+                st.markdown(f'<div class="exam-text-box"><b>Lesetext / Aufgabe:</b><br>{q.get("text_snippet")}</div>', unsafe_allow_html=True)
+                st.markdown(f"<span style='color: #FFFFFF; font-weight: bold;'>{q.get('question_text')}</span>", unsafe_allow_html=True)
 
-                opts = q.get("options", ["A", "B"])
+                opts = q.get("options", ["Richtig", "Falsch"])
                 user_lesen_answers[idx] = st.radio("Choose your answer:", opts, key=f"lesen_ans_{idx}")
                 st.markdown("---")
 
@@ -1039,8 +1058,7 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
                         "given": user_lesen_answers.get(idx, ""),
                         "correct": q.get("correct_answer"),
                         "is_correct": is_corr,
-                        "explanation": q.get("explanation"),
-                        "text": q.get("text_prompt")
+                        "explanation": q.get("explanation")
                     })
                 st.session_state.lesen_score = score
                 st.session_state.lesen_results = results
@@ -1052,7 +1070,7 @@ elif nav_choice == "📖 Goethe A1 Lesen (Reading)":
         score = st.session_state.lesen_score
         total = len(st.session_state.lesen_questions)
         st.markdown(f"### 📊 Lesen Practice Results: {score}/{total}")
-        
+
         for res in st.session_state.get("lesen_results", []):
             if res["is_correct"]:
                 st.success(f"**Q{res['q_num']} Correct!** Your answer: {res['given']}")
@@ -1075,8 +1093,8 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
     st.markdown('<div class="section-header-box">🎧 Goethe A1 Hören (Listening) Exam Practice</div>', unsafe_allow_html=True)
 
     st.markdown("""
-    **Goethe A1 Listening (Hören) Format:** 20 minutes | 3 parts | 15 questions  
-    *Note: Part 2 requires close attention to numbers and announcements.*
+    **Goethe A1 Listening (Hören) Format:** 20 minutes | 3 parts | 15 questions[cite: 11]  
+    *Includes interactive audio players and replicates official Übungssatz 01 formats (Pictures a/b/c, Richtig/Falsch, and a/b/c options)[cite: 13, 15, 16].*
     """)
 
     if "horen_part" not in st.session_state:
@@ -1089,9 +1107,9 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
         st.session_state.horen_complete = False
 
     horen_parts = [
-        "Part 1: Picture-based Multiple Choice (6 conversations, played twice)",
-        "Part 2: Announcements True/False - Focus on Numbers (4 announcements)",
-        "Part 3: Messages & Detail Extraction (5 messages, a/b/c options)"
+        "Part 1: Picture-based Multiple Choice (6 conversations, options a/b/c)[cite: 11, 13]",
+        "Part 2: Announcements True/False - Focus on Numbers (4 announcements)[cite: 15]",
+        "Part 3: Telephone Messages & Detail Extraction (5 messages, options a/b/c)[cite: 16]"
     ]
 
     chosen_horen_part = st.selectbox("Select Goethe Hören Exam Part:", horen_parts, key="horen_part_dropdown", label_visibility="collapsed")
@@ -1105,42 +1123,55 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
 
     st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
 
+    # Styling for bright visible fonts on dark background
+    st.markdown("""
+        <style>
+        div.stRadio label, div.stTextInput label, div.stTextInput input, div.stSelectbox label {
+            color: #FFFFFF !important;
+        }
+        .stRadio p {
+            color: #F8FAFC !important;
+            font-weight: 500;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
     if "Part 1" in st.session_state.horen_part:
         st.markdown("""
-        #### 📌 Part 1: Six short conversations with 3 picture-based options
-        * **Exam Strategy:** Listen for key objects, times, or activities. Select the corresponding visual scenario description.
+        #### 📌 Part 1: Six Short Conversations (3 Picture/Option Choices a, b, c)[cite: 11, 13]
+        * **Exam Format (Übungssatz 01 Style):** Listen to brief everyday dialogues twice[cite: 11] and select the correct option matching room numbers, times, food, or activities[cite: 13].
         """)
     elif "Part 2" in st.session_state.horen_part:
         st.markdown("""
-        #### 📌 Part 2: Four announcements (True / False)
-        * **Exam Strategy:** Highly challenging part. Pay meticulous attention to numbers, platform numbers, times, prices, and flight/train gates.
+        #### 📌 Part 2: Four Announcements (Richtig / Falsch)[cite: 15]
+        * **Exam Format (Übungssatz 01 Style):** Listen to public announcements once[cite: 15]. **Focus heavily on numbers, platform numbers, times, and prices[cite: 15].**
         """)
     else:
         st.markdown("""
-        #### 📌 Part 3: Five telephone or public audio messages (a, b, c)
-        * **Exam Strategy:** Extract specific reasons for calling or appointments from answering machine messages.
+        #### 📌 Part 3: Five Telephone Messages (Options a, b, c)[cite: 16]
+        * **Exam Format (Übungssatz 01 Style):** Listen to answering machine messages twice[cite: 16] and answer multiple-choice questions regarding meeting times, homework, or callbacks.
         """)
 
     st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
 
     if not st.session_state.horen_active and not st.session_state.horen_complete:
-        if st.button("🚀 Start Hören Practice Simulation", key="start_horen_btn"):
+        if st.button("🚀 Load Hören Practice & Audio Tracks", key="start_horen_btn"):
             horen_prompt = f"""
-            Generate an authentic Goethe A1 Listening (Hören) simulation script and questions for '{st.session_state.horen_part}'.
-            Provide simulation transcripts (audio scripts) and exam questions (4-5 questions).
+            Generate an authentic Goethe A1 Start Deutsch 1 Listening (Hören) simulation set for '{st.session_state.horen_part}' based on Übungssatz 01.
+            Provide 4-5 exam items with exact audio scripts (transcripts) and questions (with options a/b/c or Richtig/Falsch).
             Return strict JSON array with this exact schema:
             [
                 {{
                     "q_num": 1,
-                    "audio_script": "German dialogue or announcement transcript simulating the audio track",
-                    "question_text": "Exam question based on the audio",
-                    "options": ["Option A", "Option B", "Option C"],
+                    "audio_transcript": "German spoken script simulating the recording",
+                    "question_text": "Exam question based on audio",
+                    "options": ["Option a", "Option b", "Option c"] (or ["Richtig", "Falsch"]),
                     "correct_answer": "Exact correct answer",
-                    "explanation": "Detailed explanation citing numbers or keywords from the script."
+                    "explanation": "Detailed explanation citing numbers, times, or keywords from the script."
                 }}
             ]
             """
-            with st.spinner("Generating Goethe A1 Listening simulation..."):
+            with st.spinner("Generating Goethe Hören exam simulations and audio scripts..."):
                 try:
                     horen_raw = generate_cached_content(horen_prompt, is_json=True)
                     st.session_state.horen_questions = json.loads(horen_raw)
@@ -1155,10 +1186,24 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
             user_horen_answers = {}
             for idx, q in enumerate(q_list):
                 st.markdown(f"**Item {idx + 1} of {len(q_list)}**")
-                st.markdown(f"> 🔊 **Audio Simulation Transcript:** *{q.get('audio_script')}*")
-                st.markdown(f"**{q.get('question_text')}**")
+                
+                transcript_safe = q.get('audio_transcript', '').replace('"', "'")
+                audio_player_html = f"""
+                <div style="background-color: #1E293B; padding: 12px; border-radius: 8px; border: 1px solid #334155; margin-bottom: 10px;">
+                    <p style="color: #38BDF8; font-weight: bold; margin-bottom: 6px;">🔊 Audio Track Simulation (Hörtext):</p>
+                    <button type="button" onclick="
+                        const utterance = new SpeechSynthesisUtterance('{transcript_safe}');
+                        utterance.lang = 'de-DE';
+                        utterance.rate = 0.9;
+                        window.speechSynthesis.speak(utterance);
+                    " style="background-color: #0284C7; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: bold;"> ▶ Play Audio Recording (Anhören) </button>
+                    <p style="color: #94A3B8; font-size: 0.85rem; margin-top: 8px; font-style: italic;">(Click to play German speech synthesis audio simulation)</p>
+                </div>
+                """
+                st.markdown(audio_player_html, unsafe_allow_html=True)
+                st.markdown(f"<span style='color: #FFFFFF; font-weight: bold;'>{q.get('question_text')}</span>", unsafe_allow_html=True)
 
-                opts = q.get("options", ["A", "B", "C"])
+                opts = q.get("options", ["a", "b", "c"])
                 user_horen_answers[idx] = st.radio("Choose your answer:", opts, key=f"horen_ans_{idx}")
                 st.markdown("---")
 
@@ -1177,8 +1222,7 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
                         "given": user_horen_answers.get(idx, ""),
                         "correct": q.get("correct_answer"),
                         "is_correct": is_corr,
-                        "explanation": q.get("explanation"),
-                        "script": q.get("audio_script")
+                        "explanation": q.get("explanation")
                     })
                 st.session_state.horen_score = score
                 st.session_state.horen_results = results
@@ -1213,40 +1257,64 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
     st.markdown('<div class="section-header-box">✍️ Goethe A1 Schreiben (Writing) Exam Practice</div>', unsafe_allow_html=True)
 
     st.markdown("""
-    **Goethe A1 Writing (Schreiben) Format:** 20 minutes | 2 tasks  
-    *Practice form filling and short 4-5 sentence email scenarios.*
+    **Goethe A1 Writing (Schreiben) Format:** 20 minutes | 2 tasks[cite: 19]  
+    *Official Übungssatz 01 format: Task 1 (Language school registration form filling) and Task 2 (Birthday/event email writing with 3 prompt bullets)[cite: 28, 29].*
     """)
 
     schreiben_task = st.selectbox("Select Goethe Schreiben Task:", [
-        "Task 1: Fill out a personal information form",
-        "Task 2: Write a short message / email (4-5 sentences)"
+        "Task 1: Fill out a course registration form (Formular ausfüllen - Sprachschule Liga)[cite: 28]",
+        "Task 2: Write a short message / email (Birthday party invitation to Anna with 3 points)[cite: 29]"
     ], key="schreiben_dropdown", label_visibility="collapsed")
 
     st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
 
+    # Styling for bright visible fonts on dark background
+    st.markdown("""
+        <style>
+        div.stTextInput label, div.stTextInput input, div.stTextArea label, div.stTextArea textarea {
+            color: #FFFFFF !important;
+        }
+        .exam-text-box {
+            background-color: #1E293B;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #334155;
+            color: #F8FAFC;
+            margin-bottom: 12px;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
     if "Task 1" in schreiben_task:
         st.markdown("""
-        #### 📌 Task 1: Personal Data Form Filling
-        * **Instructions:** Fill out name, address, date of birth, nationality, and reason for stay accurately based on standard Goethe prompts.
+        #### 📌 Task 1: Language School Registration Form (Sprachschule Liga)[cite: 28]
+        * **Exam Format (Übungssatz 01 Style):** Read a profile prompt (e.g. Yvonne Legrand, born 17.4.1993 in Lyon, speaks French and English, learned German for 6 months, wants morning course) and fill out the missing 5 form fields[cite: 28].
         """)
+
+        st.markdown("""
+        <div class="exam-text-box">
+        <b>Prüfungstext (Candidate Profile Reference):</b><br>
+        <i>Ihre Freundin Yvonne Legrand aus Frankreich, geboren am 17.4.1993 in Lyon, möchte vom 1. bis zum 28. August einen Deutschkurs in Deutschland besuchen. Sie hat schon sechs Monate Deutsch gelernt. Sie hat am Vormittag Zeit. In der Schule hat sie Englisch gelernt.</i>
+        </div>
+        """, unsafe_allow_html=True)
         
         with st.form("schreiben_task1_form"):
-            f_name = st.text_input("Vorname (First Name):")
-            l_name = st.text_input("Nachname (Last Name):")
-            dob = st.text_input("Geburtsdatum (Date of Birth - DD.MM.YYYY):")
-            country = st.text_input("Land (Country / Nationality):")
-            address = st.text_input("Adresse (Street & City):")
+            f_gebort = st.text_input("(1) Geburtsort (Place of Birth):")
+            f_lang = st.text_input("(2) Andere Sprachen (Other Languages):")
+            f_duration = st.text_input("(3) Wie lange Deutsch gelernt? (Duration):")
+            f_term = st.text_input("(4) Kurstermin (Course Dates):")
+            f_time = st.text_input("(5) Kurszeit (Course Time - e.g. 9-12 Uhr):")
             
-            sub_f1 = st.form_submit_button("📥 Evaluate Form")
+            sub_f1 = st.form_submit_button("📥 Evaluate Form Answers")
             if sub_f1:
                 eval_prompt = f"""
-                Evaluate the student's Goethe A1 Form filling task:
-                - First Name: {f_name}
-                - Last Name: {l_name}
-                - DOB: {dob}
-                - Country: {country}
-                - Address: {address}
-                Provide detailed feedback on spelling, capitalization of German nouns, and completeness for the exam.
+                Evaluate the student's Goethe A1 Form filling task against Übungssatz 01 answer key (Yvonne Legrand profile):
+                - Geburtsort: {f_gebort} (Expected: Lyon / Lyon, Frankreich)[cite: 43]
+                - Andere Sprachen: {f_lang} (Expected: Englisch)[cite: 43]
+                - Wie lange: {f_duration} (Expected: 6 Monate / sechs Monate)[cite: 43]
+                - Kurstermin: {f_term} (Expected: 1. bis 28. August)[cite: 43]
+                - Kurszeit: {f_time} (Expected: 9-12 Uhr)[cite: 43]
+                Provide detailed feedback on spelling, capitalization, and accuracy.
                 """
                 with st.spinner("Evaluating your form..."):
                     feedback = generate_cached_content(eval_prompt)
@@ -1255,27 +1323,27 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
 
     else:
         st.markdown("""
-        #### 📌 Task 2: Short Message or Email (4–5 Sentences)
-        * **Scenario:** Write a short message to a friend or colleague (e.g., inviting them to dinner, cancelling an appointment, or asking for information).
+        #### 📌 Task 2: Short Email / Invitation (Übungssatz 01 Official Prompt)[cite: 29]
+        * **Exam Format (Übungssatz 01 Style):** Write an email (approx. 30 words / 4-5 sentences) covering 3 content points, plus a salutation and sign-off[cite: 29].
         """)
         
-        scenario_prompt = "Schreiben Sie eine E-Mail an Ihre Freundin Anna. Sie möchten am Wochenende zusammen kochen. Schreiben Sie 4-5 Sätze (Einladung, wann, was mitbringen)."
-        st.markdown(f"> **Exam Scenario:** {scenario_prompt}")
+        scenario_prompt = "Sie möchten Ihren Geburtstag feiern und Ihre Freundin Anna einladen.\nSchreiben Sie Anna eine E-Mail:\n- Warum schreiben Sie?\n- Sagen Sie: Wann und wo feiern Sie?\n- Fragen Sie: kommen?\n(Schreiben Sie auch eine Anrede und einen Gruß, ca. 30 Wörter)"
+        st.markdown(f'<div class="exam-text-box"><b>Prüfungsaufgabe (Official Prompt):</b><br><pre style="color: #F8FAFC; font-family: inherit; white-space: pre-wrap;">{scenario_prompt}</pre></div>', unsafe_allow_html=True)
 
-        user_email = st.text_area("Your German Message (4-5 sentences):", height=150, key="user_schreiben_email")
+        user_email = st.text_area("Your German Message (E-Mail an Anna):", height=150, key="user_schreiben_email")
 
         if st.button("📥 Evaluate Written Message", key="eval_email_btn"):
             if not user_email.strip():
                 st.warning("Please write your response before evaluating.")
             else:
                 eval_email_prompt = f"""
-                Act as an official Goethe A1 examiner. Evaluate this student response for Task 2:
+                Act as an official Goethe A1 examiner using official Goethe evaluation criteria (Task Fulfillment 3 points per point, Communicative Design 1 point).
                 Scenario: {scenario_prompt}
                 Student Response: {user_email}
                 Check for:
-                1. Fulfillment of all 3 prompt points.
-                2. Sentence structure (Verb position in main and subordinate clauses).
-                3. Vocabulary and spelling accuracy.
+                1. Fulfillment of all 3 content points (Why writing, when/where celebrating, asking if she can come).
+                2. Inclusion of salutation (e.g. Liebe Anna) and sign-off (Viele Grüße).
+                3. Sentence structure and spelling accuracy.
                 Provide constructive score estimation out of 10 and specific corrections.
                 """
                 with st.spinner("Examiner is reviewing your writing..."):
@@ -1292,65 +1360,132 @@ elif nav_choice == "🗣️ Goethe A1 Sprechen (Speaking)":
     st.markdown('<div class="section-header-box">🗣️ Goethe A1 Sprechen (Speaking) Exam Practice</div>', unsafe_allow_html=True)
 
     st.markdown("""
-    **Goethe A1 Speaking (Sprechen) Format:** 15 minutes | 3 parts  
-    *Ace your December 12 exam with guided practice across all 10 official frequent topics.*
+    **Goethe A1 Speaking (Sprechen) Format:** 15 minutes | 3 parts (Oral group examination)[cite: 31, 45]  
+    *Mirrored directly from Übungssatz 01 examiner sheets: Part 1 (Self-introduction & spelling numbers)[cite: 32, 46], Part 2 (Topic cards Q&A)[cite: 33, 46], and Part 3 (Object prompt cards & polite requests)[cite: 35, 47]. Includes interactive audio recorders.*
     """)
 
     sprechen_part = st.selectbox("Select Goethe Sprechen Exam Part:", [
-        "Part 1: Self-Introduction (Name, Country, Occupation, Languages)",
-        "Part 2: Ask & Answer Personal Questions (Topic Cards)",
-        "Part 3: Request & Provide Simple Information (Visual Objects Prompts)"
+        "Part 1: Self-Introduction & Spelling/Numbers (Sich vorstellen & Buchstabieren)",
+        "Part 2: Ask & Answer Personal Questions (Topic Cards: Wochenende, Schule, Einkaufen)",
+        "Part 3: Request & Provide Simple Information (Visual Object Cards: Wasser, Kuli, etc.)"
     ], key="sprechen_dropdown", label_visibility="collapsed")
 
     st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
 
+    # Styling for bright visible fonts on dark background
+    st.markdown("""
+        <style>
+        div.stSelectbox label {
+            color: #FFFFFF !important;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
+    audio_recorder_html = """
+    <div style="background-color: #1E293B; padding: 15px; border-radius: 8px; border: 1px solid #334155; margin-top: 15px; margin-bottom: 15px;">
+        <p style="color: #38BDF8; font-weight: bold; margin-bottom: 8px;">🎙️ Interactive Audio Practice Recorder:</p>
+        <button id="recordBtn" onclick="toggleRecording()" style="background-color: #DC2626; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: bold;">🔴 Start Recording</button>
+        <span id="recordingStatus" style="color: #94A3B8; margin-left: 10px; font-style: italic;">Recorder ready</span>
+        <audio id="audioPlayback" controls style="display:block; margin-top: 10px; width: 100%;"></audio>
+    </div>
+    <script>
+    let mediaRecorder;
+    let audioChunks = [];
+    async function toggleRecording() {
+        const btn = document.getElementById('recordBtn');
+        const status = document.getElementById('recordingStatus');
+        const audioEl = document.getElementById('audioPlayback');
+        
+        if (!mediaRecorder || mediaRecorder.state === "inactive") {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                mediaRecorder = new MediaRecorder(stream);
+                audioChunks = [];
+                mediaRecorder.ondataavailable = event => audioChunks.push(event.data);
+                mediaRecorder.onstop = () => {
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                    audioEl.src = URL.createObjectURL(audioBlob);
+                };
+                mediaRecorder.start();
+                btn.innerText = "⏹️ Stop Recording";
+                btn.style.backgroundColor = "#4B5563";
+                status.innerText = "Recording in progress... Speak clearly in German!";
+            } catch (err) {
+                status.innerText = "Microphone access denied or unavailable.";
+            }
+        } else {
+            mediaRecorder.stop();
+            btn.innerText = "🔴 Start Recording";
+            btn.style.backgroundColor = #DC2626;
+            status.innerText = "Recording saved! Playback below:";
+        }
+    }
+    </script>
+    """
+
     if "Part 1" in sprechen_part:
         st.markdown("""
-        #### 📌 Part 1: Self-Introduction (Die Vorstellung)
-        * **Exam Tip:** This is the easiest part because you can prepare and memorize your story in advance. Mention your name, age, where you live, languages you speak, and profession.
+        #### 📌 Part 1: Self-Introduction & Spelling (Sich vorstellen & Buchstabieren)[cite: 32, 46]
+        * **Exam Format (Übungssatz 01 Style):** You introduce yourself using prompt words (*Name? Alter? Land? Wohnort? Sprachen? Beruf? Hobby?*)[cite: 32]. Afterwards, examiners ask you to **spell your name, city, or recite phone/ID numbers**[cite: 46].
         """)
         
-        if st.button("✨ Generate Model Self-Introduction Script", key="mod_intro"):
+        if st.button("✨ Generate Official Model Introduction & Spelling Drill", key="mod_intro"):
             st.markdown("""
-            **Model Introduction:**
-            > "Hallo! Mein Name ist Dee. Ich komme aus den Philippinen und wohne in Cebu City. Ich bin von Beruf Managerin. Ich spreche Englisch und ein bisschen Deutsch. Meine Hobbys sind Kochen und Lesen."
+            **Official Model Introduction & Examiner Prompts:**
+            > *"Guten Tag! Mein Name ist Dee. Ich komme aus den Philippinen und wohne in Cebu City. Ich bin 35 Jahre alt und von Beruf Managerin. Ich spreche Englisch und ein bisschen Deutsch. Mein Hobby ist Kochen."*
+            
+            **Examiner Spelling & Number Drill:**
+            * *Wie ist Ihr Vorname/Familienname? Können Sie das bitte buchstabieren?* (D-I-E-N-E / L-I-M)
+            * *Wie ist Ihre Telefonnummer oder Handynummer?*
             """)
+
+        st.markdown(audio_recorder_html, unsafe_allow_html=True)
 
     elif "Part 2" in sprechen_part:
         st.markdown("""
-        #### 📌 Part 2: Ask & Answer Personal Questions (Fragen und Antworten)
-        * **Instructions:** You receive a card with a keyword (e.g., *FAMILIE*, *HOBBYS*, *WOHNEN*, *ESSEN*). You must formulate a question to the examiner/partner and answer theirs.
+        #### 📌 Part 2: Ask & Answer Personal Questions (Themenkarten: Wochenende, Schule, Einkaufen)[cite: 33, 34, 46]
+        * **Exam Format (Übungssatz 01 Style):** You draw action cards with a theme (e.g., *Wochenende* or *Schule*) and a keyword (e.g., *Frühstück*, *Sport*, *Familie*, *Computer*, *Essen*)[cite: 33, 34]. You must ask your partner a question and answer theirs[cite: 46].
         """)
 
-        topics_list = [
-            "FAMILIE (Family)", "HOBBYS (Hobbies)", "WOHNEN (Housing)", 
-            "BERUF / ARBEIT (Work)", "EINKAUFEN (Shopping)", "ESSEN & TRINKEN (Food & Drinks)",
-            "URLAUB & REISEN (Travel)", "SPRACHEN (Languages)", "TAGESABLAUF (Daily Routine)", "WETTER (Weather)"
+        theme_options = [
+            "Thema: Wochenende (Keywords: Sonntag, Frühstück, Sport, Familie, Ausflug, Bücher)[cite: 33]",
+            "Thema: Schule (Keywords: Freunde, Lehrer, Computer, Sprachen, Essen, Hausaufgaben)[cite: 34]",
+            "Thema: Einkaufen (Keywords: Supermarkt, Preis, Öffnungszeiten, Obst)"
         ]
         
-        selected_topic = st.selectbox("Choose a Goethe Speaking Topic Card:", topics_list, key="sprechen_topic_card")
+        chosen_theme = st.selectbox("Select Goethe Speaking Theme & Card:", theme_options, key="sprechen_theme_card")
 
-        if st.button("💡 Generate Sample Questions & Answers for Topic", key="gen_topic_qa"):
+        if st.button("💡 Generate Sample Exam Questions & Answers for Theme", key="gen_theme_qa"):
             qa_prompt = f"""
-            Provide Goethe A1 speaking prompts and sample question-and-answer pairs for the topic card '{selected_topic}'.
+            Provide Goethe A1 speaking exam prompts and sample question-and-answer pairs for the official Übungssatz 01 theme '{chosen_theme}'.
             Include formal and informal phrasing suitable for the exam.
             """
-            with st.spinner(f"Generating practice prompts for {selected_topic}..."):
+            with st.spinner(f"Generating practice prompts..."):
                 qa_res = generate_cached_content(qa_prompt)
-                st.markdown(f"### 🎯 Practice Cards for {selected_topic}")
+                st.markdown(f"### 🎯 Exam Practice Prompts")
                 st.markdown(qa_res)
+
+        st.markdown(audio_recorder_html, unsafe_allow_html=True)
 
     else:
         st.markdown("""
-        #### 📌 Part 3: Request & Provide Simple Information (Bitten formulieren und reagieren)
-        * **Instructions:** You receive a card depicting an object (e.g., *ein Glas Wasser*, *eine Lampe*, *ein Telefon*, *eine Fahrkarte*). You must politely ask your partner for something or make a request.
+        #### 📌 Part 3: Request & Provide Simple Information (Bitten formulieren)[cite: 35, 47]
+        * **Exam Format (Übungssatz 01 Style):** You draw visual cards depicting objects (e.g., *ein Glas Wasser*, *ein Computer*, *ein Vertrag/Papier*, *eine Lampe*, *eine Blume*, *Uhrzeit/Kalender*)[cite: 35, 36]. You must make a polite request or ask a question based on the object[cite: 47].
         """)
         
-        if st.button("🎲 Draw Random Visual Object Card", key="draw_card"):
-            object_cards = ["Können Sie mir bitte helfen?", "Haben Sie Wasser?", "Wo ist die Toilette?", "Können Sie das bitte wiederholen?", "Wie viel kostet das?"]
+        if st.button("🎲 Draw Random Übungssatz 01 Object Card", key="draw_card"):
+            object_cards = [
+                "Glas Wasser: 'Können Sie mir bitte ein Glas Wasser geben?'[cite: 36, 47]",
+                "Telefon / Computer: 'Darf ich bitte kurz telefonieren / den Computer benutzen?'[cite: 35, 36]",
+                "Uhrzeit / Kalender: 'Können Sie mir bitte sagen, wie viel Uhr es ist / wann der Termin ist?'[cite: 35, 36]",
+                "Kuli / Stift: 'Haben Sie bitte einen Kugelschreiber für mich?'",
+                "Fenster: 'Können Sie bitte das Fenster öffnen?'"
+            ]
             chosen_obj = random.choice(object_cards)
-            st.success(f"**Your Prompt Card:** {chosen_obj}")
-            st.markdown("**Example Goethe Response:** *'Entschuldigung, können Sie mir bitte helfen?'*")
+            st.success(f"**Your Übungssatz 01 Object Card:** {chosen_obj}")
+            st.markdown("**Example Goethe Exam Response:** *'Ja, natürlich. Bitte sehr!'*")
+
+        st.markdown(audio_recorder_html, unsafe_allow_html=True)
 
 # ----------------------------------------------------
 # 8. A1 & A2 SHORT STORIES
