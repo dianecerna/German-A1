@@ -761,12 +761,6 @@ elif nav_choice == "📖 Core Grammar Practice & Exercises":
         st.session_state.grammar_quiz_active = False
     if "grammar_quiz_questions" not in st.session_state:
         st.session_state.grammar_quiz_questions = []
-    if "grammar_quiz_index" not in st.session_state:
-        st.session_state.grammar_quiz_index = 0
-    if "grammar_quiz_score" not in st.session_state:
-        st.session_state.grammar_quiz_score = 0
-    if "grammar_quiz_submitted" not in st.session_state:
-        st.session_state.grammar_quiz_submitted = False
     if "grammar_quiz_complete" not in st.session_state:
         st.session_state.grammar_quiz_complete = False
 
@@ -781,11 +775,12 @@ elif nav_choice == "📖 Core Grammar Practice & Exercises":
         st.session_state.selected_grammar_lesson = new_lesson_key
         st.session_state.grammar_quiz_active = False
         st.session_state.grammar_quiz_complete = False
+        st.session_state.grammar_quiz_questions = []
         st.rerun()
 
     st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
 
-    # --- TUTOR LESSON EXPLANATION FETCH ---
+    # --- TUTOR LESSON EXPLANATION FETCH (Displayed directly without an extra wrapper box) ---
     lesson_title = handbook_lessons[st.session_state.selected_grammar_lesson]
     
     explain_prompt = f"""
@@ -801,20 +796,17 @@ elif nav_choice == "📖 Core Grammar Practice & Exercises":
         except Exception as e:
             lesson_explanation = f"Error loading lesson breakdown: {str(e)}"
 
-    st.markdown('<div class="main-card">', unsafe_allow_html=True)
     st.markdown(f"### 🌻 {st.session_state.selected_grammar_lesson}: {lesson_title}")
     st.markdown(lesson_explanation, unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
 
-    st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+    st.markdown("<div style='height: 15px;'></div>", unsafe_allow_html=True)
 
-    # --- INTERACTIVE QUIZ SECTION (20 QUESTIONS: Multiple Choice, Fill-in-the-blank, Sentence Building, Translation) ---
+    # --- INTERACTIVE QUIZ SECTION (ALL 20 QUESTIONS ON ONE PAGE) ---
     st.markdown('<div class="section-header-box">🧠 Lesson Quiz & Progress Check (20 Questions)</div>', unsafe_allow_html=True)
 
     if not st.session_state.grammar_quiz_active and not st.session_state.grammar_quiz_complete:
-        st.markdown("Test your mastery of this lesson with 20 targeted questions (Multiple Choice, Fill-in-the-blank, Sentence Building, and Translation). Detailed explanations will be provided for incorrect answers, and your score will be tracked.")
-        if st.button("🚀 Start Lesson Quiz (20 Questions)", key="start_g_quiz_btn"):
-            # Generate 20 questions via Gemini JSON
+        st.markdown("Test your mastery of this lesson with all 20 targeted questions displayed at once. Answer them all and submit when you are ready.")
+        if st.button("🚀 Load All 20 Questions", key="start_g_quiz_btn"):
             quiz_prompt = f"""
             Generate a rigorous 20-question German A1 quiz for handbook lesson '{st.session_state.selected_grammar_lesson}: {lesson_title}'.
             Include a balanced mix of question types: Multiple Choice, Fill-in-the-blank, Sentence Building, and Translation.
@@ -831,14 +823,11 @@ elif nav_choice == "📖 Core Grammar Practice & Exercises":
             ]
             Ensure there are exactly 20 items in the array.
             """
-            with st.spinner("Generating 20 quiz questions tailored to this lesson..."):
+            with st.spinner("Generating all 20 quiz questions tailored to this lesson..."):
                 try:
                     q_json_raw = generate_cached_content(quiz_prompt, is_json=True)
                     q_data = json.loads(q_json_raw)
                     st.session_state.grammar_quiz_questions = q_data
-                    st.session_state.grammar_quiz_index = 0
-                    st.session_state.grammar_quiz_score = 0
-                    st.session_state.grammar_quiz_submitted = False
                     st.session_state.grammar_quiz_active = True
                     st.rerun()
                 except Exception as e:
@@ -846,57 +835,51 @@ elif nav_choice == "📖 Core Grammar Practice & Exercises":
 
     elif st.session_state.grammar_quiz_active and not st.session_state.grammar_quiz_complete:
         q_list = st.session_state.grammar_quiz_questions
-        q_idx = st.session_state.grammar_quiz_index
+        
+        with st.form(key="all_20_questions_form"):
+            user_answers = {}
+            for q_idx, q_item in enumerate(q_list):
+                st.markdown(f"**Question {q_idx + 1} of {len(q_list)}** | *Type: {q_item.get('question_type', 'Quiz')}*")
+                st.markdown(f"**{q_item.get('question_text')}**")
 
-        if q_idx < len(q_list):
-            q_item = q_list[q_idx]
-            st.markdown(f"**Question {q_idx + 1} of {len(q_list)}** | *Type: {q_item.get('question_type', 'Quiz')}*")
-            st.markdown(f"**{q_item.get('question_text')}**")
+                q_options = q_item.get("options", [])
+                user_answer_key = f"g_ans_{st.session_state.selected_grammar_lesson}_{q_idx}"
 
-            q_options = q_item.get("options", [])
-            user_answer_key = f"g_ans_{st.session_state.selected_grammar_lesson}_{q_idx}"
+                if q_options and len(q_options) > 1:
+                    user_answers[q_idx] = st.radio("Choose your answer:", q_options, key=user_answer_key)
+                else:
+                    user_answers[q_idx] = st.text_input("Your answer:", key=user_answer_key)
 
-            if q_options and len(q_options) > 1:
-                selected_opt = st.radio("Choose your answer:", q_options, key=user_answer_key)
-                user_input = selected_opt
-            else:
-                user_input = st.text_input("Your answer:", key=user_answer_key)
+                st.markdown("---")
 
-            st.markdown("<div style='height: 6px;'></div>", unsafe_allow_html=True)
+            submitted_form = st.form_submit_button("📥 Submit All Answers")
 
-            if not st.session_state.grammar_quiz_submitted:
-                if st.button("Submit Answer", key=f"sub_g_{q_idx}", disabled=not user_input):
-                    st.session_state.grammar_quiz_submitted = True
-                    # Evaluate correctness
+            if submitted_form:
+                score = 0
+                results_breakdown = []
+                for q_idx, q_item in enumerate(q_list):
                     correct_ans = str(q_item.get("correct_answer", "")).strip().lower()
-                    given_ans = str(user_input).strip().lower()
+                    given_ans = str(user_answers.get(q_idx, "")).strip().lower()
 
                     is_correct = False
                     if given_ans == correct_ans or correct_ans in given_ans or given_ans in correct_ans:
                         is_correct = True
-                        st.session_state.grammar_quiz_score += 1
-                        st.success("✅ **Correct! Excellent work.**")
-                    else:
-                        st.error(f"❌ **Incorrect.**\n\n**Correct Answer:** {q_item.get('correct_answer')}\n\n**Explanation:** {q_item.get('explanation')}")
+                        score += 1
 
-                    st.rerun()
-            else:
-                # Show explanation if already submitted and button to next
-                correct_ans = str(q_item.get("correct_answer", "")).strip().lower()
-                given_ans = str(user_input).strip().lower()
-                if given_ans == correct_ans or correct_ans in given_ans or given_ans in correct_ans:
-                    st.success("✅ **Correct!**")
-                else:
-                    st.error(f"❌ **Incorrect.**\n\n**Correct Answer:** {q_item.get('correct_answer')}\n\n**Explanation:** {q_item.get('explanation')}")
+                    results_breakdown.append({
+                        "q_num": q_idx + 1,
+                        "question": q_item.get("question_text"),
+                        "given": user_answers.get(q_idx, ""),
+                        "correct": q_item.get("correct_answer"),
+                        "is_correct": is_correct,
+                        "explanation": q_item.get("explanation")
+                    })
 
-                if st.button("Next Question ➡️", key=f"next_g_{q_idx}"):
-                    st.session_state.grammar_quiz_submitted = False
-                    st.session_state.grammar_quiz_index += 1
-                    st.rerun()
-        else:
-            st.session_state.grammar_quiz_active = False
-            st.session_state.grammar_quiz_complete = True
-            st.rerun()
+                st.session_state.grammar_quiz_score = score
+                st.session_state.grammar_quiz_results = results_breakdown
+                st.session_state.grammar_quiz_active = False
+                st.session_state.grammar_quiz_complete = True
+                st.rerun()
 
     elif st.session_state.grammar_quiz_complete:
         final_score = st.session_state.grammar_quiz_score
@@ -909,15 +892,23 @@ elif nav_choice == "📖 Core Grammar Practice & Exercises":
         if percentage >= 80:
             st.success("🌟 **Outstanding mastery!** You have thoroughly grasped this handbook lesson.")
         elif percentage >= 50:
-            st.info("👍 **Good effort!** Review the handbook lesson explanations above to solidify the remaining concepts.")
+            st.info("👍 **Good effort!** Review the feedback below to solidify the remaining concepts.")
         else:
-            st.warning("💡 **Keep practicing!** Re-read the comprehensive explanation above and try the quiz again.")
+            st.warning("💡 **Keep practicing!** Re-read the comprehensive explanation above and try again.")
 
+        st.markdown("#### 📝 Detailed Review of Your Answers:")
+        for res in st.session_state.get("grammar_quiz_results", []):
+            if res["is_correct"]:
+                st.success(f"**Q{res['q_num']}: {res['question']}**\n\n- **Your Answer:** {res['given']} (Correct!)")
+            else:
+                st.error(f"**Q{res['q_num']}: {res['question']}**\n\n- **Your Answer:** {res['given']}\n- **Correct Answer:** {res['correct']}\n- **Explanation:** {res['explanation']}")
+
+        st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
         if st.button("🔄 Retake Lesson Quiz", key="retake_g_quiz_btn"):
             st.session_state.grammar_quiz_complete = False
             st.session_state.grammar_quiz_active = False
             st.session_state.grammar_quiz_score = 0
-            st.session_state.grammar_quiz_index = 0
+            st.session_state.grammar_quiz_questions = []
             st.rerun()
 
 # ----------------------------------------------------
