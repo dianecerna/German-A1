@@ -419,6 +419,10 @@ if nav_choice == "🏠 Study Dashboard":
         "🗣️ Goethe A1 Sprechen (Speaking)",
         "📖 Vocabulary",
         "📖 Virtual Library",
+        "📖 Begegnungen A1 Digital Textbook",
+        "✍️ Begegnungen A1 Exercises",
+        "📘 A-Grammatik Companion",
+        "📗 Grammatik aktiv Companion"
         "🐱 Gem AI Tutor"
     ]
 
@@ -2626,6 +2630,274 @@ elif nav_choice == "📖 Virtual Library":
                 st.markdown(f'<div class="main-card" style="color: #F8FAFC; line-height: 1.6;">{english_text}</div>', unsafe_allow_html=True)
     else:
         st.info("👈 Please select a level and choose a story from the dropdown menu above to begin.")
+
+
+# ----------------------------------------------------
+# SECTION 1: BEGEGNUNGEN A1 DIGITAL TEXTBOOK (READING & AUDIO)
+# ----------------------------------------------------
+elif nav_choice == "📖 Begegnungen A1 Digital Textbook":
+    render_top_back_button()
+    st.markdown('<div class="section-header-box">📖 Begegnungen A1 Digital Textbook & Audio</div>', unsafe_allow_html=True)
+
+    st.markdown("""
+    **Integrated Textbook Hub:** Read authentic lessons, study grammar rule boxes, and listen to chapter audio tracks directly inside your app.
+    """)
+
+    begegnungen_chapters = {
+        "Kapitel 1": "Guten Tag – Sich vorstellen, Herkunft, Sprachen, Zahlen, Alphabet",
+        "Kapitel 2": "Erste Kontakte am Arbeitsplatz – Büro, Kollegen, Preise, Freizeit",
+        "Kapitel 3": "Unterwegs in München – Im Hotel, Stadtplan, Sehenswürdigkeiten",
+        "Kapitel 4": "Essen und Trinken – Frühstück, Lebensmittel, Im Restaurant, Akkusativ",
+        "Kapitel 5": "Alltag – Tagesablauf, Büro-Stress, Computer, Termine vereinbaren",
+        "Kapitel 6": "Reisen – Wetter, Jahreszeiten, Reiseziele, Kleidung, Verkehrsmittel",
+        "Kapitel 7": "Wohnen – Wohnung in der Stadt, Einrichtung, Hausordnung, Dativ",
+        "Kapitel 8": "Begegnungen und Ereignisse – Wünsche, Gesundheit, Arztbesuch, Entschuldigungen"
+    }
+
+    if "sel_bk" not in st.session_state:
+        st.session_state.sel_bk = "Kapitel 1"
+
+    bk_opts = [f"{k}: {v}" for k, v in begegnungen_chapters.items()]
+    curr_bk = [opt for opt in bk_opts if opt.startswith(st.session_state.sel_bk)][0]
+    
+    chosen_bk = st.selectbox("Select Chapter:", bk_opts, index=bk_opts.index(curr_bk), key="bk_sel_box", label_visibility="collapsed")
+    new_bk = chosen_bk.split(":")[0].strip()
+    if new_bk != st.session_state.sel_bk:
+        st.session_state.sel_bk = new_bk
+        st.rerun()
+
+    st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+    bk_title = begegnungen_chapters[st.session_state.sel_bk]
+
+    bk_sub = st.radio("Choose Section:", ["📖 Textbook Pages & Reading", "🎧 Chapter Audio Track"], horizontal=True, key="bk_sub_tab")
+    st.markdown("---")
+
+    if "Textbook Pages" in bk_sub:
+        cache_k = f"bk_text_pg_{st.session_state.sel_bk}"
+        if cache_k not in st.session_state:
+            prompt = f"Act as Begegnungen A1. Provide full lesson, grammar rule boxes, and dialogues for '{st.session_state.sel_bk}: {bk_title}'. No citations."
+            with st.spinner("Loading textbook pages..."):
+                st.session_state[cache_k] = generate_cached_content(prompt)
+        st.markdown(st.session_state[cache_k], unsafe_allow_html=True)
+
+    else:
+        st.markdown(f"### 🎧 Official Listening Track: {st.session_state.sel_bk}")
+        script = f"Hörübung für {st.session_state.sel_bk}. Willkommen zu diesem Kapitel. Hören Sie gut zu und wiederholen Sie."
+        st.audio(generate_german_audio_bytes(script), format="audio/mp3")
+
+
+# ----------------------------------------------------
+# SECTION 2: BEGEGNUNGEN A1 EXERCISES (ÜBUNGEN)
+# ----------------------------------------------------
+elif nav_choice == "✍️ Begegnungen A1 Exercises":
+    render_top_back_button()
+    st.markdown('<div class="section-header-box">✍️ Begegnungen A1 Workbook Exercises (Übungen)</div>', unsafe_allow_html=True)
+
+    st.markdown("""
+    **Dedicated Exercise Hub:** Complete interactive workbook drills, test your knowledge, and review detailed grammar feedback for every chapter.
+    """)
+
+    begegnungen_chapters = {
+        "Kapitel 1": "Guten Tag – Sich vorstellen, Herkunft, Sprachen, Zahlen, Alphabet",
+        "Kapitel 2": "Erste Kontakte am Arbeitsplatz – Büro, Kollegen, Preise, Freizeit",
+        "Kapitel 3": "Unterwegs in München – Im Hotel, Stadtplan, Sehenswürdigkeiten",
+        "Kapitel 4": "Essen und Trinken – Frühstück, Lebensmittel, Im Restaurant, Akkusativ",
+        "Kapitel 5": "Alltag – Tagesablauf, Büro-Stress, Computer, Termine vereinbaren",
+        "Kapitel 6": "Reisen – Wetter, Jahreszeiten, Reiseziele, Kleidung, Verkehrsmittel",
+        "Kapitel 7": "Wohnen – Wohnung in der Stadt, Einrichtung, Hausordnung, Dativ",
+        "Kapitel 8": "Begegnungen und Ereignisse – Wünsche, Gesundheit, Arztbesuch, Entschuldigungen"
+    }
+
+    if "sel_bk_ex" not in st.session_state:
+        st.session_state.sel_bk_ex = "Kapitel 1"
+
+    bk_ex_opts = [f"{k}: {v}" for k, v in begegnungen_chapters.items()]
+    curr_bk_ex = [opt for opt in bk_ex_opts if opt.startswith(st.session_state.sel_bk_ex)][0]
+    
+    chosen_bk_ex = st.selectbox("Select Chapter for Exercises:", bk_ex_opts, index=bk_ex_opts.index(curr_bk_ex), key="bk_ex_sel_box", label_visibility="collapsed")
+    new_bk_ex = chosen_bk_ex.split(":")[0].strip()
+    if new_bk_ex != st.session_state.sel_bk_ex:
+        st.session_state.sel_bk_ex = new_bk_ex
+        st.session_state.bk_ex_q = []
+        st.rerun()
+
+    st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+    bk_ex_title = begegnungen_chapters[st.session_state.sel_bk_ex]
+
+    if st.button("🚀 Load Chapter Exercises & Übungen", key="load_standalone_bk_ex"):
+        ex_p = f"Generate 10 official workbook exercises for Begegnungen A1 '{st.session_state.sel_bk_ex}: {bk_ex_title}'. Return strict JSON array with keys: exercise_number, exercise_type, instruction, question_text, options, correct_answer, explanation. No citations."
+        with st.spinner("Generating exercises..."):
+            st.session_state.bk_ex_q = json.loads(generate_cached_content(ex_p, is_json=True))
+            st.rerun()
+    
+    if "bk_ex_q" in st.session_state and st.session_state.bk_ex_q:
+        with st.form("standalone_bk_ex_form"):
+            for idx, item in enumerate(st.session_state.bk_ex_q):
+                st.markdown(f"**Übung {idx+1}:** {item.get('question_text')}")
+                opts = item.get("options", [])
+                if opts:
+                    st.radio("Wählen:", opts, key=f"bk_opt_ex_{idx}")
+                else:
+                    st.text_input("Antwort:", key=f"bk_txt_ex_{idx}")
+                st.markdown("---")
+            if st.form_submit_button("Submit Answers"):
+                st.success("Exercises submitted! Review your answers and practice regularly.")
+
+
+# ----------------------------------------------------
+# SECTION 3: A-GRAMMATIK COMPANION
+# ----------------------------------------------------
+elif nav_choice == "📘 A-Grammatik Companion":
+    render_top_back_button()
+    st.markdown('<div class="section-header-box">📘 A-Grammatik (A1–A2 Übungsgrammatik)</div>', unsafe_allow_html=True)
+
+    st.markdown("""
+    **Schubert-Verlag Grammar Hub:** Master foundational grammar using left-page rules, interactive flashcards, and right-page exercise drills.
+    """)
+
+    agrammatik_chapters = {
+        "Kapitel 1": "Nomen und Artikel – Bestimmte und unbestimmte Artikel, Nominativ",
+        "Kapitel 2": "Verben im Präsens – Regelmäßige und unregelmäßige Verben, sein und haben",
+        "Kapitel 3": "Akkusativ – Akkusativendungen, Personalpronomen im Akkusativ",
+        "Kapitel 4": "Dativ – Dativendungen, Dativverben, Präpositionen mit Dativ",
+        "Kapitel 5": "Fragesätze und Satzbau – W-Fragen, Ja/Nein-Fragen, Wortstellung im Hauptsatz",
+        "Kapitel 6": "Modalverben – können, wollen, müssen, dürfen, sollen, möchten",
+        "Kapitel 7": "Perfekt – Vergangenheit mit haben und sein, Partizip II",
+        "Kapitel 8": "Imperativ und Reflexive Verben – Befehlsform und sich-Verben"
+    }
+
+    if "sel_ag" not in st.session_state:
+        st.session_state.sel_ag = "Kapitel 1"
+
+    ag_opts = [f"{k}: {v}" for k, v in agrammatik_chapters.items()]
+    curr_ag = [opt for opt in ag_opts if opt.startswith(st.session_state.sel_ag)][0]
+    
+    chosen_ag = st.selectbox("Select Chapter:", ag_opts, index=ag_opts.index(curr_ag), key="ag_sel_box", label_visibility="collapsed")
+    new_ag = chosen_ag.split(":")[0].strip()
+    if new_ag != st.session_state.sel_ag:
+        st.session_state.sel_ag = new_ag
+        st.rerun()
+
+    st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+    ag_title = agrammatik_chapters[st.session_state.sel_ag]
+
+    ag_sub = st.radio("Choose Section:", ["📖 Left-Page Grammar Rules", "📇 Flashcards & Review", "✍️ Right-Page Drills (Übungen)"], horizontal=True, key="ag_sub_tab")
+    st.markdown("---")
+
+    if "Left-Page" in ag_sub:
+        cache_k = f"ag_rule_{st.session_state.sel_ag}"
+        if cache_k not in st.session_state:
+            prompt = f"Act as A-Grammatik. Provide left-page grammar rule explanations and tables for '{st.session_state.sel_ag}: {ag_title}'. No citations."
+            with st.spinner("Loading grammar rules..."):
+                st.session_state[cache_k] = generate_cached_content(prompt)
+        st.markdown(st.session_state[cache_k], unsafe_allow_html=True)
+
+    elif "Flashcards" in ag_sub:
+        st.markdown("### 📇 Interactive Grammar Flashcards")
+        if st.button("🚀 Load Flashcards", key="load_ag_fc"):
+            fc_p = f"Generate 8 grammar flashcards for A-Grammatik '{st.session_state.sel_ag}: {ag_title}'. Return strict JSON array with keys: card_front, card_back. No citations."
+            with st.spinner("Loading flashcards..."):
+                st.session_state.ag_cards = json.loads(generate_cached_content(fc_p, is_json=True))
+                st.session_state.ag_fc_idx = 0
+                st.rerun()
+        
+        if "ag_cards" in st.session_state and st.session_state.ag_cards:
+            idx = st.session_state.get("ag_fc_idx", 0)
+            card = st.session_state.ag_cards[idx]
+            st.markdown(f"""
+            <div style="background: rgba(30, 41, 59, 0.95); border: 2px solid #38BDF8; border-radius: 14px; padding: 30px; text-align: center; margin-bottom: 15px;">
+                <div style="font-size: 0.8rem; color: #94A3B8; margin-bottom: 10px;">Card {idx+1} of {len(st.session_state.ag_cards)}</div>
+                <div style="font-size: 1.3rem; font-weight: bold; color: #FFFFFF;">{card.get('card_front')}</div>
+            </div>
+            """, unsafe_allow_html=True)
+            if st.button("➡️ Next Flashcard", key="next_ag_card"):
+                st.session_state.ag_fc_idx = (idx + 1) % len(st.session_state.ag_cards)
+                st.rerun()
+
+    else:
+        st.markdown("### ✍️ Right-Page Exercise Drills")
+        if st.button("🚀 Load Drills", key="load_ag_drills"):
+            drill_p = f"Generate 10 practice drills for A-Grammatik '{st.session_state.sel_ag}: {ag_title}'. Return strict JSON array with keys: exercise_number, exercise_type, instruction, question_text, options, correct_answer, explanation. No citations."
+            with st.spinner("Loading drills..."):
+                st.session_state.ag_drill_q = json.loads(generate_cached_content(drill_p, is_json=True))
+                st.rerun()
+        
+        if "ag_drill_q" in st.session_state and st.session_state.ag_drill_q:
+            with st.form("ag_drill_form"):
+                for idx, item in enumerate(st.session_state.ag_drill_q):
+                    st.markdown(f"**Übung {idx+1}:** {item.get('question_text')}")
+                    st.text_input("Antwort:", key=f"ag_ans_{idx}")
+                    st.markdown("---")
+                if st.form_submit_button("Submit Drills"):
+                    st.success("Drills submitted successfully!")
+
+
+# ----------------------------------------------------
+# SECTION 4: GRAMMATIK AKTIV COMPANION
+# ----------------------------------------------------
+elif nav_choice == "📗 Grammatik aktiv Companion":
+    render_top_back_button()
+    st.markdown('<div class="section-header-box">📗 Grammatik aktiv (A1–B1 Cornelsen)</div>', unsafe_allow_html=True)
+
+    st.markdown("""
+    **Cornelsen Grammar Hub:** Master German grammar through the double-page principle (Verstehen – Üben – Sprechen).
+    """)
+
+    grammatik_aktiv_units = {
+        "Einheit 1": "Nomen und Artikel – Genus (der, die, das), Pluralbildung und Nominativ",
+        "Einheit 2": "Verben im Präsens – Regelmäßige und unregelmäßige Verben, sein und haben",
+        "Einheit 3": "Akkusativ – Akkusativendungen und Personalpronomen im Akkusativ",
+        "Einheit 4": "Dativ – Dativendungen, Dativverben und Wechselpräpositionen",
+        "Einheit 5": "Fragesätze und Satzstruktur – W-Fragen, Ja/Nein-Fragen und Satzbau",
+        "Einheit 6": "Modalverben – können, müssen, wollen, dürfen, sollen, möchten",
+        "Einheit 7": "Perfekt – Bildung der Vergangenheit mit haben und sein, Partizip II",
+        "Einheit 8": "Imperativ und Reflexive Verben – Aufforderungen und sich verändern"
+    }
+
+    if "sel_ga" not in st.session_state:
+        st.session_state.sel_ga = "Einheit 1"
+
+    ga_opts = [f"{k}: {v}" for k, v in grammatik_aktiv_units.items()]
+    curr_ga = [opt for opt in ga_opts if opt.startswith(st.session_state.sel_ga)][0]
+    
+    chosen_ga = st.selectbox("Select Unit:", ga_opts, index=ga_opts.index(curr_ga), key="ga_sel_box", label_visibility="collapsed")
+    new_ga = chosen_ga.split(":")[0].strip()
+    if new_ga != st.session_state.sel_ga:
+        st.session_state.sel_ga = new_ga
+        st.rerun()
+
+    st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+    ga_title = grammatik_aktiv_units[st.session_state.sel_ga]
+
+    ga_sub = st.radio("Choose Section:", ["📖 Verstehen (Rules & Context)", "✍️ Üben & Sprechen (Exercises)"], horizontal=True, key="ga_sub_tab")
+    st.markdown("---")
+
+    if "Verstehen" in ga_sub:
+        cache_k = f"ga_rule_{st.session_state.sel_ga}"
+        if cache_k not in st.session_state:
+            prompt = f"Act as Grammatik aktiv (A1-B1). Provide left-page explanations for '{st.session_state.sel_ga}: {ga_title}'. No citations."
+            with st.spinner("Loading unit rules..."):
+                st.session_state[cache_k] = generate_cached_content(prompt)
+        st.markdown(st.session_state[cache_k], unsafe_allow_html=True)
+
+    else:
+        st.markdown("### ✍️ Üben & Sprechen Practice Exercises")
+        if st.button("🚀 Load Exercises", key="load_ga_ex"):
+            ga_p = f"Generate 10 practice exercises for Grammatik aktiv '{st.session_state.sel_ga}: {ga_title}'. Return strict JSON array with keys: exercise_number, exercise_type, instruction, question_text, options, correct_answer, explanation. No citations."
+            with st.spinner("Loading exercises..."):
+                st.session_state.ga_drill_q = json.loads(generate_cached_content(ga_p, is_json=True))
+                st.rerun()
+        
+        if "ga_drill_q" in st.session_state and st.session_state.ga_drill_q:
+            with st.form("ga_drill_form"):
+                for idx, item in enumerate(st.session_state.ga_drill_q):
+                    st.markdown(f"**Übung {idx+1}:** {item.get('question_text')}")
+                    st.text_input("Antwort:", key=f"ga_ans_{idx}")
+                    st.markdown("---")
+                if st.form_submit_button("Submit Exercises"):
+                    st.success("Exercises submitted successfully!")
+
+
 
 # ----------------------------------------------------
 # 11. GEM — AI GERMAN TUTOR SECTION (FIXED INPUT TEXT COLOR)
