@@ -1354,7 +1354,7 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
 
     st.markdown("""
     **Goethe A1 Listening (Hören) Format:** 20 minutes | 3 parts | 15 questions  
-    *Mirrored directly from official Start Deutsch 1 exam layouts with working flashcard-style audio players, picture option cards, and auto-loading scenarios.*
+    *Mirrored exactly from official Start Deutsch 1 exam layouts with working audio players, auto-loading scenarios, and dynamically generated pictures for Part 1.*
     """)
 
     if "horen_part" not in st.session_state:
@@ -1365,6 +1365,9 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
         st.session_state.horen_questions = []
     if "horen_complete" not in st.session_state:
         st.session_state.horen_complete = False
+    # State for generated images
+    if "horen_images" not in st.session_state:
+        st.session_state.horen_images = {}
 
     horen_parts = [
         "Part 1: Picture-based Multiple Choice (6 conversations, options a/b/c)",
@@ -1378,6 +1381,7 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
         st.session_state.horen_part = chosen_horen_part
         st.session_state.horen_questions = []
         st.session_state.horen_complete = False
+        st.session_state.horen_images = {} # Clear images on part change
         st.rerun()
 
     st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
@@ -1399,19 +1403,13 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
             border-radius: 8px;
             margin-bottom: 15px;
         }
-        .exam-pic-card {
+        .exam-pic-option {
             background-color: #1E293B;
             border: 2px solid #38BDF8;
-            padding: 15px;
+            padding: 10px;
             border-radius: 8px;
+            margin-bottom: 10px;
             text-align: center;
-            color: #F8FAFC;
-            font-weight: 500;
-            min-height: 90px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
         }
         </style>
     """, unsafe_allow_html=True)
@@ -1419,7 +1417,7 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
     if "Part 1" in st.session_state.horen_part:
         st.markdown("""
         #### 📌 Part 1: Six Short Conversations (3 Picture-based Options a, b, c)
-        * **Exam Format:** Listen to 6 brief everyday dialogues twice. Choose the correct visual scenario / picture option (a, b, or c) matching what is heard.
+        * **Exam Format:** Listen to 6 brief everyday dialogues twice. Choose the correct visual option (Bild a, b, or c) matching what is heard.
         """)
     elif "Part 2" in st.session_state.horen_part:
         st.markdown("""
@@ -1440,6 +1438,7 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
             st.session_state.horen_seed += 1
             st.session_state.horen_questions = []
             st.session_state.horen_complete = False
+            st.session_state.horen_images = {}
             st.rerun()
 
     # Auto-load exact required counts: Part 1 = 6 items, Part 2 = 4 items, Part 3 = 5 items
@@ -1449,11 +1448,11 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
             Generate a completely brand new, randomized official Goethe A1 Start Deutsch 1 Hören Part 1 practice module using seed {st.session_state.horen_seed}.
             Provide EXACTLY 6 items. Each item must have:
             - "item_num": question number (1 to 6)
-            - "question_text": The question (e.g., "Wo gibt es Kleidung für Kinder?" or "Was kostet der Apfelkuchen?")
+            - "question_text": The question (e.g., "Wo gibt es Kleidung für Kinder?")
             - "audio_transcript": German spoken dialogue script for the audio track.
-            - "pic_a_desc": visual description for picture option a
-            - "pic_b_desc": visual description for picture option b
-            - "pic_c_desc": visual description for picture option c
+            - "image_generation_prompt_a": A detailed DALL-E prompt to generate a line-art illustration for option A. (e.g., "A black and white line-art illustration of a price tag showing 1.50 Euro.")
+            - "image_generation_prompt_b": A detailed DALL-E prompt to generate a line-art illustration for option B.
+            - "image_generation_prompt_c": A detailed DALL-E prompt to generate a line-art illustration for option C.
             - "correct_answer": "a", "b", or "c"
             - "explanation": detailed explanation.
             Return strict JSON array with 6 items.
@@ -1511,7 +1510,7 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
                     transcript_text = q.get('audio_transcript', '')
                     transcript_safe = transcript_text.replace('"', "'").replace('\n', ' ')
 
-                    # Flashcard-style audio player component using Streamlit native button & robust TTS speech trigger
+                    # Flashcard-style audio player component using Streamlit native button
                     st.markdown(f"""
                     <div class="exam-audio-card">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
@@ -1540,13 +1539,31 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
                     </div>
                     """, unsafe_allow_html=True)
 
+                    # --- DYNAMIC IMAGE GENERATION FOR PART 1 ---
+                    if item_num not in st.session_state.horen_images:
+                        with st.spinner(f"Generating Bild options for Aufgabe {item_num}..."):
+                            try:
+                                # Generate 3 images in parallel (this function needs to handle multiple calls)
+                                img_a = generate_cached_image(q.get("image_generation_prompt_a"))
+                                img_b = generate_cached_image(q.get("image_generation_prompt_b"))
+                                img_c = generate_cached_image(q.get("image_generation_prompt_c"))
+                                st.session_state.horen_images[item_num] = [img_a, img_b, img_c]
+                            except Exception:
+                                # Fallback if generation fails
+                                st.session_state.horen_images[item_num] = ["(Image Gen Failed)", "(Image Gen Failed)", "(Image Gen Failed)"]
+
+                    # Render the generated images in clean option boxes
+                    img_list = st.session_state.horen_images[item_num]
                     col_p1, col_p2, col_p3 = st.columns(3)
                     with col_p1:
-                        st.markdown(f'<div class="exam-pic-card"><b>[ Bild a ]</b><br><span style="font-size: 0.9rem; margin-top: 6px;">{q.get("pic_a_desc", "Option A")}</span></div>', unsafe_allow_html=True)
+                        st.markdown('<div class="exam-pic-option">Bild a</div>', unsafe_allow_html=True)
+                        st.image(img_list[0], use_column_width=True)
                     with col_p2:
-                        st.markdown(f'<div class="exam-pic-card"><b>[ Bild b ]</b><br><span style="font-size: 0.9rem; margin-top: 6px;">{q.get("pic_b_desc", "Option B")}</span></div>', unsafe_allow_html=True)
+                        st.markdown('<div class="exam-pic-option">Bild b</div>', unsafe_allow_html=True)
+                        st.image(img_list[1], use_column_width=True)
                     with col_p3:
-                        st.markdown(f'<div class="exam-pic-card"><b>[ Bild c ]</b><br><span style="font-size: 0.9rem; margin-top: 6px;">{q.get("pic_c_desc", "Option C")}</span></div>', unsafe_allow_html=True)
+                        st.markdown('<div class="exam-pic-option">Bild c</div>', unsafe_allow_html=True)
+                        st.image(img_list[2], use_column_width=True)
 
                     user_horen_answers[idx] = st.radio(f"Wählen Sie das richtige Bild für Aufgabe {item_num}:", ["a", "b", "c"], key=f"horen_t1_ans_{idx}", horizontal=True)
                     st.markdown("---")
@@ -1733,6 +1750,7 @@ elif nav_choice == "🎧 Goethe A1 Hören (Listening)":
         if st.button("🔄 Try Another Hören Set", key="retry_horen"):
             st.session_state.horen_complete = False
             st.session_state.horen_questions = []
+            st.session_state.horen_images = {}
             st.rerun()
 # ----------------------------------------------------
 # 6. GOETHE A1 SCHREIBEN (WRITING) SECTION
