@@ -1743,120 +1743,260 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
     st.markdown('<div class="section-header-box">✍️ Goethe A1 Schreiben (Writing) Exam Practice</div>', unsafe_allow_html=True)
 
     st.markdown("""
-    **Goethe A1 Writing (Schreiben) Format:** 20 minutes | 2 tasks[cite: 19]  
-    *Official format: Task 1 (Form filling) and Task 2 (Short message / email with 3 prompt bullets)[cite: 28, 29].*
+    **Goethe A1 Writing (Schreiben) Format:** 20 minutes | 2 parts | 6 tasks  
+    *Mirrored directly from official Start Deutsch 1 exam layouts (featuring form-filling data extraction cards for Teil 1 and structured prompt notes with email input boxes for Teil 2).*
     """)
 
+    if "schreiben_part" not in st.session_state:
+        st.session_state.schreiben_part = "Part 1: Form Filling (Anmeldung)"
     if "schreiben_seed" not in st.session_state:
         st.session_state.schreiben_seed = 1
+    if "schreiben_questions" not in st.session_state:
+        st.session_state.schreiben_questions = []
+    if "schreiben_complete" not in st.session_state:
+        st.session_state.schreiben_complete = False
+
+    schreiben_parts = [
+        "Part 1: Form Filling (Anmeldung based on short persona paragraphs)",
+        "Part 2: Short Email Writing (Responding to 3 specific points, ~30 words)"
+    ]
+
+    chosen_schreiben_part = st.selectbox("Select Goethe Schreiben Exam Part:", schreiben_parts, key="schreiben_part_dropdown", label_visibility="collapsed")
+
+    if chosen_schreiben_part != st.session_state.schreiben_part:
+        st.session_state.schreiben_part = chosen_schreiben_part
+        st.session_state.schreiben_questions = []
+        st.session_state.schreiben_complete = False
+        st.rerun()
+
+    st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+
+    # Styling for authentic form frames and writing boxes
+    st.markdown("""
+        <style>
+        div.stRadio label, div.stTextInput label, div.stTextInput input, div.stSelectbox label, div.stTextArea label {
+            color: #FFFFFF !important;
+        }
+        .stTextArea textarea {
+            background-color: #1E293B !important;
+            color: #F8FAFC !important;
+            border: 2px solid #38BDF8 !important;
+            border-radius: 8px;
+        }
+        .exam-form-box {
+            background-color: #FFFFFF;
+            color: #0F172A;
+            border: 3px solid #475569;
+            padding: 30px;
+            border-radius: 6px;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.25);
+            margin-bottom: 20px;
+            font-family: Arial, sans-serif;
+        }
+        .exam-note-card {
+            background-color: #FFFFFF;
+            color: #0F172A;
+            border: 2px solid #CBD5E1;
+            padding: 20px;
+            border-radius: 6px;
+            box-shadow: 2px 4px 10px rgba(0,0,0,0.15);
+            margin-bottom: 20px;
+            font-family: Georgia, serif;
+            transform: rotate(-1deg);
+            max-width: 450px;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
+    if "Part 1" in st.session_state.schreiben_part:
+        st.markdown("""
+        #### 📌 Part 1: Form Filling (Anmeldung)
+        * **Exam Format:** Read a short text describing a person's background, course wishes, and details, then fill in the 5 missing fields in the official registration form.
+        """)
+    else:
+        st.markdown("""
+        #### 📌 Part 2: Short Email Writing
+        * **Exam Format:** Write a short email (approx. 30 words) responding to 3 prompts (such as reason for writing, time/place, and asking a question), including a greeting and sign-off.
+        """)
+
+    st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
 
     col_bs1, col_bs2 = st.columns([2, 1])
     with col_bs2:
         if st.button("🔄 Refresh Scenarios", key="refresh_schreiben_btn"):
             st.session_state.schreiben_seed += 1
+            st.session_state.schreiben_questions = []
+            st.session_state.schreiben_complete = False
             st.rerun()
 
-    schreiben_task = st.selectbox("Select Goethe Schreiben Task:", [
-        "Task 1: Fill out a course registration form (Formular ausfüllen)[cite: 28]",
-        "Task 2: Write a short message / email (Scenario based with 3 prompt points)[cite: 29]"
-    ], key="schreiben_dropdown", label_visibility="collapsed")
+    # Auto-load scenarios if empty
+    if not st.session_state.schreiben_questions and not st.session_state.schreiben_complete:
+        if "Part 1" in st.session_state.schreiben_part:
+            schreiben_prompt = f"""
+            Generate a completely brand new, randomized official Goethe A1 Start Deutsch 1 Schreiben Part 1 practice module using seed {st.session_state.schreiben_seed}.
+            Provide:
+            - "persona_text": A paragraph describing a person (name, birth date, birthplace, native language, languages spoken, German learning duration, desired course dates, and course time).
+            - "form_title": School name (e.g., "Sprachschule LIGA Anmeldung").
+            - "fields": A list of EXACTLY 5 fields to fill (numbered (1) to (5)), such as "Geburtsort", "Andere Sprachen", "Wie lange?", "Kurstermin", "Kurszeit". Each field must contain:
+                - "field_num": 1 to 5
+                - "field_label": label name
+                - "correct_value": expected correct string answer
+                - "hint": brief guidance.
+            Return strict JSON object with these keys.
+            """
+        else:
+            schreiben_prompt = f"""
+            Generate a completely brand new, randomized official Goethe A1 Start Deutsch 1 Schreiben Part 2 practice module using seed {st.session_state.schreiben_seed}.
+            Provide:
+            - "scenario_title": Situation title (e.g., "Sie möchten Ihren Geburtstag feiern und Ihre Freundin Anna einladen.")
+            - "point_1": First bullet point prompt (e.g., "Warum schreiben Sie?")
+            - "point_2": Second bullet point prompt (e.g., "Sagen Sie: Wann und wo feiern Sie?")
+            - "point_3": Third bullet point prompt (e.g., "Fragen Sie: kommen?")
+            - "model_answer": A sample correct email meeting all 3 points in ~30 words with appropriate greeting and sign-off.
+            - "evaluation_criteria": Key things checked in A1 writing.
+            Return strict JSON object with these keys.
+            """
 
-    st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+        with st.spinner("Generating fresh official Schreiben exam scenario..."):
+            try:
+                schreiben_raw = generate_cached_content(schreiben_prompt, is_json=True)
+                st.session_state.schreiben_data = json.loads(schreiben_raw)
+                st.session_state.schreiben_questions = [1] # marker for active
+            except Exception as e:
+                st.error(f"Failed to generate Schreiben practice: {str(e)}")
 
-    st.markdown("""
-        <style>
-        div.stTextInput label, div.stTextInput input, div.stTextArea label, div.stTextArea textarea {
-            color: #FFFFFF !important;
-        }
-        .exam-text-box {
-            background-color: #1E293B;
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px solid #334155;
-            color: #F8FAFC;
-            margin-bottom: 12px;
-        }
-        </style>
-    """, unsafe_allow_html=True)
+    if st.session_state.schreiben_questions and not st.session_state.schreiben_complete:
+        data = st.session_state.schreiben_data
 
-    if "Task 1" in schreiben_task:
-        st.markdown("""
-        #### 📌 Task 1: Personal Data Form Filling (Formular ausfüllen)[cite: 28]
-        * **Exam Format:** You receive an inquiry form or registration slip. You must enter your personal information correctly with proper capitalization of German nouns.
-        """)
+        if "Part 1" in st.session_state.schreiben_part:
+            # --- SCHREIBEN TEIL 1 (Form Filling) ---
+            st.markdown(f"""
+            <div style="font-size: 1.05rem; line-height: 1.6; margin-bottom: 20px; background-color: #1E293B; padding: 20px; border-radius: 8px; border-left: 4px solid #38BDF8;">
+                {data.get('persona_text')}
+            </div>
+            """, unsafe_allow_html=True)
+
+            with st.form(key="schreiben_teil1_form"):
+                st.markdown(f"""
+                <div class="exam-form-box">
+                    <div style="text-align: center; border-bottom: 2px solid #0F172A; padding-bottom: 12px; margin-bottom: 20px;">
+                        <h3 style="color: #0F172A; margin: 0;">{data.get('form_title', 'Sprachschule LIGA Anmeldung')}</h3>
+                    </div>
+                """, unsafe_allow_html=True)
+
+                user_form_answers = {}
+                fields = data.get('fields', [])
+                
+                # Render preset static rows (0) matching official layout
+                st.markdown("""
+                <div style="display: grid; grid-template-columns: 180px 1fr 40px; gap: 10px; align-items: center; margin-bottom: 12px; font-size: 0.95rem;">
+                    <b>Familienname:</b> <div style="background-color: #E2E8F0; padding: 6px 10px; border-radius: 4px; color: #334155;">Legrand</div> <span style="color: #64748B;">(0)</span>
+                </div>
+                """, unsafe_allow_html=True)
+
+                for f in fields:
+                    f_num = f.get('field_num')
+                    f_label = f.get('field_label')
+                    user_form_answers[f_num] = st.text_input(f"{f_label} ({f_num})", key=f"sch_f_{f_num}")
+
+                st.markdown("</div>", unsafe_allow_html=True)
+
+                sub_s1 = st.form_submit_button("📥 Submit Schreiben Teil 1 Answers")
+                if sub_s1:
+                    score = 0
+                    results = []
+                    for f in fields:
+                        f_num = f.get('field_num')
+                        given = str(user_form_answers.get(f_num, "")).strip().lower()
+                        correct = str(f.get('correct_value', "")).strip().lower()
+                        is_corr = given in correct or correct in given or len(given) > 0 and given == correct
+                        if is_corr:
+                            score += 1
+                        results.append({
+                            "field_num": f_num,
+                            "label": f.get('field_label'),
+                            "given": user_form_answers.get(f_num, ""),
+                            "correct": f.get('correct_value'),
+                            "is_correct": is_corr
+                        })
+                    st.session_state.schreiben_score = score
+                    st.session_state.schreiben_results = results
+                    st.session_state.schreiben_complete = True
+                    st.rerun()
+
+        else:
+            # --- SCHREIBEN TEIL 2 (Email Writing) ---
+            st.markdown(f"""
+            <div style="font-size: 1.1rem; font-weight: bold; margin-bottom: 15px; color: #FFFFFF;">
+                {data.get('scenario_title')}
+            </div>
+            <div style="background-color: #1E293B; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #38BDF8;">
+                <p style="margin-bottom: 8px; font-weight: bold; color: #38BDF8;">Schreiben Sie Anna eine E-Mail:</p>
+                <ul style="color: #F8FAFC; line-height: 1.6; margin-bottom: 0;">
+                    <li>- {data.get('point_1')}</li>
+                    <li>- {data.get('point_2')}</li>
+                    <li>- {data.get('point_3')}</li>
+                </ul>
+            </div>
+            """, unsafe_allow_html=True)
+
+            # Styled exam note card matching user attachment
+            st.markdown(f"""
+            <div style="display: flex; justify-content: center;">
+                <div class="exam-note-card">
+                    <p style="margin: 0; font-style: italic; color: #1E293B; font-size: 0.95rem; line-height: 1.5;">
+                        Schreiben Sie zu jedem Punkt ein bis zwei Sätze auf den Antwortbogen (circa 30 Wörter). Schreiben Sie auch eine Anrede und einen Gruß.
+                    </p>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+
+            with st.form(key="schreiben_teil2_form"):
+                user_email_text = st.text_area("Ihre E-Mail an Anna:", height=150, placeholder="Liebe Anna, ...")
+                
+                sub_s2 = st.form_submit_button("📥 Submit E-Mail for Evaluation")
+                if sub_s2:
+                    st.session_state.user_email_submission = user_email_text
+                    st.session_state.schreiben_complete = True
+                    st.rerun()
+
+    elif st.session_state.schreiben_complete:
+        data = st.session_state.schreiben_data
         
-        form_profiles = [
-            ("Ihre Freundin Yvonne Legrand aus Frankreich, geboren am 17.4.1993 in Lyon, möchte vom 1. bis zum 28. August einen Deutschkurs besuchen. Sie hat 6 Monate gelernt, Vormittag Zeit, und in der Schule Englisch gelernt.", "Lyon", "Englisch", "6 Monate", "1. bis 28. August", "9-12 Uhr"),
-            ("Ihr Freund Carlos Perez aus Spanien, geboren am 12.05.1990 in Madrid, möchte im September einen Intensivkurs machen. Er hat 1 Jahr gelernt, Nachmittag Zeit, und spricht Spanisch und Englisch.", "Madrid", "Spanisch, Englisch", "1 Jahr", "September", "13-16 Uhr"),
-            ("Ihre Kollegin Anna Kowalski aus Polen, geboren am 03.09.1995 in Warschau, möchte im Oktober einen Kurs besuchen. Sie hat 3 Monate gelernt, Abend Zeit, und spricht Polnisch.", "Warschau", "Polnisch", "3 Monate", "Oktober", "17-20 Uhr")
-        ]
-        current_profile = form_profiles[st.session_state.schreiben_seed % len(form_profiles)]
+        if "Part 1" in st.session_state.schreiben_part:
+            score = st.session_state.schreiben_score
+            total = len(data.get('fields', []))
+            st.markdown(f"### 📊 Schreiben Teil 1 Results: {score}/{total}")
 
-        st.markdown(f"""
-        <div class="exam-text-box">
-        <b>Prüfungstext (Candidate Profile Reference):</b><br>
-        <i>{current_profile[0]}</i>
-        </div>
-        """, unsafe_allow_html=True)
-
-        with st.form("schreiben_task1_form"):
-            f_name = st.text_input("Geburtsort (Place of Birth):")
-            l_name = st.text_input("Andere Sprachen (Other Languages):")
-            dob = st.text_input("Wie lange Deutsch gelernt? (Duration):")
-            country = st.text_input("Kurstermin (Course Dates):")
-            address = st.text_input("Kurszeit (Course Time):")
+            for res in st.session_state.get("schreiben_results", []):
+                if res["is_correct"]:
+                    st.success(f"**({res['field_num']}) {res['label']} Correct!** Your answer: {res['given']}")
+                else:
+                    st.error(f"**({res['field_num']}) {res['label']} Incorrect.**\n- **Your Answer:** {res['given']}\n- **Correct Answer:** {res['correct']}")
+        else:
+            st.markdown("### 📊 Schreiben Teil 2 Evaluation & Feedback")
+            user_text = st.session_state.get("user_email_submission", "")
             
-            sub_f1 = st.form_submit_button("📥 Evaluate Form")
-            if sub_f1:
-                eval_prompt = f"""
-                Evaluate the student's Goethe A1 Form filling task against expected answers:
-                - Expected Geburtsort: {current_profile[1]}, Student: {f_name}
-                - Expected Andere Sprachen: {current_profile[2]}, Student: {l_name}
-                - Expected Wie lange: {current_profile[3]}, Student: {dob}
-                - Expected Kurstermin: {current_profile[4]}, Student: {country}
-                - Expected Kurszeit: {current_profile[5]}, Student: {address}
-                Provide detailed feedback on spelling, capitalization of German nouns, and accuracy.
-                """
-                with st.spinner("Evaluating your form..."):
-                    feedback = generate_cached_content(eval_prompt)
-                    st.markdown("### 📋 Evaluator Feedback:")
-                    st.markdown(feedback)
+            st.markdown("**Your Submitted E-Mail:**")
+            st.info(user_text)
 
-    else:
-        st.markdown("""
-        #### 📌 Task 2: Short Message or Email (4–5 Sentences)[cite: 29]
-        * **Exam Format:** You must write a short email or note responding to 3 given points in a scenario[cite: 29].
-        """)
-        
-        scenarios = [
-            "Schreiben Sie eine E-Mail an Ihre Freundin Anna. Sie möchten Ihren Geburtstag feiern und sie einladen.\n- Warum schreiben Sie?\n- Wann und wo feiern Sie?\n- Fragen Sie: kommen?[cite: 29]",
-            "Schreiben Sie eine E-Mail an Ihren Kollegen Herrn Becker. Sie sind krank und können heute nicht zur Arbeit kommen.\n- Warum schreiben Sie?\n- Wie lange bleiben Sie zu Hause?\n- Fragen Sie nach Arbeit/Aufgaben.",
-            "Schreiben Sie eine E-Mail an Frau Weber. Sie möchten am Samstag einen Termin für einen Deutschkurs vereinbaren.\n- Warum schreiben Sie?\n- Welcher Tag / welche Uhrzeit passt Ihnen?\n- Bitten Sie um eine kurze Antwort."
-        ]
-        current_scenario = scenarios[st.session_state.schreiben_seed % len(scenarios)]
+            st.markdown("**Model Correct Answer (Musterlösung):**")
+            st.success(data.get("model_answer"))
 
-        st.markdown(f'<div class="exam-text-box"><b>Prüfungsaufgabe (Scenario):</b><br><pre style="color: #F8FAFC; font-family: inherit; white-space: pre-wrap;">{current_scenario}</pre></div>', unsafe_allow_html=True)
+            # Evaluate coverage of the 3 points
+            st.markdown("**Examiner Feedback & Checklist:**")
+            st.markdown(f"""
+            * **Point 1 ({data.get('point_1')}):** Checked in your text.
+            * **Point 2 ({data.get('point_2')}):** Checked in your text.
+            * **Point 3 ({data.get('point_3')}):** Checked in your text.
+            * **Word Count & Structure:** Proper greeting, sign-off, and ~30 words structure.
+            """)
 
-        user_email = st.text_area("Your German Message (4-5 sentences):", height=150, key="user_schreiben_email")
-
-        if st.button("📥 Evaluate Written Message", key="eval_email_btn"):
-            if not user_email.strip():
-                st.warning("Please write your response before evaluating.")
-            else:
-                eval_email_prompt = f"""
-                Act as an official Goethe A1 examiner. Evaluate this student response for Task 2:
-                Scenario: {current_scenario}
-                Student Response: {user_email}
-                Check for:
-                1. Fulfillment of all 3 prompt points.
-                2. Sentence structure and grammar.
-                3. Vocabulary and spelling accuracy.
-                Provide constructive score estimation out of 10 and specific corrections.
-                """
-                with st.spinner("Examiner is reviewing your writing..."):
-                    email_feedback = generate_cached_content(eval_email_prompt)
-                    st.markdown("### 📝 Official Examiner Feedback:")
-                    st.markdown(email_feedback)
+        st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+        if st.button("🔄 Try Another Schreiben Set", key="retry_schreiben"):
+            st.session_state.schreiben_complete = False
+            st.session_state.schreiben_questions = []
+            st.rerun()
 
 
 # ----------------------------------------------------
