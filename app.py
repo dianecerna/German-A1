@@ -1744,13 +1744,15 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
 
     st.markdown("""
     **Goethe A1 Writing (Schreiben) Format:** 20 minutes | 2 parts | 6 tasks  
-    *Mirrored directly from official Start Deutsch 1 exam layouts, featuring diverse real-world forms (gym, hotel, bank, library, etc.) with randomized pre-filled and blank fields for Part 1, and varied everyday email/message scenarios for Part 2.*
+    *Mirrored directly from official Start Deutsch 1 exam layouts, featuring diverse real-world forms with randomized types for Part 1, and strictly German-only scenarios for Part 2.*
     """)
 
     if "schreiben_part" not in st.session_state:
         st.session_state.schreiben_part = "Part 1: Form Filling (Verschiedene Formulare)"
     if "schreiben_seed" not in st.session_state:
         st.session_state.schreiben_seed = 1
+    if "last_schreiben_form_type" not in st.session_state:
+        st.session_state.last_schreiben_form_type = ""
     if "schreiben_questions" not in st.session_state:
         st.session_state.schreiben_questions = []
     if "schreiben_complete" not in st.session_state:
@@ -1832,16 +1834,19 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
     # Auto-load scenarios if empty
     if not st.session_state.schreiben_questions and not st.session_state.schreiben_complete:
         if "Part 1" in st.session_state.schreiben_part:
+            avoid_type = st.session_state.last_schreiben_form_type
             schreiben_prompt = f"""
             Generate a completely brand new, randomized official Goethe A1 Start Deutsch 1 Schreiben Part 1 practice module using seed {st.session_state.schreiben_seed}.
-            Pick a diverse form type at random (e.g., Fitnessstudio Anmeldung, Hotelreservierung, Bankkonto Eröffnung, Bibliothekausweis, Mietvertrag, or Patienteninformation).
+            Pick a diverse form type at random from this pool: Fitnessstudio Anmeldung, Hotelreservierung, Bankkonto Eröffnung, Bibliothekausweis, Mietvertrag, Patienteninformation.
+            CRITICAL: Do NOT pick '{avoid_type}' as the form type to ensure variety from the previous round.
             Provide:
-            - "form_type_title": Title of the form (e.g., "Fitnessstudio FIT & FUN Anmeldung")
+            - "form_type": The chosen form type category string (e.g. "Hotelreservierung")
+            - "form_type_title": Title of the form (e.g., "Hotel ZUM LÖWEN Reservierung")
             - "persona_text": A paragraph describing a person and their details fitting this specific scenario.
             - "prefilled_fields": A list of 3 fields that are randomly pre-filled with correct values. Each has "label" and "value".
             - "fields": A list of EXACTLY 5 blank fields that the user must fill out (numbered 1 to 5). Each field must contain:
                 - "field_num": 1 to 5
-                - "field_label": label name (e.g. "Geburtsdatum", "Staatsangehörigkeit", "IBAN", "Tarif", "Zimmerkategorie", etc.)
+                - "field_label": label name
                 - "correct_value": expected correct string answer
                 - "hint": brief guidance.
             Return strict JSON object with these keys.
@@ -1851,10 +1856,10 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
             Generate a completely brand new, randomized official Goethe A1 Start Deutsch 1 Schreiben Part 2 practice module using seed {st.session_state.schreiben_seed}.
             Pick a diverse everyday scenario at random (e.g., tourist information request, informing a teacher/class about being ill, inviting someone to a party, asking for help, thank-you email, doctor's appointment, or making weekend plans).
             Provide:
-            - "scenario_title": Situation title and instructions in German/English.
-            - "point_1": First bullet point prompt.
-            - "point_2": Second bullet point prompt.
-            - "point_3": Third bullet point prompt.
+            - "scenario_title": Situation title strictly in German only (e.g., "Sie möchten Ihren Arzttermin absagen.") with NO English translation or slash notes.
+            - "point_1": First bullet point prompt in German.
+            - "point_2": Second bullet point prompt in German.
+            - "point_3": Third bullet point prompt in German.
             - "model_answer": A sample correct email/message meeting all 3 points in 4-5 sentences (~30 words) with appropriate greeting and sign-off.
             Return strict JSON object with these keys.
             """
@@ -1862,7 +1867,10 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
         with st.spinner("Generating fresh official Schreiben exam scenario..."):
             try:
                 schreiben_raw = generate_cached_content(schreiben_prompt, is_json=True)
-                st.session_state.schreiben_data = json.loads(schreiben_raw)
+                data = json.loads(schreiben_raw)
+                st.session_state.schreiben_data = data
+                if "Part 1" in st.session_state.schreiben_part and "form_type" in data:
+                    st.session_state.last_schreiben_form_type = data.get("form_type")
                 st.session_state.schreiben_questions = [1] # marker for active
             except Exception as e:
                 st.error(f"Failed to generate Schreiben practice: {str(e)}")
@@ -1889,7 +1897,6 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
                 user_form_answers = {}
                 prefilled = data.get('prefilled_fields', [])
                 
-                # Render pre-filled fields (marked with (0))
                 for pf in prefilled:
                     st.markdown(f"""
                     <div style="display: grid; grid-template-columns: 200px 1fr 40px; gap: 10px; align-items: center; margin-bottom: 12px; font-size: 0.95rem;">
@@ -1897,7 +1904,6 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
                     </div>
                     """, unsafe_allow_html=True)
 
-                # Render the 5 blank input fields to be filled out
                 fields = data.get('fields', [])
                 for f in fields:
                     f_num = f.get('field_num')
@@ -1930,7 +1936,7 @@ elif nav_choice == "✍️ Goethe A1 Schreiben (Writing)":
                     st.rerun()
 
         else:
-            # --- SCHREIBEN TEIL 2 (Email & Message Writing) ---
+            # --- SCHREIBEN TEIL 2 (Email & Message Writing - German Only Scenario) ---
             st.markdown(f"""
             <div style="font-size: 1.1rem; font-weight: bold; margin-bottom: 15px; color: #FFFFFF;">
                 {data.get('scenario_title')}
